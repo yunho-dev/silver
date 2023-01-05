@@ -15,7 +15,7 @@ public class MainController {
 	
 	@GetMapping(value="/")
 	public String home() {
-		logger.info("메인 컨트롤러 시작!");
+		logger.info("메인 컨트롤러 시작!!");
 		String msg = service.test();
 		logger.info("msg 의 값은 : "+msg);
 		return "main/index";
