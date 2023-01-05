@@ -183,9 +183,12 @@
                 </a>
             </header>
             <div class="allpage-heading" style="text-align: right">
-                <a href="#" class='alaram'>알림/</a>
-                <a href="#" class='alaram'>마이페이지/</a>
-                <a href="#" class='alaram'>로그아웃</a>
+                <a href="#" class='alaram'>
+                	<img alt="" src="assets/images/logo/bell-fill.svg">
+                	<span id="bell_count" style="vertical-align:super">1</span>
+                </a>
+                <a href="#" class='alaram'>/ 마이페이지 /</a>
+                <a href="#" class='alaram'> 로그아웃 </a>
             </div>
             <div class="page-heading">
                 <h3>내 프로필</h3>
