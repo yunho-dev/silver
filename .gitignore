@@ -35,3 +35,4 @@ build/
 src/test/java/com/silver/PhoenixApplicationTests.java
 mvnw
 mvnw.cmd
+src/test/
