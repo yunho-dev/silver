@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- logback-spring.xml 을 통해 상세한 설정이 가능하다. -->
+<!-- 60초마다 설정 파일의 변경을 확인 하여 변경시 갱신 -->
+<configuration scan="true" scanPeriod="60 seconds">
+
+	<!-- 
+		%d : 로그기록 시간을 출력
+		%p : 로그의 레벨을 출력
+		%F : 로그가 발생한 프로그램 파일명 출력
+		%M : 로그가 발생한 메서드명 이름 출력
+		%l : 로그가 발생한 호출지의 정보를 출력 
+		%L : 로그가 발생한 호출지의 라인수를 출력
+		%t : 로그가 발생한 쓰레드명 출력
+		%c : 로그가 발생한 카테고리의 정보를 출력
+		%C : 로그가 발생한 클래스명 출력
+		%m : 로그 메시지 출력
+		%n : 개행문자(줄바꿈)
+		%% : %를 출력
+		%r : 어플리케이션 시작 이후부터 로그가 발생한 시점까지의 시간을 출력 
+	 -->
+
+
+	<!-- 패턴 등록 -->
+		<!-- INFO  22-12-07 10:50:23[http-nio-8080-exec-5] [WarController:15] - start home -->
+		<!-- %-5 : 좌측정렬 5자가 안되면 나머지는 공백으로 맞춘다. -->
+	<property name="LOG_PATTERN" value="%-5p %d{yy-MM-dd HH:mm:ss} [%C:%L] - %m%n"/>
+
+	<!-- Appenders :  CONSOLE -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">	
+		<!-- 출력 패턴 -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern> 		
+		</encoder>
+	</appender>
+
+	
+	<!-- SQL LOG 옵션 설정 (쿼리문과 걸린시간, 결과를 보도록 한다.)-->	
+	<logger name="jdbc.connection" level="OFF"/>
+	<logger name="jdbc.sqlonly" level="OFF"/>
+	<logger name="jdbc.sqltiming" level="INFO"/>
+	<logger name="jdbc.audit" level="OFF"/>
+	<logger name="jdbc.resultset" level="OFF"/>
+	<logger name="jdbc.resultsettable" level="INFO"/>	
+	
+		
+	
+
+   	<!-- Root Logger -->
+	<root>
+		<appender-ref ref="console" />
+	</root>
+    
+</configuration>
