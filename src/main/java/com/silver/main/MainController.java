@@ -17,7 +17,7 @@ public class MainController {
 	public String home() {
 		logger.info("메인 컨트롤러 시작!!fffddddhh");
 		
-		logger.info("msg 의 값은 : ");
+
 		return "main/silverMain";
 	}
 
