@@ -15,7 +15,8 @@ public class MainController {
 	
 	@GetMapping(value={"/","/silverMain"})
 	public String home() {
-		logger.info("메인 컨트롤러 시작!!fffdddd");
+		logger.info("메인 컨트롤러 시작!!fffddddhh");
+		
 		String msg = service.test();
 		logger.info("msg 의 값은 : "+msg);
 		return "main/silverMain";
