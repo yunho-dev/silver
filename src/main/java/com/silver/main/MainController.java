@@ -13,12 +13,11 @@ public class MainController {
 	
 	@Autowired MainService service;
 	
-	@GetMapping(value={"/","/silverMain"})
+	@GetMapping(value="/silverMain")
 	public String home() {
 		logger.info("메인 컨트롤러 시작!!fffddddhh");
 		
-		String msg = service.test();
-		logger.info("msg 의 값은 : "+msg);
+		logger.info("msg 의 값은 : ");
 		return "main/silverMain";
 	}
 

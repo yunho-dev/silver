@@ -23,9 +23,9 @@
 
 <body>
     <div id="app">
-       	<jsp:include page="sidebar.jsp"></jsp:include>
+       	<jsp:include page="../sidebar.jsp"></jsp:include>
         <div id="main">
-        <jsp:include page="upbar.jsp"></jsp:include>	
+        <jsp:include page="../upbar.jsp"></jsp:include>	
 
             <div class="page-heading">
                 <h3>내 프로필</h3>

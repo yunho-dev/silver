@@ -5,9 +5,7 @@
 
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.main.MainDAO">
-	<select id="test" resultType="string">
-		select mem_id from member where mem_name='진동기'
-	</select>
+
 </mapper>
 
 
