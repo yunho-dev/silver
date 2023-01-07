@@ -40,7 +40,7 @@ public class MemberLoginController {
 			if (memberDTO != null && !memberDTO.equals("")) {
 				page = "redirect:/silverMain";	
 				HttpSession session = req.getSession();
-				session.setAttribute("loginId", memberDTO.getMem_name());
+				session.setAttribute("loginId", memberDTO);
 				logger.info(memberDTO.getMem_id());
 				logger.info(memberDTO.getMem_email());
 				logger.info(memberDTO.getDept_name());

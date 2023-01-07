@@ -23,13 +23,14 @@
          <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">이름</th>
+      <th scope="col">현재감염상태</th>
+      <th scope="col">생년월일</th>
+      <th scope="col">생활실</th>
     </tr>
   </thead>
   <tbody>
+  <c:if test="${list eq null || list eq ''}"></c:if>
     <tr>
       <th scope="row">1</th>
       <td>Mark</td>
