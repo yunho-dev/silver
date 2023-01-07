@@ -38,7 +38,7 @@ public class MemberLoginController {
 			logger.info("loginId:"+memberDTO);
 			
 			if (memberDTO != null && !memberDTO.equals("")) {
-				page = "main/silverMain";	
+				page = "redirect:/silverMain";	
 				HttpSession session = req.getSession();
 				session.setAttribute("loginId", memberDTO.getMem_name());
 				logger.info(memberDTO.getMem_id());
