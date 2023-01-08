@@ -179,28 +179,26 @@ String val = request.getParameter("page");
        
 </body>
 <script>
-
-	  
- var page='${page}';
-	   console.log(page);
-	   if(page='resident'){
-	      $("#resident").addClass('active');
-	   }else if(page='member'){
-		   $("#member").addClass('active');
-	   }else if(page='payment'){
-		   $("#payment").addClass('active');
-	   }else if(page='mycal'){
-		   $("#mycal").addClass('active');
-	   }else if(page='board1'){
-		   $("#board1").addClass('active');
-	   }else if(page='board2'){
-		   $("#board2").addClass('active');
-	   }else if(page='item'){
-		   $("#item").addClass('active');
-	   }else if(page='donation'){
-		   $("#donation").addClass('active');
-	   }else{
-		   console.log(e);
-	   }
+var page='${page.page}';
+console.log(page);
+if(page=='resident'){
+   $("#resident").addClass('active');
+}else if(page=='member'){
+   $("#member").addClass('active');
+}else if(page=='payment'){
+   $("#payment").addClass('active');
+}else if(page=='mycal'){
+   $("#mycal").addClass('active');
+}else if(page=='board1'){
+   $("#board1").addClass('active');
+}else if(page=='board2'){
+   $("#board2").addClass('active');
+}else if(page=='item'){
+   $("#item").addClass('active');
+}else if(page=='donation'){
+   $("#donation").addClass('active');
+}else{
+   console.log('잘못된비교');
+}
 </script>
 </html>
