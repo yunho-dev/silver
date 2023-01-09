@@ -51,8 +51,8 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 등록</h4>
-	                <button type="button" class="close" data-bs-dismiss="modal"
-	                    aria-label="Close" style="font-size: 22pt;">
+	                <button type="button" class="close" onclick="closeWriteModal()"
+	                    aria-label="Close" style="font-size: 22pt;" >
 	                    &times;
 	                </button>
 	            </div>
@@ -73,7 +73,7 @@
 						</div>
 						<div class="writeRight">
 							<p class="writeArea"><span id="WriteName">카테고리 : </span> 
-								<input type="text" name="thCateFake" placeholder="클릭해 주세요" style="cursor: pointer;" onclick="clickCate()" readonly>
+								<input type="text" id='writeCate' name="thCateFake" placeholder="클릭해 주세요" style="cursor: pointer;" onclick="clickCate(this.id)" readonly>
 								<input type="hidden" name="thCateReal" readonly>
 							</p> <br>
 							<p class="writeArea"> 
@@ -95,7 +95,7 @@
 						</div>
 						<div>
 							<!-- 사진 -->
-							<input name="thPhoto" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">
+							<input name="thPhoto" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck($(this))">
 						</div>
 		            </div>
 		            <div class="modal-footer" >
@@ -104,7 +104,7 @@
 			                    <span class="d-none d-sm-block">등록하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-			                    data-bs-dismiss="modal">
+			                    onclick="closeWriteModal()">
 			                    <span class="d-none d-sm-block">닫기</span>
 			                </button>
 		                </div>
@@ -115,6 +115,8 @@
 	</div>
 </body>
 <script>
+/*
+	//이거 이상해 ㅠㅠ
 	$(function(){
 	    $('#datepicker').datepicker({
 	    	dateFormat: 'yy-mm-dd',
@@ -129,7 +131,12 @@
 	    	  yearSuffix: '년'
 	    });
 	    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-	})
+	})*/
+	
+	function closeWriteModal(){
+		$('#writeThing').modal('hide');
+		$('#writeForm')[0].reset();
+	}
 
 	var thingCheck = false;
 	
@@ -160,21 +167,7 @@
 			});
 		}
 	});
-	
-	/* 팝업 오픈 */
-	function clickCate(){
-		var url = "itemCateList.do";
-        var name = "itemCateList";
-		var option = "width = 600, height = 500, top = 100, left = 200, location = no"
-		window.open(url, name, option)
-	}
-	
-	/* 자식 팝업에서 카테고리 선택 */
-	function choiceCate(itIdx, itName){
-		$('.writeRight input[name=thCateFake]').val(itName)
-		$('.writeRight input[name=thCateReal]').val(itIdx)
-	}
-	
+
 	function changePart(selected){
 		if(selected.val()==='후원'){
 			$('.writeAreaSpon').css('display', 'block')
@@ -185,13 +178,12 @@
 	}
 	
 	function fileCheck(obj) {
-		console.log(obj.value)
-	    pathpoint = obj.value.lastIndexOf('.');
-	    filepoint = obj.value.substring(pathpoint+1,obj.length);
+	    pathpoint = obj.val().lastIndexOf('.');
+	    filepoint = obj.val().substring(pathpoint+1, obj.val().length);
 	    filetype = filepoint.toLowerCase();
 	    if(filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg') {
 	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
-	        obj.value = null;
+	        obj.val(null);
 	        return false;
 	    }
 	}

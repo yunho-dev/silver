@@ -8,7 +8,6 @@
     <title>은빛 우산</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
@@ -98,6 +97,28 @@
 	var showPage=1;
 	ListCall(showPage);
 	
+	var cateId;
+	
+	/* 팝업 오픈 */
+	function clickCate(clickCateId){
+		cateId = clickCateId;
+		var url = "itemCateList.do";
+        var name = "itemCateList";
+		var option = "width = 600, height = 500, top = 100, left = 200, location = no"
+		window.open(url, name, option)
+	}
+	
+	/* 자식 팝업에서 카테고리 선택 */
+	function choiceCate(itIdx, itName){
+		if(cateId == 'writeCate'){
+			$('.writeRight input[name=thCateFake]').val(itName)
+			$('.writeRight input[name=thCateReal]').val(itIdx)
+		}else {
+			$('.modifyRight input[name=thCateFake]').val(itName)
+			$('.modifyRight input[name=thCateReal]').val(itIdx)
+		}
+	}
+	
 	function ListCall(page){
 		$.ajax({
 			type:'GET',
@@ -166,6 +187,7 @@
 				$(".modal-body .left .th_name").text(data.detail.th_name);
 				$(".modal-body .left .th_model").text(data.detail.th_model);
 				$(".modal-body .left .th_money").text(data.detail.th_money);
+				$(".modal-body .left .th_write").text(data.detail.th_write);
 				$(".modal-body .right .th_part").text(data.detail.th_part);
 				$(".modal-body .right .th_date").text(data.detail.th_date);
 				$(".modal-body .right .th_state").text(data.detail.th_state);
@@ -193,9 +215,6 @@
 	    });
 	    
 	}
-	
-	
-	
 
 </script>
     

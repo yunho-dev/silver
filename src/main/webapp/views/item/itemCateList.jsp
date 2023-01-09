@@ -76,6 +76,7 @@
 	function cateRow(cateRow){
 		var itIdx = cateRow.closest('tr').find('.cateIdx').text();
 		var itName = cateRow.closest('tr').find('.cateName').text();
+		console.log(opener)
 		opener.choiceCate(itIdx, itName);
 		window.close()
 	}
