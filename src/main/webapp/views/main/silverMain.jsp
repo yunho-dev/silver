@@ -18,7 +18,16 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
-
+	<style>
+	.my-custom-scrollbar {
+position: relative;
+height: 300px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+	</style>
 </head>
 
 <body>
@@ -37,15 +46,21 @@
                             <div class="card-body py-4 px-5">
                                 <div class="d-flex align-items-center">
                                     <div class="avatar avatar-xl">
-                                        <img src="assets/images/faces/1.jpg" alt="Face 1">
+                                    <c:if test="${not empty face.fp_newFileName} ">
+                                        <img src="/filephoto/${face.fp_newFileName}" style="width:100px;
+                                        height: 100px;" 
+                                        alt="Face 1">
+                                    </c:if>    
+                                    <c:if test="${empty face.fp_newFileName}">
+                                        <img src="/filephoto/noimage.png" style="width:100px; height: 100px;" 
+                                        alt="Face 1">
+                                    </c:if>  
                                     </div>
                                     <div class="ms-3 name">
-                                        <h5 class="font-bold">오상민</h5>
-                                        <h6 class="text-muted mb-0">@sangminOH</h6>
-                                        
-                                        <h5 class="font-bold">정보:</h5>
-                                        <h5 class="font-bold">직책:</h5>
-                                        <h5 class="font-bold">부서:</h5>
+                                        <h5 class="font-bold">${memberList.mem_name}</h5>
+                                        <h6 class="text-muted mb-0">${memberList.mem_email}</h6>
+                                        <h5 class="font-bold">직책:${memberList.pos_name}</h5>
+                                        <h5 class="font-bold">부서:${memberList.dept_name}</h5>
 
                                         <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>마이페이지이동</button>
                                     </div>
@@ -54,7 +69,7 @@
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <h4>오늘 감염병 현황  총원:n명 감염:n명</h4>                             
+                                <h4>오늘 감염병 현황  총원:${totalResi}명 감염:${totalinfe}명</h4>                             
                             </div>
                              <div class="card-body">
                               <div id="chart-visitors-profile"></div>
@@ -63,11 +78,61 @@
                          <div class="card">
                             <div class="card-header">                                
                                 <h4>공지사항 리스트</h4>
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-bordered table-hover" style="text-align:center;">
+                                	<thead>
+                                		<tr class="table-secondary">
+                                			<th scope="col">글번호</th>
+                                			<th scope="col" class="col-md-6">제목</th>
+                                			<th scope="col">작성자</th>
+                                			<th scope="col">날짜</th>
+                                		</tr>
+                                	</thead>
+                                	<tbody>
+                                	  <c:forEach items="${noticeList}" var="list">
+                                	  	<tr>
+                                	  		<td>${list.bd_idx}</td>
+                                	  		<td>${list.bd_title}</td>
+                                	  		<td>${list.mem_name}</td>
+                                	  		<td>${list.bd_date}</td>
+                                	 	</tr>
+                                	  </c:forEach>
+                                	</tbody>
+                                </table>
+                                </div>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header">
                                 <h4>외출/외박 중인 입소자</h4>
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-bordered table-hover" style="text-align:center;">
+                                	<thead>
+                                		<tr class="table-secondary">
+                                			<th scope="col">No.</th>
+                                			<th scope="col">입소자</th>
+                                			<th scope="col">생년월일</th>
+                                			<th scope="col">성별</th>
+                                			<th scope="col">등급</th>
+                                			<th scope="col">상황실</th>
+                                			<th scope="col">현황</th>
+                                		</tr>
+                                	</thead>
+                                	<tbody>
+                                	 <c:forEach items="${resiList}" var="list" varStatus="status">
+                                	 	<tr>
+                                	 		<td>${status.count}</td>
+                                	 		<td>${list.re_name}</td>
+                                	 		<td>${list.re_jumin}</td>
+                                	 		<td>${list.re_gender}</td>
+                                	 		<td>${list.re_grade}</td>
+                                	 		<td>${list.ro_name}</td>
+                                	 		<td>${list.re_state}</td>
+                                	 	</tr>
+                                	 </c:forEach>
+                                	</tbody>
+                                	</table>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>입소자 정보로 이동</button>
@@ -93,8 +158,38 @@
     <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendors/apexcharts/apexcharts.js"></script>
-    <script src="assets/js/pages/dashboard.js"></script>
+<!--     <script src="assets/js/pages/dashboard.js"></script> -->
     <script src="assets/js/main.js"></script>
 </body>
+<script>
+var series1=Number("${totalResi}");
+var series2=Number("${totalinfe}");
+console.log(series2/series1 * 100);
+console.log((series1-series2)/series1*100);
 
+let optionsVisitorsProfile  = {
+		series: [series2/series1 * 100,(series1-series2)/series1*100],
+		labels: ['감염 입소자', '비감염 입소자'],
+		colors: ['#435ebe','#55c6e8'],
+		chart: {
+			type: 'donut',
+			width: '100%',
+			height:'350px'
+		},
+		legend: {
+			position: 'bottom'
+		},
+		plotOptions: {
+			pie: {
+				donut: {
+					size: '30%'
+				}
+			}
+		}
+	}
+	
+var chartVisitorsProfile = new ApexCharts(document.getElementById('chart-visitors-profile'), optionsVisitorsProfile);
+chartVisitorsProfile.render();
+
+</script>
 </html>
