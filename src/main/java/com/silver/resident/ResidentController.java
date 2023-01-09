@@ -15,12 +15,6 @@ public class ResidentController {
 	@Autowired ResidentService service;
 	
 	
-	@GetMapping(value={"/","/silverMain"})
-	   public String index() {
-	      logger.info("부트스트랩 테스트");
-	      return "main/silverMain";
-	   }
-	
 	@GetMapping(value="/resident")
 	public ModelAndView resident() {
 		logger.info("아무거나");
