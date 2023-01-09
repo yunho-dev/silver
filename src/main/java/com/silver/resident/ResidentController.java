@@ -27,7 +27,6 @@ public class ResidentController {
 		return service.resident();
 	}
 	
-	}
 	
 	
 }
