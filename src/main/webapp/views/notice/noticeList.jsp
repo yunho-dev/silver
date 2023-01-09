@@ -19,6 +19,7 @@
 <link rel="stylesheet"
 	href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <body>
 	<div id="app">
@@ -26,20 +27,65 @@
 		<div id="main">
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
-			<table>
-				<thead>
-					<tr>
-						<th>글번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>날짜</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody id="list">
+			<div class="page-heading">
+				<h3>공지사항</h3>
+			</div>
+			<div class="page-content">
+				<section class="row">
+					<div class="card" id="table">
+						<div class="card-body py-4 px-5">
+							<div class="d-flex align-items-center">
+								<table class="table table-bordered table-hover"
+									style="text-align: center;">
+									<thead>
+										<tr>
+											<th>글번호</th>
+											<th class="col-md-6">제목</th>
+											<th>작성자</th>
+											<th>작성일</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="list">
 
-				</tbody>
-			</table>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="card-body py-4 px-5">
+							<div>
+								<select>
+									<option value="title">제목</option>
+									<option value="write">작성자</option>
+								</select> <input type="text" name="search" id="search">
+								<button class="btn btn-primary btn-sm">검색</button>
+							</div>
+						</div>
+						<div class="card-body py-4 px-5">
+							<div id="pagint">
+								<div class="container">
+									<nav aria-label="Page navigation" style="text-align: center;">
+										<ul class="pagination" id="pagination"></ul>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<footer>
+				<div class="footer clearfix mb-0 text-muted">
+					<div class="float-start">
+						<p>2023 Final Project</p>
+					</div>
+					<div class="float-end">
+						<p>
+							Create With <span class="text-danger"><i
+								class="bi bi-heart"></i></span> by <a href="http://ahmadsaugi.com">Gudi</a>
+						</p>
+					</div>
+				</div>
+			</footer>
 		</div>
 	</div>
 
@@ -49,13 +95,96 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-	listCall();
-
-	function listCall() {
+	var page = 1;
+	AjaxCall(page);
+	function AjaxCall(page) {
 		$.ajax({
-			url : 'noticeList'
-
+			type : 'get',
+			url : 'notice/list.ajax',
+			dataType : 'json',
+			data : {
+				"page" : page
+			},
+			success : function(data) {
+				listCall(data.list);
+				$("#pagination").twbsPagination({
+					startPage : 1 // 시작 페이지
+					,
+					totalPages : data.page_idx // 총 페이지 수
+					,
+					visiblePages : 4 // 기본으로 보여줄 페이지 수
+					,
+					onPageClick : function(e, page) { // 클릭했을때 실행 내용
+						AjaxCall(page);
+					}
+				});
+			},
+			error : function(e) {
+				console.log(e);
+			}
 		});
-	};
+
+	}
+
+	function listCall(list) {
+		var content = '';
+		for (var i = 0; i < list.length; i++) {
+			content += "<tr>";
+			content += "<td>" + list[i].bd_idx + "</td>";
+			content += "<td id='detail'><a href='#' onclick='detail("+list[i].bd_idx+")'>" + list[i].bd_title + "</td>";
+			content += "<td>" + list[i].mem_name + "</td>";
+			var date = new Date(list[i].bd_date);
+			content += "<td>" + date.toLocaleDateString("ko-KR") + " "
+					+ date.toLocaleTimeString("en-US", {
+						hour12 : false
+					}) + "</td>";
+			content += "<td>"
+					+ "<button class='btn btn-primary btn-sm' name='update' value="+list[i].bd_idx+">수정하기</button>"
+					+ "</td>";
+			content += "</tr>";
+		}
+		$("#list").empty();
+		$("#list").append(content);
+	}
+	
+	function detail(idx){
+		console.log(idx);
+		$.ajax({
+			type:'get'
+			,url:'notice/detail.ajax?bd_idx='+idx
+			,dataType:'json'
+			,success:function(data){
+				console.log(data);
+				console.log(data.detail);
+				detailCall(data.detail);
+			}
+			,error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function detailCall(data){
+		$("#table").children().remove();
+		var content="<div class=card-body py-4 px-5>"; 
+		content+="<div class=d-flex align-items-center>";
+		content+="<table class=table table-bordered table-hoverstyle=text-align: center>";
+		content+="<tbody>";
+		content+="<tr><th>글 번호</th><td>"+data.bd_idx+"</td></tr>";
+		content+="<tr><th>제목</th><td>"+data.bd_title+"</td></tr>";
+		content+="<tr><th>작성자</th><td>"+data.mem_name+"</td></tr>";
+		content+="<tr><th>작성일</th><td>"+data.bd_date+"</td></tr>";
+		content+="</tbody>";
+		content+="</table>";
+		content+="<div id='content'>"+data.bd_content+"</div>"
+		content+="</div>";
+		content+="</div>";
+		$("#table").append(content);
+	}
+	
+	
+	
+	
+	
 </script>
 </html>
