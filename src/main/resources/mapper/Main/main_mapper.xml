@@ -5,7 +5,31 @@
 
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.main.MainDAO">
-
+	<select id="MainlistCall" resultType="mainCall">
+		select m.mem_name ,m.mem_email,p.pos_name ,d.dept_name  from member m, position p ,depart d
+ 			where m.pos_num =p.pos_num and m.dept_num =d.dept_num and mem_id =#{param1};
+	</select>
+	
+	<select id="searchFace" resultType="string">
+		select f.fp_newFileName  from filephoto f where f.mem_id = #{param1} and fpc_idx =9;
+	</select>
+	
+	<select id="totalResi" resultType="int">
+		select count(r.re_idx) from resident r where not r.re_state in ('퇴소');
+	</select>
+	
+	<select id="totalinfe" resultType="int">
+		select count(i.if_state='감염') from infest i ;
+	</select>
+	
+	<select id="noticelistCall" resultType="mainCall">
+		select b.bd_idx ,b.bd_title ,m.mem_name ,b.bd_date  from board b,member m  
+			where bc_idx =1 and b.mem_id =m.mem_id order by b.bd_idx desc;
+	</select>
+	<select id="resilistCall" resultType="mainCall">
+		select r.re_name,r.re_jumin ,r.re_gender,r.re_grade,r.ro_name ,r.re_state 
+	 from resident r where re_state in('외출','외박');
+	</select>
 </mapper>
 
 

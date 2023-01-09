@@ -31,7 +31,7 @@ String val = request.getParameter("page");
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <a href="sliverMain"><img src="assets/images/logo/logo.svg" style="width:100px;height:80px;" alt="Logo" srcset=""></a>
+                            <a href="silverMain"><img src="assets/images/logo/logo.svg" style="width:100px;height:80px;" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -181,26 +181,26 @@ String val = request.getParameter("page");
 <script>
 
 	  
- var page='${page}';
-	   console.log(page);
-	   if(page='resident'){
-	      $("#resident").addClass('active');
-	   }else if(page='member'){
-		   $("#member").addClass('active');
-	   }else if(page='payment'){
-		   $("#payment").addClass('active');
-	   }else if(page='mycal'){
-		   $("#mycal").addClass('active');
-	   }else if(page='board1'){
-		   $("#board1").addClass('active');
-	   }else if(page='board2'){
-		   $("#board2").addClass('active');
-	   }else if(page='item'){
-		   $("#item").addClass('active');
-	   }else if(page='donation'){
-		   $("#donation").addClass('active');
-	   }else{
-		   console.log(e);
-	   }
+var page='${page.page}';
+console.log(page);
+if(page=='resident'){
+   $("#resident").addClass('active');
+}else if(page=='member'){
+   $("#member").addClass('active');
+}else if(page=='payment'){
+   $("#payment").addClass('active');
+}else if(page=='mycal'){
+   $("#mycal").addClass('active');
+}else if(page=='board1'){
+   $("#board1").addClass('active');
+}else if(page=='board2'){
+   $("#board2").addClass('active');
+}else if(page=='item'){
+   $("#item").addClass('active');
+}else if(page=='donation'){
+   $("#donation").addClass('active');
+}else{
+   console.log('잘못된비교');
+}
 </script>
 </html>
