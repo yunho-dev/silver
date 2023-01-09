@@ -179,8 +179,6 @@ String val = request.getParameter("page");
        
 </body>
 <script>
-
-	  
 var page='${page.page}';
 console.log(page);
 if(page=='resident'){
