@@ -8,12 +8,17 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.silver.member.MemberDTO;
 
 @Service
 public class ThingService {
@@ -27,20 +32,41 @@ public class ThingService {
 	}
 
 	public HashMap<String, Object> getThingList(int page) {
+		
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThList();
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
 		logger.info("비품 목록을 가져옵니다.");
 		HashMap<String, Object> result=new HashMap<String, Object>();
-		ArrayList<ThingDTO> thingList = dao.getThingList();
-		logger.info("가져온 데이터 : {}", thingList);
+		ArrayList<ThingDTO> thingList = dao.getThingList(offset);
 		result.put("list", thingList);
+		result.put("total", totalPages);
 		return result;
 	}
 
 	public HashMap<String, Object> getThingListSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
 		logger.info("비품 검색 기능 접근");
-		ArrayList<ThingDTO> thingList = dao.getThingListSearch(params);
-		logger.info("가져온 데이터 : {}", thingList);
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThFilterList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setTh_write(params.get("thWrite"));
+		dto.setTh_spon(params.get("thSpon"));
+		dto.setTh_part(params.get("thPart"));
+		dto.setTh_state(params.get("thState"));
+		dto.setOffset(offset);
+		ArrayList<ThingDTO> thingList = dao.getThingListSearch(dto);
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("list", thingList);
+		result.put("total", totalPages);
 		return result;
 	}
 
@@ -56,8 +82,9 @@ public class ThingService {
 	}
 	
 	@Transactional
-	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params) {
+	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("받아온 요소 : {}", params);
+		logger.info("request : {}", request);
 		ThingDTO dto = new ThingDTO();
 		Date thDate = Date.valueOf(params.get("thDate"));
 		dto.setIt_idx(Integer.parseInt(params.get("thCateReal")));
@@ -68,6 +95,21 @@ public class ThingService {
 		dto.setTh_money(Integer.parseInt(params.get("thMoney")));
 		dto.setTh_spon(params.get("thSpon"));
 		
+		/* 등록자 세션 처리 */
+		String thWrite = "세션 못받음";
+		
+		HttpSession session=request.getSession();
+		logger.info("session : "+session);
+		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
+		logger.info("SessionDTO : "+SessionDTO);
+		if(SessionDTO != null) {
+			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
+			thWrite = SessionDTO.getMem_name();
+		}
+		dto.setTh_write(thWrite);
+		logger.info("db에 작성될 등록자 이름 : "+dto.getTh_write());
+		//---
+
 		int row = dao.thingWrite(dto);
 		int thIdx = dto.getTh_idx();
 		logger.info("db table 영향받은 행의 개수 : "+row);
@@ -119,7 +161,7 @@ public class ThingService {
 		// 3. 새 파일 명 반환
 		return newFileName;
 	}
-
+	/*
 	public ModelAndView itemCateList() {
 		ModelAndView mav = new ModelAndView("item/itemCateList");
 		ArrayList<HashMap<String, Object>> list = dao.itemCateList();
@@ -127,11 +169,93 @@ public class ThingService {
 		mav.addObject("list", list);
 		return mav;
 	}
+	*/
+	
+	public HashMap<String, Object> itemCateList() {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ArrayList<ThingDTO> list = dao.itemCateList();
+		result.put("list", list);
+		
+		return result;
+	}
 
 	public boolean thingCheck(String thName) {
 		String thingCheck = dao.thingCheck(thName);
 		return thingCheck == null? false : true;
 	}
 	
-	
+	@Transactional
+	public HashMap<String, Object> thingUpdate(MultipartFile thPhoto, HashMap<String, String> params,
+			HttpServletRequest request) {
+		logger.info("params : {}",params);
+		/* 등록자 세션 처리 */
+		String thWrite = "세션 못받음";
+		
+		HttpSession session=request.getSession();
+		logger.info("session : "+session);
+		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
+		logger.info("SessionDTO : "+SessionDTO);
+		if(SessionDTO != null) {
+			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
+			thWrite = SessionDTO.getMem_name();
+		}
+		params.put("thWrite", thWrite);
+		logger.info("db에 작성될 등록자 이름 : "+params.get("thWrite"));
+		
+		dao.thingUpdate(params);
+		
+		if(thPhoto != null){
+			String oriFileName = thPhoto.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = fileSave(thPhoto,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("")) {
+					dao.photoUpdate(oriFileName, newFileName, params.get("thIdx"));
+				}
+			}
+		}
+		
+		return getThingDetail(params.get("thIdx"));
+	}
+
+	public boolean cateNameCheck(String cateName) {
+		String cateCheck = dao.cateNameCheck(cateName);
+		return cateCheck == null? false : true;
+	}
+
+	public HashMap<String, Object> itemCateResist(String cateName) {
+		logger.info("저장할 cateName : "+cateName);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		int finish = 0;
+		
+		String cateCheck = dao.cateNameCheck(cateName); //이름 중복검사
+		logger.info("이름 중복검사 결과(null이면 정상) : "+cateCheck);
+		if(cateCheck == null) {
+			finish = dao.itemCateResist(cateName);
+		}
+		logger.info("item insert - 영향받은 행 : "+finish);
+		
+		result.put("result", finish);
+		return result;
+	}
+
+	public HashMap<String, Object> itemCateUpdate(int itIdx, String cateName) {
+		logger.info("수정할 cateName : "+cateName);
+		logger.info("들어갈 itIdx : "+cateName);
+		
+		int finish = 0;
+		String cateCheck = dao.cateNameCheck(cateName); //이름 중복검사
+		logger.info("이름 중복검사 결과(null이면 정상) : "+cateCheck);
+		if(cateCheck == null) {
+			finish = dao.itemCateUpdate(itIdx, cateName);
+		}
+		logger.info("item insert - 영향받은 행 : "+finish);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", finish);
+		return result;
+	}
+
 }

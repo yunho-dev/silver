@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	div.left {
@@ -52,6 +53,9 @@
 						<span id="detailName">품명 : </span><span class="th_name"></span> <br>
 						<span id="detailName">모델 : </span><span class="th_model"></span> <br>
 						<span id="detailName">금액 : </span><span class="th_money"></span> <br>
+						<span id="detailName">등록자 : </span><span class="th_write"></span> <br>
+						<span id="detailName">사진 : </span> <br>
+						<span id="nonPhoto" style="display: none; font-weight: bold; color: red;">사진이 없습니다.</span>
 					</div>
 					<div class="right">
 						<span id="detailName">구분 : </span><span class="th_part"></span> <br>
@@ -59,14 +63,11 @@
 						<span id="detailName">상태 : </span><span class="th_state"></span> <br>
 						<p class='hiddenSpon' style="display: none;"><span id="detailName">후원자 : </span><span class="th_spon"></span></p> <br>
 					</div>
-					<span id="detailName">사진 : </span> <br>
-					<span id="nonPhoto" style="display: none; font-weight: bold; color: red;">사진이 없습니다.</span> <br>
 					<img class="th_photo" style="width: 30%; display: none;"/>
 	            </div>
 	            <div class="modal-footer" >
 	            	<div style="margin: auto;">
-	            		<button type="button" class="btn btn-primary ml-1"
-		                    data-bs-dismiss="modal">
+	            		<button type="button" class="btn btn-primary ml-1"  id="modify" data-bs-target="#modifyThing" data-bs-toggle="modal"> <!-- data-bs-dismiss="modal" -->
 		                    <i class="bx bx-check d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">수정하기</span>
 		                </button>
@@ -76,11 +77,52 @@
 		                    <span class="d-none d-sm-block">닫기</span>
 		                </button>
 	                </div>
+	                <!-- 수정 -->
+	                <jsp:include page="modifyThing.jsp"></jsp:include>
 	            </div>
 	        </div>
 		</div>
 	</div>
 </body>
 <script>
+	$('#modify').click(function(){
+		var thIdx = $('#thIdx').text();
+		//$('.modifyRight input[name=thCateFake]').val()
+		
+		$.ajax({
+			type:'GET',
+			url:'getThingDetail.do',
+			data:{thIdx:thIdx},
+			dataType:'JSON',
+			success:function(data){
+				$(".modifyLeft input[name=thIdx]").val(data.detail.th_idx)
+				$(".modifyLeft span[id=thName]").text(data.detail.th_name)
+				$(".modifyLeft input[name=thModel]").val(data.detail.th_model)
+				$(".modifyLeft input[name=thMoney]").val(data.detail.th_money)
+				$(".modifyRight input[name=thCateFake]").val(data.detail.it_name)
+				$(".modifyRight input[name=thCateReal]").val(data.detail.it_idx)
+				$(".modifyRight select[name=thPart]").val(data.detail.th_part)
+				$(".modifyRight input[name=thDate]").val(data.detail.th_date)
+				$(".modifyRight input[name=thSpon]").val(data.detail.th_spon)
+				
+				var fileName = data.detailPhoto;
+				if(fileName != null || fileName == ''){
+					$("#updateForm .thPhotoOri").text(data.detailPhoto.fp_newFileName)
+				}else{
+					$("#updateForm .thPhotoOri").text('없음')
+				}
+				//part 체크
+				var modyPart = $('.modifyArea select[name=thPart]');
+				changePartUp(modyPart);
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+		
+	});
+	
+	
 </script>
 </html>

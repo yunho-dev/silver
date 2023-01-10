@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ThingDAO {
 
-	ArrayList<ThingDTO> getThingList();
+	ArrayList<ThingDTO> getThingList(int offset);
 
-	ArrayList<ThingDTO> getThingListSearch(HashMap<String, String> params);
+	ArrayList<ThingDTO> getThingListSearch(ThingDTO dto);
 
 	ThingDTO getThingDetail(String thIdx);
 
@@ -20,8 +20,22 @@ public interface ThingDAO {
 
 	void photoInsert(String oriFileName, String newFileName, int thIdx);
 
-	ArrayList<HashMap<String, Object>> itemCateList();
+	ArrayList<ThingDTO> itemCateList();
 
 	String thingCheck(String thName);
+
+	int thingUpdate(HashMap<String, String> params);
+
+	void photoUpdate(String oriFileName, String newFileName, String string);
+
+	int totalCountThList();
+
+	int totalCountThFilterList(HashMap<String, String> params);
+
+	String cateNameCheck(String cateName);
+
+	int itemCateResist(String cateName);
+
+	int itemCateUpdate(int itIdx, String cateName);
 	
 }

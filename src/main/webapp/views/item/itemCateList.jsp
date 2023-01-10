@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	.filter{
@@ -30,13 +31,13 @@
             <div class="col-12">
                 <div class="card">
                 	<div class="card-header" style="padding-bottom: 0px; padding-top: 20px;">
-                        <h4 class="card-title">카테고리 조회</h4>
+                        <h3 class="card-title">카테고리 조회</h3>
                         <p>사용량이 많은 카테고리 순으로 정렬되어 보여집니다<br>원하는 카테고리를 클릭해 주세요</p>
                     </div>
 			       <div class="card-header" style="background-color: #adb5bd; font-weight: bold; font-size: large;">
 			           카테고리 이름 : <input type="text" name="thCate" class="filter"> &nbsp;&nbsp;
 			           <button class="btn btn-secondary" onclick="search($(this))">검색</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="button" class="btn btn-primary ml-1" id="cateRegist">
+						<button type="button" class="btn btn-primary ml-1" onclick="location.href='itemCateWrite.go'">
 							<span class="d-none d-sm-block">등록하기</span>
 						</button>
 					</div>
@@ -50,20 +51,28 @@
                                         <th>수정</th>
                                     </tr>
                                 </thead>
+                                <tbody id="list">
+                                </tbody>
+                                <!--  
                                 <tbody>
                                     <c:if test="${list.size()<1}">
 										<tr><td colspan="3">등록된 카테고리가 없습니다</td></tr>
 									</c:if>
 									<c:forEach items="${list}" var="cate">
-										<tr >
+										<tr>
 											<td style="display: none;" class="cateIdx">${cate.it_idx}</td>
-											<td onclick="cateRow($(this))" class="cateName" style="cursor: pointer;">${cate.it_name}<input type="hidden" value="${cate.it_name}"/></td>
-											<td onclick="cateRow($(this))" style="cursor: pointer;">${cate.cnt}</td>
-											<td><a href="#" class="btn btn-sm btn-primary" onclick="cateModify($(this))">수정</a></td>
-											<%-- ${cate.it_idx} --%>
+											<td id="cateClick1" onclick="cateRow($(this))" style="cursor: pointer;"><span class="cateName" >${cate.it_name}</span><input type="hidden" name='cateNameUp' value="${cate.it_name}"/></td>
+											<td id="cateClick2" onclick="cateRow($(this))" style="cursor: pointer;">${cate.cnt}</td>
+											<td>
+												<a class="btn btn-sm btn-primary" onclick="cateModify($(this))">수정</a>
+												<span id="cancelBtn" style="display: none;">&nbsp;
+													<a href="itemCateList.do" class="btn btn-sm btn-secondary" onclick="location.href='itemCateList.do">취소</a>
+												</span>
+											</td>
 										</tr>
 									</c:forEach>
                                 </tbody>
+                                -->
                             </table>
                         </div>
                     </div>
@@ -73,6 +82,39 @@
     <!-- Hoverable rows end -->
 </body>
 <script>
+	ListCall();
+	
+	function ListCall(){
+		$.ajax({
+			type:'GET',
+			url:'itemCateList.do',
+			data:{},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				drawList(data.list)
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function drawList(itemList){
+		var content='';
+		for(var i=0; i<itemList.length;i++){
+			// it_name, it_idx, itCnt
+			content +='<tr>';
+			content +='<td style="display: none;" class="cateIdx">'+itemList[i].it_idx+'</td>';
+			content +='<td id="cateClick1" onclick="cateRow($(this))" style="cursor: pointer;"><span class="cateName" >'+itemList[i].it_name+'<input type="hidden" name="cateNameUp" value="'+itemList[i].it_name+'"/></td>';
+			content +='<td id="cateClick2" onclick="cateRow($(this))" style="cursor: pointer;">'+itemList[i].itCnt+'</td>';
+			content +='<td><a class="btn btn-sm btn-primary" onclick="cateModify($(this))">수정</a><span id="cancelBtn" style="display: none;">&nbsp;<a href="itemCateList.go" class="btn btn-sm btn-secondary" onclick="location.href='+"itemCateList.go"+'">취소</a></span></td>';
+			content +='</tr>';
+		}
+		$('#list').empty();
+		$('#list').append(content);
+	}
+
 	function cateRow(cateRow){
 		var itIdx = cateRow.closest('tr').find('.cateIdx').text();
 		var itName = cateRow.closest('tr').find('.cateName').text();
@@ -80,10 +122,40 @@
 		window.close()
 	}
 	
-	function cateModify(ModifyBtn){
-		itIdx = ModifyBtn.closest('tr').find('.cateIdx').text()
-		if(itIdx!=null || itIdx!=''){
-			alert('수정하시겠습니까?');
+	function cateModify(modifyBtn){
+		itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
+		modifyBtn.closest('tr').find('#cateClick1').attr('onclick', '');
+		modifyBtn.closest('tr').find('#cateClick2').attr('onclick', '');
+		modifyBtn.closest('tr').find('.cateName').hide();
+		modifyBtn.closest('tr').find('td input[name=cateNameUp]').prop('type', 'text')
+		modifyBtn.text('저장');
+		modifyBtn.siblings('#cancelBtn').css('display', 'inline-block');
+		modifyBtn.attr('onclick','cateUpdate($(this), itIdx)');
+	}
+	
+	function cateUpdate(modifyBtn, itIdx){
+		var $cateName = modifyBtn.closest('tr').find('td input[name=cateNameUp]')
+		if($cateName.val() == ''){
+			alert("카테고리 이름을 입력해 주세요")
+			$cateName.focus();
+		}else{
+			$.ajax({
+				type:'GET',
+				url:'itemCateUpdate.do',
+				data:{itIdx:itIdx, cateName:$cateName.val()},
+				datatype:'JSON',
+				success:function(data){
+					if(data.result==1){
+						alert('수정 완료')
+						location.replace('itemCateList.do')
+					}else{
+						alert('수정을 시도했으나 실패했습니다.\n중복된 ID이거나 서버 문제일 수 있습니다. \n이름을 바꿔 다시 시도해 주세요')
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}
 	}
 </script>

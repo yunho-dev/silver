@@ -14,7 +14,28 @@ public class InfestDTO {
 	private String if_name;
 	private String if_state;
 	private int re_idx;
+	private String re_jumin;
+	private String re_name;
+	private String ro_name;
 	
+	public String getRe_name() {
+		return re_name;
+	}
+	public void setRe_name(String re_name) {
+		this.re_name = re_name;
+	}
+	public String getRo_name() {
+		return ro_name;
+	}
+	public void setRo_name(String ro_name) {
+		this.ro_name = ro_name;
+	}
+	public String getRe_jumin() {
+		return re_jumin;
+	}
+	public void setRe_jumin(String re_jumin) {
+		this.re_jumin = re_jumin;
+	}
 	public int getIf_idx() {
 		return if_idx;
 	}
