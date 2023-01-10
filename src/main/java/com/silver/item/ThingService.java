@@ -8,12 +8,17 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.silver.member.MemberDTO;
 
 @Service
 public class ThingService {
@@ -56,8 +61,9 @@ public class ThingService {
 	}
 	
 	@Transactional
-	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params) {
+	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("받아온 요소 : {}", params);
+		logger.info("request : {}", request);
 		ThingDTO dto = new ThingDTO();
 		Date thDate = Date.valueOf(params.get("thDate"));
 		dto.setIt_idx(Integer.parseInt(params.get("thCateReal")));
@@ -68,6 +74,21 @@ public class ThingService {
 		dto.setTh_money(Integer.parseInt(params.get("thMoney")));
 		dto.setTh_spon(params.get("thSpon"));
 		
+		/* 등록자 세션 처리 */
+		String thWrite = "세션 못받음";
+		
+		HttpSession session=request.getSession();
+		logger.info("session : "+session);
+		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
+		logger.info("SessionDTO : "+SessionDTO);
+		if(SessionDTO != null) {
+			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
+			thWrite = SessionDTO.getMem_name();
+		}
+		dto.setTh_write(thWrite);
+		logger.info("db에 작성될 등록자 이름 : "+dto.getTh_write());
+		//---
+
 		int row = dao.thingWrite(dto);
 		int thIdx = dto.getTh_idx();
 		logger.info("db table 영향받은 행의 개수 : "+row);
@@ -131,6 +152,42 @@ public class ThingService {
 	public boolean thingCheck(String thName) {
 		String thingCheck = dao.thingCheck(thName);
 		return thingCheck == null? false : true;
+	}
+
+	public HashMap<String, Object> thingUpdate(MultipartFile thPhoto, HashMap<String, String> params,
+			HttpServletRequest request) {
+		logger.info("params : {}",params);
+		/* 등록자 세션 처리 */
+		String thWrite = "세션 못받음";
+		
+		HttpSession session=request.getSession();
+		logger.info("session : "+session);
+		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
+		logger.info("SessionDTO : "+SessionDTO);
+		if(SessionDTO != null) {
+			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
+			thWrite = SessionDTO.getMem_name();
+		}
+		params.put("thWrite", thWrite);
+		logger.info("db에 작성될 등록자 이름 : "+params.get("thWrite"));
+		
+		int success = dao.thingUpdate(params);
+		
+		if(thPhoto != null){
+			String oriFileName = thPhoto.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = fileSave(thPhoto,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("")) {
+					dao.photoUpdate(oriFileName, newFileName, params.get("thIdx"));
+				}
+			}
+		}
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("thIdx", params.get("thIdx"));
+		return result;
 	}
 	
 	

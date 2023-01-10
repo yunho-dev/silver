@@ -2,6 +2,8 @@ package com.silver.item;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -52,8 +54,8 @@ public class ThingController {
 	
 	@PostMapping(value = "/thingWrite.do")
 	@ResponseBody
-	public HashMap<String, Object> regist(MultipartFile thPhoto, @RequestParam HashMap<String, String> params){
-		return service.thingWrite(thPhoto, params);
+	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, @RequestParam HashMap<String, String> params, HttpServletRequest request){
+		return service.thingWrite(thPhoto, params, request);
 	}
 	
 	@GetMapping(value = "/itemCateList.do")
@@ -71,6 +73,13 @@ public class ThingController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("thingCheck", thingCheck);
 		return result;
+	}
+	
+	@PostMapping(value = "/thingUpdate.do")
+	@ResponseBody
+	public HashMap<String, Object> thingUpdate(MultipartFile thPhoto, @RequestParam HashMap<String, String> params, HttpServletRequest request){
+		logger.info("비품 수정 접근");
+		return service.thingUpdate(thPhoto, params, request);
 	}
 
 }

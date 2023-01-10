@@ -23,5 +23,9 @@ public interface ThingDAO {
 	ArrayList<HashMap<String, Object>> itemCateList();
 
 	String thingCheck(String thName);
+
+	int thingUpdate(HashMap<String, String> params);
+
+	void photoUpdate(String oriFileName, String newFileName, String string);
 	
 }
