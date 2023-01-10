@@ -17,7 +17,7 @@ public interface NoticeDAO {
 
 	ArrayList<NoticeDTO> searchNotice(String select, String seacontent, int page);
 
-	int writeBoard(String mem_id, String bd_title, String bd_content);
+	int writeBoard(NoticeDTO dto);
 
 	void notiUpdate(String bd_idx, String mem_id, String bd_title, String bd_content);
 
