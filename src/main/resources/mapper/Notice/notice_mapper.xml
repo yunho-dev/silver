@@ -18,6 +18,38 @@
 		select b.bd_idx ,b.bd_title ,b.bd_date ,b.bd_content,m.mem_name from board b,member m  
 			where bd_idx=#{param1} and m.mem_id=b.mem_id ;
 	</select>
+	<select id="searchNoticeTotal" resultType="int">
+		select count(bd_idx) from board b
+		<if test="param1.equals('write')">
+			inner join member m on b.mem_id =m.mem_id where b.bc_idx =1 and m.mem_name =#{param2}
+		</if>
+		<if test="param1.equals('title')">
+			inner join member m on b.mem_id =m.mem_id where b.bc_idx =1 
+				and b.bd_title  like CONCAT('%',#{param2},'%')
+		</if>
+	</select>
+	
+	<select id="searchNotice" resultType="notice">		
+		select b.bd_idx ,b.bd_title ,b.bd_date ,b.bd_content ,m.mem_name  
+			from board b
+		<if test="param1.equals('write')">
+			inner join member m on b.mem_id =m.mem_id where b.bc_idx =1 and m.mem_name =#{param2}
+		</if>
+		<if test="param1.equals('title')">
+			inner join member m on b.mem_id =m.mem_id where b.bc_idx =1 
+				and b.bd_title  like CONCAT('%',#{param2},'%')
+		</if>
+			order by b.bd_idx desc limit 10 offset #{param3};
+	</select>
+	
+	<insert id="writeBoard" parameterType="notice" useGeneratedKeys="true" keyColumn="bd_idx"
+	keyProperty="bd_idx">
+		insert into board(mem_id,bd_title,bd_content,bc_idx) values(#{mem_id},#{bd_title},#{bd_content},1);
+	</insert>
+	
+	<update id="notiUpdate">
+		update board set bd_title=#{param3},bd_content=#{param4},mem_id=#{param2} where bd_idx=#{param1}
+	</update>
 </mapper>
 
 
