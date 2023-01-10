@@ -8,10 +8,23 @@
 	<select id="infestListCall" resultType="hashmap">
 		SELECT r.re_idx ,r.re_name, r.re_jumin,r2.ro_name,i.if_state  
 		FROM resident r,room r2,infest i 
- 		where r.ro_name =r2.ro_name group by r.re_idx ;
+ 		where r.ro_name =r2.ro_name group by r.re_idx 
+ 		limit 10 offset #{param1};
 	</select>
 	
 	<select id="totalCount" resultType="int">
+		SELECT COUNT(re_idx) from resident;
+	</select>
+	
+	<select id="infestListHistoryCall" resultType="hashmap">
+		SELECT i.if_date, i.if_state, i.if_jusa, if_name, i.if_comment, i.if_write
+			from infest i 
+			inner join resident r 
+		on  r.re_idx = i.re_idx where r.re_idx
+		limit 10 offset #{param1};
+	</select>
+	
+	<select id="totalCount1" resultType="int">
 		SELECT COUNT(re_idx) from resident;
 	</select>
 </mapper>

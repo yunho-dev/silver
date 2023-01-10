@@ -16,4 +16,8 @@ public interface InfestDAO {
 
 	int totalCount();
 
+	ArrayList<HashMap<String, Object>> infestListHistoryCall(int offset);
+
+	int totalCount1();
+
 }

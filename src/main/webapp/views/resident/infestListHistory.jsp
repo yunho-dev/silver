@@ -14,41 +14,41 @@
     <link rel="stylesheet" href="assets/css/app.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="assets/js/jquery.twbsPagination.js"></script>
-<style>
-
-</style>
+<style></style>
 </head>
 <body>
  <div id="app">
       <jsp:include page="../sidebar.jsp"></jsp:include>
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
+ 
    <div class="page-heading">
-       <h3>감염병 리스트</h3>
-   </div>     
-  <div class="card" style="margin-top:50px; ">
+       <h3>감염병 관리 히스토리</h3>
+   </div>
+   <button onclick="location.href='infestHistoryWriteForm'" class="btn btn-primary" style="float: right;">글작성</button>
   <table class="table">
   <thead>
     <tr>
-      <th scope="col">이름</th>
+      <th scope="col">작성일</th>
       <th scope="col">현재감염상태</th>
-      <th scope="col">생년월일</th>
-      <th scope="col">생활실</th>
+      <th scope="col">예방접종내역</th>
+      <th scope="col">감염병 명</th>
+      <th scope="col">조치</th>
+      <th scope="col">작성자</th>
     </tr>
   </thead>
-  <tbody id="infestList">
-  </tbody>
+  <tbody id="infestHistoryList">
   
+  </tbody>
   	<tr>
 		<td colspan="5" id="paging">
 			<div>
-				<nav aria-label="Page navigation" >
+				<nav aria-label="Page navigation" style="text-align:center">
 					<ul class="pagination" id="pagination"></ul>
 				</nav>
 			</div>
 		</td>
-	</tr>
- 
+		</tr>
 </table>
 <form class="row row-cols-lg-auto g-3 align-items-center">
   <div class="col-12">
@@ -60,32 +60,32 @@
     <button type="submit" class="btn btn-primary">검색</button>
   </div>
 </form>
-</div>
+
 </div>
 </div>
 <script>
 var showPage = 1;
-infestListCall(showPage);
+infestListHistoryCall(showPage);
 
-function infestListCall(page){
+function infestListHistoryCall(page){
 	
 	$.ajax({
 		type:'get',
-		url:'infestListCall',
+		url:'infestListHistoryCall',
 		data:{page:page},
 		dataType:'json',
 		success:function(data){
-			//console.log(data);
+			console.log(data);
 			drawList(data.list);
 			
 			$('#pagination').twbsPagination({
 				startPage:1,
 				totalPages:data.total,
-				visiblePages:5,
+				visiblePages: 5,
 				onPageClick:function(e, page){
-					//console.log(e);
-					//console.log(page);
-				infestListCall(page);	
+					console.log(e);
+					console.log(page);
+					infestListHistoryCall(page);	
 				}
 				
 			});
@@ -102,18 +102,18 @@ function drawList(list){
 	
 	for (var i = 0; i < list.length; i++) {
 		content +='<tr>';
-		content +='<td>'
-		content +="<a href='infestListHistory?re_idx="+list[i].re_idx+"'>"+list[i].re_name+"</a>";
-		content +='</td>';
+		content +='<td>'+list[i].if_date+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
-		content +='<td>'+list[i].re_jumin+'</td>';
-		content +='<td>'+list[i].ro_name+'</td>';
+		content +='<td>'+list[i].if_jusa+'</td>';
+		content +='<td>'+list[i].if_name+'</td>';
+		content +='<td>'+list[i].if_comment+'</td>';
+		content +='<td>'+list[i].if_write+'</td>';
 	
 		content +='</tr>';
 	}
 	
-	$('#infestList').empty();
-	$('#infestList').append(content);
+	$('#infestHistoryList').empty();
+	$('#infestHistoryList').append(content);
 }
 </script>
 </html>
