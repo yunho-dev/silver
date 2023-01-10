@@ -43,7 +43,7 @@
 	                                        <button type="button" id="cateSubmit"
 	                                            class="btn btn-primary me-1 mb-1">등록</button>
 	                                        <button type="button"
-	                                            class="btn btn-light-secondary me-1 mb-1" onclick="location.href='itemCateList.do'">취소</button>
+	                                            class="btn btn-light-secondary me-1 mb-1" onclick="location.href='itemCateList.go'">취소</button>
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -107,7 +107,7 @@
 					success:function(data){
 						if(data.result==1){
 							alert('등록 완료 \n카테고리 조회 페이지로 이동합니다.')
-							location.replace('itemCateList.do')
+							location.replace('itemCateList.go')
 						}else{
 							alert('등록을 시도했으나 실패했습니다.\n중복된 ID이거나 서버 문제일 수 있습니다. 이름을 바꿔 다시 시도해 주세요 \n페이지를 새로고침 합니다.')
 							location.reload();

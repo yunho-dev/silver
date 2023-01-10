@@ -106,4 +106,12 @@
 		UPDATE item set it_name=#{param2} WHERE it_idx=#{param1}
 	</update>
 	
+	<select id="getItemSearch" parameterType="String" resultType="thing">
+		SELECT i.it_idx, i.it_name, COUNT(t.it_idx) AS itCnt
+			FROM item i LEFT OUTER JOIN thing t ON i.it_idx = t.it_idx
+		WHERE NOT i.it_idx=1 
+		AND i.it_name LIKE CONCAT('%',#{itName},'%')
+		GROUP BY i.it_idx ORDER BY count(t.it_idx) DESC;
+	</select>
+	
 </mapper>

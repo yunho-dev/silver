@@ -37,5 +37,7 @@ public interface ThingDAO {
 	int itemCateResist(String cateName);
 
 	int itemCateUpdate(int itIdx, String cateName);
+
+	ArrayList<ThingDTO> getItemSearch(String itName);
 	
 }

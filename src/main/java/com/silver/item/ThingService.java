@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.silver.member.MemberDTO;
 
@@ -133,6 +132,7 @@ public class ThingService {
 		return result;
 	}
 	
+	/* 파일 저장 메서드 */
 	/**
 	 * 파일 객체와 확장자를 넣으면 파일 저장 후 저장된 파일명을 반환
 	 * @param photo 파일 객체
@@ -161,24 +161,7 @@ public class ThingService {
 		// 3. 새 파일 명 반환
 		return newFileName;
 	}
-	/*
-	public ModelAndView itemCateList() {
-		ModelAndView mav = new ModelAndView("item/itemCateList");
-		ArrayList<HashMap<String, Object>> list = dao.itemCateList();
-		logger.info("카테고리 list : {} ",list);
-		mav.addObject("list", list);
-		return mav;
-	}
-	*/
 	
-	public HashMap<String, Object> itemCateList() {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.itemCateList();
-		result.put("list", list);
-		
-		return result;
-	}
-
 	public boolean thingCheck(String thName) {
 		String thingCheck = dao.thingCheck(thName);
 		return thingCheck == null? false : true;
@@ -219,6 +202,14 @@ public class ThingService {
 		
 		return getThingDetail(params.get("thIdx"));
 	}
+	
+	public HashMap<String, Object> itemCateList() {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ArrayList<ThingDTO> list = dao.itemCateList();
+		result.put("list", list);
+		
+		return result;
+	}
 
 	public boolean cateNameCheck(String cateName) {
 		String cateCheck = dao.cateNameCheck(cateName);
@@ -255,6 +246,15 @@ public class ThingService {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("result", finish);
+		return result;
+	}
+
+	public HashMap<String, Object> getItemSearch(String itName) {
+		logger.info("카테고리 검색 서비스");
+		ArrayList<ThingDTO> itemList = dao.getItemSearch(itName);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		logger.info("검색된 데이터 : {}", result);
+		result.put("list", itemList);
 		return result;
 	}
 

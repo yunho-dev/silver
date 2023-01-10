@@ -68,14 +68,7 @@ public class ThingController {
 		logger.info("비품 수정 접근");
 		return service.thingUpdate(thPhoto, params, request);
 	}
-	
-	/*
-	@GetMapping(value = "/itemCateList.do")
-	public ModelAndView itemCate() {
-		logger.info("비품 카테고리 조회 요청");
-		return service.itemCateList();
-	}
-	*/
+
 	@GetMapping(value = "/itemCateList.go")
 	public ModelAndView itemCate() {
 		ModelAndView mav = new ModelAndView("item/itemCateList");
@@ -114,6 +107,12 @@ public class ThingController {
 	@GetMapping(value = "/itemCateUpdate.do")
 	public HashMap<String, Object> itemCateUpdate(int itIdx, String cateName) {
 		return service.itemCateUpdate(itIdx, cateName);
+	}
+	
+	@GetMapping(value = "/getItemSearch.do")
+	public HashMap<String, Object> getItemSearch(String itName){
+		logger.info("카테고리명 : "+itName+" 에 대한 검색 요청 받음");
+		return service.getItemSearch(itName);
 	}
 
 }

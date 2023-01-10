@@ -55,7 +55,7 @@
 		                        등록자 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
 		                        후원자 : <input type="text" name="th_dona" class="filter"> &nbsp;&nbsp;
 <!-- 		                        <button class="btn btn-secondary" onclick="search($(this))">검색</button> -->
-		                        <button class="btn btn-secondary" onclick="search(1)">검색</button>
+		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 		                    </div>
 		                        <!-- table hover -->
 		                        <div class="table-responsive">
@@ -74,11 +74,12 @@
 		                                </tbody>
 		                            </table>
 		                        </div>
-		                        <div id="listPaging" style="margin-left: auto; margin-right: auto;">
-		                        	<ul class="pagination1" id="pagination1"></ul>
-		                        </div>
-		                        <div id="filterPaging" style="margin-left: auto; margin-right: auto; display: none;">
-		                        	<ul class="pagination2" id="pagination2"></ul>
+		                        <div id="pagint">
+			                        <div class="container" style="margin-left: auto; margin-right: auto;">
+										<nav aria-label="Page navigation" style="text-align: center;">
+											<ul class="pagination" id="pagination"></ul>
+										</nav>
+									</div>
 		                        </div>
 		                    </div>
 		                        <div class="buttons" style="text-align: right; margin-right: 5%;">
@@ -128,32 +129,6 @@
 		}
 	}
 	
-	function listPaging(totalPage){
-		$('.sectionThingList #filterPaging').css('display', 'none')
-		$('.sectionThingList #listPaging').css('display', 'block')
-		$("#pagination1").twbsPagination({
-			startPage : 1, // 시작 페이지
-			totalPages : totalPage, // 총 페이지 수
-			visiblePages : 5, // 기본으로 보여줄 페이지 수
-			onPageClick : function(e, page) { // 클릭했을때 실행 내용
-				ListCall(page)
-			}
-		});
-	}
-	
-	function filterPaging(totalPage){
-		$('.sectionThingList #listPaging').css('display', 'none')
-		$('.sectionThingList #filterPaging').css('display', 'block')
-		$("#pagination2").twbsPagination({
-			startPage : 1, // 시작 페이지
-			totalPages : totalPage, // 총 페이지 수
-			visiblePages : 5, // 기본으로 보여줄 페이지 수
-			onPageClick : function(e, page) { // 클릭했을때 실행 내용
-				search(page)
-			}
-		});
-	}
-	
 	function ListCall(page){
 		$.ajax({
 			type:'GET',
@@ -162,7 +137,14 @@
 			dataType:'JSON',
 			success:function(data){
 				drawList(data.list);
-				listPaging(data.total);
+				$("#pagination").twbsPagination({
+					startPage : 1, // 시작 페이지
+					totalPages : data.total, // 총 페이지 수
+					visiblePages : 5, // 기본으로 보여줄 페이지 수
+					onPageClick : function(e, page) { // 클릭했을때 실행 내용
+						ListCall(page)
+					}
+				});
 			},
 			error:function(e){
 				console.log(e);
@@ -186,27 +168,50 @@
 		$('#list').append(content);
 	}
 	
-	function search(page){
+	var flag=true;
+	var pageflag=true;
+	var page2=1;
+	var select_change=new Array();
+	function search(page2){
+		console.log("페이지 : ", page2)
 		thName = $('#filterHead input[name=th_name]').val();
 		thWrite = $('#filterHead input[name=th_write').val();
 		thSpon = $('#filterHead input[name=th_dona').val();
 		thPart = $('#filterHead select[name=th_part]').val();
 		thState = $('#filterHead select[name=th_state]').val();
-		
+		select_change.push($("select").val());
+		if(flag){
+	        var select=$("#select").val();
+	        flag=false;
+	        
 		$.ajax({
 			type:'GET',
 			url:'getThingListSearch.do',
-			data:{page:page, thName:thName, thWrite:thWrite, thSpon:thSpon, thPart:thPart, thState:thState},
+			data:{'page':page2, thName:thName, thWrite:thWrite, thSpon:thSpon, thPart:thPart, thState:thState},
 			dataType:'JSON',
 			success:function(data){
 				drawList(data.list);
-				filterPaging(data.total)
+				if(pageflag == true && $('.pagination').data("twbs-pagination")
+    					|| select_change.at(-2) != $("select").val()){
+                    $('.pagination').twbsPagination('destroy');
+                    pageflag=false;
+                }
+				$("#pagination").twbsPagination({
+    				startPage : 1 // 시작 페이지
+    				,totalPages : data.total // 총 페이지 수
+    				,visiblePages : 5 // 기본으로 보여줄 페이지 수
+    				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+    					search(page);
+    				}
+    			});
 			},
 			error:function(e){
 				console.log(e);
-			}
+			},complete:function(){
+    			flag=true;
+    		}
 		});
-		
+		}
 	}
 	
 	function detail(listRow){

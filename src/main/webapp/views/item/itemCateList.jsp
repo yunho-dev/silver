@@ -52,27 +52,8 @@
                                     </tr>
                                 </thead>
                                 <tbody id="list">
+                                	<!-- 리스트가 들어갈 공간 -->
                                 </tbody>
-                                <!--  
-                                <tbody>
-                                    <c:if test="${list.size()<1}">
-										<tr><td colspan="3">등록된 카테고리가 없습니다</td></tr>
-									</c:if>
-									<c:forEach items="${list}" var="cate">
-										<tr>
-											<td style="display: none;" class="cateIdx">${cate.it_idx}</td>
-											<td id="cateClick1" onclick="cateRow($(this))" style="cursor: pointer;"><span class="cateName" >${cate.it_name}</span><input type="hidden" name='cateNameUp' value="${cate.it_name}"/></td>
-											<td id="cateClick2" onclick="cateRow($(this))" style="cursor: pointer;">${cate.cnt}</td>
-											<td>
-												<a class="btn btn-sm btn-primary" onclick="cateModify($(this))">수정</a>
-												<span id="cancelBtn" style="display: none;">&nbsp;
-													<a href="itemCateList.do" class="btn btn-sm btn-secondary" onclick="location.href='itemCateList.do">취소</a>
-												</span>
-											</td>
-										</tr>
-									</c:forEach>
-                                </tbody>
-                                -->
                             </table>
                         </div>
                     </div>
@@ -91,7 +72,6 @@
 			data:{},
 			dataType:'JSON',
 			success:function(data){
-				console.log(data);
 				drawList(data.list)
 			},
 			error:function(e){
@@ -103,10 +83,9 @@
 	function drawList(itemList){
 		var content='';
 		for(var i=0; i<itemList.length;i++){
-			// it_name, it_idx, itCnt
 			content +='<tr>';
 			content +='<td style="display: none;" class="cateIdx">'+itemList[i].it_idx+'</td>';
-			content +='<td id="cateClick1" onclick="cateRow($(this))" style="cursor: pointer;"><span class="cateName" >'+itemList[i].it_name+'<input type="hidden" name="cateNameUp" value="'+itemList[i].it_name+'"/></td>';
+			content +='<td id="cateClick1" onclick="cateRow($(this))" style="cursor: pointer;"><span class="cateName" >'+itemList[i].it_name+'</span><input type="hidden" name="cateNameUp" value="'+itemList[i].it_name+'"/></td>';
 			content +='<td id="cateClick2" onclick="cateRow($(this))" style="cursor: pointer;">'+itemList[i].itCnt+'</td>';
 			content +='<td><a class="btn btn-sm btn-primary" onclick="cateModify($(this))">수정</a><span id="cancelBtn" style="display: none;">&nbsp;<a href="itemCateList.go" class="btn btn-sm btn-secondary" onclick="location.href='+"itemCateList.go"+'">취소</a></span></td>';
 			content +='</tr>';
@@ -125,9 +104,11 @@
 	function cateModify(modifyBtn){
 		itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
 		modifyBtn.closest('tr').find('#cateClick1').attr('onclick', '');
+		modifyBtn.closest('tr').find('#cateClick1').css('cursor', '');
 		modifyBtn.closest('tr').find('#cateClick2').attr('onclick', '');
+		modifyBtn.closest('tr').find('#cateClick2').css('cursor', '');
 		modifyBtn.closest('tr').find('.cateName').hide();
-		modifyBtn.closest('tr').find('td input[name=cateNameUp]').prop('type', 'text')
+		modifyBtn.closest('tr').find('td input[name=cateNameUp]').attr('type', 'text')
 		modifyBtn.text('저장');
 		modifyBtn.siblings('#cancelBtn').css('display', 'inline-block');
 		modifyBtn.attr('onclick','cateUpdate($(this), itIdx)');
@@ -147,7 +128,7 @@
 				success:function(data){
 					if(data.result==1){
 						alert('수정 완료')
-						location.replace('itemCateList.do')
+						location.replace('itemCateList.go')
 					}else{
 						alert('수정을 시도했으나 실패했습니다.\n중복된 ID이거나 서버 문제일 수 있습니다. \n이름을 바꿔 다시 시도해 주세요')
 					}
@@ -157,6 +138,24 @@
 				}
 			});
 		}
+	}
+	
+	function search(searchBtn){
+		var itName = searchName = searchBtn.siblings('input.filter').val();
+		
+		$.ajax({
+			type:'GET',
+			url:'getItemSearch.do',
+			data:{itName:itName},
+			dataType:'JSON',
+			success:function(data){
+				drawList(data.list);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+		
 	}
 </script>
 </html>
