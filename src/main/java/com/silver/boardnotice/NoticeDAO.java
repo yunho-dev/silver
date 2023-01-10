@@ -13,4 +13,14 @@ public interface NoticeDAO {
 
 	NoticeDTO detailCall(String bd_idx);
 
+	int searchNoticeTotal(String select, String seacontent);
+
+	ArrayList<NoticeDTO> searchNotice(String select, String seacontent, int page);
+
+	int writeBoard(String mem_id, String bd_title, String bd_content);
+
+	void notiUpdate(String bd_idx, String mem_id, String bd_title, String bd_content);
+
+
+
 }
