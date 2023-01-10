@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>은빛 우산</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
     <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 
 <style>
@@ -35,11 +35,11 @@
 				<h3>비품 목록 조회</h3>
 			</div>
 		    <!-- Hoverable rows start -->
-		    <section class="section">
+		    <section class="sectionThingList">
 		        <div class="row" id="table-hover-row">
 		            <div class="col-12">
 		                <div class="card" style="margin-bottom: 1%">
-		                    <div class="card-header" style="background-color: #adb5bd; font-weight: bold; font-size: large;">
+		                    <div class="card-header" id="filterHead" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
 		                        품명 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
 		                        구분 : <select name="th_part">
 		                        			<option value="" selected="selected">전체</option>
@@ -51,11 +51,11 @@
 		                        			<option value="" selected="selected">전체</option>
 		                        			<option value="사용">사용</option>
 		                        			<option value="비사용">비사용</option>
-		                        			<option value="고장">고장</option>
 		                        		</select> &nbsp;&nbsp;
 		                        등록자 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
 		                        후원자 : <input type="text" name="th_dona" class="filter"> &nbsp;&nbsp;
-		                        <button class="btn btn-secondary" onclick="search($(this))">검색</button>
+<!-- 		                        <button class="btn btn-secondary" onclick="search($(this))">검색</button> -->
+		                        <button class="btn btn-secondary" onclick="search(1)">검색</button>
 		                    </div>
 		                        <!-- table hover -->
 		                        <div class="table-responsive">
@@ -74,17 +74,26 @@
 		                                </tbody>
 		                            </table>
 		                        </div>
+		                        <div id="listPaging" style="margin-left: auto; margin-right: auto;">
+		                        	<ul class="pagination1" id="pagination1"></ul>
+		                        </div>
+		                        <div id="filterPaging" style="margin-left: auto; margin-right: auto; display: none;">
+		                        	<ul class="pagination2" id="pagination2"></ul>
+		                        </div>
 		                    </div>
-		                    <div class="buttons" style="text-align: right; margin-right: 5%;">
-		                    	<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeThing">등록하기</a>
-		                    </div>
-							<!-- 모달 -->
-							<jsp:include page="detailThing.jsp"></jsp:include>
-							<jsp:include page="writeThing.jsp"></jsp:include>
+		                        <div class="buttons" style="text-align: right; margin-right: 5%;">
+		                    		<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeThing">등록하기</a>
+		                    	</div>
 		                </div>
 		            </div>
+						
 		    </section>
 		    <!-- Hoverable rows end -->
+		    
+		    <!-- 모달 -->
+			<jsp:include page="detailThing.jsp"></jsp:include>
+			<jsp:include page="writeThing.jsp"></jsp:include>
+			
 	    </div>
 	</div>
     
@@ -95,14 +104,14 @@
 </body>
 <script>
 	var showPage=1;
-	ListCall(showPage);
-	
 	var cateId;
 	
-	/* 팝업 오픈 */
+	ListCall(showPage);
+	
+	/* 카테고리 팝업 오픈 */
 	function clickCate(clickCateId){
 		cateId = clickCateId;
-		var url = "itemCateList.do";
+		var url = "itemCateList.go";
         var name = "itemCateList";
 		var option = "width = 600, height = 500, top = 100, left = 200, location = no"
 		window.open(url, name, option)
@@ -119,6 +128,32 @@
 		}
 	}
 	
+	function listPaging(totalPage){
+		$('.sectionThingList #filterPaging').css('display', 'none')
+		$('.sectionThingList #listPaging').css('display', 'block')
+		$("#pagination1").twbsPagination({
+			startPage : 1, // 시작 페이지
+			totalPages : totalPage, // 총 페이지 수
+			visiblePages : 5, // 기본으로 보여줄 페이지 수
+			onPageClick : function(e, page) { // 클릭했을때 실행 내용
+				ListCall(page)
+			}
+		});
+	}
+	
+	function filterPaging(totalPage){
+		$('.sectionThingList #listPaging').css('display', 'none')
+		$('.sectionThingList #filterPaging').css('display', 'block')
+		$("#pagination2").twbsPagination({
+			startPage : 1, // 시작 페이지
+			totalPages : totalPage, // 총 페이지 수
+			visiblePages : 5, // 기본으로 보여줄 페이지 수
+			onPageClick : function(e, page) { // 클릭했을때 실행 내용
+				search(page)
+			}
+		});
+	}
+	
 	function ListCall(page){
 		$.ajax({
 			type:'GET',
@@ -127,6 +162,7 @@
 			dataType:'JSON',
 			success:function(data){
 				drawList(data.list);
+				listPaging(data.total);
 			},
 			error:function(e){
 				console.log(e);
@@ -150,12 +186,12 @@
 		$('#list').append(content);
 	}
 	
-	function search(searchBtn){
-		thName = $(searchBtn).siblings("input[name=th_name]").val(); // 품명
-		thWrite = $(searchBtn).siblings("input[name=th_write]").val();
-		thSpon = $(searchBtn).siblings("input[name=th_dona]").val();
-		thPart = $(searchBtn).siblings("select[name=th_part]").val();
-		thState = $(searchBtn).siblings("select[name=th_state]").val();
+	function search(page){
+		thName = $('#filterHead input[name=th_name]').val();
+		thWrite = $('#filterHead input[name=th_write').val();
+		thSpon = $('#filterHead input[name=th_dona').val();
+		thPart = $('#filterHead select[name=th_part]').val();
+		thState = $('#filterHead select[name=th_state]').val();
 		
 		$.ajax({
 			type:'GET',
@@ -164,6 +200,7 @@
 			dataType:'JSON',
 			success:function(data){
 				drawList(data.list);
+				filterPaging(data.total)
 			},
 			error:function(e){
 				console.log(e);

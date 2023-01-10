@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	div.left {
@@ -98,7 +99,7 @@
 				$(".modifyLeft span[id=thName]").text(data.detail.th_name)
 				$(".modifyLeft input[name=thModel]").val(data.detail.th_model)
 				$(".modifyLeft input[name=thMoney]").val(data.detail.th_money)
-				//$(".modifyRight input[name=thCateFake]").val('선택해 주세요')
+				$(".modifyRight input[name=thCateFake]").val(data.detail.it_name)
 				$(".modifyRight input[name=thCateReal]").val(data.detail.it_idx)
 				$(".modifyRight select[name=thPart]").val(data.detail.th_part)
 				$(".modifyRight input[name=thDate]").val(data.detail.th_date)
@@ -110,6 +111,9 @@
 				}else{
 					$("#updateForm .thPhotoOri").text('없음')
 				}
+				//part 체크
+				var modyPart = $('.modifyArea select[name=thPart]');
+				changePartUp(modyPart);
 				
 			},
 			error:function(e){
