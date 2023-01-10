@@ -18,7 +18,7 @@ public class MemberDTO {
 	private String mem_num;
 	private Date mem_indate;
 	private Date mem_outdate;
-	private String state;
+	private String mem_state;
 	private int dept_num;
 	private int part_num;
 	private int pos_num;
@@ -58,6 +58,12 @@ public class MemberDTO {
 	
 	
 	
+	public String getMem_state() {
+		return mem_state;
+	}
+	public void setMem_state(String mem_state) {
+		this.mem_state = mem_state;
+	}
 	public int getSi_idx() {
 		return si_idx;
 	}
@@ -220,12 +226,7 @@ public class MemberDTO {
 	public void setMem_outdate(Date mem_outdate) {
 		this.mem_outdate = mem_outdate;
 	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
+
 	public int getDept_num() {
 		return dept_num;
 	}
