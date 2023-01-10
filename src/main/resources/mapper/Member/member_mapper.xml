@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
+<mapper namespace="com.silver.member.MemberDAO">
+	<select id="memberList" resultType="member">
+		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum  from member m
+		,position p 
+		,part p2 
+		where m.part_num = p2.part_num and m.pos_num =p.pos_num
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(mem_id) FROM member
+	</select>
+	
+	<select id="memberListSearch" resultType="member" parameterType="HashMap">
+		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum  from member m
+		,position p 
+		,part p2 
+		where 
+		m.part_num = p2.part_num 
+		and m.pos_num =p.pos_num 
+		and mem_id LIKE CONCAT('%',#{memId},'%')
+		and mem_name LIKE CONCAT('%',#{memName},'%')
+		and part_name LIKE CONCAT('%',#{memPart},'%')
+		and mem_state LIKE CONCAT('%',#{memState},'%')	
+	</select>
+	
+	<select id="mypage" resultType="member">
+	SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
+	from `member` m,`position`p,part p2 ,depart d 
+	where m.part_num = p2.part_num 
+	and m.pos_num =p.pos_num 
+	and m.dept_num =d.dept_num  
+	and m.mem_id =#{mem_id}
+	</select>
+
+	<select id="memberdetailCall" resultType="member" parameterType="String">
+		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum,mem_indate,mem_gender  from member m
+		,position p 
+		,part p2 
+		where 
+		m.part_num = p2.part_num 
+		and m.pos_num =p.pos_num 
+		and mem_name =#{param1}
+	</select>	
+	
+	<select id="findmemID" resultType="String">
+		select mem_id from member where mem_name=#{param1}
+	</select>
+	
+	<select id="photoView" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id}
+	</select>
+	
+	
+
+	<insert id="photoInsert">
+		INSERT INTO filephoto(fp_oriFileName, fp_newFileName, mem_id, fpc_idx)
+			VALUES(#{param1}, #{param2}, #{param3}, 9);
+	</insert>
+	
+	<select id="findpos" resultType="int">
+		SELECT pos_num from position where pos_name=#{pos_name}
+	</select>
+
+	<select id="findpart" resultType="int">
+		SELECT part_num from part where part_name=#{part_name}
+	</select>
+
+	<select id="finddepart" resultType="int">
+		SELECT dept_num from depart where dept_name=#{dept_name}
+	</select>
+	
+	<insert id="memberWrite" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		INSERT into member(mem_id,mem_pw,mem_name,mem_gender,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,mem_num,mem_indate,mem_state,dept_num,part_num,pos_num)
+		VALUES(#{mem_id},#{mem_pw},#{mem_name},#{mem_gender},#{mem_email},#{mem_birth},#{mem_pnum},#{mem_addr},#{mem_daddr},#{mem_num},#{mem_indate},'재직중',#{dept_num},#{part_num},#{pos_num})
+	</insert>
+	
+	<update id="memberUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE member SET mem_id=#{mem_id},mem_pw=#{mem_pw},mem_name=#{mem_name},mem_gender=#{mem_gender},mem_email=#{mem_email}
+		,mem_birth=#{mem_birth},mem_pnum=#{mem_pnum},mem_addr=#{mem_addr},mem_daddr=#{mem_daddr},mem_num=#{mem_num},mem_indate=#{mem_indate}
+		,mem_state=#{mem_state},dept_num=#{dept_num},part_num=#{part_num},pos_num=#{pos_num} 
+		WHERE mem_id=#{mem_id}
+	</update>
+
+	<insert id="photoUpdate">
+		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3}
+	</insert>	
+</mapper>
+
+
+
+
+

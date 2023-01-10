@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	div.modifyLeft {
@@ -115,7 +116,6 @@
 	</div>
 </body>
 <script>
-
 	function changePartUp(selected){
 		if(selected.val()=='후원'){
 			$('.modifyAreaSpon').css('display', 'block')
@@ -182,18 +182,18 @@
 				success:function(data){
 					closeModal();
 					$('#updateForm')[0].reset();
-					console.log($('#detailThing .left .th_name'))
-					/*
-					$(".modifyLeft input[name=thIdx]").val(data.detail.th_idx)
-					$(".modifyLeft span[id=thName]").text(data.detail.th_name)
-					$(".modifyLeft input[name=thModel]").val(data.detail.th_model)
-					$(".modifyLeft input[name=thMoney]").val(data.detail.th_money)
-					//$(".modifyRight input[name=thCateFake]").val('선택해 주세요')
-					$(".modifyRight input[name=thCateReal]").val(data.detail.it_idx)
-					$(".modifyRight select[name=thPart]").val(data.detail.th_part)
-					$(".modifyRight input[name=thDate]").val(data.detail.th_date)
-					$(".modifyRight input[name=thSpon]").val(data.detail.th_spon)
-					*/
+					//left
+					$('#detailThing .left .th_name').text(data.detail.th_name)
+					$('#detailThing .left .th_model').text(data.detail.th_model)
+					$('#detailThing .left .th_money').text(data.detail.th_money)
+					$('#detailThing .left .th_write').text(data.detail.th_write)
+					//right
+					$('#detailThing .right .th_part').text(data.detail.th_part)
+					$('#detailThing .right .th_date').text(data.detail.th_date)
+					$('#detailThing .right .th_state').text(data.detail.th_state)
+					$('#detailThing .right .th_spon').text(data.detail.th_spon)
+					//photo
+					$('#detailThing .th_photo').attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
 				},
 				error:function(e){
 					console.log(e)

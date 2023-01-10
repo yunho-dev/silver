@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.silver.alarm.AlarmService;
 import com.silver.member.MemberDTO;
 
 @Service
@@ -18,6 +20,8 @@ public class NoticeService {
 	
 	
 	Logger logger=LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired AlarmService alservice;
 	
 	private final NoticeDAO notidao;
 	
@@ -58,7 +62,17 @@ public class NoticeService {
 			mav.setViewName("redirect:/noticeList");
 		}
 		String mem_id=sessionDTO.getMem_id();
-		int row=notidao.writeBoard(mem_id,bd_title,bd_content);
+		NoticeDTO dto=new NoticeDTO();
+		dto.setMem_id(mem_id);
+		dto.setBd_title(bd_title);
+		dto.setBd_content(bd_content);
+		int row=notidao.writeBoard(dto);
+		if(row > 0) {
+			int result=dto.getBd_idx();
+			logger.info("키 제너레이션 키 :"+result);
+			String mem_name=sessionDTO.getMem_name();
+			alservice.notiAlarm(mem_name,result);
+		}
 		return mav;
 	}
 

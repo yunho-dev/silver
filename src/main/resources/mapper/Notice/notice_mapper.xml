@@ -42,8 +42,9 @@
 			order by b.bd_idx desc limit 10 offset #{param3};
 	</select>
 	
-	<insert id="writeBoard">
-		insert into board(mem_id,bd_title,bd_content,bc_idx) values(#{param1},#{param2},#{param3},1);
+	<insert id="writeBoard" parameterType="notice" useGeneratedKeys="true" keyColumn="bd_idx"
+	keyProperty="bd_idx">
+		insert into board(mem_id,bd_title,bd_content,bc_idx) values(#{mem_id},#{bd_title},#{bd_content},1);
 	</insert>
 	
 	<update id="notiUpdate">

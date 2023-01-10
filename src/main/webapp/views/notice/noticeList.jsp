@@ -102,6 +102,36 @@ function writeNotice(){
 	location.href='noticeWrite.do';
 }
 
+var page = 1;
+AjaxCall(page);
+function AjaxCall(page) {
+	$.ajax({
+		type : 'get',
+		url : 'notice/list.ajax',
+		dataType : 'json',
+		data : {
+			"page" : page
+		},
+		success : function(data) {
+			listCall(data.list);
+			btnChk(data.sessionLevel);
+			console.log(data.sessionLevel);
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					AjaxCall(page);
+				}
+			});
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+
+}
+
 	var flag=true;
 	var pageflag=true;
 	var page2=1;
@@ -146,38 +176,7 @@ function writeNotice(){
     	});
     	}
 	}
-	var page = 1;
-	AjaxCall(page);
-	function AjaxCall(page) {
-		$.ajax({
-			type : 'get',
-			url : 'notice/list.ajax',
-			dataType : 'json',
-			data : {
-				"page" : page
-			},
-			success : function(data) {
-				listCall(data.list);
-				btnChk(data.sessionLevel);
-				console.log(data.sessionLevel);
-				$("#pagination").twbsPagination({
-					startPage : 1 // 시작 페이지
-					,
-					totalPages : data.page_idx // 총 페이지 수
-					,
-					visiblePages : 4 // 기본으로 보여줄 페이지 수
-					,
-					onPageClick : function(e, page) { // 클릭했을때 실행 내용
-						AjaxCall(page);
-					}
-				});
-			},
-			error : function(e) {
-				console.log(e);
-			}
-		});
-
-	}
+	
 
 	function listCall(list) {
 		var content = '';
