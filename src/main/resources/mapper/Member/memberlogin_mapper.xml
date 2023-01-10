@@ -14,7 +14,7 @@
 		on p2.part_num = m.part_num
 		INNER JOIN depart d
 		on d.dept_num = m.dept_num
-   		where mem_id ='0010001' and mem_pw ='0000';
+   		where mem_id =${param1} and mem_pw =${param2} ;
 	</select>
 </mapper>
 

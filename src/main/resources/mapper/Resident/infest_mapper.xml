@@ -4,9 +4,16 @@
 >
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.resident.InfestDAO">
-	<!-- <select id="memberlogin" resultType="com.silver.resident.InfestDAO">
-		
-	</select> -->
+
+	<select id="infestListCall" resultType="hashmap">
+		SELECT r.re_idx ,r.re_name, r.re_jumin,r2.ro_name,i.if_state  
+		FROM resident r,room r2,infest i 
+ 		where r.ro_name =r2.ro_name group by r.re_idx ;
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(re_idx) from resident;
+	</select>
 </mapper>
 
 
