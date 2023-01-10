@@ -31,6 +31,10 @@ public class ThingDTO {
 	private int fpc_idx;
 	//category
 	private int it_idx;
+	private String it_name;
+	private int itCnt;
+	//paging
+	private int offset;
 	
 	public int getTh_idx() {
 		System.out.println(th_idx);
@@ -44,6 +48,12 @@ public class ThingDTO {
 	}
 	public void setIt_idx(int it_idx) {
 		this.it_idx = it_idx;
+	}
+	public String getIt_name() {
+		return it_name;
+	}
+	public void setIt_name(String it_name) {
+		this.it_name = it_name;
 	}
 	public String getTh_name() {
 		return th_name;
@@ -158,6 +168,18 @@ public class ThingDTO {
 	}
 	public void setFpc_idx(int fpc_idx) {
 		this.fpc_idx = fpc_idx;
+	}
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+	public int getItCnt() {
+		return itCnt;
+	}
+	public void setItCnt(int itCnt) {
+		this.itCnt = itCnt;
 	}
 	
 }

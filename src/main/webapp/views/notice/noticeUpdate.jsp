@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="richtexteditor/rte_theme_default.css" />
 <script type="text/javascript" src="richtexteditor/rte.js"></script>
 <script type="text/javascript"
-		src='richtexteditor/plugins/all_plugins.js'></script>
+	src='richtexteditor/plugins/all_plugins.js'></script>
 </head>
 <body>
 	<div id="app">
@@ -32,44 +32,29 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>공지사항 상세보기</h3>
+				<h3>공지사항 수정</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
 					<div class="card">
 						<div class="card-body py-4 px-5">
+						<form action="update.do" method="post">
+						<input type="hidden" name="bd_idx" value="${list.bd_idx}">
 							<div class="d-flex align-items-center">
-								<table class="table table-bordered table-hover"
-									style="text-align: center;">
-									<tbody id="list">
-										<tr>
-											<th class="col-md-2">글번호</th>
-											<td>${list.bd_idx}</td>
-										</tr>
-										<tr>
-											<th class="col-md-2">제목</th>
-											<td>${list.bd_title}</td>
-										</tr>
-										<tr>
-											<th class="col-md-2">작성자</th>
-											<td>${list.mem_name}</td>
-										</tr>
-										<tr>
-											<th class="col-md-2">날짜</th>
-											<td>${list.bd_date}</td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<div id="div_editor"></div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<div id="content" style="display: none;">
-									${list.bd_content}
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">제목</span> 
+									<input type="text" class="form-control" aria-label="Username" 
+										aria-describedby="basic-addon1" name="bd_title" value="${list.bd_title}">
+									<div id="div_editor"></div>
+									<div id="content" style="display: none;">${list.bd_content}</div>
+								<input type="hidden" name="bd_content" value="${list.bd_content}"/>
+									
 								</div>
 							</div>
-							<button type="button" class="btn btn-secondary" onclick="location.href='noticeList'">뒤로가기</button>
+							<button type="button" class="btn btn-primary" onclick="save()">수정하기</button>
+							<button type="button" class="btn btn-secondary"
+								onclick="location.href='noticeList'">뒤로가기</button>
+							</form>
 						</div>
 					</div>
 
@@ -98,9 +83,23 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-var editor = new RichTextEditor("#div_editor");
+	var config = {};
+	config.editorResizeMode = "none"; // 에디터 크기조절 안됨
 
-editor.setHTMLCode($("#content").html()); // 불러온 내용 넣기
-editor.setReadOnly(); // 읽기 전용 옵션으로 변경
+	config.file_upload_handler = function(file, pathReplace) {
+		console.log(file); // 파일 정보 확인 가능
+		if (file.size > (1 * 1024 * 1024)) { // 1MB 이상의 사진일 경우..
+			alert("1MB 이상의 사진은 올릴 수 없습니다.");
+			pathReplace("/img/noimage.png"); // data:image 경로를 변경
+		}
+	}
+
+	var editor = new RichTextEditor("#div_editor", config);
+	editor.setHTMLCode($("#content").html());
+	
+	function save() {
+		$("input[name='bd_content']").val(editor.getHTMLCode());
+		$("form").submit();
+	}
 </script>
 </html>

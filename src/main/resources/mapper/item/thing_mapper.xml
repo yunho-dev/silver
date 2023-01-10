@@ -8,23 +8,40 @@
 	
 	<!-- 비품 리스트 -->
 	<select id="getThingList" resultType="thing">
-		SELECT th_idx, th_name, th_part, th_date, th_state from thing ORDER BY th_idx DESC limit 10 offset 0
+		SELECT th_idx, th_name, th_part, th_date, th_state from thing ORDER BY th_idx DESC limit 10 offset #{param1}
 	</select>
 	
 	<!-- 비품 리스트 필터 검색 -->
-	<select id="getThingListSearch" resultType="thing" parameterType="HashMap">
+	<select id="getThingListSearch" resultType="thing" parameterType="thing">
 		SELECT th_idx, th_name, th_part, th_date, th_state FROM thing
 			WHERE
-				th_name LIKE CONCAT('%',#{thName},'%')
-				AND th_part LIKE CONCAT('%',#{thPart},'%')
-				AND th_write LIKE CONCAT('%',#{thWrite},'%')
-				AND th_state LIKE CONCAT(#{thState},'%')
-				AND th_spon LIKE CONCAT('%',#{thSpon},'%')
-			ORDER BY th_idx DESC limit 10 offset 0
+				th_name LIKE CONCAT('%',#{th_name},'%')
+				AND th_part LIKE CONCAT('%',#{th_part},'%')
+				AND th_write LIKE CONCAT('%',#{th_write},'%')
+				AND th_state LIKE CONCAT(#{th_state},'%')
+				AND th_spon LIKE CONCAT('%',#{th_spon},'%')
+			ORDER BY th_idx DESC limit 10 offset #{offset}
+	</select>
+	
+	<!-- 리스트 카운트 -->
+	<select id="totalCountThList" resultType="int">
+		SELECT COUNT(th_idx) FROM thing;
+	</select>
+	
+	<!-- 리스트 필터 카운트 -->
+	<select id="totalCountThFilterList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(th_idx) FROM thing WHERE 
+			th_name LIKE CONCAT('%',#{thName},'%')
+			AND th_part LIKE CONCAT('%',#{thPart})
+			AND th_write LIKE CONCAT('%',#{thWrite},'%')
+			AND th_state LIKE CONCAT(#{thState},'%')
+			AND th_spon LIKE CONCAT('%',#{thSpon},'%');
 	</select>
 	
 	<select id="getThingDetail" resultType="thing" parameterType="String">
-		SELECT * from thing WHERE th_idx = #{thIdx}
+		SELECT t.*, i.it_name FROM thing t 
+			INNER JOIN item i ON t.it_idx = i.it_idx 
+		WHERE t.th_idx = #{thIdx}
 	</select>
 	
 	<select id="photoView" resultType="thing" parameterType="String">
@@ -53,8 +70,8 @@
 			VALUES(#{param1}, #{param2}, #{param3}, 6)
 	</insert>
 	
-	<select id="itemCateList" resultType="hashmap">
-		SELECT i.it_idx, i.it_name, count(t.it_idx) AS cnt
+	<select id="itemCateList" resultType="thing">
+		SELECT i.it_idx, i.it_name, count(t.it_idx) AS itCnt
 			from item i left outer join thing t on  i.it_idx = t.it_idx
 			WHERE NOT i.it_idx=1
 		GROUP BY i.it_idx ORDER BY count(t.it_idx) desc
@@ -75,6 +92,18 @@
 		UPDATE filephoto SET 
 			fp_oriFileName=#{param1}, fp_newFileName=#{param2} 
 		WHERE th_idx=#{param3}
+	</update>
+	
+	<select id="cateNameCheck" parameterType="String" resultType="String">
+		SELECT it_name from item WHERE it_name = #{cateName}
+	</select>
+	
+	<insert id="itemCateResist" parameterType="String">
+		INSERT INTO item(it_name) VALUES(#{cateName})
+	</insert>
+	
+	<update id="itemCateUpdate">
+		UPDATE item set it_name=#{param2} WHERE it_idx=#{param1}
 	</update>
 	
 </mapper>
