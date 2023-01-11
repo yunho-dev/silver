@@ -9,25 +9,36 @@
 		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum  from member m
 		,position p 
 		,part p2 
-		where m.part_num = p2.part_num and m.pos_num =p.pos_num
+		where m.part_num = p2.part_num and m.pos_num =p.pos_num ORDER BY mem_id DESC limit 10 offset #{param1}
 	</select>
 	
-	<select id="totalCount" resultType="int">
+	<select id="totalCountMemList" resultType="int">
 		SELECT COUNT(mem_id) FROM member
 	</select>
 	
-	<select id="memberListSearch" resultType="member" parameterType="HashMap">
+	<select id="memberListSearch" resultType="member" parameterType="member">
 		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum  from member m
 		,position p 
 		,part p2 
 		where 
 		m.part_num = p2.part_num 
 		and m.pos_num =p.pos_num 
-		and mem_id LIKE CONCAT('%',#{memId},'%')
-		and mem_name LIKE CONCAT('%',#{memName},'%')
-		and part_name LIKE CONCAT('%',#{memPart},'%')
-		and mem_state LIKE CONCAT('%',#{memState},'%')	
+		and mem_id LIKE CONCAT('%',#{mem_id},'%')
+		and mem_name LIKE CONCAT('%',#{mem_name},'%')
+		and part_name LIKE CONCAT('%',#{part_name},'%')
+		and mem_state LIKE CONCAT('%',#{mem_state},'%')
+		ORDER BY mem_id DESC limit 10 offset #{offset}	
 	</select>
+	
+ 	<select id="totalCountMemFilterList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) 
+		from member m,position p,part p2 ,depart d where m.part_num = p2.part_num and m.pos_num =p.pos_num and m.dept_num =d.dept_num
+		and mem_name LIKE CONCAT('%',#{memId},'%')
+		and mem_id LIKE CONCAT('%',#{memName},'%')
+		and part_name LIKE CONCAT('%',#{memPart},'%')
+		and mem_state LIKE CONCAT('%',#{memState},'%')
+	</select> 
+	
 	
 	<select id="mypage" resultType="member">
 	SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate

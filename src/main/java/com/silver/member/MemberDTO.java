@@ -55,9 +55,15 @@ public class MemberDTO {
 	private int th_idx;
 	private String fpc_cate;
 	private int re_idx;
+	private int offset;
 	
 	
-	
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
 	public String getMem_state() {
 		return mem_state;
 	}

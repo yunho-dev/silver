@@ -172,6 +172,7 @@
 	var pageflag=true;
 	var page2=1;
 	var select_change=new Array();
+	
 	function search(page2){
 		console.log("페이지 : ", page2)
 		thName = $('#filterHead input[name=th_name]').val();

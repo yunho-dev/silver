@@ -13,10 +13,10 @@ public interface MemberDAO {
 	//ArrayList<MemberDTO> memberList(int offset);
 	
 	// 직원 리스트 가져오기
-	ArrayList<MemberDTO> memberList();
+	ArrayList<MemberDTO> memberList(int offset);
 	
 	// 직원 필터링 검색
-	ArrayList<MemberDTO> memberListSearch(HashMap<String, String> params);
+	ArrayList<MemberDTO> memberListSearch(MemberDTO dto);
 	
 	// 마이페이지 가져오기
 	MemberDTO mypage(MemberDTO loginId);
@@ -46,6 +46,10 @@ public interface MemberDAO {
 	int memberUpdate(MemberDTO dto);
 
 	void photoUpdate(String oriFileName, String newFileName, String memId);
+
+	int totalCountMemList();
+
+	int totalCountMemFilterList(HashMap<String, String> params);
 
 
 
