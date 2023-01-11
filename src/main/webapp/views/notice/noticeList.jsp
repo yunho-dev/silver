@@ -35,7 +35,7 @@
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
 						<input id="writebutton" type="button" class="btn btn-primary" value="공지사항 등록" style="margin-bottom:10px;"
-						onclick='writeNotice()'>
+						onclick='writeNotice(page2)'>
 							<div class="d-flex align-items-center">
 								<table class="table table-bordered table-hover"
 									style="text-align: center;">
@@ -115,7 +115,6 @@ function AjaxCall(page) {
 		success : function(data) {
 			listCall(data.list);
 			btnChk(data.sessionLevel);
-			console.log(data.sessionLevel);
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
@@ -136,6 +135,7 @@ function AjaxCall(page) {
 	var pageflag=true;
 	var page2=1;
 	var select_change=new Array();
+	var chkPage=new Array();
 	function noticeSearch(page2){
     	select_change.push($("#select").val());
     	if(flag){
@@ -152,8 +152,11 @@ function AjaxCall(page) {
     		,dataType:'json'
     		,data:{'select':select,'seacontent':seacontent,'page':page2}
     		,success:function(data){
-    			console.log(data);
     			listCall(data.list);
+    			chkPage.push(data.page_idx);
+    			if(chkPage.at(-2) != data.page_idx){
+    				pageflag=true;
+    			}
     			if(pageflag == true && $('.pagination').data("twbs-pagination")
     					|| select_change.at(-2) != $("#select").val()){
                     $('.pagination').twbsPagination('destroy');
@@ -163,6 +166,7 @@ function AjaxCall(page) {
     				startPage : 1 // 시작 페이지
     				,totalPages : data.page_idx // 총 페이지 수
     				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+    				,initiateStartPageClick:false
     				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
     					noticeSearch(page);
     				}
