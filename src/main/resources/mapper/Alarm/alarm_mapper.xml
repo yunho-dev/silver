@@ -6,13 +6,17 @@
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.alarm.AlarmDAO">
 	<insert id="notiAlarmInsert">
-		insert into alread(mem_id,ar_cnt,ar_content,ac_idx)
-			select m.mem_id,'안읽음',#{param1},5 from member m; 
+		insert into alread(mem_id,ar_cnt,ar_content,ac_idx,ar_addr)
+			select m.mem_id,'안읽음',#{param1},5,#{param2} from member m; 
 	</insert>
 	
 	<select id="AlarmCall" resultType="alarm">
 		select * from alread a  where a.mem_id =#{param1} order by ar_cnt ='안읽음' desc;
 	</select>
+	
+	<update id="removeCount">
+		update alread set ar_cnt='읽음' where ar_idx=#{param1}
+	</update>
 </mapper>
 
 

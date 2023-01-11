@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -21,12 +22,24 @@ public class AlarmController {
 		this.alarmservice=alarmservice;
 	}
 	
-	@ResponseBody()
+	@ResponseBody
 	@GetMapping(value="/AlarmCall")
 	public HashMap<String, Object> AlarmCall(HttpServletRequest request){
 		
 		return alarmservice.AlarmCall(request);
 	}
+	
+	@ResponseBody
+	@GetMapping(value="/removeCount")
+	public HashMap<String, Object> removeCount(@RequestParam int idx){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int row =alarmservice.removeCount(idx);
+		map.put("row", row);
+		return map;
+		
+	}
+	
+	
 	
 
 }
