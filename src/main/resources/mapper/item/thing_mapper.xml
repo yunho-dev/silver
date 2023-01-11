@@ -38,16 +38,19 @@
 			AND th_spon LIKE CONCAT('%',#{thSpon},'%');
 	</select>
 	
+	<!-- 비품 상세보기 -->
 	<select id="getThingDetail" resultType="thing" parameterType="String">
 		SELECT t.*, i.it_name FROM thing t 
 			INNER JOIN item i ON t.it_idx = i.it_idx 
 		WHERE t.th_idx = #{thIdx}
 	</select>
 	
+	<!-- 사진 정보 -->
 	<select id="photoView" resultType="thing" parameterType="String">
 		SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE th_idx=#{thIdx}
 	</select>
 	
+	<!-- 비품 등록 -->
 	<insert id="thingWrite" 
 	useGeneratedKeys="true"
 	keyColumn="th_idx"
@@ -70,13 +73,6 @@
 			VALUES(#{param1}, #{param2}, #{param3}, 6)
 	</insert>
 	
-	<select id="itemCateList" resultType="thing">
-		SELECT i.it_idx, i.it_name, count(t.it_idx) AS itCnt
-			from item i left outer join thing t on  i.it_idx = t.it_idx
-			WHERE NOT i.it_idx=1
-		GROUP BY i.it_idx ORDER BY count(t.it_idx) desc
-	</select>
-	
 	<select id="thingCheck" parameterType="String" resultType="String">
 		SELECT th_name FROM thing WHERE th_name = #{thName}
 	</select>
@@ -94,18 +90,14 @@
 		WHERE th_idx=#{param3}
 	</update>
 	
-	<select id="cateNameCheck" parameterType="String" resultType="String">
-		SELECT it_name from item WHERE it_name = #{cateName}
+	<select id="itemCateList" resultType="thing">
+		SELECT i.it_idx, i.it_name, count(t.it_idx) AS itCnt
+			from item i left outer join thing t on  i.it_idx = t.it_idx
+			WHERE NOT i.it_idx=1
+		GROUP BY i.it_idx ORDER BY count(t.it_idx) desc
 	</select>
 	
-	<insert id="itemCateResist" parameterType="String">
-		INSERT INTO item(it_name) VALUES(#{cateName})
-	</insert>
-	
-	<update id="itemCateUpdate">
-		UPDATE item set it_name=#{param2} WHERE it_idx=#{param1}
-	</update>
-	
+	<!-- 카테고리 검색 -->
 	<select id="getItemSearch" parameterType="String" resultType="thing">
 		SELECT i.it_idx, i.it_name, COUNT(t.it_idx) AS itCnt
 			FROM item i LEFT OUTER JOIN thing t ON i.it_idx = t.it_idx
@@ -113,5 +105,17 @@
 		AND i.it_name LIKE CONCAT('%',#{itName},'%')
 		GROUP BY i.it_idx ORDER BY count(t.it_idx) DESC;
 	</select>
+	
+	<insert id="itemCateResist" parameterType="String">
+		INSERT INTO item(it_name) VALUES(#{cateName})
+	</insert>
+	
+	<select id="cateNameCheck" parameterType="String" resultType="String">
+		SELECT it_name from item WHERE it_name = #{cateName}
+	</select>
+	
+	<update id="itemCateUpdate">
+		UPDATE item set it_name=#{param2} WHERE it_idx=#{param1}
+	</update>
 	
 </mapper>

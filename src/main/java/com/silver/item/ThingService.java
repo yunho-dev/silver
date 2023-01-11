@@ -31,7 +31,7 @@ public class ThingService {
 	}
 
 	public HashMap<String, Object> getThingList(int page) {
-		
+		/* 페이징 계산 */
 		int offset = 10*(page-1);
 		int totalCount = dao.totalCountThList();
 		logger.info("게시글 총 개수 : "+totalCount);
@@ -55,6 +55,7 @@ public class ThingService {
 		logger.info("게시글 총 개수 : "+totalCount);
 		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
 		logger.info("총 페이지 수 : "+totalPages);
+		
 		ThingDTO dto = new ThingDTO();
 		dto.setTh_name(params.get("thName"));
 		dto.setTh_write(params.get("thWrite"));
@@ -62,7 +63,9 @@ public class ThingService {
 		dto.setTh_part(params.get("thPart"));
 		dto.setTh_state(params.get("thState"));
 		dto.setOffset(offset);
+		
 		ArrayList<ThingDTO> thingList = dao.getThingListSearch(dto);
+		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("list", thingList);
 		result.put("total", totalPages);
@@ -83,7 +86,6 @@ public class ThingService {
 	@Transactional
 	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("받아온 요소 : {}", params);
-		logger.info("request : {}", request);
 		ThingDTO dto = new ThingDTO();
 		Date thDate = Date.valueOf(params.get("thDate"));
 		dto.setIt_idx(Integer.parseInt(params.get("thCateReal")));
@@ -98,7 +100,6 @@ public class ThingService {
 		String thWrite = "세션 못받음";
 		
 		HttpSession session=request.getSession();
-		logger.info("session : "+session);
 		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
 		logger.info("SessionDTO : "+SessionDTO);
 		if(SessionDTO != null) {
@@ -175,7 +176,6 @@ public class ThingService {
 		String thWrite = "세션 못받음";
 		
 		HttpSession session=request.getSession();
-		logger.info("session : "+session);
 		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
 		logger.info("SessionDTO : "+SessionDTO);
 		if(SessionDTO != null) {
@@ -210,10 +210,14 @@ public class ThingService {
 		
 		return result;
 	}
-
-	public boolean cateNameCheck(String cateName) {
-		String cateCheck = dao.cateNameCheck(cateName);
-		return cateCheck == null? false : true;
+	
+	public HashMap<String, Object> getItemSearch(String itName) {
+		logger.info("카테고리 검색 서비스");
+		ArrayList<ThingDTO> itemList = dao.getItemSearch(itName);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		logger.info("검색된 데이터 : {}", result);
+		result.put("list", itemList);
+		return result;
 	}
 
 	public HashMap<String, Object> itemCateResist(String cateName) {
@@ -221,15 +225,20 @@ public class ThingService {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		int finish = 0;
 		
-		String cateCheck = dao.cateNameCheck(cateName); //이름 중복검사
-		logger.info("이름 중복검사 결과(null이면 정상) : "+cateCheck);
-		if(cateCheck == null) {
+		boolean cateCheck = cateNameCheck(cateName);
+		logger.info("이름 중복검사 결과(false면 중복없음) : "+cateCheck);
+		if(cateCheck == false) {
 			finish = dao.itemCateResist(cateName);
 		}
 		logger.info("item insert - 영향받은 행 : "+finish);
 		
 		result.put("result", finish);
 		return result;
+	}
+	
+	public boolean cateNameCheck(String cateName) {
+		String cateCheck = dao.cateNameCheck(cateName);
+		return cateCheck == null? false : true;
 	}
 
 	public HashMap<String, Object> itemCateUpdate(int itIdx, String cateName) {
@@ -246,15 +255,6 @@ public class ThingService {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("result", finish);
-		return result;
-	}
-
-	public HashMap<String, Object> getItemSearch(String itName) {
-		logger.info("카테고리 검색 서비스");
-		ArrayList<ThingDTO> itemList = dao.getItemSearch(itName);
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		logger.info("검색된 데이터 : {}", result);
-		result.put("list", itemList);
 		return result;
 	}
 

@@ -59,7 +59,7 @@
 		                    </div>
 		                        <!-- table hover -->
 		                        <div class="table-responsive">
-		                            <table class="table table-hover mb-0">
+		                            <table class="table table-hover mb-0" style="text-align: center;">
 		                                <thead>
 		                                    <tr>
 		                                        <th>순번</th>
@@ -74,14 +74,8 @@
 		                                </tbody>
 		                            </table>
 		                        </div>
-		                        <div id="pagint">
-			                        <div class="container" style="margin-left: auto; margin-right: auto;">
-										<nav aria-label="Page navigation" style="text-align: center;">
-											<ul class="pagination" id="pagination"></ul>
-										</nav>
-									</div>
-		                        </div>
-		                    </div>
+									<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
+		                    	</div>
 		                        <div class="buttons" style="text-align: right; margin-right: 5%;">
 		                    		<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeThing">등록하기</a>
 		                    	</div>
