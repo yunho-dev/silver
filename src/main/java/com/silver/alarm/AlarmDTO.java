@@ -15,6 +15,14 @@ public class AlarmDTO {
 	private String ar_content;
 	private int ac_idx;
 	private String ac_cate;
+	private String ar_addr;
+	
+	public String getAr_addr() {
+		return ar_addr;
+	}
+	public void setAr_addr(String ar_addr) {
+		this.ar_addr = ar_addr;
+	}
 	public int getAr_idx() {
 		return ar_idx;
 	}
