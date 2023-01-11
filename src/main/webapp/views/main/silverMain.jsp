@@ -46,12 +46,10 @@ display: block;
                             <div class="card-body py-4 px-5">
                                 <div class="d-flex align-items-center">
                                     <div class="avatar avatar-xl">
-                                    <c:if test="${not empty face.fp_newFileName} ">
-                                        <img src="/filephoto/${face.fp_newFileName}" style="width:100px;
-                                        height: 100px;" 
-                                        alt="Face 1">
+                                    <c:if test="${not empty face}">
+                                        <img src="/filephoto/${face}" style="width:100px; height: 100px;" alt="Face 1">
                                     </c:if>    
-                                    <c:if test="${empty face.fp_newFileName}">
+                                    <c:if test="${empty face}">
                                         <img src="/filephoto/noimage.png" style="width:100px; height: 100px;" 
                                         alt="Face 1">
                                     </c:if>  
@@ -94,7 +92,7 @@ display: block;
                                 	  		<td>${list.bd_idx}</td>
                                 	  		<td>${list.bd_title}</td>
                                 	  		<td>${list.mem_name}</td>
-                                	  		<td>${list.bd_date}</td>
+                                	  		<td class="timeSub">${list.bd_date}</td>
                                 	 	</tr>
                                 	  </c:forEach>
                                 	</tbody>
@@ -162,6 +160,11 @@ display: block;
     <script src="assets/js/main.js"></script>
 </body>
 <script>
+var str=$(".timeSub").text();
+var result=str.substr(0,11);
+$(".timeSub").text(result);
+
+
 var series1=Number("${totalResi}");
 var series2=Number("${totalinfe}");
 console.log(series2/series1 * 100);

@@ -1,5 +1,7 @@
 package com.silver.main;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ public class MainService {
 		MainDTO memberList=maindao.MainlistCall(mem_id);
 		if(!memberList.getMem_name().isEmpty()) {
 			String face=maindao.searchFace(mem_id);
+			logger.info("face는 :"+face);
 			mav.addObject("face",face);
 		}
 		ArrayList<MainDTO> noticeList=maindao.noticelistCall();

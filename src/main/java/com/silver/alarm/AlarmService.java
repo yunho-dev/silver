@@ -23,10 +23,20 @@ public class AlarmService {
 		this.alarmdao=alarmdao;
 	}
 	
-	public void notiAlarm(String mem_name, int result) {
+	public void notiAlarm(String mem_name, int result, String AlarmCate) {
 		logger.info("asdad");
 		String content=mem_name+"님이 공지사항을 등록했습니다.";
-		alarmdao.notiAlarmInsert(content);
+		String Linkaddr=LinkAddr(result, AlarmCate);
+		alarmdao.notiAlarmInsert(content,Linkaddr);
+	}
+	
+	public String LinkAddr(int idx,String alarmCate) {
+		String page="";
+		if(alarmCate.equals("공지사항")) {
+			page="noticeDetail.do?bd_idx="+idx;
+		}
+		
+		return page;
 	}
 
 	public HashMap<String, Object> AlarmCall(HttpServletRequest request) {
@@ -38,6 +48,10 @@ public class AlarmService {
 		ArrayList<AlarmDTO> list=alarmdao.AlarmCall(mem_id);
 		map.put("allist",list);
 		return map;
+	}
+
+	public int removeCount(int idx) {
+		return alarmdao.removeCount(idx);
 	}
 	
 	

@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 주소 api -->
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	div.writeLeft {

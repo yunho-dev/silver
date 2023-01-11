@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 주소 api -->
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -59,7 +60,7 @@
 	            <form id="memberUpdateForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
-<!-- 							<p id="thIdx" style="display: none;"></p> -->
+						<p id="memId" style="display: none;"></p> 
 							<p class="writeArea"><span id="WriteName">이름 : </span> 
 								<input type="text" name="memName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="이름을 입력해 주세요">
 							</p> <br>
@@ -85,7 +86,7 @@
 								<input type="text" name="memBirth" style="width:200px;height:30px;font-size:12px;" value="" placeholder="생년월일을 입력해 주세요">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">주소 : </span> 
-								<input type="text" name="memAddr" id="mem_add" value="" readonly placeholder="주소찾기를 해주세요" style="width:200px;height:30px;font-size:12px;">
+								<input type="text" name="memAddr" id="wnth" value="" readonly placeholder="주소찾기를 해주세요" style="width:200px;height:30px;font-size:12px;">
 								<input type="button" id="findAdd" onclick="newadd()" style="cursor: pointer; height: 34px;" value="주소찾기">
 							</p> <br>
 							<p class="writeArea" style="margin-bottom: 0px;"><span id="WriteName" style="text-align: left;">사진 : </span></p>																												
@@ -123,11 +124,13 @@
 								<input type="text" name="memGender" style="width:200px;height:30px;font-size:12px;" value="" placeholder="성별을 입력해 주세요">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">상세주소 : </span> 
-								<input type="text" name="memDaddr" id="mem_detailAdd" style="width:200px;height:30px;font-size:12px;" value="" placeholder="상세주소를 입력해 주세요">
+								<input type="text" name="memDaddr" id="tkdtpwnth" style="width:200px;height:30px;font-size:12px;" value="" placeholder="상세주소를 입력해 주세요">
 							</p> <br>	
 							<p class="writeArea"><span id="WriteName">이메일 : </span> 
 								<input type="text" name="memEmail" style="width:200px;height:30px;font-size:12px;" value="" placeholder="이메일을 입력해 주세요">
 							</p> <br>
+							<p class="writeArea">
+							<span id="WriteName">근무현황 : </span>							
 							<select name="memState" onchange="changePart($(this))" style="width:200px;height:30px;font-size:12px;">
 									<option value="" selected="selected" style="display: none;">선택</option>
 									<option value="재직중">재직중</option>
@@ -138,6 +141,7 @@
 						<div>
 							<!-- 사진 -->
 							<input name="memPhoto" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">
+							<span>기존 사진 : </span><span class="memPhotoOri"></span>
 						</div>
 		            </div>
 		            <div class="modal-footer" >
@@ -192,8 +196,8 @@ function newadd() {
             var zoneCode = '(' + data.zonecode + ') ';
             
             addr = zoneCode + addr + extraAddr;
-            document.getElementById("mem_add").value = addr;
-            document.getElementById("mem_detailAdd").focus();
+            document.getElementById("wnth").value = addr;
+            document.getElementById("tkdtpwnth").focus();
         }
     }).open();
 }

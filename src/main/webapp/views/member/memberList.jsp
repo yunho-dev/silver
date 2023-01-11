@@ -10,15 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>은빛 우산</title>
 
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
-
     <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+     <script src="assets/js/jquery.twbsPagination.js"></script>
 <style>
 	.filter{
 		width:15%;
@@ -34,7 +34,7 @@
        	 	<div class="page-heading">
                 <section class="section">
                     <div class="card" style="width:38%; font-size:3pt; float: left;" >
-		                    <div class="card-header" style="background-color: white; font-size: 3pt;">
+		                    <div class="card-header" id="filterHead" style="background-color: white; font-size: 3pt;">
 		                        <input type="text" name="mem_id" class="filter"> &nbsp;&nbsp;
 		                        <input type="text" name="mem_name" class="filter"> &nbsp;&nbsp;
 		                        	<select name="mem_part">
@@ -50,7 +50,7 @@
 		                        			<option value="퇴사">퇴사</option>
 		                        			<option value="휴직">휴직</option>
 		                        		</select> &nbsp;&nbsp;
-		                        <button class="btn btn-sm btn-primary" onclick="search($(this))">검색</button>
+		                        <button class="btn btn-sm btn-primary" onclick="search(searchpage2)">검색</button>
 		                    </div>
                         <div class="card-body" >
                             <table class="table table-striped" id="table1">
@@ -67,22 +67,15 @@
                                 <tbody id="list">
                                 
                                 </tbody>
-                                	<tr id="pager">
-                                		<td colspan="6">
-                                	<div>
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination pagination-primary">
-                                            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item "><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                        </ul>
-                                    </nav>
-                                    </div>
-                                    </td>
-                                    </tr>
+   
                             </table>
+		                        <div id="pagint">
+			                        <div class="container" style="margin-left: auto; margin-right: auto;">
+										<nav aria-label="Page navigation" style="text-align: center;">
+											<ul class="pagination" id="pagination"></ul>
+										</nav>
+									</div>
+		                        </div>                            
                             		<div class="buttons" style="float:right;">
 									<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeMember">직원 등록</a>
 									</div> 
@@ -129,7 +122,15 @@ function memberlistCall(page) {
           console.log(data);
 
           	memberdrawList(data.list);
-                  
+          	
+			$("#pagination").twbsPagination({
+				startPage : 1, // 시작 페이지
+				totalPages : data.total, // 총 페이지 수
+				visiblePages : 5, // 기본으로 보여줄 페이지 수
+				onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					memberlistCall(page)
+				}
+			});                  
        },
        error:function(e){
           console.log(e);
@@ -166,27 +167,59 @@ function memberdrawList(memberList){
 		$('#list').append(content);	
 	}   
 }
-
+	var flag=true;
+	var pageflag=true;
+	var searchpage2=1;
+	var select_change=new Array();
+	var chkPage=new Array();
+ 
  // 직원 검색
-function search(searchBtn){
-	memId = $(searchBtn).siblings("input[name=mem_id]").val(); // 사번
-	memName = $(searchBtn).siblings("input[name=mem_name]").val();
-	memPart = $(searchBtn).siblings("select[name=mem_part]").val();
-	memState = $(searchBtn).siblings("select[name=mem_state]").val();
+function search(searchpage2){
+	 console.log("페이지: ",searchpage2)
+	memId = $('#filterHead input[name=mem_id]').val(); // 사번
+	memName = $('#filterHead input[name=mem_name]').val();
+	memPart = $('#filterHead select[name=mem_part]').val();
+	memState = $('#filterHead select[name=mem_state]').val();
+	
+	select_change.push($("select").val());
+	if(flag){
+        var select=$("#select").val();
+        flag=false;
 	
 	$.ajax({
 		type:'GET',
 		url:'memberListSearch.do',
-		data:{page:page, memId:memId, memName:memName, memPart:memPart, memState:memState},
+		data:{'page':searchpage2, memId:memId, memName:memName, memPart:memPart, memState:memState},
 		dataType:'JSON',
 		success:function(data){
 			memberdrawList(data.list);
+			
+			chkPage.push(data.total);
+			if(chkPage.at(-2) != data.total){
+				pageflag=true;
+			}		
+			
+			if(pageflag == true && $('.pagination').data("twbs-pagination")
+					|| select_change.at(-2) != $("select").val()){
+                $('.pagination').twbsPagination('destroy');
+                pageflag=false;
+            }
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.total // 총 페이지 수
+				,visiblePages : 5 // 기본으로 보여줄 페이지 수
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					search(page);
+				}
+			});			
 		},
 		error:function(e){
 			console.log(e);
+		},complete:function(){
+			flag=true;
 		}
 	});
-	
+	}	
 }
  
 // 직원 상세정보  그리는 함수
@@ -207,7 +240,7 @@ function memberdetaildrawList(memberdetailList){
 		content+='<tr>';
 		content+='<td class="ppphh" rowspan="6" align="center" width="120" height="150"><img class="ppph" alt="사진" style="width:110px;height:140px" ></td>';
 		content+='<td>'+"사번"+'</td>';
-		content+='<td width="225">'+memberdetailList[i].mem_id+'</td>';
+		content+='<td class="mem_id" width="225">'+memberdetailList[i].mem_id+'</td>';
 		content+='<td>'+"이름"+'</td>';
 		content+='<td width="225">'+memberdetailList[i].mem_name+'</td>';
 		content+='</tr>';
@@ -237,7 +270,7 @@ function memberdetaildrawList(memberdetailList){
 		
 		
 		content+='<div class="buttons" style="float:right;">';
-    	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#updateMember">직원 수정</a>';
+    	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#updateMember" id="modify" onclick=updateForm($(this))>직원 수정</a>';
 		content+='</div>';
 		
 
@@ -274,5 +307,92 @@ function memberdetailCall(item) {
     });
  } 
  
+ 
+// 수정에 데이터 넘기는 함수 
+function updateForm(listRow){
+	
+	var memId = $('#table2').find('td.mem_id').text();
+	console.log(memId);
+
+    $(".modal-body #memId").html(memId); 
+	
+    $.ajax({
+    	type:'GET',
+		url:'getMemberUpdateForm.go',
+		data:{'memId':memId},
+		dataType:'JSON',
+		success:function(data){
+			$(".modal-body .writeLeft input[name=memName]").attr('value',data.detail.mem_name);
+			$(".modal-body .writeLeft input[name=memId]").attr('value',data.detail.mem_id);
+			$(".modal-body .writeLeft select[name=departName]").val(data.detail.dept_name);
+			$(".modal-body .writeLeft input[name=memIndate]").attr('value',data.detail.mem_indate);
+			$(".modal-body .writeLeft input[name=memBirth]").attr('value',data.detail.mem_birth);
+			$(".modal-body .writeLeft input[name=memAddr]").attr('value',data.detail.mem_addr);			
+			
+			$(".modal-body .writeRight select[name=posName]").val(data.detail.pos_name);
+			$(".modal-body .writeRight select[name=partName]").val(data.detail.part_name);
+			$(".modal-body .writeRight input[name=memPnum]").attr('value',data.detail.mem_pnum);
+			$(".modal-body .writeRight input[name=memGender]").attr('value',data.detail.mem_gender);
+			$(".modal-body .writeRight input[name=memDaddr]").attr('value',data.detail.mem_daddr);
+			$(".modal-body .writeRight input[name=memEmail]").attr('value',data.detail.mem_email);
+			$(".modal-body .writeRight select[name=memState]").val(data.detail.mem_state);			
+			
+			var newFileName = data.detailPhoto;
+			//사진 체크
+			if(newFileName != null || newFileName == ''){
+				$("#updateMember .memPhotoOri").text(data.detailPhoto.fp_newFileName)
+			}else{
+				$("#updateMember .memPhotoOri").text('없음')
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+ 
+ 
+}
+ /*
+ $('#modify').click(function(){
+	
+	var memId =$('td.MemID').text();
+	console.log(memId);
+    
+    $.ajax({
+    	type:'GET',
+		url:'getMemberUpdateForm.go',
+		data:{memId:memId},
+		dataType:'JSON',
+		success:function(data){
+			$(".modal-body .left input[name=memName]").text(data.detail.mem_name);
+			$(".modal-body .left input[name=memId]").text(data.detail.mem_id);
+			$(".modal-body .left select[name=departName]").text(data.detail.dept_name);
+			$(".modal-body .left input[name=memIndate]").text(data.detail.mem_indate);
+			$(".modal-body .left input[name=memBirth]").text(data.detail.mem_birth);
+			$(".modal-body .left input[name=memAddr]").text(data.detail.mem_addr);			
+			
+			$(".modal-body .right select[name=posName]").text(data.detail.pos_name);
+			$(".modal-body .right select[name=partName]").text(data.detail.part_name);
+			$(".modal-body .right input[name=memPnum]").text(data.detail.mem_pnum);
+			$(".modal-body .right input[name=memGender]").text(data.detail.mem_gender);
+			$(".modal-body .right input[name=memDaddr]").text(data.detail.mem_daddr);
+			$(".modal-body .right input[name=memEmail]").text(data.detail.mem_email);
+			$(".modal-body .right select[name=memState]").text(data.detail.mem_state);			
+			
+			var newFileName = data.detailPhoto;
+			//사진 체크
+			if(newFileName != null || newFileName == ''){
+				$("#updateMember .memPhotoOri").text(data.detailPhoto.fp_newFileName)
+			}else{
+				$("#updateMember .memPhotoOri").text('없음')
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+    
+});
+ */
 </script>
 </html>

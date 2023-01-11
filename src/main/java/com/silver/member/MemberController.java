@@ -100,6 +100,15 @@ public class MemberController {
 			logger.info("params:{}",params);
 			logger.info("memPhoto:{}",memPhoto);
 			return service.memberUpdate(memPhoto, params);
-		}			
+		}
+		
+		// 직원 수정 폼에 대한 정보 컨트롤러
+		@GetMapping(value = "/getMemberUpdateForm.go")
+		@ResponseBody
+		public HashMap<String, Object> getMmeberUpdateForm(@RequestParam String memId){
+			
+			logger.info(memId+"사원번호에 대한 수정 요청");
+			return service.getMemberUpdateForm(memId);
+		}
 	
 }

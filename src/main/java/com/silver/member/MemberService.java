@@ -26,21 +26,43 @@ public class MemberService {
 	
 	// 직원 목록 가져오는 서비스
 	public HashMap<String, Object> memberlist(int page) {
+		
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountMemList();
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
+		logger.info("총 페이지 수 : "+totalPages);
+		
 		logger.info("직원 목록을 가져오는 서비스");
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<MemberDTO> memberList=dao.memberList();
+		ArrayList<MemberDTO> memberList=dao.memberList(offset);
 		logger.info("가져온 직원 리스트:{}",memberList);
 		result.put("list", memberList);
+		result.put("total", totalPages);
 		return result;
 	}
 	
 	// 직원 목록 검색 서비스
 	public HashMap<String, Object> memberListSearch(HashMap<String, String> params) {
 		logger.info("직원 목록 검색 기능 서비스");
-		ArrayList<MemberDTO> memberList = dao.memberListSearch(params);
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountMemFilterList(params);		
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);		
+		MemberDTO dto= new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setMem_name(params.get("memName"));
+		dto.setPart_name(params.get("memPart"));
+		dto.setMem_state(params.get("memState"));
+		dto.setOffset(offset);
+		
+		ArrayList<MemberDTO> memberList = dao.memberListSearch(dto);
 		logger.info("가져온 데이터 : {}", memberList);
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("list", memberList);
+		result.put("total", totalPages);
 		return result;
 	}
 	
@@ -191,6 +213,18 @@ public class MemberService {
 		HashMap<String, Object> result=new HashMap<String, Object>();
 		result.put("memId", memId);
 		return result;
+	}
+
+	public HashMap<String, Object> getMemberUpdateForm(String memId) {
+		MemberDTO  dto = dao.getMemberUpdateForm(memId);
+		logger.info("가져온 데이터 : {}", dto);
+		MemberDTO photoDto = dao.photoView(memId);
+		logger.info("사진데이터 : {}", photoDto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		result.put("detailPhoto", photoDto);
+		return result;
+
 	}
 
 

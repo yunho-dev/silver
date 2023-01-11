@@ -65,10 +65,11 @@ function AlarmlistCall(allist){
 	var count=0;
 	var content="";
 	for(var i=0;i<allist.length;i++){
-		content +='<li class="dropdown-item" id='+allist[i].ar_content+' onclick="alertAA()">'
+		content +='<li id='+allist[i].ar_idx+' ><a class="dropdown-item" href="'+allist[i].ar_addr+'">'
 		content += allist[i].ar_content
 		var date = new Date(allist[i].ar_date);
-		content +='<span style="float:right">'+ date.toLocaleDateString("ko-KR") + " "+ date.toLocaleTimeString("en-US", {hour12 : false}) +'</span></li>'
+		content +='<span style="float:right">'+ date.toLocaleDateString("ko-KR") + " "
+		content +=date.toLocaleTimeString("en-US", {hour12 : false}) +'</span></a></li>'
 		if(allist[i].ar_cnt == '안읽음'){
 			count++;
 		}
@@ -78,9 +79,23 @@ function AlarmlistCall(allist){
 	$("#bell_count").text(count);
 }
 
-function alertAA(){
-	alert('asda');
-}
+$(document).on('click','#allist li',function(){
+	var idx=$(this)[0].id();
+	$.ajax({
+		type:'get'
+		,url:'removeCount'
+		,data:{'idx':idx}
+		,dataType:'json'
+		,success:function(data){
+			console.log(data);
+			if(data.row > 0){
+				$(this)[0].id().empty();
+			}
+		},error:function(e){
+			
+		}
+	});	
+});
 
 
 </script>

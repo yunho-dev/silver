@@ -9,8 +9,77 @@
 
 	<select id="resident" resultType="rd">
 			select * from resident order by re_idx desc
-		</select>
+	</select>
+	
+	<select id="residentsearch" resultType="rd" parameterType="hashmap">
+			select * from resident where
+			<if test="re_state != null and re_state != ''">
+				<![CDATA[re_state=#{re_state} ]]>
+			</if>
+			<if test="re_state != null and re_state != '' and re_name != '' and re_name != null">
+				<![CDATA[and ]]>
+			</if>
+			<if test="re_name != null and re_name != ''">
+				<![CDATA[re_name=#{re_name} ]]>
+			</if>
+			order by re_idx desc
+	</select>
+	
+	<select id="residentdetail" resultType="rd" parameterType="String">
+		select* from resident where re_idx = #{re_idx}
+	</select>
+		
+	<insert id="residentwrite"
+		useGeneratedKeys="true"
+		keyColumn="re_idx"
+		keyProperty="re_idx"
+		parameterType="rd">
+		INSERT INTO resident(
+		re_name
+		,re_state
+		,re_gender
+		,re_grade
+		,re_pnum
+		,re_addr
+		,re_sick
+		,re_text
+		,re_jumin
+		,re_date
+		,ro_name
+		,re_daddr)
+			VALUES(
+			#{re_name}
+			,#{re_state}
+			,#{re_gender}
+			,#{re_grade}
+			,#{re_pnum}
+			,#{re_addr}
+			,#{re_sick}
+			,#{re_text}
+			,#{re_jumin}
+			,#{re_date}
+			,#{ro_name}
+			,#{re_daddr}) 
+	</insert>		
 
+		
+	<update id="residentupdate" parameterType="hashmap">
+		UPDATE resident SET
+			re_name = #{re_name},
+			re_state = #{re_state},
+			re_gender = #{re_gender},
+			re_grade = #{re_grade},
+			re_pnum = #{re_pnum},
+			re_addr = #{re_addr},
+			re_sick = #{re_sick},
+			re_text = #{re_text},
+			re_jumin = #{re_jumin},
+			ro_name = #{ro_name},
+			re_daddr = #{re_daddr}
+		WHERE re_idx = #{re_idx}
+	</update>	
+	
+	
 	
 </mapper>
 
