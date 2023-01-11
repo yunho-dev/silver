@@ -171,7 +171,7 @@ function memberdrawList(memberList){
 	var pageflag=true;
 	var searchpage2=1;
 	var select_change=new Array();
- 
+	var chkPage=new Array();
  
  // 직원 검색
 function search(searchpage2){
@@ -193,6 +193,12 @@ function search(searchpage2){
 		dataType:'JSON',
 		success:function(data){
 			memberdrawList(data.list);
+			
+			chkPage.push(data.total);
+			if(chkPage.at(-2) != data.total){
+				pageflag=true;
+			}		
+			
 			if(pageflag == true && $('.pagination').data("twbs-pagination")
 					|| select_change.at(-2) != $("select").val()){
                 $('.pagination').twbsPagination('destroy');
@@ -234,7 +240,7 @@ function memberdetaildrawList(memberdetailList){
 		content+='<tr>';
 		content+='<td class="ppphh" rowspan="6" align="center" width="120" height="150"><img class="ppph" alt="사진" style="width:110px;height:140px" ></td>';
 		content+='<td>'+"사번"+'</td>';
-		content+='<td width="225">'+memberdetailList[i].mem_id+'</td>';
+		content+='<td class="mem_id" width="225">'+memberdetailList[i].mem_id+'</td>';
 		content+='<td>'+"이름"+'</td>';
 		content+='<td width="225">'+memberdetailList[i].mem_name+'</td>';
 		content+='</tr>';
@@ -264,7 +270,7 @@ function memberdetaildrawList(memberdetailList){
 		
 		
 		content+='<div class="buttons" style="float:right;">';
-    	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#updateMember">직원 수정</a>';
+    	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#updateMember" id="modify" onclick=updateForm($(this))>직원 수정</a>';
 		content+='</div>';
 		
 
@@ -301,5 +307,92 @@ function memberdetailCall(item) {
     });
  } 
  
+ 
+// 수정에 데이터 넘기는 함수 
+function updateForm(listRow){
+	
+	var memId = $('#table2').find('td.mem_id').text();
+	console.log(memId);
+
+    $(".modal-body #memId").html(memId); 
+	
+    $.ajax({
+    	type:'GET',
+		url:'getMemberUpdateForm.go',
+		data:{'memId':memId},
+		dataType:'JSON',
+		success:function(data){
+			$(".modal-body .writeLeft input[name=memName]").attr('value',data.detail.mem_name);
+			$(".modal-body .writeLeft input[name=memId]").attr('value',data.detail.mem_id);
+			$(".modal-body .writeLeft select[name=departName]").val(data.detail.dept_name);
+			$(".modal-body .writeLeft input[name=memIndate]").attr('value',data.detail.mem_indate);
+			$(".modal-body .writeLeft input[name=memBirth]").attr('value',data.detail.mem_birth);
+			$(".modal-body .writeLeft input[name=memAddr]").attr('value',data.detail.mem_addr);			
+			
+			$(".modal-body .writeRight select[name=posName]").val(data.detail.pos_name);
+			$(".modal-body .writeRight select[name=partName]").val(data.detail.part_name);
+			$(".modal-body .writeRight input[name=memPnum]").attr('value',data.detail.mem_pnum);
+			$(".modal-body .writeRight input[name=memGender]").attr('value',data.detail.mem_gender);
+			$(".modal-body .writeRight input[name=memDaddr]").attr('value',data.detail.mem_daddr);
+			$(".modal-body .writeRight input[name=memEmail]").attr('value',data.detail.mem_email);
+			$(".modal-body .writeRight select[name=memState]").val(data.detail.mem_state);			
+			
+			var newFileName = data.detailPhoto;
+			//사진 체크
+			if(newFileName != null || newFileName == ''){
+				$("#updateMember .memPhotoOri").text(data.detailPhoto.fp_newFileName)
+			}else{
+				$("#updateMember .memPhotoOri").text('없음')
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+ 
+ 
+}
+ /*
+ $('#modify').click(function(){
+	
+	var memId =$('td.MemID').text();
+	console.log(memId);
+    
+    $.ajax({
+    	type:'GET',
+		url:'getMemberUpdateForm.go',
+		data:{memId:memId},
+		dataType:'JSON',
+		success:function(data){
+			$(".modal-body .left input[name=memName]").text(data.detail.mem_name);
+			$(".modal-body .left input[name=memId]").text(data.detail.mem_id);
+			$(".modal-body .left select[name=departName]").text(data.detail.dept_name);
+			$(".modal-body .left input[name=memIndate]").text(data.detail.mem_indate);
+			$(".modal-body .left input[name=memBirth]").text(data.detail.mem_birth);
+			$(".modal-body .left input[name=memAddr]").text(data.detail.mem_addr);			
+			
+			$(".modal-body .right select[name=posName]").text(data.detail.pos_name);
+			$(".modal-body .right select[name=partName]").text(data.detail.part_name);
+			$(".modal-body .right input[name=memPnum]").text(data.detail.mem_pnum);
+			$(".modal-body .right input[name=memGender]").text(data.detail.mem_gender);
+			$(".modal-body .right input[name=memDaddr]").text(data.detail.mem_daddr);
+			$(".modal-body .right input[name=memEmail]").text(data.detail.mem_email);
+			$(".modal-body .right select[name=memState]").text(data.detail.mem_state);			
+			
+			var newFileName = data.detailPhoto;
+			//사진 체크
+			if(newFileName != null || newFileName == ''){
+				$("#updateMember .memPhotoOri").text(data.detailPhoto.fp_newFileName)
+			}else{
+				$("#updateMember .memPhotoOri").text('없음')
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+    
+});
+ */
 </script>
 </html>

@@ -215,6 +215,18 @@ public class MemberService {
 		return result;
 	}
 
+	public HashMap<String, Object> getMemberUpdateForm(String memId) {
+		MemberDTO  dto = dao.getMemberUpdateForm(memId);
+		logger.info("가져온 데이터 : {}", dto);
+		MemberDTO photoDto = dao.photoView(memId);
+		logger.info("사진데이터 : {}", photoDto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		result.put("detailPhoto", photoDto);
+		return result;
+
+	}
+
 
 
 }

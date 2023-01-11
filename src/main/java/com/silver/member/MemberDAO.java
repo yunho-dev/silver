@@ -51,6 +51,8 @@ public interface MemberDAO {
 
 	int totalCountMemFilterList(HashMap<String, String> params);
 
+	MemberDTO getMemberUpdateForm(String memId);
+
 
 
 }

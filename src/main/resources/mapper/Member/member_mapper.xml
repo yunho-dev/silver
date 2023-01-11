@@ -100,7 +100,17 @@
 
 	<insert id="photoUpdate">
 		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3}
-	</insert>	
+	</insert>
+	
+	<select id="getMemberUpdateForm" resultType="member" parameterType="String">
+		SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
+	from `member` m,`position`p,part p2 ,depart d 
+	where m.part_num = p2.part_num 
+	and m.pos_num =p.pos_num 
+	and m.dept_num =d.dept_num  
+	and m.mem_id =#{memId}
+	</select>
+		
 </mapper>
 
 

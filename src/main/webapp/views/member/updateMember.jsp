@@ -60,7 +60,7 @@
 	            <form id="memberUpdateForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
-<!-- 							<p id="thIdx" style="display: none;"></p> -->
+						<p id="memId" style="display: none;"></p> 
 							<p class="writeArea"><span id="WriteName">이름 : </span> 
 								<input type="text" name="memName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="이름을 입력해 주세요">
 							</p> <br>
@@ -129,6 +129,8 @@
 							<p class="writeArea"><span id="WriteName">이메일 : </span> 
 								<input type="text" name="memEmail" style="width:200px;height:30px;font-size:12px;" value="" placeholder="이메일을 입력해 주세요">
 							</p> <br>
+							<p class="writeArea">
+							<span id="WriteName">근무현황 : </span>							
 							<select name="memState" onchange="changePart($(this))" style="width:200px;height:30px;font-size:12px;">
 									<option value="" selected="selected" style="display: none;">선택</option>
 									<option value="재직중">재직중</option>
@@ -139,6 +141,7 @@
 						<div>
 							<!-- 사진 -->
 							<input name="memPhoto" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">
+							<span>기존 사진 : </span><span class="memPhotoOri"></span>
 						</div>
 		            </div>
 		            <div class="modal-footer" >
