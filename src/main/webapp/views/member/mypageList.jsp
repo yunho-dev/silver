@@ -59,7 +59,7 @@
 								<table class="table table-striped" id="table1">
 								<!--1줄-->
 								<tr>
-									<td rowspan="7" align="center" width="120" height="150"><img src="사진" alt="사진"></td>
+									<td rowspan="7" align="center" width="120" height="150"><img src="/filephoto/${photoinfo.fp_newFileName}" alt="사진" style="width:110px;height:140px"></td>
 									<td >이름</td>
 									<td width="225">${info.mem_name}</td>
 									<td >전화번호</td>

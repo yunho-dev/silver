@@ -110,7 +110,15 @@
 	and m.dept_num =d.dept_num  
 	and m.mem_id =#{memId}
 	</select>
-		
+	
+	
+	<select id="findphoto" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	</select>	
+	
+	<select id="mypage2" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id}
+	</select>	
 </mapper>
 
 

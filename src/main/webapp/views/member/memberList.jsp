@@ -33,10 +33,11 @@
        	 <jsp:include page="../upbar.jsp"></jsp:include>
        	 	<div class="page-heading">
                 <section class="section">
-                    <div class="card" style="width:38%; font-size:3pt; float: left;" >
+                    <div class="card" style="width:38%; font-size:8pt; float: left;" >
 		                    <div class="card-header" id="filterHead" style="background-color: white; font-size: 3pt;">
-		                        <input type="text" name="mem_id" class="filter"> &nbsp;&nbsp;
-		                        <input type="text" name="mem_name" class="filter"> &nbsp;&nbsp;
+		                    <p>직원 목록</p>
+		                     <span>사번:</span> <input type="text" name="mem_id" class="filter"> &nbsp;&nbsp;
+		                     <span>이름:</span> <input type="text" name="mem_name" class="filter"> &nbsp;&nbsp;
 		                        	<select name="mem_part">
 		                        			<option value="" selected="selected">전체</option>
 		                        			<option value="요양보호사">요양보호사</option>
@@ -71,7 +72,7 @@
                             </table>
 		                        <div id="pagint">
 			                        <div class="container" style="margin-left: auto; margin-right: auto;">
-										<nav aria-label="Page navigation" style="text-align: center;">
+										<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">
 											<ul class="pagination" id="pagination"></ul>
 										</nav>
 									</div>

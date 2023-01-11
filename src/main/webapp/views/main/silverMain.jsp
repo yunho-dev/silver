@@ -52,7 +52,7 @@ display: block;
                                         alt="Face 1">
                                     </c:if>    
                                     <c:if test="${empty face.fp_newFileName}">
-                                        <img src="/filephoto/noimage.png" style="width:100px; height: 100px;" 
+                                        <img src="/filephoto/noimage.png" style="width:100px; height:100px;" 
                                         alt="Face 1">
                                     </c:if>  
                                     </div>

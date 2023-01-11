@@ -62,8 +62,11 @@ public class MemberController {
 		  
 		  if(session.getAttribute("loginId")!=null) {
 			  MemberDTO dto =service.mypage(loginId);
-				model.addAttribute("info",dto);
+			  MemberDTO photodto =service.mypage2(loginId);
+			  model.addAttribute("info",dto);
+			  model.addAttribute("photoinfo", photodto);
 				logger.info("dto:"+dto);
+				logger.info("photoinfo:"+photodto);
 						  
 		  }else{
 			  model.addAttribute("msg", "로그인이 필요한 서비스 입니다.");
@@ -96,7 +99,7 @@ public class MemberController {
 		@PostMapping(value = "/memberUpdate.do")
 		@ResponseBody
 		public HashMap<String, Object> memberUpdate(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
-			logger.info("직원 등록 컨트롤러");
+			logger.info("직원 수정 컨트롤러");
 			logger.info("params:{}",params);
 			logger.info("memPhoto:{}",memPhoto);
 			return service.memberUpdate(memPhoto, params);
