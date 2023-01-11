@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="assets/css/app.css">
 
 
-</style>
-
 
 </head>
  <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -34,11 +32,9 @@
          
          
          
-         
-
-	<span id="firstspan">
-		<div>
-				<select id="re_state" name="re_state">					
+         <form action="residentsearch.do" method="post">
+		<div class="option_re_state">
+				<select name="re_state">					
 					<option value="입소중">입소중</option>
 					<option value="외출">외출</option>
 					<option value="외박">외박</option>
@@ -53,93 +49,85 @@
 				<select id="ro_name" name="ro_name">
 					<option disabled selected>생활실</option>
 					<option value="0">퇴소</option>
-					<option value="1">입소중</option>
-					<option value="2">외출</option>
-					<option value="3">외박</option>
-					<option value="4">입원중</option>
 				</select>
 		</div>		  
 		--%>
 		
-		<div>
-			<input type="input" id="re_name">
+		<div class="option_re_name">
+			<input type="text" name="re_name">
 		</div>
-
-
-
-
-
-
-
-         <input type="button" value="검색"
-					onclick="location.href='javascript:submit();'" />
-					
-         <form action="resident" method="get">
-	<table>
-		<tr>
-			<th>번호</th>
-			<th>입소자</th>
-			<th>성별</th>
-			<th>나이</th>
-			<th>등급</th>
-			<th>생활실</th>
-			<th>현황</th>					
-		</tr>
-		
-		
-		<c:forEach items="${resident}" var="rd">
-			<tr>
-			
-				<th>${rd.re_idx}</th>
-				<th><a href="detail?re_name=${rd.re_name}">${rd.re_name}</a></th>
-				<th>${rd.re_gender}</th>
-				<th>${rd.re_jumin}</th>
-				<th>${rd.re_grade}</th>
-				<th>${rd.ro_name}</th>
-				<th>${rd.re_state}</th>
-				
-			</tr>
-		</c:forEach>
-	</table>
-
-	</form>
-     </span>
-     
-     <span>    
-     
-
-         <form action="resident" method="get">
-	<table>
-		
-		
-		<th>성별</th>
-		<th>나이</th>
-		<th>등급</th>
-		<th>생활실</th>
-		<th>현황</th>
-
-
-		
-		
-		<c:forEach items="${resident}" var="rd">
-			<tr>
-			
-				<th>번호</th><tr>${rd.re_idx}</tr>
-				<th>입소자</th><tr><a href="detail?re_name=${rd.re_name}">${rd.re_name}</a></tr>
-				<tr>${rd.re_gender}</tr>
-				<tr>${rd.re_jumin}</tr>
-				<tr>${rd.re_grade}</tr>
-				<tr>${rd.ro_name}</tr>
-				<tr>${rd.re_state}</tr>
-				
-			</tr>
-		</c:forEach>
-	</table>
-
-	</form>
-
-
-      </span>   
+         <button class="btn btn-primary">검색</button>
+       </form>
+         
+         
+         
+         
+         <!-- Table head options start -->
+                <section class="section">
+                    <div class="row" id="table-head">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Table head options</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <p>Similar to tables and dark tables, use the modifier classes <code
+                                                class="highlighter-rouge">.thead-light</code> or <code
+                                                class="highlighter-rouge">.thead-dark</code> to
+                                            make <code class="highlighter-rouge">&lt;thead&gt;</code>s appear light or
+                                            dark gray.
+                                        </p>
+                                    </div>
+                                    <!-- table head dark -->
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>번호</th>
+													<th>입소자</th>
+													<th>성별</th>
+													<th>나이</th>
+													<th>등급</th>
+													<th>생활실</th>
+													<th>현황</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            
+                                            
+                                            
+                                            	<c:forEach items="${resident}" var="rd">
+													<tr>
+														<td>${rd.re_idx}</td>
+														<td><a href="residentdetail.go?re_idx=${rd.re_idx}">${rd.re_name}</a></th>
+														<td>${rd.re_gender}</td>
+														<td>${rd.re_jumin}</td>
+														<td>${rd.re_grade}</td>
+														<td>${rd.ro_name}</td>
+														<td>${rd.re_state}</td>														
+													</tr>
+												</c:forEach>
+                                            
+                                            	</table>
+													<a href="residentwriteForm.go" class="btn btn-primary">신규등록</a>		
+												</form>
+											     </span>
+                                            
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Table head options end -->
+         
+         
+         
+         
          
          
          
@@ -160,8 +148,6 @@
 </div>
 </body>
 <script>
-
-
 
 
 </script>

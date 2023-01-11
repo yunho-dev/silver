@@ -1,5 +1,7 @@
 package com.silver.resident;
 
+
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.apache.ibatis.type.Alias;
@@ -17,11 +19,9 @@ public class ResidentDTO {
 	private String re_sick;
 	private String re_text;
 	private String re_jumin;
-	private LocalDateTime  re_date;
+	private Timestamp re_date;
 	private String ro_name;
 	private String re_daddr;
-	
-	
 	public int getRe_idx() {
 		return re_idx;
 	}
@@ -82,10 +82,10 @@ public class ResidentDTO {
 	public void setRe_jumin(String re_jumin) {
 		this.re_jumin = re_jumin;
 	}
-	public LocalDateTime getRe_date() {
+	public Timestamp getRe_date() {
 		return re_date;
 	}
-	public void setRe_date(LocalDateTime re_date) {
+	public void setRe_date(Timestamp re_date) {
 		this.re_date = re_date;
 	}
 	public String getRo_name() {
@@ -100,6 +100,9 @@ public class ResidentDTO {
 	public void setRe_daddr(String re_daddr) {
 		this.re_daddr = re_daddr;
 	}
+	
+	
+
 	
 	
 	
