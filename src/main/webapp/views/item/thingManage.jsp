@@ -14,9 +14,141 @@
 <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
+<style>
+	.filter{
+		width: 10%;
+	}
+</style>
 <body>
-	<h3>test</h3>
+	<div id="app">
+		<jsp:include page="../sidebar.jsp"></jsp:include>
+		<div id="main">
+			<jsp:include page="../upbar.jsp"></jsp:include>
+			<div class="col-12 col-md-6 order-md-1 order-last">
+				<h3>비품 관리 대장 조회</h3>
+			</div>
+			<!-- Table head options start -->
+             <section class="section">
+                 <div class="row" id="table-head">
+                     <div class="col-12">
+                         <div class="card" style="margin-bottom: 1%">
+                             <div class="card-header" id="filterHead" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
+		                        품명 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
+		                        모델명 : <input type="text" name="th_model" class="filter"> &nbsp;&nbsp;
+		                        구분 : <select name="th_part" id="selectPart">
+		                        			<option value="" selected="selected">전체</option>
+		                        			<option value="후원">후원</option>
+		                        			<option value="렌탈">렌탈</option>
+		                        			<option value="직접 구매">직접 구매</option>
+		                        		</select> &nbsp;&nbsp;
+		                        등록자 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
+		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
+		                    </div>
+							<!-- table head dark -->
+							<div class="table-responsive">
+							    <table class="table mb-0" style="text-align: center;">
+							        <thead class="thead-dark">
+							            <tr>
+							                <th>품명</th>
+							                <th>모델명</th>
+							                <th>구분</th>
+							                <th>단가</th>
+							                <th>수량</th>
+							                <th>총 금액</th>
+							                <th>등록자</th>
+							            </tr>
+							        </thead>
+							        <tbody id="list">
+							        	<!-- list가 들어갈 공간 -->
+							        </tbody>
+							    </table>
+							</div>
+							<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
+                         </div>
+                     </div>
+                 </div>
+             </section>
+             <!-- Table head options end -->
+		</div>
+	</div>
+	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/pages/dashboard.js"></script>
+	<script src="assets/js/main.js"></script>
 </body>
-<script></script>
+<script>
+	var showPage=1;
+	
+	ListCall(showPage);
+	
+	function ListCall(page){
+		$.ajax({
+			type:'GET',
+			url:'getThingManageList.do',
+			data:{page:page},
+			dataType:'JSON',
+			success:function(data){
+				drawList(data.list);
+				$("#pagination").twbsPagination({
+					startPage : 1, // 시작 페이지
+					totalPages : data.total, // 총 페이지 수
+					visiblePages : 5, // 기본으로 보여줄 페이지 수
+					onPageClick : function(e, page) { // 클릭했을때 실행 내용
+						ListCall(page)
+					}
+				});
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function drawList(manageList){
+		var content='';
+		for(var i=0; i<manageList.length;i++){
+			content +='<tr>';
+			content +='<td>'+manageList[i].it_name+'</td>';
+			content +='<td>'+manageList[i].th_model+'</td>';
+			content +='<td>'+manageList[i].th_part+'</td>';
+			content +='<td>'+manageList[i].th_money+'</td>';
+			content +='<td>'+manageList[i].thCnt+'</td>';
+			content +='<td>'+manageList[i].sumMoney+'</td>';
+			content +='<td>'+manageList[i].th_write+'</td>';
+			content +='</tr>';
+		}
+		$('#list').empty();
+		$('#list').append(content);
+	}
+	
+	var flag=true;
+	var pageflag=true;
+	var page2=1;
+	var select_change=new Array();
+	var select_change2=new Array();
+	var chkPage=new Array();
+	function search(page2){
+		console.log("작동")
+		thName = $('#filterHead input[name=th_name]').val();
+		thModel = $('#filterHead input[name=th_model]').val();
+		thPart = $('#filterHead select[name=th_part]').val();
+		thWrite = $('#filterHead input[name=th_write]').val();
+		select_change.push($("#selectPart").val());
+		$.ajax({
+			type:'GET',
+			url:'getThingManageSearch.do',
+			data:{'page':page2, thName:thName, thModel:thModel, thPart:thPart, thWrite:thWrite},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data)
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+</script>
 </html>

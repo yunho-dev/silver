@@ -97,7 +97,7 @@ public class ThingService {
 		dto.setTh_spon(params.get("thSpon"));
 		
 		/* 등록자 세션 처리 */
-		String thWrite = "세션 못받음";
+		String thWrite = "로그인 안 하고 작성";
 		
 		HttpSession session=request.getSession();
 		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
@@ -256,6 +256,65 @@ public class ThingService {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("result", finish);
 		return result;
+	}
+	
+	public HashMap<String, Object> getThingManageList(int page) {
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCntThManage();
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		logger.info("비품 목록을 가져옵니다.");
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		ArrayList<ThingDTO> thingManage = dao.getThingManageList(offset);
+		result.put("list", thingManage);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	/*
+	 * public HashMap<String, Object> getThingListSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThFilterList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setTh_write(params.get("thWrite"));
+		dto.setTh_spon(params.get("thSpon"));
+		dto.setTh_part(params.get("thPart"));
+		dto.setTh_state(params.get("thState"));
+		dto.setOffset(offset);
+		
+		ArrayList<ThingDTO> thingList = dao.getThingListSearch(dto);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", thingList);
+		result.put("total", totalPages);
+		return result;
+	}
+	 * */
+
+	public HashMap<String, Object> getThingManageSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThFilterList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
+		list = dao.getThingManageSearch(params);
+		
+		return null;
 	}
 
 }

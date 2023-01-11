@@ -30,7 +30,6 @@
 		<div id="main">
 			<jsp:include page="../upbar.jsp"></jsp:include>
 		
-<!-- 			<div class="col-12 col-md-6 order-md-1 order-last" style="background-color: #e9ecef"> -->
 			<div class="col-12 col-md-6 order-md-1 order-last">
 				<h3>비품 목록 조회</h3>
 			</div>
@@ -41,13 +40,13 @@
 		                <div class="card" style="margin-bottom: 1%">
 		                    <div class="card-header" id="filterHead" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
 		                        품명 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
-		                        구분 : <select name="th_part">
+		                        구분 : <select name="th_part" id="selectPart">
 		                        			<option value="" selected="selected">전체</option>
 		                        			<option value="후원">후원</option>
 		                        			<option value="렌탈">렌탈</option>
 		                        			<option value="직접 구매">직접 구매</option>
 		                        		</select> &nbsp;&nbsp;
-		                        상태 : <select name="th_state">
+		                        상태 : <select name="th_state" id="selectState">
 		                        			<option value="" selected="selected">전체</option>
 		                        			<option value="사용">사용</option>
 		                        			<option value="비사용">비사용</option>
@@ -57,28 +56,28 @@
 <!-- 		                        <button class="btn btn-secondary" onclick="search($(this))">검색</button> -->
 		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 		                    </div>
-		                        <!-- table hover -->
-		                        <div class="table-responsive">
-		                            <table class="table table-hover mb-0" style="text-align: center;">
-		                                <thead>
-		                                    <tr>
-		                                        <th>순번</th>
-		                                        <th>품명</th>
-		                                        <th>구분</th>
-		                                        <th>취득일자</th>
-		                                        <th>상태</th>
-		                                    </tr>
-		                                </thead>
-		                                <tbody id="list">
-		                                	<!-- 리스트가 들어가는 공간 -->
-		                                </tbody>
-		                            </table>
-		                        </div>
-									<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
-		                    	</div>
-		                        <div class="buttons" style="text-align: right; margin-right: 5%;">
-		                    		<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeThing">등록하기</a>
-		                    	</div>
+		                   <!-- table hover -->
+		                   <div class="table-responsive">
+		                       <table class="table table-hover mb-0" style="text-align: center;">
+		                           <thead>
+		                               <tr>
+		                                   <th>순번</th>
+		                                   <th>품명</th>
+		                                   <th>구분</th>
+		                                   <th>취득일자</th>
+		                                   <th>상태</th>
+		                               </tr>
+		                           </thead>
+		                           <tbody id="list">
+		                           	<!-- 리스트가 들어가는 공간 -->
+		                           </tbody>
+		                       </table>
+		                   </div>
+							<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
+					</div>
+		                   <div class="buttons" style="text-align: right; margin-right: 5%;">
+		                   	<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeThing">등록하기</a>
+		                   </div>
 		                </div>
 		            </div>
 						
@@ -166,45 +165,51 @@
 	var pageflag=true;
 	var page2=1;
 	var select_change=new Array();
+	var select_change2=new Array();
+	var chkPage=new Array();
 	function search(page2){
-		console.log("페이지 : ", page2)
 		thName = $('#filterHead input[name=th_name]').val();
 		thWrite = $('#filterHead input[name=th_write').val();
 		thSpon = $('#filterHead input[name=th_dona').val();
 		thPart = $('#filterHead select[name=th_part]').val();
 		thState = $('#filterHead select[name=th_state]').val();
-		select_change.push($("select").val());
+		select_change.push($("#selectPart").val());
+		select_change2.push($("#selectState").val());
 		if(flag){
-	        var select=$("#select").val();
+	        var select=$("#selectPart").val();
 	        flag=false;
-	        
-		$.ajax({
-			type:'GET',
-			url:'getThingListSearch.do',
-			data:{'page':page2, thName:thName, thWrite:thWrite, thSpon:thSpon, thPart:thPart, thState:thState},
-			dataType:'JSON',
-			success:function(data){
-				drawList(data.list);
-				if(pageflag == true && $('.pagination').data("twbs-pagination")
-    					|| select_change.at(-2) != $("select").val()){
-                    $('.pagination').twbsPagination('destroy');
-                    pageflag=false;
-                }
-				$("#pagination").twbsPagination({
-    				startPage : 1 // 시작 페이지
-    				,totalPages : data.total // 총 페이지 수
-    				,visiblePages : 5 // 기본으로 보여줄 페이지 수
-    				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
-    					search(page);
-    				}
-    			});
-			},
-			error:function(e){
-				console.log(e);
-			},complete:function(){
-    			flag=true;
-    		}
-		});
+			$.ajax({
+				type:'GET',
+				url:'getThingListSearch.do',
+				data:{'page':page2, thName:thName, thWrite:thWrite, thSpon:thSpon, thPart:thPart, thState:thState},
+				dataType:'JSON',
+				success:function(data){
+					drawList(data.list);
+					chkPage.push(data.total);
+	    			if(chkPage.at(-2) != data.total){
+	    				pageflag=true;
+	    			}
+					if(pageflag == true && $('.pagination').data("twbs-pagination")
+	    					|| select_change.at(-2) != $("#selectPart").val()
+	    					|| select_change2.at(-2) != $("#selectState").val()){
+	                    $('.pagination').twbsPagination('destroy');
+	                    pageflag=false;
+	                }
+					$("#pagination").twbsPagination({
+	    				startPage : 1 // 시작 페이지
+	    				,totalPages : data.total // 총 페이지 수
+	    				,visiblePages : 5 // 기본으로 보여줄 페이지 수
+	    				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+	    					search(page);
+	    				}
+	    			});
+				},
+				error:function(e){
+					console.log(e);
+				},complete:function(){
+	    			flag=true;
+	    		}
+			});
 		}
 	}
 	

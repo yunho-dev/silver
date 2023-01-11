@@ -35,6 +35,9 @@ public class ThingDTO {
 	private int itCnt;
 	//paging
 	private int offset;
+	//manage calculation
+	private int thCnt;
+	private int sumMoney;
 	
 	public int getTh_idx() {
 		System.out.println(th_idx);
@@ -180,6 +183,18 @@ public class ThingDTO {
 	}
 	public void setItCnt(int itCnt) {
 		this.itCnt = itCnt;
+	}
+	public int getThCnt() {
+		return thCnt;
+	}
+	public void setThCnt(int thCnt) {
+		this.thCnt = thCnt;
+	}
+	public int getSumMoney() {
+		return sumMoney;
+	}
+	public void setSumMoney(int sumMoney) {
+		this.sumMoney = sumMoney;
 	}
 	
 }

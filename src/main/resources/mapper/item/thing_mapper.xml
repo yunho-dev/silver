@@ -118,4 +118,27 @@
 		UPDATE item set it_name=#{param2} WHERE it_idx=#{param1}
 	</update>
 	
+	<select id="totalCntThManage" resultType="int">
+		SELECT COUNT(it_name) FROM (SELECT i.it_name, t.th_model
+			from thing t left outer join item i on t.it_idx = i.it_idx
+		GROUP BY t.th_model) AS cntManage;
+	</select>
+	
+	<select id="getThingManageList" resultType="thing" parameterType="int">
+		SELECT i.it_name, t.th_model, t.th_part, t.th_money, count(th_name) AS thCnt, sum(th_money) AS sumMoney, t.th_write 
+			from thing t left outer join item i on t.it_idx = i.it_idx
+		GROUP BY t.th_model ORDER BY thCnt DESC LIMIT 10 offset #{offset}
+	</select>
+	
+	<select id="getThingManageSearch">
+		SELECT i.it_name, t.th_model, t.th_part, t.th_date, t.th_money, count(th_name) AS thCnt, sum(th_money) AS thMoney, t.th_write
+			from thing t left outer join item i on t.it_idx = i.it_idx
+		WHERE
+			i.it_name LIKE CONCAT('%','휠체어','%')
+			AND t.th_part LIKE CONCAT('%','')
+			AND t.th_model LIKE CONCAT('%','','%')
+			AND t.th_write LIKE CONCAT('%','','%')
+		ORDER BY thCnt desc;
+	</select>
+	
 </mapper>

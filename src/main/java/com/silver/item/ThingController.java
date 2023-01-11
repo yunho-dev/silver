@@ -34,14 +34,14 @@ public class ThingController {
 	/* 비품 목록 리스트 */
 	@GetMapping(value = "/getThingList.do")
 	public HashMap<String, Object> getThingList(int page){
-		logger.info(page+"페이지 리스트(ajax) 데이터 요청");
+		logger.info("비품목록 "+page+"페이지 리스트(ajax) 데이터 요청");
 		return service.getThingList(page);
 	}
 	
 	/* 비품 검색 리스트 */
 	@GetMapping(value = "/getThingListSearch.do")
 	public HashMap<String, Object> getThingListSearch(@RequestParam HashMap<String, String> params){
-		logger.info(params.get("page")+"페이지 검색결과(ajax) 데이터 요청");
+		logger.info(params.get("비품목록 검색 "+"page")+"페이지 검색결과(ajax) 데이터 요청");
 		return service.getThingListSearch(params);
 	}
 	
@@ -134,5 +134,20 @@ public class ThingController {
 		ModelAndView mav = new ModelAndView("item/thingManage");
 		return mav;
 	}
+	
+	/* 비품 관리 대장 */
+	@GetMapping(value = "/getThingManageList.do")
+	public HashMap<String, Object> getThingManageList(int page){
+		logger.info("비품관리대장 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.getThingManageList(page);
+	}
+	
+	/* 비품 검색 리스트 */
+	@GetMapping(value = "/getThingManageSearch.do")
+	public HashMap<String, Object> getThingManageSearch(@RequestParam HashMap<String, String> params){
+		logger.info(params.get("비품목록 검색 "+"page")+"페이지 검색결과(ajax) 데이터 요청");
+		return service.getThingManageSearch(params);
+	}
+	
 	
 }
