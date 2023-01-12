@@ -225,19 +225,6 @@ public class MemberService {
 
 	}
 
-	// 마이페이지 가져오기 서비스
-	public MemberDTO mypage(MemberDTO loginId) {
-		logger.info("마이페이지 개인정보 가져오기 서비스");
-		
-		return dao.mypage(loginId);
-	}
-	
-	public MemberDTO mypage2(MemberDTO loginId) {
-		logger.info("마이페이지 개인 프로필 사진 가져오기 서비스");
-		
-		return dao.mypage2(loginId);
-	}
-
 
 
 }

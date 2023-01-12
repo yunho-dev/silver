@@ -10,18 +10,13 @@ public interface MemberDAO {
 
 	int totalCount();
 
-	//ArrayList<MemberDTO> memberList(int offset);
-	
 	// 직원 리스트 가져오기
 	ArrayList<MemberDTO> memberList(int offset);
 	
 	// 직원 필터링 검색
 	ArrayList<MemberDTO> memberListSearch(MemberDTO dto);
-	
-	// 마이페이지 가져오기
-	MemberDTO mypage(MemberDTO loginId);
-	
-	// 상세보기 가졍괴
+		
+	// 상세보기 가져오기
 	ArrayList<MemberDTO> memberdetailCall(String mem_name);
 	
 	// 직원 등록
@@ -63,8 +58,8 @@ public interface MemberDAO {
 	// 직원 사진 업데이트시 사진 유무 판별
 	MemberDTO findphoto(String memId);
 
-	// 마이페이지 포로필 사진 가져오기
-	MemberDTO mypage2(MemberDTO loginId);
+
+
 
 
 
