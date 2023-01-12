@@ -3,113 +3,127 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 
-<!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.member.MemberDAO">
+	
+	<!-- 직원 목록 조회 -->
 	<select id="memberList" resultType="member">
 		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum  from member m
-		,position p 
-		,part p2 
-		where m.part_num = p2.part_num and m.pos_num =p.pos_num ORDER BY mem_id DESC limit 10 offset #{param1}
+			,position p 
+			,part p2 
+			where m.part_num = p2.part_num and m.pos_num =p.pos_num ORDER BY mem_id DESC limit 10 offset #{param1}
 	</select>
-	
+
+	<!-- 직원 리스트 총 인원수 -->	
 	<select id="totalCountMemList" resultType="int">
 		SELECT COUNT(mem_id) FROM member
 	</select>
-	
+
+	<!-- 직원 리스트 필터링 -->	
 	<select id="memberListSearch" resultType="member" parameterType="member">
 		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum  from member m
-		,position p 
-		,part p2 
-		where 
-		m.part_num = p2.part_num 
-		and m.pos_num =p.pos_num 
-		and mem_id LIKE CONCAT('%',#{mem_id},'%')
-		and mem_name LIKE CONCAT('%',#{mem_name},'%')
-		and part_name LIKE CONCAT('%',#{part_name},'%')
-		and mem_state LIKE CONCAT('%',#{mem_state},'%')
-		ORDER BY mem_id DESC limit 10 offset #{offset}	
+			,position p 
+			,part p2 
+			where 
+			m.part_num = p2.part_num 
+			and m.pos_num =p.pos_num 
+			and mem_id LIKE CONCAT('%',#{mem_id},'%')
+			and mem_name LIKE CONCAT('%',#{mem_name},'%')
+			and part_name LIKE CONCAT('%',#{part_name},'%')
+			and mem_state LIKE CONCAT('%',#{mem_state},'%')
+			ORDER BY mem_id DESC limit 10 offset #{offset}	
 	</select>
 	
+	<!-- 직원 검색 필터링 총 인원수  -->	
  	<select id="totalCountMemFilterList" resultType="int" parameterType="hashmap">
 		SELECT COUNT(mem_id) 
-		from member m,position p,part p2 ,depart d where m.part_num = p2.part_num and m.pos_num =p.pos_num and m.dept_num =d.dept_num
-		and mem_name LIKE CONCAT('%',#{memId},'%')
-		and mem_id LIKE CONCAT('%',#{memName},'%')
-		and part_name LIKE CONCAT('%',#{memPart},'%')
-		and mem_state LIKE CONCAT('%',#{memState},'%')
+			from member m,position p,part p2 ,depart d where m.part_num = p2.part_num and m.pos_num =p.pos_num and m.dept_num =d.dept_num
+			and mem_name LIKE CONCAT('%',#{memId},'%')
+			and mem_id LIKE CONCAT('%',#{memName},'%')
+			and part_name LIKE CONCAT('%',#{memPart},'%')
+			and mem_state LIKE CONCAT('%',#{memState},'%')
 	</select> 
 	
-	
-	<select id="mypage" resultType="member">
-	SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
-	from `member` m,`position`p,part p2 ,depart d 
-	where m.part_num = p2.part_num 
-	and m.pos_num =p.pos_num 
-	and m.dept_num =d.dept_num  
-	and m.mem_id =#{mem_id}
-	</select>
-
+	<!-- 상세보기 정보 가져오기 -->
 	<select id="memberdetailCall" resultType="member" parameterType="String">
 		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum,mem_indate,mem_gender  from member m
-		,position p 
-		,part p2 
-		where 
-		m.part_num = p2.part_num 
-		and m.pos_num =p.pos_num 
-		and mem_name =#{param1}
-	</select>	
-	
+			,position p 
+			,part p2 
+			where 
+			m.part_num = p2.part_num 
+			and m.pos_num =p.pos_num 
+			and mem_name =#{param1}
+	</select>
+		
+	<!-- 아이디 정보 확인 -->
 	<select id="findmemID" resultType="String">
 		select mem_id from member where mem_name=#{param1}
 	</select>
-	
+
+	<!-- 직원 상세정보 사진 가져오기  -->	
 	<select id="photoView" resultType="member" parameterType="String">
 	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id}
 	</select>
 	
-	
-
+	<!-- 사진 삽입 -->
 	<insert id="photoInsert">
 		INSERT INTO filephoto(fp_oriFileName, fp_newFileName, mem_id, fpc_idx)
-			VALUES(#{param1}, #{param2}, #{param3}, 9);
+			VALUES(#{param1}, #{param2}, #{param3}, 9)
 	</insert>
 	
+	<!--직책번호 가져오기  -->
 	<select id="findpos" resultType="int">
 		SELECT pos_num from position where pos_name=#{pos_name}
 	</select>
-
+	
+	<!-- 직종번호 가져오기 -->
 	<select id="findpart" resultType="int">
 		SELECT part_num from part where part_name=#{part_name}
 	</select>
-
+	
+	<!-- 담당부서 번호 가져오기 -->
 	<select id="finddepart" resultType="int">
 		SELECT dept_num from depart where dept_name=#{dept_name}
 	</select>
 	
+	<!-- 직원 등록  -->
 	<insert id="memberWrite" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
 		INSERT into member(mem_id,mem_pw,mem_name,mem_gender,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,mem_num,mem_indate,mem_state,dept_num,part_num,pos_num)
-		VALUES(#{mem_id},#{mem_pw},#{mem_name},#{mem_gender},#{mem_email},#{mem_birth},#{mem_pnum},#{mem_addr},#{mem_daddr},#{mem_num},#{mem_indate},'재직중',#{dept_num},#{part_num},#{pos_num})
+			VALUES(#{mem_id},#{mem_pw},#{mem_name},#{mem_gender},#{mem_email},#{mem_birth},#{mem_pnum},#{mem_addr},#{mem_daddr},#{mem_num},#{mem_indate},'재직중',#{dept_num},#{part_num},#{pos_num})
 	</insert>
 	
+	<!-- 직원 업데이트 -->
 	<update id="memberUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
 		UPDATE member SET mem_id=#{mem_id},mem_pw=#{mem_pw},mem_name=#{mem_name},mem_gender=#{mem_gender},mem_email=#{mem_email}
-		,mem_birth=#{mem_birth},mem_pnum=#{mem_pnum},mem_addr=#{mem_addr},mem_daddr=#{mem_daddr},mem_num=#{mem_num},mem_indate=#{mem_indate}
-		,mem_state=#{mem_state},dept_num=#{dept_num},part_num=#{part_num},pos_num=#{pos_num} 
-		WHERE mem_id=#{mem_id}
+			,mem_birth=#{mem_birth},mem_pnum=#{mem_pnum},mem_addr=#{mem_addr},mem_daddr=#{mem_daddr},mem_num=#{mem_num},mem_indate=#{mem_indate}
+			,mem_state=#{mem_state},dept_num=#{dept_num},part_num=#{part_num},pos_num=#{pos_num} 
+			WHERE mem_id=#{mem_id}
 	</update>
 
-	<insert id="photoUpdate">
+	<!-- 직원 사진 업데이트 -->
+	<update id="photoUpdate">
 		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3}
-	</insert>
+	</update>
 	
+	<!-- 직원 수정폼 데이터 가져오기  -->
 	<select id="getMemberUpdateForm" resultType="member" parameterType="String">
 		SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
-	from `member` m,`position`p,part p2 ,depart d 
-	where m.part_num = p2.part_num 
-	and m.pos_num =p.pos_num 
-	and m.dept_num =d.dept_num  
-	and m.mem_id =#{memId}
+			from `member` m,`position`p,part p2 ,depart d 
+			where m.part_num = p2.part_num 
+			and m.pos_num =p.pos_num 
+			and m.dept_num =d.dept_num  
+			and m.mem_id =#{memId}
 	</select>
+	
+	<!-- 직원 사진 업데이트시 사진 유무 판별 -->	
+	<select id="findphoto" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	</select>		
+
+
+
+
+
+
 		
 </mapper>
 
