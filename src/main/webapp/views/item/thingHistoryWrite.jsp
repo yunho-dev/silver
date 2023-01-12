@@ -143,7 +143,7 @@
 					if(data.finish == 1){
 						location.reload();
 					}else{
-						alert('서버와 통신은 했으나 등록중 오류가 발생했습니다 \n다시 시도해 주세요')
+						alert('서버와 통신은 했으나 등록중 오류가 발생했습니다 \n다시 시도해 주세요 \n현상이 지속되면 새로고침 후 진행해 주세요')
 					}
 				},
 				error:function(e){
