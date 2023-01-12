@@ -65,13 +65,16 @@ function AlarmlistCall(allist){
 	var count=0;
 	var content="";
 	for(var i=0;i<allist.length;i++){
+		if(allist.length == 0){
+			content+='<li><a class="dropdown-item" href="#">'+"알림이 없습니다."+'</a></li>';
+		}
+		if(allist[i].ar_cnt == '안읽음'){
 		content +='<li id='+allist[i].ar_idx+' ><a class="dropdown-item" href="'+allist[i].ar_addr+'">'
 		content += allist[i].ar_content
 		var date = new Date(allist[i].ar_date);
 		content +='<span style="float:right">'+ date.toLocaleDateString("ko-KR") + " "
 		content +=date.toLocaleTimeString("en-US", {hour12 : false}) +'</span></a></li>'
-		if(allist[i].ar_cnt == '안읽음'){
-			count++;
+		count++;
 		}
 	}
 	$("#allist").empty();
@@ -80,7 +83,8 @@ function AlarmlistCall(allist){
 }
 
 $(document).on('click','#allist li',function(){
-	var idx=$(this)[0].id();
+	var idx=$(this).attr('id');
+	console.log('AJAX idx 값'+idx);
 	$.ajax({
 		type:'get'
 		,url:'removeCount'
@@ -89,10 +93,10 @@ $(document).on('click','#allist li',function(){
 		,success:function(data){
 			console.log(data);
 			if(data.row > 0){
-				$(this)[0].id().empty();
+				console.log($(this));
 			}
 		},error:function(e){
-			
+			console.log(e);
 		}
 	});	
 });
