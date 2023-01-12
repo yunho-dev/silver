@@ -109,7 +109,6 @@ display: block;
                                 		<tr class="table-secondary">
                                 			<th scope="col">No.</th>
                                 			<th scope="col">입소자</th>
-                                			<th scope="col">생년월일</th>
                                 			<th scope="col">성별</th>
                                 			<th scope="col">등급</th>
                                 			<th scope="col">상황실</th>
@@ -121,7 +120,6 @@ display: block;
                                 	 	<tr>
                                 	 		<td>${status.count}</td>
                                 	 		<td>${list.re_name}</td>
-                                	 		<td>${list.re_jumin}</td>
                                 	 		<td>${list.re_gender}</td>
                                 	 		<td>${list.re_grade}</td>
                                 	 		<td>${list.ro_name}</td>

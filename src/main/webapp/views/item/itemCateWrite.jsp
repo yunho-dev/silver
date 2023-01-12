@@ -92,7 +92,6 @@
 	
 	$('#cateSubmit').click(function(){
 		var $cateName = $('#cateResist input[name=cateName]');
-		console.log($cateName)
 		if(cateCheck==true){
 			
 			if($cateName.val()==''){

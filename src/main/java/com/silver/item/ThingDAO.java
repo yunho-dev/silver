@@ -39,5 +39,27 @@ public interface ThingDAO {
 	int itemCateUpdate(int itIdx, String cateName);
 
 	ArrayList<ThingDTO> getItemSearch(String itName);
+
+	ArrayList<ThingDTO> getThingManageList(int offset);
+
+	int totalCntThManage();
+
+	ArrayList<ThingDTO> getThingManageSearch(ThingDTO dto);
+
+	int totalCountManageSearch(HashMap<String, String> params);
+
+	int totalCntThHistory();
+
+	ArrayList<ThingDTO> getThingHistoryList(int offset);
+
+	int totalCountHistorySearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> getThingHistorySearch(ThingDTO dto);
+
+	int thingHistoryWrite(HashMap<String, String> params);
+
+	void writeThState(int thIdx);
+
+	int getThIdx(String thName);
 	
 }
