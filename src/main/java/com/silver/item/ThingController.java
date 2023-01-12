@@ -41,7 +41,7 @@ public class ThingController {
 	/* 비품 검색 리스트 */
 	@GetMapping(value = "/getThingListSearch.do")
 	public HashMap<String, Object> getThingListSearch(@RequestParam HashMap<String, String> params){
-		logger.info(params.get("비품목록 검색 "+"page")+"페이지 검색결과(ajax) 데이터 요청");
+		logger.info("비품 목록 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
 		return service.getThingListSearch(params);
 	}
 	
@@ -128,7 +128,7 @@ public class ThingController {
 		return service.itemCateUpdate(itIdx, cateName);
 	}
 	
-	/* 비품 목록 이동 */
+	/* 비품 관리 대장으로 이동 */
 	@GetMapping(value = "/thingManage")
 	public ModelAndView thingManage() {
 		ModelAndView mav = new ModelAndView("item/thingManage");
@@ -142,12 +142,35 @@ public class ThingController {
 		return service.getThingManageList(page);
 	}
 	
-	/* 비품 검색 리스트 */
+	/* 비품 관리대장 검색 */
 	@GetMapping(value = "/getThingManageSearch.do")
 	public HashMap<String, Object> getThingManageSearch(@RequestParam HashMap<String, String> params){
-		logger.info(params.get("비품목록 검색 "+"page")+"페이지 검색결과(ajax) 데이터 요청");
+		logger.info("비품 관리대장 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
 		return service.getThingManageSearch(params);
 	}
 	
+	/* 비품 사용내역으로 이동 */
+	@GetMapping(value = "/thingHistory")
+	public ModelAndView thingHistory() {
+		ModelAndView mav = new ModelAndView("item/thingHistory");
+		return mav;
+	}
 	
+	@GetMapping(value = "/getThingHistoryList.do")
+	public HashMap<String, Object> getThingHistoryList(int page){
+		logger.info("비품사용내역 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.getThingHistoryList(page);
+	}
+	
+	@GetMapping(value = "getThingHistorySearch.do")
+	public HashMap<String, Object> getThingHistorySearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 사용내역 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThingHistorySearch(params);
+	}
+	
+	/* 비품 사용내역 등록 */
+	@PostMapping(value = "/thingHistoryWrite.do")
+	public HashMap<String, Object> thingHistoryWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		return service.thingHistoryWrite(params, request);
+	}
 }

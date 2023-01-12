@@ -30,10 +30,10 @@
   <table class="table">
   <thead>
     <tr>
-      <th scope="col">이름</th>
-      <th scope="col">현재감염상태</th>
-      <th scope="col">생년월일</th>
-      <th scope="col">생활실</th>
+      <th>이름</th>
+      <th>현재감염상태</th>
+      <th>생년월일</th>
+      <th>생활실</th>
     </tr>
   </thead>
   <tbody id="infestList">
@@ -57,13 +57,14 @@
     </div>
   </div>
   <div class="col-12">
-    <button type="submit" class="btn btn-primary">검색</button>
+    <button id="search" type="button" class="btn btn-primary btn-sm" onclick="infestSearch(page2)">검색</button>
   </div>
 </form>
 </div>
 </div>
 </div>
 <script>
+
 var showPage = 1;
 infestListCall(showPage);
 
@@ -95,6 +96,51 @@ function infestListCall(page){
 		}
 	});
 	
+}
+
+var flag=true;
+var pageflag=true;
+var page2=1;
+var select_change=new Array();
+function infestSearch(page2){
+	select_change.push($("#select").val());
+	if(flag){
+    var select=$("#select").val();
+    var seacontent=$("#seacontent").val();
+	flag=false;
+	if(seacontent == ""){
+		window.location.reload();
+	}
+	
+	$.ajax({
+		type:'get'
+		,url:'searchNotice'
+		,dataType:'json'
+		,data:{'select':select,'seacontent':seacontent,'page':page2}
+		,success:function(data){
+			console.log(data);
+			listCall(data.list);
+			if(pageflag == true && $('.pagination').data("twbs-pagination")
+					|| select_change.at(-2) != $("#select").val()){
+                $('.pagination').twbsPagination('destroy');
+                pageflag=false;
+            }
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					infestSearch(page);
+				}
+			});
+		}
+		,error:function(e){
+			console.log(e);
+		},complete:function(){
+			flag=true;
+		}
+	});
+	}
 }
 
 function drawList(list){

@@ -25,7 +25,7 @@
    <div class="page-heading">
        <h3>감염병 관리 히스토리</h3>
    </div>
-   <button onclick="location.href='infestHistoryWriteForm'" class="btn btn-primary" style="float: right;">글작성</button>
+   <button onclick="goWirte()" class="btn btn-primary" style="float: right;">글작성</button>
   <table class="table">
   <thead>
     <tr>
@@ -64,6 +64,16 @@
 </div>
 </div>
 <script>
+var str=$(".timeSub").text();
+var result=str.substr(0,11);
+$(".timeSub").text(result);
+
+var url=window.location.search.split('?re_idx=')[1];
+console.log("idx 값 : "+url);
+function goWirte(){
+	location.href="infestHistoryWriteForm?re_idx="+url;
+}
+
 var showPage = 1;
 infestListHistoryCall(showPage);
 
@@ -72,7 +82,7 @@ function infestListHistoryCall(page){
 	$.ajax({
 		type:'get',
 		url:'infestListHistoryCall',
-		data:{page:page},
+		data:{'page':page,'re_idx':url},
 		dataType:'json',
 		success:function(data){
 			console.log(data);
@@ -102,9 +112,11 @@ function drawList(list){
 	
 	for (var i = 0; i < list.length; i++) {
 		content +='<tr>';
-		content +='<td>'+list[i].if_date+'</td>';
+		content +='<td class="timeSub">'+list[i].if_date+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
-		content +='<td>'+list[i].if_jusa+'</td>';
+		content +='<td>'
+		content +="<a href='infestHistoryWriteUpdateForm?if_idx="+list[i].if_idx+"'>"+list[i].if_jusa+"</a>";
+		content +='</td>';
 		content +='<td>'+list[i].if_name+'</td>';
 		content +='<td>'+list[i].if_comment+'</td>';
 		content +='<td>'+list[i].if_write+'</td>';

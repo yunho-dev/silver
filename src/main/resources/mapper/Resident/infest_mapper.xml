@@ -9,24 +9,49 @@
 		SELECT r.re_idx ,r.re_name, r.re_jumin,r2.ro_name,i.if_state  
 		FROM resident r,room r2,infest i 
  		where r.ro_name =r2.ro_name group by r.re_idx 
- 		limit 10 offset #{param1};
+ 		limit 10 offset #{param1}
 	</select>
 	
 	<select id="totalCount" resultType="int">
-		SELECT COUNT(re_idx) from resident;
+		SELECT COUNT(re_idx) from resident
 	</select>
 	
 	<select id="infestListHistoryCall" resultType="hashmap">
-		SELECT i.if_date, i.if_state, i.if_jusa, if_name, i.if_comment, i.if_write
-			from infest i 
-			inner join resident r 
-		on  r.re_idx = i.re_idx where r.re_idx
-		limit 10 offset #{param1};
+		SELECT * FROM infest i where re_idx =#{param2}
+		limit 10 offset #{param1}
 	</select>
 	
 	<select id="totalCount1" resultType="int">
-		SELECT COUNT(re_idx) from resident;
+		SELECT COUNT(re_idx) from resident
 	</select>
+	
+	<select id="searchinfestTotal">
+		select count(re_idx) from resident
+	</select>
+	
+	<select id="searchinfest" resultType="int">
+		select count(re_idx) from resident
+	</select>
+	
+	<insert id="infestHistoryWrite" parameterType="hashmap">
+		INSERT INTO infest (if_write,if_jusa,if_name,if_state,if_comment,re_idx)
+		VALUES (#{if_write},#{if_jusa},#{if_name},#{if_state},#{if_comment},#{re_idx});
+	</insert>
+	
+ 	<select id="infestHistoryWriteUpdateForm" 
+ 	resultType="infest" parameterType="int">
+ 		SELECT * from infest i where if_idx =#{param1}
+ 	</select>
+	
+	<update id="infestHistoryUpdate" parameterType="hashmap">
+		UPDATE infest set 
+		if_write=#{param1},
+		if_jusa=#{param2},
+		if_name=#{param3},
+		if_state=#{param4},
+		if_comment=#{param5},
+		where if_idx=#{param6}
+	</update>
 </mapper>
 
 
