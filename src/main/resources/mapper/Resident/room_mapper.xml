@@ -5,12 +5,26 @@
 
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.resident.RoomDAO">
-	<select id="roomList" resultType="room">
-		select r2.re_name from room r inner join resident r2 on r.ro_name = r2.ro_name
-	</select>
+<!-- 	<select id="roomList" resultType="room"> -->
+<!-- 		select r.ro_name ,r.ro_floor,r.ro_damdang ,r.ro_full,r2.re_name  from room r inner join resident r2 on r.ro_name = r2.ro_name AND r.ro_name='101호'; -->
+<!-- 		select r.ro_name,r.ro_floor,r.ro_damdang,r.ro_full,r2.re_name from room r inner join resident r2 on r.ro_name = r2.ro_name -->
+<!-- 	</select> -->
 	
 	<select id="memList" resultType="room">
 		select mem_name from member where part_num ='1';
 	</select>
+	
+	<insert id="roomWrite">
+		insert into room(ro_floor,ro_name,ro_full,ro_damdang) VALUES(#{param1},#{param2},#{param3},#{param4});
+	</insert>
+	
+	<select id="roomlistCall" resultType="room">
+		select ro_name from room;
+	</select>
+
+
+
+	
+	
 
 </mapper>

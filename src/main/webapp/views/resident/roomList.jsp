@@ -42,7 +42,21 @@
 					data-bs-target="#roomInsert">생활실 등록</button>
 				<!-- <a href="#" class="btn btn-primary">생활실 등록</a> -->
 			</div>
+			
+<!-- 			<div> -->
+				
+<!-- 					<div> -->
+<!-- 						<p>1층</p> -->
+<%-- 						<c:forEach items="${roomList}" var="room"> --%>
+<%-- 							<c:if test="${room.ro_floor eq '1' }"> --%>
+<%-- 								<p>${room.ro_name}<span>${room.re_name}</span></p> --%>
+<%-- 							</c:if> --%>
+<%-- 						</c:forEach> --%>
+<!-- 					</div> -->
 
+<!-- 			</div> -->
+			
+	
 
 			<!-- Table head options start -->
 			<section class="section">
@@ -51,58 +65,63 @@
 						<div class="card">
 
 
+							<!-- 생활실 등록시 추가 되어야 할 생활실 양식(?) -->
+							 
 							<div class="card-header">
 								<h4 class="card-title">1층</h4>
 
-								<div class="card-content row">
+								<div class="card-content row" id="appendroomtable">
+									
+<!-- 									div 에 id 주고 추가 눌렀을 경우 ajax로 -->
+<!-- 									<div class="table-responsive col-md-3"> -->
 
+<!-- 										<table class="table mb-0"> -->
+<!-- 											<thead class="thead-dark"> -->
+<!-- 												<tr> -->
+<!-- 													<th id="roomName">101호<span -->
+<!-- 														style="font-size: x-small;">담당자:홍길동</span></th> -->
+<!-- 													ro_name은 호실이름 -->
+<!-- 												</tr> -->
+<!-- 											</thead> -->
 
-									<div class="table-responsive col-md-3">
-										<!-- div 에 id 주고 추가 눌렀을 경우 ajax로-->
-										<table class="table mb-0">
-											<thead class="thead-dark">
-												<tr>
-													<th id="roomName">101호<span
-														style="font-size: x-small;">담당자:홍길동</span></th>
-													<!-- ro_name은 호실이름 -->
-												</tr>
-											</thead>
+<!-- 											<tbody> -->
+<%-- 												<c:forEach items="${roomList}" var="resident"> --%>
+<!-- 													<tr> -->
+<%-- 														<td class="text-bold-500">${resident.re_name} --%>
+<!-- 															<button type="button" class="btn btn-primary btn-sm" -->
+<!-- 																data-bs-toggle="modal" data-bs-target="#delresdient" -->
+<!-- 																style="float: right;">삭제</button> -->
+<!-- 														</td> -->
+<!-- 													</tr> -->
+<%-- 												</c:forEach> --%>
+<!-- 											</tbody> -->
 
-											<tbody>
-												<c:forEach items="${roomList}" var="resident">
-													<tr>
-														<td class="text-bold-500">${resident.re_name}
-															<button type="button" class="btn btn-primary btn-sm"
-																data-bs-toggle="modal" data-bs-target="#delresdient"
-																style="float: right;">삭제</button>
-														</td>
-													</tr>
-												</c:forEach>
-											</tbody>
-
-											<tfoot>
-												<tr>
-													<td>
-														<button type="button" class="btn btn-primary"
-															data-bs-toggle="modal" data-bs-target="#roomUpdate">
-															생활실수정</button>
-														<button type="button" class="btn btn-primary"
-															data-bs-toggle="modal" data-bs-target="#addresdient">
-															입소자추가</button>
-													</td>
-													<td>
-														<!-- <p>6/6</p> -->
-													</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-
-
-
+<!-- 											<tfoot> -->
+<!-- 												<tr> -->
+<!-- 													<td> -->
+<!-- 														<button type="button" class="btn btn-primary" -->
+<!-- 															data-bs-toggle="modal" data-bs-target="#roomUpdate"> -->
+<!-- 															생활실수정</button> -->
+<!-- 														<button type="button" class="btn btn-primary" -->
+<!-- 															data-bs-toggle="modal" data-bs-target="#addresdient"> -->
+<!-- 															입소자추가</button> -->
+<!-- 													</td> -->
+<!-- 												</tr> -->
+<!-- 												<tr> -->
+<!-- 													<td> -->
+<!-- 														<p>6/6</p> -->
+<!-- 													</td> -->
+<!-- 												</tr> -->
+<!-- 											</tfoot> -->
+<!-- 										</table> -->
+<!-- 									</div> -->
+									
+									
+									
 								</div>
 							</div>
-
+							
+							
 							<hr>
 							<!-- 밑에는 2층-->
 
@@ -245,7 +264,7 @@
 							<!--text 입력창-->
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" onclick="save()">저장</button>
+							<button type="button" class="btn btn-primary" onclick="save(floor,inroomName,Total,damdangSelect)">저장</button>
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">닫기</button>
 
@@ -280,7 +299,7 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="floor">층</label> <input type="text"
-														class="form-control" id="floor" placeholder="층을 입력해주세요">
+														class="form-control" id="upfloor" placeholder="층을 입력해주세요">
 													<p>
 														<small class="text-muted">ex)3 *숫자만입력*</small>
 												</div>
@@ -288,7 +307,7 @@
 												<div class="form-group">
 													<label for="roomName">호실명</label>
 													<!-- <small class="text-muted">eg.<i>someone@example.com</i></small> -->
-													<input type="text" class="form-control" id="roomName"
+													<input type="text" class="form-control" id="uproomName"
 														placeholder="생활실명을 입력해주세요">
 													<p>
 														<small class="text-muted">ex)해바라기실</small>
@@ -358,11 +377,15 @@
 </body>
 
 <script>
+
+
+roomlistCall();
+
         console.log("check1");
         
         /*생활실등록->등록버튼*/
        		
-        function save(){
+        function save(floor,inroomName,Total,damdangSelect){
         	console.log("check");
         	var floor = $('#floor').val();
         	var inroomName = $('#inroomName').val();
@@ -390,12 +413,19 @@
 
  	        		$.ajax({
  	        			type:'GET',
- 	        			url:'roomList',
+ 	        			url:'roomWrite',
  	         			data:{'floor':floor,'inroomName':inroomName,'Total':Total,'damdangSelect':damdangSelect},
  	        			dataType:'JSON',
  	        			success:function(data){
  	        				console.log(data);
+ 	        				console.log(data.success);
  	        				alert("성공");
+ 	        				if(data.success>0){
+ 	        					
+ 	        					residentdrawList(floor,inroomName,Total,damdangSelect);//1-1등록 성공시 drawList
+ 	        					
+ 	        					$('#roomInsert').modal('hide');//이걸해줘야 저장시 modal 창이 닫히더라고					 	        					
+ 	        				}
  	        			},
  	        			error:function(e){
  	        				console.log(e);
@@ -403,8 +433,125 @@
  	        			}
  	        		});
 	        	}
+        }
+        
+        
+        
+        
+        //카테고리 눌렀을때 리스트 보여주는 ajax
+        function roomlistCall(){
+        	
+        	$.ajax({
+        		type:'GET',
+        	    url:'roomlistCall.do',
+        	    data:{},
+        	    datatype:'JSON',
+        	    success:function(data){
+        	    	console.log(data);
+        	    	showroomdrawList(data.roomlistCall);//리스트 그려젔고residentdrawList(data.roomlistCall)
+        	    	alert("서엉공");
+        	    },
+        	    error:function(e){
+        	    	console.log(e);
+        	    	alert("실패");
+        	    }
+        		
+        	});
+        }
+        
+        
+        
+        //생활실등록 테이블 추가됨
+        function showroomdrawList(list){
+        	//console.log(floor,inroomName,Total,damdangSelect);
+        	//$('#appendroomtable').append(floor,inroomName,Total,damdangSelect);
+        	var content='';
+        	for(var i=0;i<list.length;i++){
+        	content+='<div class="table-responsive col-md-3">';
+        	content+='<table class="table mb-0">';
+        	content+='<thead class="thead-dark">';
+        	content+='<th id="roomName">'+list[i].ro_name+'</th>';
+        	content+='</thead>';
+        	content+='<tbody>';
+        	content+='<tr>';
+        	content+='<td class="text-bold-500">';
+        	//
+        	content+='<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#delresdient" style="float: right;">'+"삭제"+'</button>';
+        	content+='</td>';
+        	content+='</tr>';
+        	content+='</tbody>';
+        	content+='<tfoot>';
+        	content+='<tr>';
+        	content+='<td>';
+        	content+='<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomUpdate">'+"생활실수정"+'</button>';
+        	content+='</td>';
+        	content+='</tr>';
+        	content+='<tr>';
+
+        	content+='</tr>';
+        	content+='</tfoot>';
+        	content+='</table>';
+        	content+='</div>';
+        	}
+        	$('#appendroomtable').append(content);
+        	
+        	
 
         }
+        
+        
+        
+        
+        
+        
+        
+//         //생활실등록 테이블 추가됨
+//         function residentdrawList(floor,inroomName,Total,damdangSelect){
+//         	//console.log(floor,inroomName,Total,damdangSelect);
+//         	//$('#appendroomtable').append(floor,inroomName,Total,damdangSelect);
+//         	var content='';
+//         	content+='<div class="table-responsive col-md-3">';
+//         	content+='<table class="table mb-0">';
+//         	content+='<thead class="thead-dark">';
+//         	content+='<th id="roomName">'+inroomName+'<span>'+damdangSelect+'</span>'+'</th>';
+//         	content+='</thead>';
+//         	content+='<tbody>';
+//         	content+='<tr>';
+//         	content+='<td class="text-bold-500">';
+//         	//
+//         	content+='<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#delresdient" style="float: right;">'+"삭제"+'</button>';
+//         	content+='</td>';
+//         	content+='</tr>';
+//         	content+='</tbody>';
+//         	content+='<tfoot>';
+//         	content+='<tr>';
+//         	content+='<td>';
+//         	content+='<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomUpdate">'+"생활실수정"+'</button>';
+//         	content+='<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addresdient">'+"입소자추가"+'</button>';
+//         	content+='</td>';
+//         	content+='</tr>';
+//         	content+='<tr>';
+//         	content+='<td>';
+//         	content+='<p>'+Total+'</p>';
+//         	content+='</td>';
+//         	content+='</tr>';
+//         	content+='</tfoot>';
+//         	content+='</div>';
+        	
+//         	content+='<td>'+floor+'</td>';
+        	
+//         	content+='</table>';
+//         	$('#appendroomtable').append(content);
+
+//         }
+        
+
+        
+
+        
+        
+        
+
    
 </script>
 
