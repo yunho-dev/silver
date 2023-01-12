@@ -1,11 +1,13 @@
 package com.silver.resident;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 @Service
@@ -32,7 +34,7 @@ public class InfestService {
 		return result;
 	}
 
-	public HashMap<String, Object> infestListHistoryCall(int page) {
+	public HashMap<String, Object> infestListHistoryCall(int page, int re_idx) {
 		int offset = (page-1)*10;
 		
 		int totalCount = infestDAO.totalCount1();
@@ -43,10 +45,47 @@ public class InfestService {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("total", totalPages);
-		result.put("list", infestDAO.infestListHistoryCall(offset));
+		result.put("list", infestDAO.infestListHistoryCall(offset,re_idx));
 		
 		return result;
 	}
+
+	public int searchinfestTotal(String select, String seacontent) {
+		
+		return infestDAO.searchinfestTotal(select,seacontent);
+	}
+
+	public Object searchinfest(String select, String seacontent, int page) {
+		ArrayList<InfestDTO>list = infestDAO.searchinfest(select,seacontent,page);
+		return list;
+	}
+
+	public void infestHistoryWrite(HashMap<String, String> params) {
+		int row = infestDAO.infestHistoryWrite(params);
+		
+	}
+	
+
+	public void infestHistoryUpdate(HashMap<String, String> params) {
+		logger.info("데이터 이동 확인");
+		int row = infestDAO.infestHistoryUpdate(params);
+		
+	}
+
+	public ModelAndView infestHistoryWriteUpdateForm(int if_idx) {
+		logger.info("이동확인");
+		InfestDTO dto = infestDAO.infestHistoryWriteUpdateForm(if_idx);
+		ModelAndView mav = new ModelAndView("resident/infestHistoryWriteUpdateForm");
+		logger.info("if_idx:{}",if_idx);
+		mav.addObject("infest",dto);//"infest"이름은 infestHistoryWriteUpdateForm의 form태그 안의 value${infest.if_jusa}이 infest 와 같이 설정해야함
+		return mav;
+	}
+
+
+	
+
+	
+	
 	
 	
 	
