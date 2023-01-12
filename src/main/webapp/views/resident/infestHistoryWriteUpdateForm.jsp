@@ -24,40 +24,40 @@
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
-       <h3>감염병 관리 히스토리 작성</h3>
+       <h3>감염병 관리 히스토리 수정</h3>
    </div>
  
-  <form action="infestHistoryWrite" method="post">
-  <button  class="btn btn-primary" style="float: right; ">등록</button>     
+  <form action="infestHistoryUpdate" method="post">
+  <button  class="btn btn-primary" style="float: right; ">수정</button>     
   <table class="table">
   <thead>
     <tr>  
       <th scope="col">작성자</th>
       <td>
-      	<input type="text" name="if_write"/>	
+      	<input type="text" name="if_write" value="${infest.if_write}"/>
       </td>
     </tr> 
     <tr>  
       <th scope="col">예방접종내역</th>
-      <td>
-      	<input type="text" name="if_jusa"/>	
+      <td> 
+      	<input type="text" name="if_jusa" value="${infest.if_jusa}"/>	
       </td>
     <tr>  
       <th scope="col">감염병 명</th>
       <td>
-      	<input type="text" name="if_name"/>	
+      	<input type="text" name="if_name" value="${infest.if_name}"/>	
       </td>
     </tr>
     <tr>  
       <th scope="col">현재 감염 상태</th>
       <td>
-      	<input type="text" name="if_state"/>	
+      	<input type="text" name="if_state" value="${infest.if_state}"/>	
       </td>
     </tr>
     <tr>  
       <th scope="col">조치</th>
       <td>
-      	<input type="text" name="if_comment"/>	
+      	<input type="text" name="if_comment" value="${infest.if_comment}"/>	
       </td>
     </tr>
   </thead>

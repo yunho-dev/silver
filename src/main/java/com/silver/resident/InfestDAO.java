@@ -16,8 +16,24 @@ public interface InfestDAO {
 
 	int totalCount();
 
-	ArrayList<HashMap<String, Object>> infestListHistoryCall(int offset);
+	ArrayList<HashMap<String, Object>> infestListHistoryCall(int offset, int re_idx);
 
 	int totalCount1();
+
+	int searchinfestTotal(String select, String seacontent);
+
+	ArrayList<InfestDTO> searchinfest(String select, String seacontent, int page);
+
+	int infestHistoryWrite(HashMap<String, String> params);
+
+	int infestHistoryUpdate(HashMap<String, String> params);
+
+	
+
+	InfestDTO infestHistoryWriteUpdateForm(int if_idx);
+
+	
+
+	
 
 }

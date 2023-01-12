@@ -54,7 +54,7 @@
 								</table>
 							</div>
 						</div>
-						<div class="card-body py-4 px-5">
+						<div class="card-body py-4 px-5" style="margin:0 auto;">
 							<div>
 								<select id="select">
 									<option value="title">제목</option>
@@ -63,7 +63,7 @@
 								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="noticeSearch(page2)">검색</button>
 							</div>
 						</div>
-						<div class="card-body py-4 px-5">
+						<div class="card-body py-4 px-5" style="margin:0 auto;">
 							<div id="pagint">
 								<div class="container">
 									<nav aria-label="Page navigation" style="text-align: center;">
