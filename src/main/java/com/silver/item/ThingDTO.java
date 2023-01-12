@@ -17,6 +17,7 @@ public class ThingDTO {
 	private String th_spon;
 	private String th_state;
 	//history
+	private int his_idx;
 	private String his_write;
 	private String his_name;
 	private Date his_rent;
@@ -105,6 +106,12 @@ public class ThingDTO {
 	}
 	public void setTh_state(String th_state) {
 		this.th_state = th_state;
+	}
+	public int getHis_idx() {
+		return his_idx;
+	}
+	public void setHis_idx(int his_idx) {
+		this.his_idx = his_idx;
 	}
 	public String getHis_write() {
 		return his_write;

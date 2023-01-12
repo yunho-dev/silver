@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
+<mapper namespace="com.silver.payment.PayFormDAO">
+	
+	<select id="mylistCall" resultType="payformdto">
+		select p.pf_idx ,p.pf_cate ,p.pf_subject ,p.pf_count,p.pf_subject,m.mem_name  
+			from payform p,member m  where p.pf_write =#{param1} and p.pf_write =m.mem_id 
+				order by p.pf_count limit 10 offset #{param2};
+	</select>
+	
+	<select id="mylistCallTotal" resultType="int">
+		select count(pf_idx) from payform p where p.pf_write =#{param1}
+	</select>
+	
+	<select id="AlllistCallTotal" resultType="int">
+		select count(p.pf_idx) from payform p ;
+	</select>
+	
+	<select id="alllistCall" resultType="payformdto">
+		select p.pf_idx ,p.pf_cate ,p.pf_subject ,p.pf_count,p.pf_subject,m.mem_name  
+			from payform p,member m  where p.pf_write =m.mem_id 
+				order by p.pf_count limit 10 offset #{param1};
+	</select>
+	
+	<select id="payfromdetail" resultType="payformdto">
+		select * from payform p where pf_idx =#{param1}
+	</select>
+	
+	<update id="payformdelete">
+		update payform set pf_write='삭제됨' where pf_idx=#{param1}
+	</update>
+	
+	<update id="payformupdate_do">
+		update payform set pf_subject=#{param3},pf_content=#{param4},pf_cate=#{param2}
+			where pf_idx=#{param1}
+	</update>
+
+</mapper>
+
+
+
+
+

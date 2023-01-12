@@ -51,27 +51,7 @@ public class MemberController {
 		logger.info("params : {} ", params);
 		return service.memberListSearch(params);
 	}
-	
-	// 마이페이지 리스트
-	  @RequestMapping(value="/mypageList")
-		 
-	  public String mypage(Model model,HttpSession session) {
-		  MemberDTO loginId = (MemberDTO) session.getAttribute("loginId");
-		  logger.info("loginId:"+loginId);
-		  logger.info("마이페이지 조회");
 		  
-		  if(session.getAttribute("loginId")!=null) {
-			  MemberDTO dto =service.mypage(loginId);
-				model.addAttribute("info",dto);
-				logger.info("dto:"+dto);
-						  
-		  }else{
-			  model.addAttribute("msg", "로그인이 필요한 서비스 입니다.");
-		  }
-
-		  return "/member/mypageList"; 
-	 }
-	  
 	  // 직원 상세정보 불러오기
 		@GetMapping(value = "/memberdetailCall.do")
 		@ResponseBody
@@ -92,11 +72,11 @@ public class MemberController {
 			return service.memberWrite(memPhoto, params);
 		}
 		
-		// 직원 수정
+		// 직원 수정 컨트롤러
 		@PostMapping(value = "/memberUpdate.do")
 		@ResponseBody
 		public HashMap<String, Object> memberUpdate(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
-			logger.info("직원 등록 컨트롤러");
+			logger.info("직원 수정 컨트롤러");
 			logger.info("params:{}",params);
 			logger.info("memPhoto:{}",memPhoto);
 			return service.memberUpdate(memPhoto, params);
@@ -105,10 +85,10 @@ public class MemberController {
 		// 직원 수정 폼에 대한 정보 컨트롤러
 		@GetMapping(value = "/getMemberUpdateForm.go")
 		@ResponseBody
-		public HashMap<String, Object> getMmeberUpdateForm(@RequestParam String memId){
+		public HashMap<String, Object> getMemberUpdateForm(@RequestParam String memId){
 			
-			logger.info(memId+"사원번호에 대한 수정 요청");
+			logger.info(memId+"사원번호에 대한 직원정보 수정 요청");
 			return service.getMemberUpdateForm(memId);
 		}
-	
+			
 }

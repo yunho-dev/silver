@@ -71,7 +71,7 @@ public class NoticeService {
 			int result=dto.getBd_idx();
 			logger.info("키 제너레이션 키 :"+result);
 			String mem_name=sessionDTO.getMem_name();
-			alservice.notiAlarm(mem_name,result,"공지사항");
+			alservice.notiAlarm(mem_name,result,"공지사항",mem_id);
 		}
 		return mav;
 	}

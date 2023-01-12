@@ -7,11 +7,11 @@
 <mapper namespace="com.silver.alarm.AlarmDAO">
 	<insert id="notiAlarmInsert">
 		insert into alread(mem_id,ar_cnt,ar_content,ac_idx,ar_addr)
-			select m.mem_id,'안읽음',#{param1},5,#{param2} from member m; 
+			select m.mem_id,'안읽음',#{param1},5,#{param2} from `member` m where m.mem_id not in(#{param3});
 	</insert>
 	
 	<select id="AlarmCall" resultType="alarm">
-		select * from alread a  where a.mem_id =#{param1} order by ar_cnt ='안읽음' desc;
+		select * from alread a  where a.mem_id =#{param1} order by ar_idx desc;
 	</select>
 	
 	<update id="removeCount">

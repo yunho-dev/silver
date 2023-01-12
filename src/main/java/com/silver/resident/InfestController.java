@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,26 +31,64 @@ public class InfestController {
 		return infestservice.infestListCall(page);
 	}
 	
+	@GetMapping(value = "/infestSearch")
+	@ResponseBody
+	public HashMap<String, Object>infestSearch(@RequestParam String select,@RequestParam String seacontent
+			,@RequestParam int page){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int total=infestservice.searchinfestTotal(select,seacontent);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		logger.info("total 값 : "+total);
+		logger.info("page_idx 값 : "+page_idx);
+		logger.info("select 값 : "+select);
+		logger.info("page 값은 : "+page);
+		map.put("page_idx", page_idx);
+		map.put("list", infestservice.searchinfest(select, seacontent,page));
+		return map;
+	}
 	@GetMapping(value="/infestListHistory")
 	public String infestListHistory() {
 		logger.info("히스토리 이동");
 		return "resident/infestListHistory";
 	}
-	
 	@RequestMapping(value = "/infestListHistoryCall")
 	@ResponseBody
-	public HashMap<String, Object> infestListHistoryCall(@RequestParam int page) {
+	public HashMap<String, Object> infestListHistoryCall(@RequestParam int page,@RequestParam int re_idx) {
 		logger.info("히스토리 호출");
-		return infestservice.infestListHistoryCall(page);
+		logger.info("re_idx 호출 : "+re_idx);
+		//logger.info("re_idx:{}",re_idx);
+		return infestservice.infestListHistoryCall(page,re_idx);
 		
 	}
-	
 	@RequestMapping(value ="/infestHistoryWriteForm")
-	public String infestHistoryWriteForm () {
+	public String infestHistoryWriteForm (Model model,@RequestParam int re_idx) {
 		logger.info("글쓰기폼 이동");
-		return "resident/infestHistoryWriteForm";
+		model.addAttribute("re_idx",re_idx);
 		
+		return "resident/infestHistoryWriteForm";
 	}
-	
-	
+	@RequestMapping(value ="/infestHistoryWrite",method = RequestMethod.POST)
+	public String infestHistoryWrite (Model model, 
+			@RequestParam HashMap<String, String>params) {
+		logger.info("params:{}"+params);
+		//logger.info("re_idx:{}"+re_idx);
+		infestservice.infestHistoryWrite(params);
+		return "resident/infestListHistory";
+	}
+	@RequestMapping(value ="/infestHistoryWriteUpdateForm") 
+	public ModelAndView infestHistoryWriteUpdateForm (int if_idx) {
+		logger.info("수정폼 이동");
+		logger.info("if_idx",if_idx);
+		
+		return infestservice.infestHistoryWriteUpdateForm(if_idx); 
+	}
+	 @RequestMapping(value = "/infestHistoryUpdate") 
+	 public String infestHistoryUpdate(
+			 @RequestParam HashMap<String, String>params) {
+		 logger.info("params:{}"+params);
+		 infestservice.infestHistoryUpdate(params);
+		 return "resident/infestListHistory";
+	 }
+	 
 }
