@@ -44,6 +44,22 @@ public interface ThingDAO {
 
 	int totalCntThManage();
 
-	ArrayList<HashMap<String, Object>> getThingManageSearch(HashMap<String, String> params);
+	ArrayList<ThingDTO> getThingManageSearch(ThingDTO dto);
+
+	int totalCountManageSearch(HashMap<String, String> params);
+
+	int totalCntThHistory();
+
+	ArrayList<ThingDTO> getThingHistoryList(int offset);
+
+	int totalCountHistorySearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> getThingHistorySearch(ThingDTO dto);
+
+	int thingHistoryWrite(HashMap<String, String> params);
+
+	void writeThState(int thIdx);
+
+	int getThIdx(String thName);
 	
 }
