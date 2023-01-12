@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AlarmDAO {
 
-	void notiAlarmInsert(String mem_name, String linkaddr);
+	void notiAlarmInsert(String mem_name, String linkaddr, String mem_id);
 
 	ArrayList<AlarmDTO> AlarmCall(String mem_id);
 

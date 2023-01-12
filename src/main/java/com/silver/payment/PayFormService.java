@@ -1,0 +1,87 @@
+package com.silver.payment;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.silver.member.MemberDTO;
+
+@Service
+public class PayFormService {
+	
+	Logger logger=LoggerFactory.getLogger(this.getClass());
+	
+	private final PayFormDAO payformdao;
+	
+	public PayFormService(PayFormDAO payformdao) {
+		this.payformdao=payformdao;
+	}
+
+	public ArrayList<PayFormDTO> mylistCall(HttpServletRequest request, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		logger.info("payform mem_id 값 : "+mem_id);
+		
+		return payformdao.mylistCall(mem_id,page);
+	}
+
+	public int mylistCallTotal(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return payformdao.mylistCallTotal(mem_id);
+	}
+
+	public int AlllistCallTotal() {
+		return payformdao.AlllistCallTotal();
+	}
+
+	public ArrayList<PayFormDTO> alllistCall(int page) {
+		return payformdao.alllistCall(page);
+	}
+
+	public ModelAndView payfromdetail(int pf_idx) {
+		ModelAndView mav=new ModelAndView("payment/detailPayForm");
+		PayFormDTO detailDTO=payformdao.payfromdetail(pf_idx);
+		mav.addObject("payformDetail",detailDTO);
+		return mav;
+	}
+
+	public int payformdelete(int idx) {
+		return payformdao.payformdelete(idx);
+	}
+
+	public ModelAndView payformupdate_go(int pf_idx) {
+		ModelAndView mav=new ModelAndView("payment/updatePayForm");
+		PayFormDTO detailDTO=payformdao.payfromdetail(pf_idx);
+		mav.addObject("payformUpdate",detailDTO);
+		return mav;
+	}
+
+	public ModelAndView payformupdate_do(HttpServletRequest request) {
+		String pf_idx=request.getParameter("pf_idx");
+		String selected=request.getParameter("selected");
+		String pf_title=request.getParameter("pf_title");
+		String pf_content=request.getParameter("pf_content");
+		ModelAndView mav=new ModelAndView("redirect:/payfromdetail?pf_idx="+pf_idx);
+		payformdao.payformupdate_do(pf_idx,selected,pf_title,pf_content);
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+}

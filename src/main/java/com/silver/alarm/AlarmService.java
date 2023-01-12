@@ -23,11 +23,11 @@ public class AlarmService {
 		this.alarmdao=alarmdao;
 	}
 	
-	public void notiAlarm(String mem_name, int result, String AlarmCate) {
+	public void notiAlarm(String mem_name, int result, String AlarmCate, String mem_id) {
 		logger.info("asdad");
 		String content=mem_name+"님이 공지사항을 등록했습니다.";
 		String Linkaddr=LinkAddr(result, AlarmCate);
-		alarmdao.notiAlarmInsert(content,Linkaddr);
+		alarmdao.notiAlarmInsert(content,Linkaddr,mem_id);
 	}
 	
 	public String LinkAddr(int idx,String alarmCate) {

@@ -34,6 +34,7 @@ public class AlarmController {
 	public HashMap<String, Object> removeCount(@RequestParam int idx){
 		HashMap<String, Object> map=new HashMap<String, Object>();
 		int row =alarmservice.removeCount(idx);
+		logger.info("리무브카운트 idx 값은 : "+idx);
 		map.put("row", row);
 		return map;
 		
