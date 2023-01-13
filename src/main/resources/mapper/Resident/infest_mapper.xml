@@ -34,8 +34,8 @@
 	</select>
 	
 	<insert id="infestHistoryWrite" parameterType="hashmap">
-		INSERT INTO infest (if_write,if_jusa,if_name,if_state,if_comment,re_idx)
-		VALUES (#{if_write},#{if_jusa},#{if_name},#{if_state},#{if_comment},#{re_idx});
+		INSERT INTO infest(if_write,if_jusa,if_name,if_state,if_comment,re_idx)
+		VALUES(#{if_write},#{if_jusa},#{if_name},#{if_state},#{if_comment},#{re_idx})
 	</insert>
 	
  	<select id="infestHistoryWriteUpdateForm" 
@@ -43,14 +43,15 @@
  		SELECT * from infest i where if_idx =#{param1}
  	</select>
 	
-	<update id="infestHistoryUpdate" parameterType="hashmap">
+	<update id="infestHistoryUpdate" parameterType="hashmap"><!--파라메터 타입 hashmap이면 param1x ex if_write=#{if_write}이게 올바른 방법  -->
 		UPDATE infest set 
-		if_write=#{param1},
-		if_jusa=#{param2},
-		if_name=#{param3},
-		if_state=#{param4},
-		if_comment=#{param5},
-		where if_idx=#{param6}
+		if_write=#{if_write},
+		if_jusa=#{if_jusa},
+		if_name=#{if_name},
+		if_state=#{if_state},
+		if_comment=#{if_comment},
+		re_idx =#{re_idx}
+		where if_idx=#{if_idx}
 	</update>
 </mapper>
 

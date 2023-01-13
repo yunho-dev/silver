@@ -74,21 +74,24 @@ public class InfestController {
 		logger.info("params:{}"+params);
 		//logger.info("re_idx:{}"+re_idx);
 		infestservice.infestHistoryWrite(params);
-		return "resident/infestListHistory";
+		String re_idx= params.get("re_idx");
+		return "redirect:/infestListHistory?re_idx="+re_idx;
 	}
 	@RequestMapping(value ="/infestHistoryWriteUpdateForm") 
-	public ModelAndView infestHistoryWriteUpdateForm (int if_idx) {
+	public ModelAndView infestHistoryWriteUpdateForm (int re_idx) {
 		logger.info("수정폼 이동");
-		logger.info("if_idx",if_idx);
+		logger.info("if_idx",re_idx);
 		
-		return infestservice.infestHistoryWriteUpdateForm(if_idx); 
+		return infestservice.infestHistoryWriteUpdateForm(re_idx); 
 	}
 	 @RequestMapping(value = "/infestHistoryUpdate") 
 	 public String infestHistoryUpdate(
 			 @RequestParam HashMap<String, String>params) {
 		 logger.info("params:{}"+params);
 		 infestservice.infestHistoryUpdate(params);
-		 return "resident/infestListHistory";
+		 String re_idx=params.get("re_idx");
+		 return "redirect:/infestListHistory?re_idx="+re_idx;
+//		 return "resident/infestListHistory?re_idx="+re_idx;
 	 }
 	 
 }
