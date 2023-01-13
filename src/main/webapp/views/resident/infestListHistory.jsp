@@ -70,6 +70,8 @@ $(".timeSub").text(result);
 
 var url=window.location.search.split('?re_idx=')[1];
 console.log("idx 값 : "+url);
+var uri=window.location.search.split('?if_idx=')[2];
+console.log("idx 값 : "+uri);
 function goWirte(){
 	location.href="infestHistoryWriteForm?re_idx="+url;
 }
@@ -82,7 +84,7 @@ function infestListHistoryCall(page){
 	$.ajax({
 		type:'get',
 		url:'infestListHistoryCall',
-		data:{'page':page,'re_idx':url},
+		data:{'page':page,'re_idx':url,'if_idx':uri},
 		dataType:'json',
 		success:function(data){
 			console.log(data);
@@ -115,7 +117,7 @@ function drawList(list){
 		content +='<td class="timeSub">'+list[i].if_date+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
 		content +='<td>'
-		content +="<a href='infestHistoryWriteUpdateForm?if_idx="+list[i].if_idx+"'>"+list[i].if_jusa+"</a>";
+		content +="<a href='infestHistoryWriteUpdateForm?re_idx="+list[i].if_idx+"'>"+list[i].if_jusa+"</a>";
 		content +='</td>';
 		content +='<td>'+list[i].if_name+'</td>';
 		content +='<td>'+list[i].if_comment+'</td>';

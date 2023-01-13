@@ -6,7 +6,7 @@
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.boardnotice.NoticeDAO">
 	<select id="listCall" resultType="notice">
-		select b.bd_idx,b.bd_title,m.mem_name,b.bd_date,bd_content  from board b,member m where b.bc_idx =1 and 
+		select b.bd_idx,b.bd_title,m.mem_name,b.bd_date,bd_content,m.mem_id  from board b,member m where b.bc_idx =1 and 
 			b.mem_id =m.mem_id order by b.bd_idx desc limit 10 offset #{param1};
 	</select>
 	

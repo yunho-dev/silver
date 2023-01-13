@@ -61,5 +61,17 @@ public interface ThingDAO {
 	void writeThState(int thIdx);
 
 	int getThIdx(String thName);
+
+	ThingDTO getThingHistoryDetail(String hisIdx);
+
+	int updateThingHistory(HashMap<String, Object> params);
+
+	int totalCountThBookList();
+
+	ArrayList<ThingDTO> getThingBookList(int offset);
+
+	int totalCountBookSearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> getThingBookSearch(ThingDTO dto);
 	
 }

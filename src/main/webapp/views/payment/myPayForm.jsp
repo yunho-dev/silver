@@ -72,7 +72,7 @@
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input id="" type="button" class="btn btn-primary" value="결재 양식 등록">
+							<input id="payformwrite" type="button" class="btn btn-primary" value="결재 양식 등록">
 						</div>
 					</div>
 				</section>
@@ -99,6 +99,12 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
+$(document).on('click','#payformwrite',function(){
+	location.href='writepayform.go';
+});
+
+
+
 var page=1
 PayAjaxCall(page);
 function PayAjaxCall(page){

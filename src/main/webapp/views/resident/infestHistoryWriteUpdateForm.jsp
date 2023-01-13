@@ -62,7 +62,8 @@
     </tr>
   </thead>
 </table>
-<input type="hidden" name="re_idx" value="${re_idx}">
+<input type="hidden" name="re_idx" value="${infest.re_idx}">
+<input type="hidden" name="if_idx" value="${infest.if_idx}">
 </form>
 </div>
 </div>
