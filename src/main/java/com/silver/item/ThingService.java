@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -416,6 +417,82 @@ public class ThingService {
 		dao.updateThingHistory(params);
 
 		return getThingHistoryDetail((String) params.get("hisIdx"));
+	}
+
+	public HashMap<String, Object> getThingBook(int page) {
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThBookList();
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		logger.info("비품 목록을 가져옵니다.");
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		ArrayList<ThingDTO> list = dao.getThingBookList(offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	/*
+	 * public HashMap<String, Object> getThingHistorySearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountHistorySearch(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setTh_model(params.get("thModel"));
+		dto.setHis_name(params.get("hisName"));
+		dto.setTh_state(params.get("checkAllView"));
+		dto.setOffset(offset);
+		
+		logger.info("검색된 비품 사용내역 목록을 가져옵니다.");
+		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
+		list = dao.getThingHistorySearch(dto);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+	 * */
+	public HashMap<String, Object> getThingBookSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountBookSearch(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setRe_name(params.get("bWrite"));
+		dto.setB_startFake(params.get("bStart"));
+		dto.setOffset(offset);
+		
+		logger.info("검색된 비품 사용내역 목록을 가져옵니다.");
+		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
+		list = dao.getThingBookSearch(dto);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", list);
+		result.put("total", totalPages);
+		return null;
 	}
 
 }
