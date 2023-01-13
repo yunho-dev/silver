@@ -98,23 +98,23 @@ String val = request.getParameter("page");
                                     <a href="myPayForm?page=payment">• 결재 양식</a>
                                 </li>                                
                                 <li class="submenu-item ">
-                                    <a href="selfPayment?page=payment">• 개인 결제함</a>
+                                    <a href="selfPayment?page=payment">• 개인 결재함</a>
                                 </li>     
                                 <li class="submenu-item ">
                                     <a href="openPayment?page=payment">• 열람 가능 문서함</a>
                                 </li>                                    
                                 <li class="submenu-item ">
-                                    <a href="waitPayment?page=payment">• 결제 대기 문서함</a>
+                                    <a href="waitPayment?page=payment">• 결재 대기 문서함</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="goingPayment?page=payment">• 결제 진행 문서함</a>
+                                    <a href="goingPayment?page=payment">• 결재 진행 문서함</a>
                                 </li>   
                                 <li class="submenu-item ">
-                                    <a href="finishPayment?page=payment">• 결제 완료 문서함</a>
+                                    <a href="finishPayment?page=payment">• 결재 완료 문서함</a>
                                 </li>   
-                                <li class="submenu-item ">
-                                    <a href="backPayment?page=payment">• 결제 반려 문서함</a>
-                                </li>                              
+<!--                                 <li class="submenu-item "> -->
+<!--                                     <a href="backPayment?page=payment">• 결제 반려 문서함</a> -->
+<!--                                 </li>                               -->
                             </ul>                             
                         </li>
 

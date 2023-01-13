@@ -74,6 +74,27 @@ public class PayFormService {
 		payformdao.payformupdate_do(pf_idx,selected,pf_title,pf_content);
 		return mav;
 	}
+
+	public ModelAndView writepayForm_do(HttpServletRequest request) {
+		ModelAndView mav=new ModelAndView();
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		String selected=request.getParameter("selected");
+		String pf_title=request.getParameter("pf_title");
+		String pf_content=request.getParameter("pf_content");
+		PayFormDTO payformDTO=new PayFormDTO();
+		payformDTO.setPf_cate(selected);
+		payformDTO.setPf_subject(pf_title);
+		payformDTO.setPf_content(pf_content);
+		payformDTO.setMem_id(mem_id);
+		payformdao.writepayForm_do(payformDTO);
+		int pf_idx=payformDTO.getPf_idx();
+		logger.info("pf_idx 값 체크 : "+pf_idx);
+		mav.setViewName("redirect:/payfromdetail?pf_idx="+pf_idx);
+		
+		return mav;
+	}
 	
 	
 	

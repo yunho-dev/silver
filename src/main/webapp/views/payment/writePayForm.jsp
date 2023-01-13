@@ -31,15 +31,13 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>결재 양식 수정</h3>
+				<h3>결재 양식 등록</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
-				
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
-						<form action="payformupdate.do" method="post">
-						<input type="hidden" name="pf_idx" value="${payformUpdate.pf_idx}">
+						<form action="writepayForm.do" method="post">
 							<div class="d-flex align-items-center">
 							 <table class="table table-bordered table-hover" style="text-align: center;">
 								<tbody id="allpaydetail">
@@ -47,22 +45,10 @@
 											<th class="col-md-2">결재 양식</th>
 											<td>
 											<select id="selected" name="selected">
-												<option
-													<c:if test="${payformUpdate.pf_cate eq '휴가'}">selected</c:if>>
-													휴가
-												</option>
-												<option
-													<c:if test="${payformUpdate.pf_cate eq '지출결의서'}">selected</c:if>>
-													지출결의서
-												</option>
-												<option
-													<c:if test="${payformUpdate.pf_cate eq '품의서'}">selected</c:if>>
-													품의서
-												</option>
-												<option
-													<c:if test="${payformUpdate.pf_cate eq '경위서'}">selected</c:if>>
-													경위서
-												</option>
+												<option>휴가</option>
+												<option>지출결의서</option>
+												<option>품의서</option>
+												<option>경위서</option>
 											</select>
 											
 											</td>
@@ -70,23 +56,19 @@
 										<tr>
 											<th class="col-md-2">제목</th>
 											<td>
-										<input type="text" class="form-control" aria-label="Username" 
-										aria-describedby="basic-addon1" name="pf_title" value="${payformUpdate.pf_subject}">
+										<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name="pf_title" >
 											</td>
 										</tr>
 										<tr>
 											<td colspan="2">
 												<div id="div_editor"></div>
-												<div id="content" style="display: none;">${payformUpdate.pf_content}</div>
-											<input type="hidden" style="display: none;" name="pf_content" value="${payformUpdate.pf_content}"/>
+												<input type="hidden" name="pf_content"/>
 											</td>
 										</tr>
 								</tbody>
 							 </table>
-<!-- 								 <div id="content" style="display: none;"> -->
-<!-- 								</div> -->
 							</div>
-							<button type="button" class="btn btn-primary" onclick="save()">수정하기</button>
+							<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 							<button type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
 						</form>
 						</div>
@@ -123,16 +105,18 @@ config.file_upload_handler = function(file, pathReplace) {
 	console.log(file); // 파일 정보 확인 가능
 	if (file.size > (1 * 1024 * 1024)) { // 1MB 이상의 사진일 경우..
 		alert("1MB 이상의 사진은 올릴 수 없습니다.");
-		pathReplace("/img/noimage.png"); // data:image 경로를 변경
+		pathReplace("/filephoto/noimage.png"); // data:image 경로를 변경
 	}
 }
 
 var editor = new RichTextEditor("#div_editor", config);
-editor.setHTMLCode($("#content").html());
 function save() {
 	$("input[name='pf_content']").val(editor.getHTMLCode());
-	console.log($("#selected").val());
-	$("form").submit();
+	if($("input[name='pf_content']").val().length < 11){
+		alert('최소 10글자 입력 해주세요.');
+	}else{
+		$("form").submit();
+	}
 }
 </script>
 </html>
