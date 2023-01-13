@@ -187,4 +187,27 @@ public class ThingController {
 		logger.info("비품 사용내역 수정 접근");
 		return service.updateThingHistory(params, request);
 	}
+	
+	/* 비품 사용예약으로 이동 */
+	@GetMapping(value = "/thingBook.go")
+	public ModelAndView thingBook() {
+		logger.info("비품 사용 예약으로 이동 요청");
+		ModelAndView mav = new ModelAndView("item/thingBook");
+		return mav;
+	}
+	
+	/* 비품 예약 조회 리스트 */
+	@GetMapping(value = "/getThingBook.do")
+	public HashMap<String, Object> getThingBook(int page){
+		logger.info("비품예약 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.getThingBook(page);
+	}
+	
+	/* 비품 예약 검색 */
+	@GetMapping(value = "/getThingBookSearch.do")
+	public HashMap<String, Object> getThingBookSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 사용내역 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThingBookSearch(params);
+	}
+	
 }

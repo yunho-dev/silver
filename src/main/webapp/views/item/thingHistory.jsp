@@ -43,8 +43,8 @@
 					<h3>비품 사용 내역 조회</h3>
 			</div>
 			<div style="float:right; margin-bottom: 5px;">
-					 <a href="#" class="btn btn btn-primary" id="goBtn">내역조회</a>
-					 <a href="#" class="btn btn btn-secondary" id="goBtn">예약조회</a>
+					 <a class="btn btn btn-primary" id="goBtn">사용내역조회</a>
+					 <a href="thingBook.go" class="btn btn btn-secondary" id="goBtn">사용예약조회</a>
 				</div><div style="clear:both;"></div>
 			<!-- Table head options start -->
              <section class="section">

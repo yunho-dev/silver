@@ -99,7 +99,7 @@
 </body>
 <script>
 	var showPage=1;
-	var cateId;
+	var cateId; //category id
 	
 	ListCall(showPage);
 	

@@ -106,7 +106,7 @@
 				$(".modifyRight input[name=thSpon]").val(data.detail.th_spon)
 				
 				var fileName = data.detailPhoto;
-				if(fileName != null || fileName == ''){
+				if(fileName != null && fileName != ''){
 					$("#updateForm .thPhotoOri").text(data.detailPhoto.fp_newFileName)
 				}else{
 					$("#updateForm .thPhotoOri").text('없음')
