@@ -162,7 +162,7 @@ public class ThingController {
 		return service.getThingHistoryList(page);
 	}
 	
-	@GetMapping(value = "getThingHistorySearch.do")
+	@GetMapping(value = "/getThingHistorySearch.do")
 	public HashMap<String, Object> getThingHistorySearch(@RequestParam HashMap<String, String> params){
 		logger.info("비품 사용내역 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
 		return service.getThingHistorySearch(params);
@@ -172,5 +172,19 @@ public class ThingController {
 	@PostMapping(value = "/thingHistoryWrite.do")
 	public HashMap<String, Object> thingHistoryWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
 		return service.thingHistoryWrite(params, request);
+	}
+	
+	/* 비품 사용내역 상세보기 */
+	@GetMapping(value = "/getThingHistoryDetail.do")
+	public HashMap<String, Object> getThingHistoryDetail(String hisIdx){
+		logger.info(hisIdx+"번째 비품에 대한 사용내역 상세보기 or 수정할 데이터 요청");
+		return service.getThingHistoryDetail(hisIdx);
+	}
+	
+	/* 비품 사용내역 수정하기 */
+	@PostMapping(value = "/updateThingHistory.do")
+	public HashMap<String, Object> getThingHistoryUpdate(@RequestParam HashMap<String, Object> params, HttpServletRequest request){
+		logger.info("비품 사용내역 수정 접근");
+		return service.updateThingHistory(params, request);
 	}
 }
