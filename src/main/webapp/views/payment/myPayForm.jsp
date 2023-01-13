@@ -72,7 +72,7 @@
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input type="button" class="btn btn-primary" value="결재 양식 등록">
+							<input id="" type="button" class="btn btn-primary" value="결재 양식 등록">
 						</div>
 					</div>
 				</section>

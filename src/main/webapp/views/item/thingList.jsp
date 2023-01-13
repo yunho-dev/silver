@@ -48,8 +48,9 @@
 		                        		</select> &nbsp;&nbsp;
 		                        상태 : <select name="th_state" id="selectState">
 		                        			<option value="" selected="selected">전체</option>
-		                        			<option value="사용">사용</option>
-		                        			<option value="비사용">비사용</option>
+		                        			<option value="사용">사용중</option>
+		                        			<option value="비사용">비사용중</option>
+		                        			<option value="고장">고장</option>
 		                        		</select> &nbsp;&nbsp;
 		                        등록자 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
 		                        후원자 : <input type="text" name="th_dona" class="filter"> &nbsp;&nbsp;

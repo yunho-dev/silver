@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.silver.member.MypageDAO">
+	
+	<!-- 마이페이지 정보 가져오기 -->
+	<select id="mypage" resultType="member">
+	SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
+		from `member` m,`position`p,part p2 ,depart d 
+		where m.part_num = p2.part_num 
+		and m.pos_num =p.pos_num 
+		and m.dept_num =d.dept_num  
+		and m.mem_id =#{mem_id}
+	</select>
+	
+	<!-- 마이페이지 프로필 사진 가져오기  -->
+	<select id="mypage2" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id}
+	</select>	
+	
+	<!-- 마이페이지 전자서명 가져오기 -->
+	<select id="mypage3" resultType="member" parameterType="String">
+	SELECT si_idx, si_oriFileName, si_newFileName, si_date FROM sign WHERE mem_id=#{mem_id}
+	</select>	
+	
+	<!-- 전자서명 수정폼 전자서명 가져오기 -->
+	<select id="SignView" resultType="member" parameterType="String">
+	SELECT si_idx, si_oriFileName, si_newFileName, si_date,mem_id FROM sign WHERE mem_id=#{memId}
+	</select>	
+	
+	<!-- 전자서명 유무 확인  -->
+	<select id="findsignphoto" resultType="member" parameterType="String">
+	SELECT si_idx, si_oriFileName, si_newFileName, si_date,mem_id FROM sign WHERE mem_id=#{memId}
+	</select>
+	
+	<!-- 전자서명 삽입  -->
+	<insert id="signphotoInsert">
+		INSERT INTO sign(si_oriFileName, si_newFileName, mem_id)
+			VALUES(#{param1}, #{param2}, #{param3})
+	</insert>
+	
+	<!-- 전자서명 업데이트 -->
+	<update id="signphotoUpdate">
+		UPDATE sign set si_oriFileName=#{param1}, si_newFileName=#{param2} where mem_id=#{param3}
+	</update>
+	
+	<!-- 마이페이지 아이디확인 -->
+	<select id="IDFind" resultType="member">
+		Select mem_id from member where mem_id=#{param1}
+	</select>
+	
+	<!-- 마이페이지 업데이트 개인정보 가져오기  -->
+	<select id="getMypageUpdateForm" resultType="member" parameterType="String">
+		SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
+			from `member` m,`position`p,part p2 ,depart d 
+			where m.part_num = p2.part_num 
+			and m.pos_num =p.pos_num 
+			and m.dept_num =d.dept_num  
+			and m.mem_id =#{memId}	
+	</select>
+	
+	<!-- 마이페이지 업데이트 개인 프로필 사진 가져오기 -->
+	<select id="photoMypageView" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	</select>
+
+	<!-- 프로필 사진 삽입 -->
+	<insert id="photoInsert">
+		INSERT INTO filephoto(fp_oriFileName, fp_newFileName, mem_id, fpc_idx)
+			VALUES(#{param1}, #{param2}, #{param3}, 9)
+	</insert>
+	
+	<!-- 프로필 사진 업데이트 -->
+	<update id="photoUpdate">
+		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3}
+	</update>
+	
+	<!-- 마이페이지 프로필 업데이트시 사진 유무 판별 -->	
+	<select id="findphoto" resultType="member" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	</select>	
+	
+	<!-- 마이페이지 업데이트 -->
+	<update id="mypageUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+			UPDATE member SET mem_email=#{mem_email},mem_pnum=#{mem_pnum},mem_addr=#{mem_addr},mem_daddr=#{mem_daddr} 
+				WHERE mem_id=#{mem_id}
+	</update>
+	
+		<!-- 마이페이지 학력 리스트 총 인원수 -->	
+	<select id="totalCounteduList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) FROM edu where mem_id=#{memId}
+	</select>
+	
+	<!-- 마이페이지 학력 리스트 -->
+	<select id="edulistCall" resultType="member" parameterType="member">
+		select * from edu where mem_id=#{mem_id}
+	</select>
+		
+</mapper>

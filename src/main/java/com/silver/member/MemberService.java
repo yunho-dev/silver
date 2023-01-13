@@ -66,12 +66,6 @@ public class MemberService {
 		return result;
 	}
 	
-	// 마이페이지 가져오기 서비스
-	public MemberDTO mypage(MemberDTO loginId) {
-		logger.info("마이페이지 개인정보 가져오기 서비스");
-		
-		return dao.mypage(loginId);
-	}
 	
 	// 직원 상세정보 가져오기 서비스
 	public HashMap<String, Object> memberdetailCall(String mem_name) {
@@ -198,14 +192,17 @@ public class MemberService {
 		logger.info("insert한 memId : "+memId);
 		
 		if(memPhoto != null){
+			MemberDTO photofind = dao.findphoto(memId);
 			String oriFileName = memPhoto.getOriginalFilename();
 			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
 			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
 				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
 				String newFileName = fileSave(memPhoto,ext);
 				logger.info("서버에 저장될 파일 이름 : "+newFileName);
-				if(!newFileName.equals("")) {
+				if(!newFileName.equals("") && photofind != null ) {
 					dao.photoUpdate(oriFileName, newFileName, memId);
+				}else if(!newFileName.equals("") && photofind == null) {
+					dao.photoInsert(oriFileName, newFileName, memId);
 				}
 			}
 		}
@@ -214,7 +211,8 @@ public class MemberService {
 		result.put("memId", memId);
 		return result;
 	}
-
+	
+	// 직원 업데이트 개인정보 가져오는 서비스 
 	public HashMap<String, Object> getMemberUpdateForm(String memId) {
 		MemberDTO  dto = dao.getMemberUpdateForm(memId);
 		logger.info("가져온 데이터 : {}", dto);

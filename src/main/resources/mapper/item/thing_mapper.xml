@@ -118,6 +118,7 @@
 		UPDATE item set it_name=#{param2} WHERE it_idx=#{param1}
 	</update>
 	
+	<!-- 비품 관리대장 -->
 	<select id="totalCntThManage" resultType="int">
 		SELECT COUNT(it_name) FROM (SELECT i.it_name, t.th_model
 			from thing t left outer join item i on t.it_idx = i.it_idx
@@ -130,15 +131,94 @@
 		GROUP BY t.th_model ORDER BY thCnt DESC LIMIT 10 offset #{offset}
 	</select>
 	
-	<select id="getThingManageSearch">
-		SELECT i.it_name, t.th_model, t.th_part, t.th_date, t.th_money, count(th_name) AS thCnt, sum(th_money) AS thMoney, t.th_write
+	<select id="getThingManageSearch" resultType="thing" parameterType="thing">
+		SELECT i.it_name, t.th_model, t.th_part, t.th_date, t.th_money, count(th_name) AS thCnt, sum(th_money) AS sumMoney, t.th_write
 			from thing t left outer join item i on t.it_idx = i.it_idx
 		WHERE
-			i.it_name LIKE CONCAT('%','휠체어','%')
-			AND t.th_part LIKE CONCAT('%','')
-			AND t.th_model LIKE CONCAT('%','','%')
-			AND t.th_write LIKE CONCAT('%','','%')
-		ORDER BY thCnt desc;
+			i.it_name LIKE CONCAT('%',#{th_name},'%')
+			AND t.th_part LIKE CONCAT('%',#{th_part})
+			AND t.th_model LIKE CONCAT('%',#{th_model},'%')
+			AND t.th_write LIKE CONCAT('%',#{th_write},'%')
+		GROUP BY t.th_model ORDER BY thCnt DESC limit 10 offset #{offset};
 	</select>
+	
+	<select id="totalCountManageSearch" resultType="int" parameterType="hashmap">
+		SELECT COUNT(it_name) FROM 
+			(SELECT i.it_name, t.th_model, t.th_part, t.th_date, t.th_money, count(th_name) AS thCnt, sum(th_money) AS thMoney, t.th_write
+			from thing t left outer join item i on t.it_idx = i.it_idx
+		WHERE
+			i.it_name LIKE CONCAT('%',#{thName},'%')
+			AND t.th_part LIKE CONCAT('%',#{thPart})
+			AND t.th_model LIKE CONCAT('%',#{thModel},'%')
+			AND t.th_write LIKE CONCAT('%',#{thWrite},'%')
+		GROUP BY t.th_model ORDER BY thCnt) AS cntManage;
+	</select>
+	
+	<!-- 비품 사용 기록 -->
+	<select id="totalCntThHistory" resultType="int">
+		SELECT COUNT(th.his_idx) from thinghistory th 
+			left outer join thing t on th.his_idx = t.th_idx
+		WHERE t.th_state = '비사용중'
+	</select>
+	
+	<select id="getThingHistoryList" resultType="thing" parameterType="int">
+		SELECT th.his_idx, t.th_name, t.th_part, th.his_name, th.his_rent, th.his_return, t.th_state from thinghistory th 
+			left outer join thing t on th.th_idx = t.th_idx 
+		WHERE t.th_state = '비사용중'
+			ORDER BY th.his_rent DESC limit 10 offset #{params}
+	</select>
+	
+	<select id="totalCountHistorySearch" parameterType="hashmap" resultType="int">
+		SELECT COUNT(th.his_idx) from thinghistory th 
+			left outer join thing t on th.th_idx = t.th_idx 
+		WHERE
+			t.th_name LIKE CONCAT('%',#{thName},'%')
+			AND t.th_model LIKE CONCAT('%',#{thModel},'%')
+			AND th.his_name LIKE CONCAT('%',#{hisName},'%')
+			<if test="checkAllView.equals('비사용중')">
+				AND t.th_state LIKE CONCAT('%',#{checkAllView},'%')
+			</if>
+			<if test="checkAllView.equals('전체')">
+				AND t.th_state LIKE CONCAT('%','','%')
+			</if>
+	</select>
+	
+	<select id="getThingHistorySearch" parameterType="thing" resultType="thing">
+		SELECT th.his_idx, t.th_name, t.th_part, th.his_name, th.his_rent, th.his_return, t.th_state from thinghistory th 
+			left outer join thing t on th.th_idx = t.th_idx 
+		WHERE
+			t.th_name LIKE CONCAT('%',#{th_name},'%')
+			AND t.th_model LIKE CONCAT('%',#{th_model},'%')
+			AND th.his_name LIKE CONCAT('%',#{his_name},'%')
+			<if test="th_state.equals('비사용중')">
+				AND t.th_state LIKE CONCAT('%',#{th_state},'%')
+			</if>
+			<if test="th_state.equals('전체')">
+				AND t.th_state LIKE CONCAT('%','','%')
+			</if>
+		ORDER BY th.his_rent DESC limit 10 offset #{offset};
+	</select>
+	
+	<!-- 비품 사용 내역 등록 -->
+	<select id="getThIdx" resultType="int" parameterType="String">
+		SELECT th_idx FROM thing WHERE th_name=#{thName}
+	</select>
+	
+	<insert id="thingHistoryWrite" parameterType="hashmap">
+			<choose>
+				<when test="hisBigo==null or hisBigo.equals('')">
+					INSERT into thinghistory(th_idx, his_write, his_name, his_rent, his_goal)
+						values(#{thIdx}, #{hisWrite}, #{hisName}, #{hisRent}, #{hisGoal});
+				</when>
+				<otherwise>
+					INSERT into thinghistory(th_idx, his_write, his_name, his_rent, his_goal, his_bigo)
+						values(#{thIdx}, #{hisWrite}, #{hisName}, #{hisRent}, #{hisGoal}, #{hisBigo});
+				</otherwise>
+			</choose>
+	</insert>
+	
+	<update id="writeThState" parameterType="int">
+		update thing set th_state='사용중' where th_idx=#{thIdx};
+	</update>
 	
 </mapper>
