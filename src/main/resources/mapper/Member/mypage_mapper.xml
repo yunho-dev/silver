@@ -88,14 +88,80 @@
 				WHERE mem_id=#{mem_id}
 	</update>
 	
-		<!-- 마이페이지 학력 리스트 총 인원수 -->	
+	<!-- 마이페이지 학력 리스트 총 인원수 -->	
 	<select id="totalCounteduList" resultType="int" parameterType="hashmap">
-		SELECT COUNT(mem_id) FROM edu where mem_id=#{memId}
+		SELECT COUNT(mem_id) FROM edu where mem_id=#{memId} 
 	</select>
 	
 	<!-- 마이페이지 학력 리스트 -->
 	<select id="edulistCall" resultType="member" parameterType="member">
-		select * from edu where mem_id=#{mem_id}
+		select * from edu where mem_id=#{mem_id} ORDER BY mem_id DESC limit 10 offset #{offset}
+	</select>
+	
+	<!-- 마이페이지 자격증 리스트 총 인원수 -->	
+	<select id="totalCountcertList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) FROM cert where mem_id=#{memId}
+	</select>
+
+	<!-- 마이페이지 자격증 리스트 -->
+	<select id="certlistCall" resultType="member" parameterType="member">
+		select * from cert where mem_id=#{mem_id} ORDER BY mem_id DESC limit 10 offset #{offset}
+	</select>	
+
+	<!-- 마이페이지 경력 리스트 총 인원수 -->	
+	<select id="totalCountcareerList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) FROM career where mem_id=#{memId}
+	</select>
+
+	<!-- 마이페이지 경력 리스트 -->
+	<select id="careerlistCall" resultType="member" parameterType="member">
+		select * from career where mem_id=#{mem_id} ORDER BY mem_id DESC limit 10 offset #{offset}
+	</select>
+	
+	<!-- 마이페이지 서류파일 리스트 총 갯수 -->	
+	<select id="totalCountpaperList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) FROM filephoto where mem_id=#{memId}
+	</select>
+
+	<!-- 마이페이지 서류파일 리스트 가져오기 -->
+	<select id="paperlistCall" resultType="member" parameterType="member">
+		select * from filephoto where mem_id=#{mem_id} ORDER BY mem_id DESC limit 10 offset #{offset}
+	</select>
+
+	<!-- 마이페이지 결제문서 리스트 총 갯수 -->	
+	<select id="totalCountmypaymentList" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) FROM payment where mem_id=#{memId}
+	</select>
+
+	<!-- 마이페이지 결제문서 리스트 가져오기 -->
+	<select id="mypaymentlistCall" resultType="member" parameterType="member">
+		SELECT pm_subject,pm_idx,pm_state,pf_cate,m.pf_idx,m.mem_id
+		FROM payment m,payform p 
+		WHERE m.pf_idx  = p.pf_idx and m.mem_id =#{mem_id} ORDER BY mem_id DESC limit 10 offset #{offset}
+	</select>
+	
+	<!--학력 등록  -->		
+	<insert id="EduWrite" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+	insert into edu (mem_id,edu_name,edu_pass,edu_success,edu_start,edu_end)
+		values(#{mem_id},#{edu_name},#{edu_pass},#{edu_success},#{edu_start},#{edu_end})
+	</insert>	
+	
+	<!--자격증 등록  -->		
+	<insert id="CertWrite" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		insert into cert(mem_id,ce_name,ce_place,ce_date) 
+			values (#{mem_id},#{ce_name},#{ce_place},#{ce_date})
+	</insert>		
+	
+	<!-- 경력 등록 -->
+	<insert id="CareerWrite" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		insert into career (mem_id,ca_name,ca_work,ca_pos,ca_start,ca_end)
+			values(#{mem_id},#{ca_name},#{ca_work},#{ca_pos},#{ca_start},#{ca_end})
+	</insert>	
+	
+	
+	<!-- 자격증 수정폼 데이터 가져오기  -->
+	<select id="getMemberCertUpdateForm" resultType="member" parameterType="String">
+		SELECT * from cert where ce_name=#{Cename}
 	</select>
 		
 </mapper>

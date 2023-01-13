@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -196,6 +197,192 @@ public class MypageService {
 		logger.info("가져온 학력 리스트:{}",eduList);
 		result.put("list", eduList);
 		result.put("total", totalPages);
+		return result;
+	}
+	
+	// 마이페이지 자격증 리스트 뽑아오기 서비스
+	public HashMap<String, Object> certlistCall(HashMap<String, String> params) {
+		logger.info("자격증 가져오기 서비스");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountcertList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		MemberDTO dto= new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setOffset(offset);
+		
+		logger.info("자격증 목록을 가져오는 서비스");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ArrayList<MemberDTO> certList=dao.certlistCall(dto);
+		logger.info("가져온 자격증 리스트:{}",certList);
+		result.put("list", certList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	// 마이페이지 경력 리스트 뽑아오기 서비스
+	public HashMap<String, Object> careerlistCall(HashMap<String, String> params) {
+		logger.info("경력 가져오기 서비스");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountcareerList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		MemberDTO dto= new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setOffset(offset);
+		
+		logger.info("경력 목록을 가져오는 서비스");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ArrayList<MemberDTO> careerList=dao.careerlistCall(dto);
+		logger.info("가져온 경력 리스트:{}",careerList);
+		result.put("list", careerList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	
+	// 마이페이지 서류파일 리스트 뽑아오기
+	public HashMap<String, Object> paperlistCall(HashMap<String, String> params) {
+		logger.info("서류파일 가져오기 서비스");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountpaperList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		MemberDTO dto= new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setOffset(offset);
+		
+		logger.info("서류파일 목록을 가져오는 서비스");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ArrayList<MemberDTO> paperList=dao.paperlistCall(dto);
+		logger.info("가져온 서류파일 리스트:{}",paperList);
+		result.put("list", paperList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	// 마이페이지 결제문서 리스트 뽑아오기 
+	public HashMap<String, Object> mypaymentlistCall(HashMap<String, String> params) {
+		logger.info("결제문서 리스트 가져오기 서비스");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountmypaymentList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		MemberDTO dto= new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setOffset(offset);
+		
+		logger.info("결제문서 목록을 가져오는 서비스");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ArrayList<MemberDTO> mypaymentList=dao.mypaymentlistCall(dto);
+		logger.info("가져온 결제문서 리스트:{}",mypaymentList);
+		result.put("list", mypaymentList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	// 마이페이지 학력 등록 서비스 
+	public HashMap<String, Object> EduWrite(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		Date EduStart = Date.valueOf(params.get("eduStart"));
+		Date EduEnd = Date.valueOf(params.get("eduEnd"));
+		dto.setEdu_start(EduStart);
+		dto.setEdu_end(EduEnd);
+		
+		dto.setMem_id(params.get("memId"));
+		dto.setEdu_name(params.get("eduName"));
+		dto.setEdu_pass(params.get("eduPass"));	
+		dto.setEdu_success(params.get("eduSuccess"));
+
+		
+		
+		int row = dao.EduWrite(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("insert한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 마이페이지 자격증 등록 서비스
+	public HashMap<String, Object> CertWrite(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		Date CertDate = Date.valueOf(params.get("certDate"));
+		dto.setCe_date(CertDate);
+
+		
+		dto.setMem_id(params.get("memId"));
+		dto.setCe_name(params.get("certName"));
+		dto.setCe_place(params.get("certPlace"));	
+
+
+		
+		
+		int row = dao.CertWrite(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("insert한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 마이페이지 경력 등록 서비스
+	public HashMap<String, Object> CareerWrite(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		Date CareerStart = Date.valueOf(params.get("careerStart"));
+		Date CareerEnd = Date.valueOf(params.get("careerEnd"));
+		dto.setCa_start(CareerStart);
+		dto.setCa_end(CareerEnd);
+		
+		dto.setMem_id(params.get("memId"));
+		dto.setCa_name(params.get("careerName"));
+		dto.setCa_work(params.get("careerWork"));	
+		dto.setCa_pos(params.get("careerPos"));
+
+		
+		
+		int row = dao.CareerWrite(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("insert한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 마이페이지 자격증 수정폼에대한 서비스
+	public HashMap<String, Object> getMemberCertUpdateForm(String Cename) {
+		MemberDTO  dto = dao.getMemberCertUpdateForm(Cename);
+		logger.info("가져온 데이터 : {}", dto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
 		return result;
 	}
 }

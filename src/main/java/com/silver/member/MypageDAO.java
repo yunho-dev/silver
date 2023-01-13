@@ -55,5 +55,41 @@ public interface MypageDAO {
 	
 	// 마이페이지 학력 리스트 가져오기
 	ArrayList<MemberDTO> edulistCall(MemberDTO dto);
+	
+	// 마이페이지 자격증 총 갯수
+	int totalCountcertList(HashMap<String, String> params);
+	
+	// 마이페이지 자격증 리스트 가져오기
+	ArrayList<MemberDTO> certlistCall(MemberDTO dto);
+	
+	// 마이페이지 경력 리스트 총 갯수
+	int totalCountcareerList(HashMap<String, String> params);
+	
+	// 마이페이지 경력 리스트 뽕아오기
+	ArrayList<MemberDTO> careerlistCall(MemberDTO dto);
+	
+	// 마이페이지 서류파일 리스트 총 갯수
+	int totalCountpaperList(HashMap<String, String> params);
+	
+	// 마이페이지 서류파일 리스트 뽑아오기
+	ArrayList<MemberDTO> paperlistCall(MemberDTO dto);
+	
+	// 마이페이지 결제문서 리스트 총 갯수
+	int totalCountmypaymentList(HashMap<String, String> params);
+	
+	// 마이페이지 결제문서 리스트 뽑아오기 
+	ArrayList<MemberDTO> mypaymentlistCall(MemberDTO dto);
+	
+	// 마이페이지 학력 등록 
+	int EduWrite(MemberDTO dto);
+	
+	// 마이페이지 자격증 등록
+	int CertWrite(MemberDTO dto);
+	
+	// 마이페이지 경력 등록
+	int CareerWrite(MemberDTO dto);
+	
+	// 마이페이지 자격증 수정 폼 요청
+	MemberDTO getMemberCertUpdateForm(String Cename);
 
 }
