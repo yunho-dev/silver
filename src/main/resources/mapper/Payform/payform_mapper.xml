@@ -38,6 +38,13 @@
 		update payform set pf_subject=#{param3},pf_content=#{param4},pf_cate=#{param2}
 			where pf_idx=#{param1}
 	</update>
+	
+	<insert id="writepayForm_do" parameterType="payformdto" useGeneratedKeys="true" keyColumn="pf_idx"
+	keyProperty="pf_idx">
+		insert into payform(pf_cate,pf_write,pf_content,pf_subject) values(
+			#{pf_cate},#{mem_id},#{pf_content},#{pf_subject}
+			)
+	</insert>
 
 </mapper>
 

@@ -5,7 +5,20 @@
 
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.payment.PaymentDAO">
-
+	<select id="MyPayListCall" resultType="payment">
+		select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where m.mem_id =#{param1}
+					order by p.pm_idx desc limit 10 offset #{param2};
+	</select>
+	
+	<select id="MyPayListCallTotal" resultType="int">
+		select count(p.pm_idx)
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where m.mem_id =#{param1}
+	</select>
 </mapper>
 
 

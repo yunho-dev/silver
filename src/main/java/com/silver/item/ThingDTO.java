@@ -39,6 +39,13 @@ public class ThingDTO {
 	//manage calculation
 	private int thCnt;
 	private int sumMoney;
+	//thing book
+	private int cb_idx;
+	private Timestamp b_start;
+	private String b_startFake;
+	private Timestamp b_end;
+	private String b_write;
+	private String re_name;
 	
 	public int getTh_idx() {
 		System.out.println(th_idx);
@@ -202,6 +209,42 @@ public class ThingDTO {
 	}
 	public void setSumMoney(int sumMoney) {
 		this.sumMoney = sumMoney;
+	}
+	public int getCb_idx() {
+		return cb_idx;
+	}
+	public void setCb_idx(int cb_idx) {
+		this.cb_idx = cb_idx;
+	}
+	public Timestamp getB_start() {
+		return b_start;
+	}
+	public void setB_start(Timestamp b_start) {
+		this.b_start = b_start;
+	}
+	public Timestamp getB_end() {
+		return b_end;
+	}
+	public void setB_end(Timestamp b_end) {
+		this.b_end = b_end;
+	}
+	public String getB_write() {
+		return b_write;
+	}
+	public void setB_write(String b_write) {
+		this.b_write = b_write;
+	}
+	public String getRe_name() {
+		return re_name;
+	}
+	public void setRe_name(String re_name) {
+		this.re_name = re_name;
+	}
+	public String getB_startFake() {
+		return b_startFake;
+	}
+	public void setB_startFake(String b_startFake) {
+		this.b_startFake = b_startFake;
 	}
 	
 }

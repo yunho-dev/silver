@@ -35,7 +35,7 @@
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
 						<input id="writebutton" type="button" class="btn btn-primary" value="공지사항 등록" style="margin-bottom:10px;"
-						onclick='writeNotice(page2)'>
+						onclick='writeNotice()'>
 							<div class="d-flex align-items-center">
 								<table class="table table-bordered table-hover"
 									style="text-align: center;">
@@ -97,6 +97,7 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
+var session='';
 function writeNotice(){
 	console.log('글쓰기 테스트');
 	location.href='noticeWrite.do';
@@ -115,6 +116,7 @@ function AjaxCall(page) {
 		success : function(data) {
 			listCall(data.list);
 			btnChk(data.sessionLevel);
+			session=data.SessionID;
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
@@ -180,23 +182,22 @@ function AjaxCall(page) {
     	});
     	}
 	}
-	
 
 	function listCall(list) {
 		var content = '';
+		console.log('세션 값'+session);
 		for (var i = 0; i < list.length; i++) {
 			content += "<tr>";
 			content += "<td>" + list[i].bd_idx + "</td>";
 			content += "<td id='detail'><a href='noticeDetail.do?bd_idx="+list[i].bd_idx+"'>" + list[i].bd_title + "</td>";
 			content += "<td>" + list[i].mem_name + "</td>";
 			var date = new Date(list[i].bd_date);
-			content += "<td>" + date.toLocaleDateString("ko-KR") + " "
-					+ date.toLocaleTimeString("en-US", {
-						hour12 : false
-					}) + "</td>";
+			content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
 			content += "<td>"
-					+ "<button class='btn btn-primary btn-sm' onclick=location.href='noticeUpdate.do?bd_idx="+list[i].bd_idx+"'>수정하기</button>"
-					+ "</td>";
+			if(list[i].mem_id == session){
+			content	+= "<button class='btn btn-primary btn-sm' onclick=location.href='noticeUpdate.do?bd_idx="+list[i].bd_idx+"'>수정하기</button>"
+			}
+			content	+= "</td>";
 			content += "</tr>";
 		}
 		$("#list").empty();
