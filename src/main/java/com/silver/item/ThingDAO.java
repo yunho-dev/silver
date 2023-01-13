@@ -61,5 +61,9 @@ public interface ThingDAO {
 	void writeThState(int thIdx);
 
 	int getThIdx(String thName);
+
+	ThingDTO getThingHistoryDetail(String hisIdx);
+
+	int updateThingHistory(HashMap<String, Object> params);
 	
 }

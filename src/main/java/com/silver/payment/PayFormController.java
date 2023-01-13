@@ -96,6 +96,17 @@ public class PayFormController {
 		return payformservice.payformupdate_do(request);
 	}
 	
+	@GetMapping(value="/writepayform.go")
+	public String writepayform_go() {
+		
+		return "payment/writePayForm";
+	}
+	
+	@PostMapping(value="/writepayForm.do")
+	public ModelAndView writepayForm_do(HttpServletRequest request) {
+		return payformservice.writepayForm_do(request);
+	}
+	
 	
 	
 	

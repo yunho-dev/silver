@@ -28,36 +28,34 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>결재 양식</h3>
+				<h3>개인 결재함</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
-						<input id="writebutton" type="button" class="btn btn-sm btn-primary" value="내가 작성한 양식" style="margin-bottom:10px;"
-						onclick='location.href="myPayForm"'>
-						<input id="writebutton" type="button" class="btn btn-sm btn-secondary" value="모든 양식" style="margin-bottom:10px;"
-						onclick='location.href="allPayForm"'>
 							<div class="d-flex align-items-center">
 							 <table class="table table-bordered table-hover" style="text-align: center;">
 							 	<thead>
 							 		<tr>
-							 			<th>결재 양식</th>
-							 			<th>등록자</th>
-							 			<th class="col-md-5">제목</th>
-							 			<th>양식 사용 횟수</th>
+							 			<th>문서번호</th>
+							 			<th class="col-md-4">제목</th>
+							 			<th>결재양식</th>
+							 			<th>기안자</th>
+							 			<th>결재상태</th>
 							 			<th></th>
 							 		</tr>
 							 	</thead>
-								<tbody id="myformList"></tbody>						 	
+								<tbody id="myPayMentList"></tbody>						 	
 							 </table>
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
 							<div>
 								<select id="select">
-									<option value="form">결재양식</option>
-									<option value="write">등록자</option>
+									<option value="write">기안자</option>
+									<option value="title">제목</option>
+									<option value="payselect">결재양식</option>
 								</select> <input type="text" name="seacontent" id="seacontent">
 								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="">검색</button>
 							</div>
@@ -72,7 +70,7 @@
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input id="payformwrite" type="button" class="btn btn-primary" value="결재 양식 등록">
+							<input id="paymentwrite" type="button" class="btn btn-primary" value="결재 문서 등록">
 						</div>
 					</div>
 				</section>
@@ -99,86 +97,52 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-$(document).on('click','#payformwrite',function(){
-	location.href='writepayform.go';
+$(document).on('click','#paymentwrite',function(){
+	location.href="paymentwrite.go";
 });
 
 
-
 var page=1
-PayAjaxCall(page);
-function PayAjaxCall(page){
+paymentCall(page);
+
+function paymentCall(page){
 	$.ajax({
 		type:'get'
-		,url:'mypayformCall'
+		,url:'selfpayment.ajax'
 		,dataType:'json'
 		,data:{'page':page}
 		,success:function(data){
-			myformCall(data.myformlist);
+			console.log(data);
+			paymentListCall(data.paymentList);
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
 				,visiblePages : 4 // 기본으로 보여줄 페이지 수
 				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
-					PayAjaxCall(page);
+					paymentCall(page);
 				}
 			});
 		},error:function(e){
 			console.log(e);
 		}
-		
 	});
-	
 }
 
-function myformCall(list) {
-	var content = '';
-	for (var i = 0; i < list.length; i++) {
-		if(list[i].pf_write != '삭제됨'){
-		content += "<tr>";
-		content += "<td>" + list[i].pf_cate + "</td>";
-		content += "<td>"+list[i].mem_name+"</td>";
-		content += "<td><a href=payfromdetail?pf_idx="+list[i].pf_idx+">" + list[i].pf_subject + "</a></td>";
-		content += "<td>"+list[i].pf_count+"</td>";
-		content += "<td><button class='btn btn-sm btn-primary' onclick='payformupdate("+list[i].pf_idx+")' style='margin-right:15px;'>수정</button>"
-		content += "<button class='btn btn-sm btn-secondary' onclick='payformdel("+list[i].pf_idx+")'>삭제</button></td>";
-		content += "</tr>";
-		}
+function paymentListCall(list){
+	var content ='';
+	for(var i=0;i<list.length;i++){
+		content +="<tr>";
+		content +="<td>"+list[i].pm_idx+"</td>";
+		content +="<td>"+list[i].pm_subject+"</td>";
+		content +="<td>"+list[i].pf_cate+"</td>";
+		content +="<td>"+list[i].mem_name+"</td>";
+		content +="<td>"+list[i].pm_state+"</td>";
+		content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'></td>"
+		content +="</tr>";
 	}
-	$("#myformList").empty();
-	$("#myformList").append(content);
+	$("#myPayMentList").empty();
+	$("#myPayMentList").append(content);
 }
-
-function payformupdate(idx){
-	console.log('payformupdate.go?pf_idx='+idx);
-	location.href="payformupdate.go?pf_idx="+idx;
-}
-
-
-
-
-function payformdel(idx){
-	result = confirm("정말 삭제하시겠습니까?");
-	console.log(idx);
-	if(result){
-		$.ajax({
-			type:'get'
-			,url:'payformdelete'
-			,data:{'idx':idx}
-			,dataType:'json'
-			,success:function(data){
-				console.log(data);
-				PayAjaxCall(page);
-			},error:function(e){
-				console.log(e);
-			}
-		});
-	}
-}
-
-
-
-
 
 
 	
