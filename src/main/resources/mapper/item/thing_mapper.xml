@@ -290,8 +290,10 @@
 	
 	<!-- 비품 예약 -->
 	<select id="getThingBookList" resultType="thing" parameterType="int">
-		SELECT b.cb_idx, t.th_name, b.b_start, b.b_end, b.b_write from book b 
+		SELECT b.cb_idx, t.th_name, b.b_start, b.b_end, r.re_name, m.mem_name from book b 
 			inner join thing t on b.th_idx = t.th_idx
+			left outer join resident r on b.re_idx= r.re_idx
+			left outer join `member` m on b.mem_id = m.mem_id
 		WHERE b.car_idx is null order by cb_idx desc limit 10 offset #{offset}
 	</select>
 	
@@ -300,38 +302,42 @@
 		SELECT COUNT(b.cb_idx) from book b 
 			inner join thing t on b.th_idx = t.th_idx
 			left outer join resident r on b.re_idx= r.re_idx
+			left outer join `member` m on b.mem_id = m.mem_id
 		WHERE b.car_idx is null
-		<choose>
-			<when test="bWrite.equals('') or bWrite==null">
-				AND t.th_name LIKE CONCAT('%',#{thName},'%')
-				AND b.b_start LIKE CONCAT('%',#{bStart},'%')
-			</when>
-			<otherwise>
-				AND t.th_name LIKE CONCAT('%',#{thName},'%')
-				AND r.re_name LIKE CONCAT('%',#{bWrite},'%')
-				AND b.b_start LIKE CONCAT('%',#{bStart},'%')
-			</otherwise>
-		</choose>
+			AND t.th_name LIKE CONCAT('%',#{thName},'%')
+			AND(r.re_name LIKE CONCAT('%',#{userName},'%')
+			or m.mem_name LIKE CONCAT('%',#{userName},'%'))
+			AND b.b_start LIKE CONCAT('%',#{bStart},'%')
 	</select>
 	
 	<!-- 비품 예약 검색 -->
 	<select id="getThingBookSearch" resultType="thing" parameterType="thing">
-		SELECT b.cb_idx, t.th_name, b.b_start, b.b_end, b.b_write from book b 
+		SELECT b.cb_idx, t.th_name, b.b_start, b.b_end, b.b_write, r.re_name, m.mem_name from book b 
 			inner join thing t on b.th_idx = t.th_idx
 			left outer join resident r on b.re_idx= r.re_idx
+			left outer join `member` m on b.mem_id = m.mem_id
 		WHERE b.car_idx is null
-			<choose>
-			<when test="re_name.equals('') or re_name==null">
-				AND t.th_name LIKE CONCAT('%',#{th_name},'%')
-				AND b.b_start LIKE CONCAT('%',#{b_startFake},'%')
-			</when>
-			<otherwise>
-				AND t.th_name LIKE CONCAT('%',#{th_name},'%')
-				AND r.re_name LIKE CONCAT('%',#{re_name},'%')
-				AND b.b_start LIKE CONCAT('%',#{b_startFake},'%')
-			</otherwise>
-		</choose>
-		ORDER BY b.cb_idx DESC limit 10 offset #{offset};
+			AND t.th_name LIKE CONCAT('%',#{th_name},'%')
+			AND(r.re_name LIKE CONCAT('%',#{userName},'%')
+			or m.mem_name LIKE CONCAT('%',#{userName},'%'))
+			AND b.b_start LIKE CONCAT('%',#{b_startFake},'%')
+		ORDER BY b.cb_idx DESC limit 10 offset #{offset}
+	</select>
+	
+	<!-- 비품등록 - 사용자 - 입소자 -->
+	<select id="totalCntThResiList" resultType="int">
+		SELECT COUNT(mem_id) from `member`
+	</select>
+	<select id="thingResidentList" resultType="thing" parameterType="int">
+		SELECT re_idx, re_name from resident limit 10 offset #{offset}
+	</select>
+	
+	<!-- 비품등록 - 사용자 - 직원 -->
+	<select id="totalCntThMemiList" resultType="int">
+		SELECT COUNT(re_idx) from resident
+	</select>
+	<select id="thingMemberList" resultType="thing" parameterType="int">
+		SELECT mem_id, mem_name from `member` limit 10 offset #{offset}
 	</select>
 	
 </mapper>

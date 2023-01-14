@@ -210,4 +210,31 @@ public class ThingController {
 		return service.getThingBookSearch(params);
 	}
 	
+	/* 비품 예약 -> 사용자 -> 입소자 리스트 */
+	@GetMapping(value = "/thingResidentList.go")
+	public ModelAndView thingResidentList() {
+		ModelAndView mav = new ModelAndView("item/thingResidentList");
+		return mav;
+	}
+	/* 입소자 리스트 조회 */
+	@GetMapping(value = "/thingResidentList.do")
+	public HashMap<String, Object> thingResidentList(int page){
+		logger.info("비품 예약 등록 - 입소자 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.thingResidentList(page);
+	}
+	
+	/* 비품 예약 -> 사용자 -> 직원 리스트 */
+	@GetMapping(value = "/thingMemberList.go")
+	public ModelAndView thingMemberList() {
+		ModelAndView mav = new ModelAndView("item/thingMemberList");
+		return mav;
+	}
+	/* 직원 리스트 조회 */
+	@GetMapping(value = "/thingMemberList.do")
+	public HashMap<String, Object> thingMemberList(int page){
+		logger.info("비품 예약 등록 - 직원 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.thingMemberList(page);
+	}
+	
+	
 }

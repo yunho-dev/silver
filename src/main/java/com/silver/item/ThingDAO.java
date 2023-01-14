@@ -73,5 +73,13 @@ public interface ThingDAO {
 	int totalCountBookSearch(HashMap<String, String> params);
 
 	ArrayList<ThingDTO> getThingBookSearch(ThingDTO dto);
+
+	int totalCntThResiList();
+
+	int totalCntThMemiList();
+
+	ArrayList<ThingDTO> thingResidentList(int offset);
+
+	ArrayList<ThingDTO> thingMemberList(int offset);
 	
 }
