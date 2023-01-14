@@ -16,14 +16,6 @@
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
-<style>
-	.filter{
-		width: 90px;
-	}
-	.member{
-		cursor: pointer;
-	}
-</style>
 <body>
 	<!-- Hoverable rows start -->
     <section class="section">
@@ -31,12 +23,11 @@
             <div class="col-12">
                 <div class="card">
                 	<div class="card-header" style="padding-bottom: 0px; padding-top: 20px;">
-                        <h3 class="card-title">직원 조회</h3>
-                        <p>비품 사용 예약을 할 직원을 클릭해 주세요</p>
+                        <h3 class="card-title">비품 조회</h3>
+                        <p>비품 사용 예약을 할 비품을 클릭해 주세요</p>
                     </div>
 			       <div class="card-header" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
-			           사번 : <input type="text" name="num" class="filter"> &nbsp;&nbsp;
-			           직원 이름 : <input type="text" name="name" class="filter"> &nbsp;&nbsp;
+			           비품 이름 : <input type="text" name="name" class="filter"> &nbsp;&nbsp;
 			           <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 					</div>
                         <!-- table hover -->
@@ -44,8 +35,8 @@
                             <table class="table table-hover mb-0" style="text-align: center;">
                                 <thead>
                                     <tr>
-                                        <th>사번</th>
-                                        <th>직원 이름</th>
+                                        <th>순번</th>
+                                        <th>비품 이름</th>
                                     </tr>
                                 </thead>
                                 <tbody id="list">
@@ -67,15 +58,15 @@
 	function ListCall(page){
 		$.ajax({
 			type:'GET',
-			url:'thingMemberList.do',
+			url:'getThingList.do',
 			data:{page:page},
 			dataType:'JSON',
 			success:function(data){
-				drawList(data.list)
+				drawList(data.list);
 				$("#pagination").twbsPagination({
 					startPage : 1, // 시작 페이지
 					totalPages : data.total, // 총 페이지 수
-					visiblePages : 3, // 기본으로 보여줄 페이지 수
+					visiblePages : 5, // 기본으로 보여줄 페이지 수
 					onPageClick : function(e, page) { // 클릭했을때 실행 내용
 						ListCall(page)
 					}
@@ -87,23 +78,16 @@
 		});
 	}
 	
-	function drawList(memList){
+	function drawList(thList){
 		var content='';
-		for(var i=0; i<memList.length;i++){
-			content +='<tr class="memList" onclick="memRow($(this))" style="cursor: pointer;">';
-			content +='<td class="memId">'+memList[i].mem_id+'</td>';
-			content +='<td class="memName">'+memList[i].mem_name+'</td>';
+		for(var i=0; i<thList.length;i++){
+			content +='<tr class="resiList" onclick="thRow($(this))" style="cursor: pointer;">';
+			content +='<td class="thIdx">'+thList[i].th_idx+'</td>';
+			content +='<td class="thName">'+thList[i].th_name+'</td>';
 			content +='</tr>';
 		}
 		$('#list').empty();
 		$('#list').append(content);
-	}
-	
-	function memRow(memRow){
-		var memId = memRow.find('.memId').text();
-		var memName = memRow.find('.memName').text();
-		opener.choiceRow(memId, memName, 0);
-		window.close()
 	}
 	
 	var flag=true;
@@ -111,17 +95,17 @@
 	var page2=1;
 	var chkPage=new Array();
 	function search(page2){
-		var id = $('.section input[name=num]').val();
 		var name = $('.section input[name=name]').val();
 		if(flag){
 			flag=false;
 			$.ajax({
 				type:'GET',
-				url:'getThMemberSearch.do',
-				data:{'page':page2, id:id, name:name},
+				url:'getPopThSearch.do',
+				data:{'page':page2, thName:name},
 				dataType:'JSON',
 				success:function(data){
 					drawList(data.list);
+					chkPage.push(data.total);
 					if(chkPage.at(-2) != data.total){
 	    				pageflag=true;
 	    			}
@@ -145,6 +129,13 @@
 	    		}
 			});
 		}
+	}
+	
+	function thRow(thRow){
+		var thIdx = thRow.find('.thIdx').text();
+		var thName = thRow.find('.thName').text();
+		opener.choiceRow(thIdx, thName, 1);
+		window.close()
 	}
 </script>
 </html>

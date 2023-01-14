@@ -326,18 +326,72 @@
 	
 	<!-- 비품등록 - 사용자 - 입소자 -->
 	<select id="totalCntThResiList" resultType="int">
-		SELECT COUNT(mem_id) from `member`
+		SELECT COUNT(re_idx) from resident
 	</select>
 	<select id="thingResidentList" resultType="thing" parameterType="int">
 		SELECT re_idx, re_name from resident limit 10 offset #{offset}
 	</select>
+	<select id="totalCountThResiSearch" resultType="int" parameterType="hashmap">
+		SELECT COUNT(re_idx) from resident
+		where
+			<choose>
+				<when test="id != null and !id.equals('')">
+					re_idx = #{id}
+					AND re_name LIKE CONCAT('%',#{name},'%')
+				</when>
+				<otherwise>
+					re_name LIKE CONCAT('%',#{name},'%')
+				</otherwise>
+			</choose>
+	</select>
+	<select id="geThResiSearch" resultType="thing" parameterType="thing">
+		SELECT re_idx, re_name from resident
+		where
+			<choose>
+				<when test="re_idx != null and !re_idx.equals('')">
+					re_idx = #{re_idx}
+					AND re_name LIKE CONCAT('%',#{re_name},'%')
+				</when>
+				<otherwise>
+					re_name LIKE CONCAT('%',#{re_name},'%')
+				</otherwise>
+			</choose>
+		limit 10 offset #{offset}
+	</select>
 	
 	<!-- 비품등록 - 사용자 - 직원 -->
 	<select id="totalCntThMemiList" resultType="int">
-		SELECT COUNT(re_idx) from resident
+		SELECT COUNT(mem_id) from `member`
 	</select>
 	<select id="thingMemberList" resultType="thing" parameterType="int">
 		SELECT mem_id, mem_name from `member` limit 10 offset #{offset}
+	</select>
+	<select id="totalCountThMemSearch" resultType="int" parameterType="hashmap">
+		SELECT COUNT(mem_id) from `member`
+		where
+			<choose>
+				<when test="id != null and !id.equals('')">
+					mem_id = #{id}
+					AND mem_name LIKE CONCAT('%',#{name},'%')
+				</when>
+				<otherwise>
+					mem_name LIKE CONCAT('%',#{name},'%')
+				</otherwise>
+			</choose>
+	</select>
+	<select id="geThMemSearch" resultType="thing" parameterType="thing">
+		SELECT mem_id, mem_name from `member`
+		where
+			<choose>
+				<when test="mem_id != null and !mem_id.equals('')">
+					mem_id = #{mem_id}
+					AND mem_name LIKE CONCAT('%',#{mem_name},'%')
+				</when>
+				<otherwise>
+					mem_name LIKE CONCAT('%',#{mem_name},'%')
+				</otherwise>
+			</choose>
+		limit 10 offset #{offset}
 	</select>
 	
 </mapper>

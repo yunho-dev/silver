@@ -49,7 +49,7 @@ public class ThingDTO {
 	private String mem_name; // 예약 이름(직원)
 	private String userName; // 입력받은거 담음
 	//thing book insert - 직원 or 입소자 list
-	private int re_idx;
+	private String re_idx;
 	private String mem_id;
 	
 	public int getTh_idx() {
@@ -263,10 +263,10 @@ public class ThingDTO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public int getRe_idx() {
+	public String getRe_idx() {
 		return re_idx;
 	}
-	public void setRe_idx(int re_idx) {
+	public void setRe_idx(String re_idx) {
 		this.re_idx = re_idx;
 	}
 	public String getMem_id() {

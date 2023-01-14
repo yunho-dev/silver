@@ -222,6 +222,12 @@ public class ThingController {
 		logger.info("비품 예약 등록 - 입소자 "+page+"페이지 리스트(ajax) 데이터 요청");
 		return service.thingResidentList(page);
 	}
+	/* 입소자 검색 */
+	@GetMapping(value = "/getThResiSearch.do")
+	public HashMap<String, Object> getThResiSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 예약 등록 - 입소자 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThResiSearch(params);
+	}
 	
 	/* 비품 예약 -> 사용자 -> 직원 리스트 */
 	@GetMapping(value = "/thingMemberList.go")
@@ -235,6 +241,24 @@ public class ThingController {
 		logger.info("비품 예약 등록 - 직원 "+page+"페이지 리스트(ajax) 데이터 요청");
 		return service.thingMemberList(page);
 	}
+	/* 직원 검색 */
+	@GetMapping(value = "/getThMemberSearch.do")
+	public HashMap<String, Object> getThMemberSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 예약 등록 - 직원 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThMemberSearch(params);
+	}
+	/* 비품 예약 -> 품명 */
+	@GetMapping(value = "/popThList.go")
+	public ModelAndView popThList() {
+		ModelAndView mav = new ModelAndView("item/popThList");
+		return mav;
+	}
 	
+	/* 기존의 비품 검색 메서드(컨트롤러) 재활용이 안 돼서 만듦 */
+	@GetMapping(value = "/getPopThSearch.do")
+	public HashMap<String, Object> getPopThSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 예약 등록 - 비품 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getPopThSearch(params);
+	}
 	
 }

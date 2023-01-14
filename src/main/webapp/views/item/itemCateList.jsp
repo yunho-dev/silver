@@ -141,7 +141,7 @@
 	}
 	
 	function search(searchBtn){
-		var itName = searchName = searchBtn.siblings('input.filter').val();
+		var itName = searchBtn.siblings('input.filter').val();
 		
 		$.ajax({
 			type:'GET',

@@ -37,7 +37,7 @@
 			       <div class="card-header" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
 			           입소자 번호 : <input type="text" name="num" class="filter"> &nbsp;&nbsp;
 			           입소자 이름 : <input type="text" name="name" class="filter"> &nbsp;&nbsp;
-			           <button class="btn btn-secondary" onclick="search($(this))">검색</button>
+			           <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 					</div>
                         <!-- table hover -->
                         <div class="table-responsive">
@@ -53,6 +53,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
                     </div>
                 </div>
             </div>
@@ -71,6 +72,14 @@
 			dataType:'JSON',
 			success:function(data){
 				drawList(data.list)
+				$("#pagination").twbsPagination({
+					startPage : 1, // 시작 페이지
+					totalPages : data.total, // 총 페이지 수
+					visiblePages : 3, // 기본으로 보여줄 페이지 수
+					onPageClick : function(e, page) { // 클릭했을때 실행 내용
+						ListCall(page)
+					}
+				});
 			},
 			error:function(e){
 				console.log(e);
@@ -82,12 +91,61 @@
 		var content='';
 		for(var i=0; i<resiList.length;i++){
 			content +='<tr class="resiList" onclick="resiRow($(this))" style="cursor: pointer;">';
-			content +='<td class="re_idx">'+resiList[i].re_idx+'</td>';
-			content +='<td class="re_name">'+resiList[i].re_name+'</td>';
+			content +='<td class="reIdx">'+resiList[i].re_idx+'</td>';
+			content +='<td class="reName">'+resiList[i].re_name+'</td>';
 			content +='</tr>';
 		}
 		$('#list').empty();
 		$('#list').append(content);
+	}
+	
+	function resiRow(resiRow){
+		var reIdx = resiRow.find('.reIdx').text();
+		var reName = resiRow.find('.reName').text();
+		opener.choiceRow(reIdx, reName, 0);
+		window.close()
+	}
+	
+	var flag=true;
+	var pageflag=true;
+	var page2=1;
+	var chkPage=new Array();
+	function search(page2){
+		var id = $('.section input[name=num]').val();
+		var name = $('.section input[name=name]').val();
+		if(flag){
+			flag=false;
+			$.ajax({
+				type:'GET',
+				url:'getThResiSearch.do',
+				data:{'page':page2, id:id, name:name},
+				dataType:'JSON',
+				success:function(data){
+					drawList(data.list);
+					chkPage.push(data.total);
+					if(chkPage.at(-2) != data.total){
+	    				pageflag=true;
+	    			}
+					if(pageflag == true && $('.pagination').data("twbs-pagination")){
+	                    $('.pagination').twbsPagination('destroy');
+	                    pageflag=false;
+	                }
+					$("#pagination").twbsPagination({
+	    				startPage : 1 // 시작 페이지
+	    				,totalPages : data.total // 총 페이지 수
+	    				,visiblePages : 5 // 기본으로 보여줄 페이지 수
+	    				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+	    					search(page);
+	    				}
+	    			});
+				},
+				error:function(e){
+					console.log(e)
+				},complete:function(){
+	    			flag=true;
+	    		}
+			});
+		}
 	}
 </script>
 </html>

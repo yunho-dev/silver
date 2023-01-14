@@ -81,5 +81,13 @@ public interface ThingDAO {
 	ArrayList<ThingDTO> thingResidentList(int offset);
 
 	ArrayList<ThingDTO> thingMemberList(int offset);
+
+	int totalCountThResiSearch(HashMap<String, String> params);
+
+	int totalCountThMemSearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> geThResiSearch(ThingDTO dto);
+
+	ArrayList<ThingDTO> geThMemSearch(ThingDTO dto);
 	
 }

@@ -62,11 +62,12 @@
 		            <div class="modal-body">
 						<div class="writeLeft">
 							<p class="writeArea"><span id="WriteName">품명 : </span> 
-								<input type="text" name="thName">&nbsp;
+							 	<input type="text" name="thName" onclick="popThing()" placeholder="클릭해 주세요" readonly="readonly" style="cursor: pointer;">&nbsp;
+							 	<input type="hidden" name="thIdx" readonly="readonly">
 							</p> <br>
 							<p class="writeArea">
 								<span id="WriteName">사용자 구분 : </span> 
-								<select name="user" onchange="changeUser($(this))">
+								<select name="userSel" onchange="changeUser($(this))">
 									<option value="" selected="selected" style="display: none;">선택</option>
 									<option value="입소자">입소자</option>
 									<option value="직원">직원</option>
@@ -74,17 +75,18 @@
 							</p> <br>
 							<p class="writeArea">
 								<span id="WriteName">사용자 : </span> 
-								<input type="text" name="user" readonly="readonly" onclick="alert('사용자 구분을 먼저 선택해 주세요')" style="cursor: pointer;">
+								<input type="text" name="user" readonly="readonly" onclick="alert('사용자 구분을 먼저 선택해 주세요')" placeholder="클릭해 주세요" style="cursor: pointer;">
+								<input type="hidden" name="userid" readonly="readonly">
 							</p>
 						</div>
 						<div class="writeRight">
 							<p class="writeArea">
 								<span id="WriteName">예약 시작 날짜 : </span> 
-								<input type="text" name="hisRent"><br>
+								<input type="text" name="bStart"><br>
 							</p><br>
 							<p class="writeArea">
 								<span id="WriteName">얘약 끝날 날짜 : </span> 
-								<input type="text" name="hisRent"><br>
+								<input type="text" name="bEnd"><br>
 							</p>
 						</div>
 		            </div>
@@ -112,6 +114,8 @@
 	
 	function changeUser(selected){
 		var selVal = selected.val();
+		$('#writeForm input[name=user]').val('')
+		$('#writeForm input[name=userid]').val('')
 		if(selVal === '입소자'){
 			$('#writeForm input[name=user]').attr('onclick','selectResident()')
 		}else{
@@ -132,6 +136,39 @@
 		var option = "width = 500, height = 500, top = 100, left = 200, location = no"
 		window.open(url, name, option)
 	}
+	
+	function choiceRow(idx, name, judge){
+		if(judge == 0){
+			$('.writeLeft input[name=user]').val(name)
+			$('.writeLeft input[name=userid]').val(idx)
+		}else{
+			$('.writeLeft input[name=thName]').val(name)
+			$('.writeLeft input[name=thIdx]').val(idx)
+		}
+	}
+	
+	function popThing(){
+		var url = "popThList.go";
+        var name = "popThList";
+		var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+		window.open(url, name, option)
+	}
+	
+	$('#regist').click(function(){
+		var $thIdx = $('#writeForm input[name=thIdx]');
+		
+		var $select = $('#writeForm select[name=userSel]');
+		var $user = $('#writeForm input[name=user]');
+		var $userid = $('#writeForm input[name=userid]');
+		
+		var $bStart = $('#writeForm input[name=bStart]');
+		var $bEnd = $('#writeForm input[name=bEnd]');
+		/* 날짜 정규식 */
+		var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+		
+	})
+	
+	
 	
 </script>
 </html>

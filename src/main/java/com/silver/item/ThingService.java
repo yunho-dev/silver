@@ -464,26 +464,6 @@ public class ThingService {
 		return result;
 	}
 	
-	/*
-	 * 
-	 * public HashMap<String, Object> getThingHistoryList(int page) {
-		int offset = 10*(page-1);
-		int totalCount = dao.totalCntThHistory();
-		logger.info("게시글 총 개수 : "+totalCount);
-		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
-		logger.info("총 페이지 수 : "+totalPages);
-		
-		logger.info("비품 목록을 가져옵니다.");
-		HashMap<String, Object> result=new HashMap<String, Object>();
-		ArrayList<ThingDTO> thingHistory = dao.getThingHistoryList(offset);
-		if(totalPages==0) {
-			totalPages = 1;
-		}
-		result.put("list", thingHistory);
-		result.put("total", totalPages);
-		return result;
-	}
-	 * */
 	public HashMap<String, Object> thingResidentList(int page) {
 		int offset = 10*(page-1);
 		int totalCount = dao.totalCntThResiList();
@@ -516,6 +496,103 @@ public class ThingService {
 			totalPages = 1;
 		}
 		result.put("list", thingMemiList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	/*
+	 * ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setTh_model(params.get("thModel"));
+		dto.setHis_name(params.get("hisName"));
+		dto.setTh_state(params.get("checkAllView"));
+		dto.setOffset(offset);
+	 * */
+	public HashMap<String, Object> getThResiSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("입소자 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThResiSearch(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setRe_idx(params.get("id"));
+		dto.setRe_name(params.get("name"));
+		dto.setOffset(offset);
+		
+		logger.info("검색된 입소자 목록을 가져옵니다.");
+		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
+		list = dao.geThResiSearch(dto);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+
+	public HashMap<String, Object> getThMemberSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("직원 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThMemSearch(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setMem_id(params.get("id"));
+		dto.setMem_name(params.get("name"));
+		dto.setOffset(offset);
+		
+		logger.info("검색된 직원 목록을 가져옵니다.");
+		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
+		list = dao.geThMemSearch(dto);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	public HashMap<String, Object> getPopThSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 검색 기능 접근");
+		
+		/* dao 재사용 하기위해 초기화 */
+		params.put("thWrite", "");
+		params.put("thSpon", "");
+		params.put("thPart", "");
+		params.put("thState", "");
+		
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThFilterList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setTh_write(params.get("thWrite"));
+		dto.setTh_spon(params.get("thSpon"));
+		dto.setTh_part(params.get("thPart"));
+		dto.setTh_state(params.get("thState"));
+		dto.setOffset(offset);
+		
+		ArrayList<ThingDTO> thingList = dao.getThingListSearch(dto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		result.put("list", thingList);
 		result.put("total", totalPages);
 		return result;
 	}
