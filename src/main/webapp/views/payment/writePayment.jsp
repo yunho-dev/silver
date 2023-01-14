@@ -47,8 +47,9 @@
 										<th>결재 양식</th>
 										<td></td>
 										<td>
-										<input type="button" value="불러오기" class="btn btn-sm btn-primary"
-										data-toggle="modal" data-target="#payformList"></td>
+										<button type="button" class="btn btn-sm btn-primary"
+										data-bs-toggle="modal" data-bs-target="#PayFormCallList">불러오기</button>
+										</td>
 									</tr>
 									<tr>
 										<th>팀 공개</th>
@@ -102,22 +103,32 @@
 				</section>
 			</div>
 			
-			<div class="modal fade" id="payformList" tabindex="-1" role="dialog" 
+			<div class="modal fade" id="PayFormCallList" tabindex="-1" role="dialog" 
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			 <div class="modal-content">
+			 <div class="modal-dialog">
 			   <div class="modal-content">
 			   	 <div class="modal-header">
-			   	 	하하하호홓
+			   	 	결재 양식 선택
 			   	 </div>
+			   	  <div class="modal-body">
+			   	  	<table class="table table-bordered table-hover">
+			   	  		<thead>
+			   	  			<tr>
+			   	  				<th></th>
+			   	  				<th>결재 양식</th>
+			   	  				<th>등록자</th>
+			   	  				<th>제목</th>
+			   	  				<th>양식 사용 횟수</th>
+			   	  			</tr>
+			   	  		</thead>
+			   	  		<tbody id="PayFormListBody">
+			   	  			
+			   	  		</tbody>
+			   	  	</table>
+     			 </div>
 			   </div>
 			</div>
 			</div>
-			
-			
-			
-			
-			
-			
 			
 			
 			
@@ -150,6 +161,10 @@
 <script>
 var count=0;
 $(document).on('click','#pmline',function(){
+	if($("#pmsignName th").length == 4){
+		alert('결재 라인 지정은 최대 3명만 가능합니다.');
+		return;
+	}
 	count++;
 	var content1='';
 	content1 +='<th>결재 라인<input style="margin-left:11px;width:5px;"'; 

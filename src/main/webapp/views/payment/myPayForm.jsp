@@ -34,8 +34,8 @@
 				<section class="row">
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
-						<input id="writebutton" type="button" class="btn btn-sm btn-primary" value="내가 작성한 양식" style="margin-bottom:10px;"
-						onclick='location.href="myPayForm"'>
+						<input id="Mywritebutton" type="button" class="btn btn-sm btn-primary" value="내가 작성한 양식" style="margin-bottom:10px;"
+						onclick='location.href="myPayForm'>
 						<input id="writebutton" type="button" class="btn btn-sm btn-secondary" value="모든 양식" style="margin-bottom:10px;"
 						onclick='location.href="allPayForm"'>
 							<div class="d-flex align-items-center">
@@ -104,7 +104,6 @@ $(document).on('click','#payformwrite',function(){
 });
 
 
-
 var page=1
 PayAjaxCall(page);
 function PayAjaxCall(page){
@@ -132,6 +131,7 @@ function PayAjaxCall(page){
 }
 
 function myformCall(list) {
+	console.log('myform Call');
 	var content = '';
 	for (var i = 0; i < list.length; i++) {
 		if(list[i].pf_write != '삭제됨'){
@@ -177,10 +177,5 @@ function payformdel(idx){
 }
 
 
-
-
-
-
-	
 </script>
 </html>

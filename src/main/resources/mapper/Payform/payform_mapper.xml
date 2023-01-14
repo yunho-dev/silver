@@ -17,7 +17,7 @@
 	</select>
 	
 	<select id="AlllistCallTotal" resultType="int">
-		select count(p.pf_idx) from payform p ;
+		select count(p.pf_idx) from payform p where not pf_write in('삭제됨')
 	</select>
 	
 	<select id="alllistCall" resultType="payformdto">
