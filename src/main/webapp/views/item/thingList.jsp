@@ -169,11 +169,11 @@
 	var select_change2=new Array();
 	var chkPage=new Array();
 	function search(page2){
-		thName = $('#filterHead input[name=th_name]').val();
-		thWrite = $('#filterHead input[name=th_write').val();
-		thSpon = $('#filterHead input[name=th_dona').val();
-		thPart = $('#filterHead select[name=th_part]').val();
-		thState = $('#filterHead select[name=th_state]').val();
+		var thName = $('#filterHead input[name=th_name]').val();
+		var thWrite = $('#filterHead input[name=th_write').val();
+		var thSpon = $('#filterHead input[name=th_dona').val();
+		var thPart = $('#filterHead select[name=th_part]').val();
+		var thState = $('#filterHead select[name=th_state]').val();
 		select_change.push($("#selectPart").val());
 		select_change2.push($("#selectState").val());
 		if(flag){

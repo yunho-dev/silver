@@ -48,12 +48,14 @@ public class ThingDTO {
 	private String re_name; // 예약 이름(입소자)
 	private String mem_name; // 예약 이름(직원)
 	private String userName; // 입력받은거 담음
+	private String b_cancel;
+	private String b_content;
+	private String bookCancelFake;
 	//thing book insert - 직원 or 입소자 list
 	private String re_idx;
 	private String mem_id;
 	
 	public int getTh_idx() {
-		System.out.println(th_idx);
 		return th_idx;
 	}
 	public void setTh_idx(int th_idx) {
@@ -274,6 +276,24 @@ public class ThingDTO {
 	}
 	public void setMem_id(String mem_id) {
 		this.mem_id = mem_id;
+	}
+	public String getB_cancel() {
+		return b_cancel;
+	}
+	public void setB_cancel(String b_cancel) {
+		this.b_cancel = b_cancel;
+	}
+	public String getBookCancelFake() {
+		return bookCancelFake;
+	}
+	public void setBookCancelFake(String bookCancelFake) {
+		this.bookCancelFake = bookCancelFake;
+	}
+	public String getB_content() {
+		return b_content;
+	}
+	public void setB_content(String b_content) {
+		this.b_content = b_content;
 	}
 	
 }

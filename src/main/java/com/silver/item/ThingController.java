@@ -267,4 +267,17 @@ public class ThingController {
 		return service.thingBookWrite(params, request);
 	}
 	
+	/* 비품 예약 상세보기 */
+	@GetMapping(value = "/getThingBookDetail.do")
+	public HashMap<String, Object> getThingBookDetail(String cbIdx){
+		logger.info(cbIdx+"번째 예약에 대한 사용내역 상세보기");
+		return service.getThingBookDetail(cbIdx);
+	}
+	
+	@PostMapping(value = "/thingBookCancel.do")
+	public HashMap<String, Object> thingBookCancel(int cbIdx, String bContent, HttpServletRequest request){
+		logger.info("비품 수정 접근");
+		return service.thingBookCancel(cbIdx, bContent, request);
+	}
+	
 }

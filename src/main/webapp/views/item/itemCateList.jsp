@@ -102,7 +102,7 @@
 	}
 	
 	function cateModify(modifyBtn){
-		itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
+		var itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
 		modifyBtn.closest('tr').find('#cateClick1').attr('onclick', '');
 		modifyBtn.closest('tr').find('#cateClick1').css('cursor', '');
 		modifyBtn.closest('tr').find('#cateClick2').attr('onclick', '');

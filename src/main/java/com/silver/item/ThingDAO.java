@@ -94,5 +94,8 @@ public interface ThingDAO {
 
 	int thingBookWrite(HashMap<String, String> params);
 
+	ThingDTO getThingBookDetail(String cbIdx);
+
+	int thingBookCancel(int cbIdx, String bContent, String bookWriter);
 	
 }

@@ -169,10 +169,10 @@
 	var page2=1;
 	var chkPage=new Array();
 	function search(page2){
-		thName = $('#filterHead input[name=th_name]').val();
-		thModel = $('#filterHead input[name=th_model]').val();
-		hisName = $('#filterHead input[name=his_name]').val();
-		checkAllView = '비사용중';
+		var thName = $('#filterHead input[name=th_name]').val();
+		var thModel = $('#filterHead input[name=th_model]').val();
+		var hisName = $('#filterHead input[name=his_name]').val();
+		var checkAllView = '비사용중';
 		if($('#filterHead #checkAllView').is(":checked")){
 			checkAllView = '전체';
 		}

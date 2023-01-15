@@ -18,14 +18,18 @@
 </head>
 <style>
 	.filter{
-		width: 15%;
+		width: 90px;
 	}
-	.thHistoryRow{
+	.thBookRow{
 		cursor: pointer;
 	}
-	
 	#goBtn{
 		margin-top: 10px;
+	}
+	#checkAllView{
+		vertical-align: -8px;
+    	width: 30px;
+    	height: 30px;
 	}
 </style>
 <body>
@@ -50,6 +54,9 @@
 		                        품명 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
 		                        사용자 : <input type="text" name="user" class="filter"> &nbsp;&nbsp;
 		                        예약 시작 날짜 : <input type="text" name="b_start" class="filter"> &nbsp;&nbsp;
+		                        <label class="form-check-label" for="customColorCheck2">전체보기 : 
+		                        	<input type="checkbox" id="checkAllView">
+		                        </label> &nbsp;&nbsp;
 		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 		                    </div>
 							<!-- table head dark -->
@@ -62,6 +69,7 @@
 							                <th>이용 시작일</th>
 							                <th>이용 종료일</th>
 							                <th>사용자</th>
+							                <th>취소 여부</th>
 							            </tr>
 							        </thead>
 							        <tbody id="list">
@@ -79,6 +87,7 @@
              </section>
              <!-- 모달 -->
              <jsp:include page="thingBookWrite.jsp"></jsp:include>
+             <jsp:include page="thingBookDetail.jsp"></jsp:include>
 		</div>
 	</div>
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -119,7 +128,7 @@
 		for(var i=0; i<bookList.length;i++){
 			var startDate=new Date(bookList[i].b_start);
 			var endDate=new Date(bookList[i].b_end);
-			content +='<tr class="thBookRow">';
+			content +='<tr class="thBookRow" data-bs-toggle="modal" data-bs-target="#thingBookDetail" onclick="detail($(this))">';
 			content +='<td class="cb_idx">'+bookList[i].cb_idx+'</td>';
 			content +='<td>'+bookList[i].th_name+'</td>';
 			content +='<td>'+startDate.toLocaleDateString('ko-KR')+'</td>';
@@ -128,6 +137,11 @@
 				content +='<td>'+bookList[i].re_name+'</td>';
 			}else{
 				content +='<td style="color: blue;">'+bookList[i].mem_name+'</td>';
+			}
+			if(bookList[i].b_cancel == 1){
+				content +='<td>X</td>';
+			}else{
+				content +='<td style="color: red;">O</td>';
 			}
 			content +='</tr>';
 		}
@@ -142,15 +156,19 @@
 	var select_change2=new Array();
 	var chkPage=new Array();
 	function search(page2){
-		thName = $('#filterHead input[name=th_name]').val();
-		userName = $('#filterHead input[name=user]').val();
-		bStart = $('#filterHead input[name=b_start]').val();
+		var thName = $('#filterHead input[name=th_name]').val();
+		var userName = $('#filterHead input[name=user]').val();
+		var bStart = $('#filterHead input[name=b_start]').val();
+		var checkAllView = '비사용중';
+		if($('#filterHead #checkAllView').is(":checked")){
+			checkAllView = '전체';
+		}
 		if(flag){
 			flag=false;
 			$.ajax({
 				type:'GET',
 				url:'getThingBookSearch.do',
-				data:{'page':page2, thName:thName, userName:userName, bStart:bStart},
+				data:{'page':page2, thName:thName, userName:userName, bStart:bStart, checkAllView:checkAllView},
 				dataType:'JSON',
 				success:function(data){
 					drawList(data.list);
@@ -178,6 +196,41 @@
 	    		}
 			});
 		}
+	}
+	
+	function detail(listRow){
+		var cbIdx = $(listRow).find('td.cb_idx').text();
+	    $.ajax({
+	    	type:'GET',
+			url:'getThingBookDetail.do',
+			data:{cbIdx:cbIdx},
+			dataType:'JSON',
+			success:function(data){
+				var startDate = new Date(data.detail.b_start)
+				var endDate = new Date(data.detail.b_end)
+				$("#thingBookDetail #cbIdx").val(data.detail.cb_idx);
+				$("#thingBookDetail .th_name").text(data.detail.th_name);
+				if(data.detail.mem_name == null){
+					$("#thingBookDetail .b_name").text(data.detail.re_name);
+				}else{
+					$("#thingBookDetail .b_name").text(data.detail.mem_name);
+				}
+				$("#thingBookDetail .b_write").text(data.detail.b_write);
+				$("#thingBookDetail .b_start").text(startDate.toLocaleDateString('ko-KR'));
+				$("#thingBookDetail .b_end").text(endDate.toLocaleDateString('ko-KR'));
+				if(data.detail.b_cancel == 1){
+					$("#thingBookDetail #hideComent").css('display', 'none');
+					$("#thingBookDetail .b_cancel").text('취소 안 함').css('color', 'blue');
+				}else{
+					$("#thingBookDetail .b_cancel").text('취소').css('color', 'red');
+					$("#thingBookDetail #hideComent").css('display', 'block');
+					$("#thingBookDetail .b_coment").text(data.detail.b_content);
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+	    });
 	}
 	
 </script>
