@@ -54,7 +54,6 @@
 		                        		</select> &nbsp;&nbsp;
 		                        등록자 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
 		                        후원자 : <input type="text" name="th_dona" class="filter"> &nbsp;&nbsp;
-<!-- 		                        <button class="btn btn-secondary" onclick="search($(this))">검색</button> -->
 		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 		                    </div>
 		                   <!-- table hover -->
