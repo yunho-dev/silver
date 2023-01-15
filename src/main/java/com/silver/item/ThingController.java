@@ -254,11 +254,17 @@ public class ThingController {
 		return mav;
 	}
 	
-	/* 기존의 비품 검색 메서드(컨트롤러) 재활용이 안 돼서 만듦 */
+	/* 비품검색 */
 	@GetMapping(value = "/getPopThSearch.do")
 	public HashMap<String, Object> getPopThSearch(@RequestParam HashMap<String, String> params){
 		logger.info("비품 예약 등록 - 비품 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
 		return service.getPopThSearch(params);
+	}
+	
+	/* 비품 예약 등록 */
+	@PostMapping(value = "/thingBookWrite.do")
+	public HashMap<String, Object> thingBookWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		return service.thingBookWrite(params, request);
 	}
 	
 }

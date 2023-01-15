@@ -89,5 +89,10 @@ public interface ThingDAO {
 	ArrayList<ThingDTO> geThResiSearch(ThingDTO dto);
 
 	ArrayList<ThingDTO> geThMemSearch(ThingDTO dto);
+
+	int thBookCheck(HashMap<String, String> params);
+
+	int thingBookWrite(HashMap<String, String> params);
+
 	
 }

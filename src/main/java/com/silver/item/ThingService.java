@@ -89,6 +89,23 @@ public class ThingService {
 		return result;
 	}
 	
+	/**
+	 * HttpServletRequest 을 넣으면 세션에 저장되어있는 로그인한 사람의 이름을 반환함
+	 * @param request
+	 * @return String
+	 */
+	public String writer(HttpServletRequest request) {
+		String writer = "로그인 안 하고 작성";
+		HttpSession session=request.getSession();
+		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
+		logger.info("SessionDTO : "+SessionDTO);
+		if(SessionDTO != null) {
+			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
+			writer = SessionDTO.getMem_name();
+		}
+		return writer;
+	}
+	
 	@Transactional
 	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("받아온 요소 : {}", params);
@@ -500,14 +517,6 @@ public class ThingService {
 		return result;
 	}
 	
-	/*
-	 * ThingDTO dto = new ThingDTO();
-		dto.setTh_name(params.get("thName"));
-		dto.setTh_model(params.get("thModel"));
-		dto.setHis_name(params.get("hisName"));
-		dto.setTh_state(params.get("checkAllView"));
-		dto.setOffset(offset);
-	 * */
 	public HashMap<String, Object> getThResiSearch(HashMap<String, String> params) {
 		logger.info("받아온 데이터 : {}", params);
 		logger.info("입소자 검색 기능 접근");
@@ -594,6 +603,24 @@ public class ThingService {
 		}
 		result.put("list", thingList);
 		result.put("total", totalPages);
+		return result;
+	}
+	
+	public HashMap<String, Object> thingBookWrite(HashMap<String, String> params, HttpServletRequest request) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 예약 등록 접근");
+		String bookWriter = writer(request);
+		params.put("bookWriter", bookWriter);
+		int check = 0;
+		int affect = 0;
+		check = dao.thBookCheck(params);
+		if(check == 0) {
+			affect = dao.thingBookWrite(params);
+		}
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("check", check);
+		result.put("affect", affect);
 		return result;
 	}
 

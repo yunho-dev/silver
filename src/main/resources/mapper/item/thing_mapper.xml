@@ -394,4 +394,25 @@
 		limit 10 offset #{offset}
 	</select>
 	
+	<!-- 예약 중복 날짜 체크 -->
+	<select id="thBookCheck" resultType="int" parameterType="hashmap">
+		select COUNT(cb_idx) 
+		from book
+		where th_idx = #{thIdx}
+			and b_cancel =1 
+			and b_start <![CDATA[<]]> #{bEnd}
+			and b_end <![CDATA[>]]> #{bStart}
+	</select>
+	
+	<insert id="thingBookWrite" parameterType="hashmap">
+		<if test="select.equals('입소자')">
+			INSERT INTO book(th_idx, b_write, b_start, b_end, re_idx) 
+				VALUES(#{thIdx}, #{bookWriter}, #{bStart}, #{bEnd}, #{userId})
+		</if>
+		<if test="select.equals('직원')">
+			INSERT INTO book(th_idx, b_write, b_start, b_end, mem_id) 
+				VALUES(#{thIdx}, #{bookWriter}, #{bStart}, #{bEnd}, #{userId})
+		</if>
+	</insert>
+	
 </mapper>
