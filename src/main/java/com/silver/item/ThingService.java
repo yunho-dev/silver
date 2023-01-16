@@ -296,7 +296,6 @@ public class ThingService {
 		ThingDTO dto = new ThingDTO();
 		dto.setTh_name(params.get("thName"));
 		dto.setTh_part(params.get("thPart"));
-		dto.setTh_write(params.get("thWrite"));
 		dto.setTh_model(params.get("thModel"));
 		dto.setOffset(offset);
 		
