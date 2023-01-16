@@ -59,7 +59,7 @@
 									<option value="form">결재양식</option>
 									<option value="write">등록자</option>
 								</select> <input type="text" name="seacontent" id="seacontent">
-								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="">검색</button>
+								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="Allformsearch(page2)">검색</button>
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
@@ -107,7 +107,7 @@ function PayAjaxCall(page){
 		,success:function(data){
 			console.log(data);
 			console.log(page);
-			myformCall(data.allformlist);
+			AllformCall(data.allformlist);
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
@@ -124,7 +124,7 @@ function PayAjaxCall(page){
 	
 }
 
-function myformCall(list) {
+function AllformCall(list) {
 	var content = '';
 	for (var i = 0; i < list.length; i++) {
 		if(list[i].pf_write != '삭제됨'){
@@ -140,6 +140,55 @@ function myformCall(list) {
 	$("#allpayList").append(content);
 }
 
+
+var flag=true;
+var pageflag=true;
+var select_change=new Array();
+var chkPage=new Array();
+var page2=1;
+function Allformsearch(page2){
+	var select=$("#select").val();
+	var seacontent=$("#seacontent").val();
+	select_change.push($("#select").val());
+	if(flag){
+	flag=false;
+	if(seacontent == ""){
+		window.location.reload();
+	}
+	$.ajax({
+		type:'get'
+		,url:'searcAllyform'
+		,dataType:'json'
+		,data:{'select':select,'seacontent':seacontent,'page':page2}
+		,success:function(data){
+			AllformCall(data.AllFormSearch);
+			chkPage.push(data.page_idx);
+			if(chkPage.at(-2) != data.page_idx){
+				pageflag=true;
+			}
+			if(pageflag == true && $('.pagination').data("twbs-pagination")
+					|| select_change.at(-2) != $("#select").val()){
+                $('.pagination').twbsPagination('destroy');
+                pageflag=false;
+            }
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,initiateStartPageClick:false
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					Allformsearch(page);
+				}
+			});
+		}
+		,error:function(e){
+			console.log(e);
+		},complete:function(){
+			flag=true;
+		}
+	});
+	}	
+}
 
 
 

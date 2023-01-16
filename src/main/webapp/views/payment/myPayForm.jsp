@@ -54,15 +54,6 @@
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<div>
-								<select id="select">
-									<option value="form">결재양식</option>
-									<option value="write">등록자</option>
-								</select> <input type="text" name="seacontent" id="seacontent">
-								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="">검색</button>
-							</div>
-						</div>
-						<div class="card-body py-4 px-5" style="margin:0 auto;">
 							<div id="pagint">
 								<div class="container">
 									<nav aria-label="Page navigation" style="text-align: center;">
@@ -102,6 +93,10 @@
 $(document).on('click','#payformwrite',function(){
 	location.href='writepayform.go';
 });
+
+
+
+	
 
 
 var page=1

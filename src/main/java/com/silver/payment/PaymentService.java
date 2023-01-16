@@ -34,7 +34,20 @@ public class PaymentService {
 		HttpSession session=request.getSession();
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
+		
 		return paymentdao.MyPayListCallTotal(mem_id);
+	}
+
+	public ArrayList<PayFormDTO> modalPayFormList(String payFormDropDown) {
+		return paymentdao.modalPayFormList(payFormDropDown);
+	}
+
+	public ArrayList<PaymentDTO> PayMentReferCho_ajax() {
+		return paymentdao.PayMentReferCho_ajax();
+	}
+
+	public ArrayList<PaymentDTO> referDept() {
+		return paymentdao.referDept();
 	}
 	
 	
