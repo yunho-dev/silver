@@ -44,9 +44,9 @@
   	<tr>
 		<td colspan="5" id="paging">
 			<div>
-				<nav aria-label="Page navigation" >
-					<ul class="pagination" id="pagination"></ul>
-				</nav>
+				
+					<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
+				
 			</div>
 		</td>
 	</tr>
