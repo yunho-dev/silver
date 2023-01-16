@@ -25,5 +25,12 @@
 		select *from program where pr_idx=#{param1};
 	</select>
 	
+	<update id="programDetailUpdate">
+		update program set pr_name=#{param2},pr_teacher=#{param3}
+			,pr_start=#{param4},pr_end=#{param5},
+			pr_goal=#{param6},pr_content=#{param7}
+			,pr_place=#{param8},pr_state=#{param9},pc_idx=#{param10} where pr_idx=#{param1}
+	</update>
+	
 
 </mapper>

@@ -38,6 +38,9 @@ public class ResidentProgramGategoryService {
 		String pc_idx=req.getParameter("pc_idx");
 		String pc_cate=req.getParameter("pc_cate");
 		
+		logger.info("카테고리 수정완료:"+pc_idx);
+		logger.info("카테고리 수정완료:"+pc_cate);
+		
 		residentprogramgategorydao.CategoryUpdateComplete(pc_idx,pc_cate);
 		ModelAndView mav = new ModelAndView("resident/residentProgramGategory");
 		

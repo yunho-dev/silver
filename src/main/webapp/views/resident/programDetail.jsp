@@ -40,8 +40,8 @@
 				<section class="row">
 					<div class="card">
 						<div class="card-body py-4 px-5">
-						<form action="programDetail" method="post">
-							<input type="hidden" name="pc_idx" value="${list.pr_idx}">
+						<form action="programDetailUpdate" method="post">
+							<input type="hidden" name="pr_idx" value="${list.pr_idx}">
 								<div class="d-flex align-items-center">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">프로그램명</span> 
@@ -82,37 +82,45 @@
 								<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">상태</span> 
 										
-										<select name="list"> <!-- list는 service에서 addobject로 담아온것을뜻한다 -->
-											<option value="진행예정"
+										<select name="pr_state">
+												<option
 												<c:if test="${list.pr_state eq '진행예정'}">selected</c:if>>
 													진행예정
 												</option>
-												<option value="진행중"
+												<option
 													<c:if test="${list.pr_state eq '진행중'}">selected</c:if>>
 													진행중
 												</option>
-												<option value="종료"
+												<option
 													<c:if test="${list.pr_state eq '종료'}">selected</c:if>>
 													종료
 												</option>
 										</select>
-										
+
 								</div>
 								<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">카테고리번호</span> 
 										
-									<select name="list">
-										<c:forEach items="${procategory}" var="pc">	
-											<option
-												<c:if test="${list.pc_idx eq list.}">selected</c:if>>
-												진행예정
-											</option>
-										</c:forEach>	
+									<select name="pc_idx">
+										<option
+										<c:if test="${list.pc_idx == 1}">selected</c:if>>
+										사고능력향상
+										</option>
+										<option
+										<c:if test="${list.pc_idx == 2}">selected</c:if>>
+										운동능력향상
+										</option>
+										<option
+										<c:if test="${list.pc_idx == 3}">selected</c:if>>
+										인지능력향상
+										</option>
 									</select>
+									<input type="hidden" name="pc_idxTwo" value="${list.pc_idx}">
+									<!-- name이랑 value를 사용자에게 보여주지 않고 넘길때 hidden 사용 -->
 								</div>
 									
 							<!-- 바텀 버튼 -->	
-							<button type="submit" class="btn btn-primary" onclick="location.href='programList'">등록하기</button>
+							<button type="submit" class="btn btn-primary">수정완료</button>
 							<button type="button" class="btn btn-secondary"
 								onclick="location.href='programList'">뒤로가기</button>
 							</form>
