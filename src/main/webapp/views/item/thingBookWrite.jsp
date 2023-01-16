@@ -110,10 +110,11 @@
 	function closeWriteModal(){
 		$('#thingBookWrite').modal('hide');
 		$('#writeForm')[0].reset();
+		$('#writeForm input[name=user]').attr('onclick','alert("사용자 구분을 먼저 선택해 주세요")')
 	}
 	
 	function changeUser(selected){
-		var selVal = selected.val();
+		selVal = selected.val();
 		$('#writeForm input[name=user]').val('')
 		$('#writeForm input[name=userid]').val('')
 		if(selVal === '입소자'){
