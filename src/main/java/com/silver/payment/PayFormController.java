@@ -107,6 +107,20 @@ public class PayFormController {
 		return payformservice.writepayForm_do(request);
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/searcAllyform")
+	public HashMap<String, Object> searchmyform(HttpServletRequest request){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int page=Integer.parseInt(request.getParameter("page"));
+		int total=payformservice.AllFormSearchTotal(request);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PayFormDTO> AllFormSearch =payformservice.AllFormSearch(request,page);
+		map.put("AllFormSearch", AllFormSearch);
+		map.put("page_idx", page_idx);
+		return map;
+	}
+	
 	
 	
 	

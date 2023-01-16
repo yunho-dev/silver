@@ -5,6 +5,8 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>은빛 우산</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -15,8 +17,8 @@
     <link rel="stylesheet" href="assets/css/tree.css">
     <link rel="stylesheet" href="assets/css/Treant.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="assets/vendor/raphael.js"></script>
-	<script src="assets/js/Treant.js"></script>
+    <script src="assets/vendor/raphael.js"></script>
+    <script src="assets/js/Treant.js"></script>
 <style>
 
 </style>
@@ -28,21 +30,20 @@
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
        <h3>조직도</h3>
-   </div>     
-<div class="chart" id="tree">
-</div>  
-  
-
+   </div>
+   <div class="card" style="width: 100%; height: 100%;">    
+    <div class="chart" id="tree" style="width: auto;height: auto;">
+    </div>
+   </div>  
 </div>
 </div>
 <script>
 
-$.ajax({
+ $.ajax({
 	type:'GET',
 	url:'memberOrgChartCall',
 	dataType:'JSON',
 	success:function(data){
-		//onsole.log(data.list);
 		drawChart(data.memberOrgChartCall);
 	},
 	error:function(e){
@@ -59,45 +60,52 @@ total.config = {
 		HTMLclass:'nodeExample'
 	}
 };
-//console.log('0');
 function drawChart(list){
-	//console.log(list);
-	//console.log('find:'',result);
 	list.forEach(function(item){
-		//console.log(item);
 		var obj = {};
-		//obj = {parent:'value'}
-		//obj.parent = 'value'
-		//obj['parent']='value'<-변수에 담긴 값을 객체의 속성명으로 사용 하고 싶을 경우
-		
-		//console.log('1');
 		 if (item.stack == 'true') {
 			obj.stackChildren = true;
 		}
-		//console.log('2');
-		
 		obj.text = {};
 		obj.text.name = item.mem_name;
 		obj.text.phone =item.mem_pnum;
 		obj.text.dept = item.dept_name;
-		obj.text.title = item.pos_level;
-		
-		//console.log('3');
-		//1.DB 에 level 을 줘서 level 을 기준으로 order by 해 오는 방법
-		//2.첫 반복문에서 parent 정보를 넣지 않고, 다시 한번 반복문을 돌려 그때 넣는 방법
-		//3.현재 부모 객체가 없으면 list 에서 찾아와 넣는 방법
-		if(item.parent_id = null){//부모가 있을 경우
-			obj.parent = total[item.parent_id];	
-			
+		//console.log(item.pos_level);
+		if(item.pos_level > 1){//부모가 있을 경우
+			if(item.pos_level == 2){
+			obj.parent = total['진양철'];		
+			}
+			if(item.pos_level == 3){
+				obj.parent = total['진도준'];		
+			}
+			if(item.pos_level == 4 && item.dept_num == 1){
+					obj.parent = total['진영기'];	
+			}
+			if(item.pos_level == 4 && item.dept_num == 2){
+				obj.parent = total['진동기'];	
+			}
+			if(item.pos_level == 4 && item.dept_num == 3){
+				obj.parent = total['진화영'];	
+			}
+			if(item.pos_level == 4 && item.dept_num == 4){
+				obj.parent = total['진윤기'];	
+			}
+			if(item.pos_level == 5 && item.dept_num == 1){
+					obj.parent = total['윤현우'];	
+			}
+			if(item.pos_level == 5 && item.dept_num == 2){
+				obj.parent = total['오세현'];	
+			}
+			if(item.pos_level == 5 && item.dept_num == 3){
+				obj.parent = total['이항재'];	
+			}
+			if(item.pos_level == 5 && item.dept_num == 4){
+				obj.parent = total['손정래'];	
+			}
 		}		
-		total[item.id] = obj		
+		total[item.mem_name] = obj;	
 	});
-	//console.log('7');
-	//obj ==> array
-	
-		//console.log(total);
 		new Treant(Object.values(total));
-}
-
+} 
 </script>
 </html>
