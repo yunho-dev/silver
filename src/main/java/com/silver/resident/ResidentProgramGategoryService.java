@@ -44,6 +44,18 @@ public class ResidentProgramGategoryService {
 		return mav;
 	}
 
+	public ModelAndView CategoryWriteComplete(HttpServletRequest req, int pc_idx, String pc_cate) {
+		logger.info("서비스 시작");
+		ResidentProgramGategoryDTO dto=new ResidentProgramGategoryDTO();
+		dto.setPc_idx(pc_idx);
+		dto.setPc_cate(pc_cate);
+		int row = residentprogramgategorydao.CategoryWriteComplete(dto);
+		logger.info("서비스 중간");
+		ModelAndView mav = new ModelAndView("resident/residentProgramGategory");
+		logger.info("서비스 끝");
+		return mav;
+	}
+
 
 
 }

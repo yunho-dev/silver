@@ -182,7 +182,9 @@
 		var pathpoint = obj.val().lastIndexOf('.');
 		var filepoint = obj.val().substring(pathpoint+1, obj.val().length);
 		var filetype = filepoint.toLowerCase();
-	    if(filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg') {
+		var maxSize = 1024 * 1024;
+		var fileSize = obj[0].files[0].size;
+	    if((filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg') || fileSize > maxSize) {
 	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
 	        obj.val(null);
 	        return false;
