@@ -174,6 +174,22 @@ public class ThingController {
 		return service.thingHistoryWrite(params, request);
 	}
 	
+	/* 비품 사용내역 조회 - 등록 - 비품목록 */
+	@GetMapping(value = "/popThingHistoryList.go")
+	public ModelAndView popThingHistoryList() {
+		ModelAndView mav = new ModelAndView("item/popThingHistoryList");
+		return mav;
+	}
+	
+	@GetMapping(value = "/getPopThHisSearch.do")
+	public HashMap<String, Object> getPopThHisSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 사용내역(팝업) "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		params.put("thModel", "");
+		params.put("hisName", "");
+		params.put("checkAllView", "");
+		return service.getThingHistorySearch(params);
+	}
+	
 	/* 비품 사용내역 상세보기 */
 	@GetMapping(value = "/getThingHistoryDetail.do")
 	public HashMap<String, Object> getThingHistoryDetail(String hisIdx){

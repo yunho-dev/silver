@@ -17,4 +17,6 @@ public interface PaymentDAO {
 
 	ArrayList<PaymentDTO> referDept();
 
+	ArrayList<PaymentDTO> PayOrgCall(int selfMem_Pos);
+
 }

@@ -18,7 +18,7 @@
 </head>
 <style>
 	.filter{
-		width: 10%;
+		width: 15%;
 	}
 </style>
 <body>
@@ -43,7 +43,6 @@
 		                        			<option value="렌탈">렌탈</option>
 		                        			<option value="직접 구매">직접 구매</option>
 		                        		</select> &nbsp;&nbsp;
-		                        등록자 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
 		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 		                    </div>
 							<!-- table head dark -->
@@ -57,7 +56,6 @@
 							                <th>단가</th>
 							                <th>수량</th>
 							                <th>총 금액</th>
-							                <th>등록자</th>
 							            </tr>
 							        </thead>
 							        <tbody id="list">
@@ -116,7 +114,6 @@
 			content +='<td>'+manageList[i].th_money+'</td>';
 			content +='<td>'+manageList[i].thCnt+'</td>';
 			content +='<td>'+manageList[i].sumMoney+'</td>';
-			content +='<td>'+manageList[i].th_write+'</td>';
 			content +='</tr>';
 		}
 		$('#list').empty();
@@ -133,7 +130,6 @@
 		var thName = $('#filterHead input[name=th_name]').val();
 		var thModel = $('#filterHead input[name=th_model]').val();
 		var thPart = $('#filterHead select[name=th_part]').val();
-		var thWrite = $('#filterHead input[name=th_write]').val();
 		select_change.push($("#selectPart").val());
 		if(flag){
 	        var select=$("#selectPart").val();
@@ -141,7 +137,7 @@
 			$.ajax({
 				type:'GET',
 				url:'getThingManageSearch.do',
-				data:{'page':page2, thName:thName, thModel:thModel, thPart:thPart, thWrite:thWrite},
+				data:{'page':page2, thName:thName, thModel:thModel, thPart:thPart},
 				dataType:'JSON',
 				success:function(data){
 					drawList(data.list);

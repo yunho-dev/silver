@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.silver.member.MemberDTO;
 
@@ -48,6 +49,17 @@ public class PaymentService {
 
 	public ArrayList<PaymentDTO> referDept() {
 		return paymentdao.referDept();
+	}
+
+	public ArrayList<PaymentDTO> PayOrgCall(int selfMem_Pos) {
+		return paymentdao.PayOrgCall(selfMem_Pos);
+	}
+
+	public ModelAndView PayMentInsert_do(HttpServletRequest request) {
+		ModelAndView mav=new ModelAndView();
+		
+		
+		return null;
 	}
 	
 	
