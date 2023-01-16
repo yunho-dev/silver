@@ -13,6 +13,8 @@ public interface ResidentProgramGategoryDAO {
 
 	void CategoryUpdateComplete(String pc_idx, String pc_cate);
 
+	int CategoryWriteComplete(ResidentProgramGategoryDTO dto);
+
 
 
 }

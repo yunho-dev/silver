@@ -31,7 +31,78 @@ public class PaymentDTO {
 	private String par_name;
 	private String mem_name;
 	private String pf_cate;
+	private String pf_write;
+	private String pf_content;
+	private String pf_subject;
+	private String mem_state;
+	private String dept_name;
+	private String pos_name;
+	private int dept_code;
+	private int pos_level;
+	private int dept_num;
 	
+	public int getDept_num() {
+		return dept_num;
+	}
+	public void setDept_num(int dept_num) {
+		this.dept_num = dept_num;
+	}
+	public String getMem_state() {
+		return mem_state;
+	}
+	public void setMem_state(String mem_state) {
+		this.mem_state = mem_state;
+	}
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
+	public String getPos_name() {
+		return pos_name;
+	}
+	public void setPos_name(String pos_name) {
+		this.pos_name = pos_name;
+	}
+	public int getDept_code() {
+		return dept_code;
+	}
+	public void setDept_code(int dept_code) {
+		this.dept_code = dept_code;
+	}
+	public int getPos_level() {
+		return pos_level;
+	}
+	public void setPos_level(int pos_level) {
+		this.pos_level = pos_level;
+	}
+	private int pf_count;
+	
+	public String getPf_write() {
+		return pf_write;
+	}
+	public void setPf_write(String pf_write) {
+		this.pf_write = pf_write;
+	}
+	public String getPf_content() {
+		return pf_content;
+	}
+	public void setPf_content(String pf_content) {
+		this.pf_content = pf_content;
+	}
+	public String getPf_subject() {
+		return pf_subject;
+	}
+	public void setPf_subject(String pf_subject) {
+		this.pf_subject = pf_subject;
+	}
+	public int getPf_count() {
+		return pf_count;
+	}
+	public void setPf_count(int pf_count) {
+		this.pf_count = pf_count;
+	}
 	public String getMem_name() {
 		return mem_name;
 	}

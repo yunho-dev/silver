@@ -16,5 +16,9 @@
 	<update id="CategoryUpdateComplete">
 		update procategory set pc_cate=#{param2} where pc_idx=#{param1};
 	</update>
+	
+	<insert id="CategoryWriteComplete" parameterType="procategory">
+		insert into procategory(pc_idx,pc_cate) values(#{pc_idx},#{pc_cate});
+	</insert>
 
 </mapper>

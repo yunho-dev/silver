@@ -65,10 +65,12 @@ public class ResidentProgramGategoryController {
 		return "resident/categoryWrite";
 	}
 	
-//	@PostMapping(value="/write.do")
-//	public ModelAndView write_do(HttpServletRequest req,ResidentProgramGategoryDTO dto) {
-//		logger.info("작성할? 내용:"+req.);
-//	}
+	@PostMapping(value="/CategoryWriteComplete")
+	public ModelAndView CategoryWriteComplete(HttpServletRequest req,ResidentProgramGategoryDTO dto) {
+		logger.info("번호?:"+dto.getPc_idx());
+		logger.info("작성할? 내용:"+dto.getPc_cate());
+		return residentprogramgategoryservice.CategoryWriteComplete(req,dto.getPc_idx(),dto.getPc_cate());
+	}
 
 
 }

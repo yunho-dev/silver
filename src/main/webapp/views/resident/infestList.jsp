@@ -5,6 +5,8 @@
 <head>
 
 <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>은빛 우산</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -50,16 +52,7 @@
 	</tr>
  
 </table>
-<form class="row row-cols-lg-auto g-3 align-items-center">
-  <div class="col-12">
-    <div class="input-group">
-      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="입소자명 검색">
-    </div>
-  </div>
-  <div class="col-12">
-    <button id="search" type="button" class="btn btn-primary btn-sm" onclick="infestSearch(page2)">검색</button>
-  </div>
-</form>
+
 </div>
 </div>
 </div>
@@ -98,7 +91,7 @@ function infestListCall(page){
 	
 }
 
-var flag=true;
+/* var flag=true;
 var pageflag=true;
 var page2=1;
 var select_change=new Array();
@@ -141,7 +134,7 @@ function infestSearch(page2){
 		}
 	});
 	}
-}
+} */
 
 function drawList(list){
 	var content = '';
