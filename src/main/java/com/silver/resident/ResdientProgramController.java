@@ -75,8 +75,28 @@ public class ResdientProgramController {
 	@GetMapping(value="/programDetail")
 	public ModelAndView programDetai(@RequestParam String pr_idx) {
 		
-		logger.info("프로그램디테일컨트롤러");
+		logger.info("프로그램디테일컨트롤러:"+pr_idx);
 		return residientprogramservice.programDetail(pr_idx);
+	}
+	
+	@PostMapping(value="/programDetailUpdate")
+	public ModelAndView programDetailUpdate(HttpServletRequest req) {
+		
+		logger.info("업데이트 번호:"+req.getParameter("pr_idx"));
+		logger.info("업데이트 이름:"+req.getParameter("pr_name"));
+		logger.info("업데이트 강사:"+req.getParameter("pr_teacher"));
+		logger.info("업데이트 시작:"+req.getParameter("pr_start"));
+		logger.info("업데이트 끝:"+req.getParameter("pr_end"));
+		logger.info("업데이트 목표:"+req.getParameter("pr_goal"));
+		logger.info("업데이트 내용:"+req.getParameter("pr_content"));
+		logger.info("업데이트 장소:"+req.getParameter("pr_place"));
+		logger.info("업데이트 상태:"+req.getParameter("pr_state"));
+		//logger.info("업데이트 카테고리:"+req.getParameter("pc_idx"));
+		logger.info("업데이트 카테고리 순번:"+req.getParameter("pc_idxTwo"));
+		
+		
+		return residientprogramservice.programDetailUpdate(req);
+		
 	}
 
 	

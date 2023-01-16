@@ -138,7 +138,6 @@ function drawList(list){
 		content +='<td>'+list[i].pc_cate+'</td>';
 		content += '<td>'
 			+ "<button class='btn btn-primary btn-sm' onclick=location.href='programDetail?pr_idx="+list[i].pr_idx+"'>상세보기/수정</button>"
-			+ "<button class='btn btn-primary btn-sm' onclick=location.href='CategoryUpdate?pc_idx="+list[i].pc_idx+"'>삭제</button>"
 			+ "</td>";
 		
 		content +='</tr>';

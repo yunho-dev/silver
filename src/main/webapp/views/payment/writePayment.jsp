@@ -45,9 +45,9 @@ display: block;
 			</div>
 			<div class="page-content">
 				<section class="row">
+				<form action="PayMentInsert.do" method="post" enctype="multipart/form-data">
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
-						<form action="" method="post">
 							<div class="d-flex align-items-center">
 							<div class="container">
 							 <div class="row justify-content-between">
@@ -56,7 +56,7 @@ display: block;
 									<tr>
 										<th>결재 양식</th>
 										<td>
-											<select id="payFormDropDown">
+											<select id="payFormDropDown" name="payFormDropDown" onchange="payFormDropDownCall()">
 												<option>휴가</option>
 												<option>지출결의서</option>
 												<option>품의서</option>
@@ -68,10 +68,26 @@ display: block;
 										data-bs-toggle="modal" data-bs-target="#PayFormCallList">불러오기</button>
 										</td>
 									</tr>
+									<tr id="vacationDropParent">
+										<th>휴가 날짜</th>
+										<td>
+										<select id="vacationDrop" name="vacationDrop" onchange="vacationDropCall()">
+											<option>연차</option>
+											<option>오전 반차</option>
+											<option>오후 반차</option>
+											<option>공가</option>
+											<option>병가</option>
+										</select>
+										</td>
+										<td>
+											<input name="FirstVacationDate" type="date" style="float: left:;">&nbsp;&nbsp; 
+											<input name="SecondVacationDate" id="dateHalfSel" type="date" style="float: right;"> 			
+										</td>
+									</tr>
 									<tr>
 										<th>팀 공개</th>
 										<td colspan="2" style="text-align: center">
-											<input class="form-check-input" type="checkbox" id="openchk">
+											<input class="form-check-input" type="checkbox" name="openchk" id="openchk">
 <!-- 											  <label class="form-check-label" for="flexCheckDefault"> -->
 <!-- 											    Default checkbox -->
 <!-- 											  </label> -->
@@ -81,10 +97,10 @@ display: block;
 										<th>참조자</th>
 										<td id="Referinsert">
 										</td>
-										
 										<td>
 										<button type="button" class="btn btn-sm btn-primary" onclick="referCho()"
 										data-bs-toggle="modal" data-bs-target="#referChoList">참조자 선택</button>
+										</td>
 									</tr>
 									
 								</tbody>
@@ -97,7 +113,9 @@ display: block;
 								 		<table class="table table-bordered table-hover">
 								 			<thead>
 								 				<tr id="pmsignName">
-								 					<th id="selfpmsignName">${SelfMem_name}</th>
+								 					<th id="selfpmsignName">${SelfMem_name}
+								 						<input type="hidden" value="${mem_posLevel}" name="SelfMem_Pos">
+								 					</th>
 								 				</tr>
 								 			</thead>
 								 			<tbody>
@@ -114,19 +132,17 @@ display: block;
 								
 							</div>
 							
-						</form>
+						
 						<div id="div_editor"></div>
 						<input type="hidden" name="wp_content"/>
 							<div style="text-align: center;margin-top: 30px;">
-								<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
-								<button type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
+								<button type="button" type="button" class="btn btn-primary" onclick="save()">등록하기</button>
+								<button type="button" type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
 							</div>
 						</div>
+						<input type="file">
 					</div>
-				</section>
-			</div>
-			
-			<div class="modal fade" id="PayFormCallList" tabindex="-1" role="dialog" 
+					<div class="modal fade" id="PayFormCallList" tabindex="-1" role="dialog" 
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			 <div class="modal-dialog modal-lg">
 			   <div class="modal-content">
@@ -150,8 +166,8 @@ display: block;
 			   	  	</table>
      			 </div>
      			 <div class="modal-footer">
-     			 	<button id="PayFormOk" class="btn btn-primary">선택</button>
-     			 	<button class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+     			 	<button id="PayFormOk" type="button" class="btn btn-primary">선택</button>
+     			 	<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">취소</button>
      			 </div>
 			   </div>
 			</div>
@@ -170,18 +186,35 @@ display: block;
 			   	  	</ul>
      			 </div>
      			 <div class="modal-footer">
-     			 	<button id="ReferOK" class="btn btn-primary">선택</button>
-     			 	<button class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+     			 	<button id="ReferOK" type="button" class="btn btn-primary">선택</button>
+     			 	<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">취소</button>
      			 </div>
 			   </div>
 			</div>
 			</div>
 			
-			
-			
-			
-			
-			
+			<div class="modal fade" id="PayOrgCall" tabindex="-1" role="dialog" 
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			 <div class="modal-dialog modal-sm">
+			   <div class="modal-content">
+			   	 <div class="modal-header">
+			   	 	<h3>결재자 추가</h3>
+			   	 </div>
+			   	  <div class="modal-body table-wrapper-scroll-y my-custom-scrollbar">
+			   	  	<ul class="list-group" id="OrgDeptList">
+			   	  	</ul>
+     			 </div>
+     			 <input type="hidden" name="OrgPmSelected" value="">
+     			 <div class="modal-footer">
+     			 	<button id="OrgDeptListOK" type="button" class="btn btn-primary">선택</button>
+     			 	<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">취소</button>
+     			 </div>
+			   </div>
+			</div>
+			</div>
+			</form>
+				</section>
+			</div>
 			
 			
 			<footer>
@@ -199,14 +232,33 @@ display: block;
 			</footer>
 		</div>
 	</div>
-
+	<input type="hidden" value="" name="pmLineSave">
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/js/pages/dashboard.js"></script>
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
+// 휴가 드롭다운 표시 조건 //
+function payFormDropDownCall(){
+	if($("#payFormDropDown").val() != '휴가'){
+		$("#vacationDropParent").css('display','none');
+	}else{
+		$("#vacationDropParent").css('display','');
+	}
+}
+function vacationDropCall(){
+	console.log('!!@@##');
+	console.log($("#vacationDrop").val());
+	if ($("#vacationDrop").val() == '오전 반차' || $("#vacationDrop").val() == '오후 반차') {
+		$("#dateHalfSel").css('display','none');
+	}else{
+		$("#dateHalfSel").css('display','')
+	}
+}
+// 휴가 드롭다운 표시 조건 //
 
+// 결재 양식 모달 AJAX // 
 function PayFormModal(){
 	var payFormDropDown = $("#payFormDropDown").val();
 	
@@ -223,8 +275,10 @@ function PayFormModal(){
 		}
 		
 	});
-	
-	
+// 결재 양식 모달 창 //	
+
+
+// 결재 양식 모달 그리기 //	
 	function PayFormModalListCall(MPFlist){
 		var content = '';
 		for(var i=0;i<MPFlist.length;i++){
@@ -251,8 +305,10 @@ function PayFormModal(){
 		
 	}
 	}
+//결재 양식 모달 그리기 //	
 
 
+// 참조자 선택 AJAX //
 function referCho(){
 	$.ajax({
 		type:'get'
@@ -266,7 +322,9 @@ function referCho(){
 		}
 	});
 }
+//참조자 선택 AJAX //
 
+// 참조자 선택 Modal //
 function referChoList(refercho,referDept){
 	var content='';
 
@@ -278,8 +336,8 @@ function referChoList(refercho,referDept){
 		for(var a=0;a<refercho.length;a++){
 			if(referDept[i].dept_num == refercho[a].dept_num){
 				content +='<li class="list-group-item">';
-				content +='<input class="form-check-input me-1" type="checkbox" id="'+refercho[a].mem_name+'" value="'+refercho[a].mem_id+'">';
-				content +=refercho[a].mem_name;
+				content +='<input class="form-check-input me-1" name="ReferCheckBox" type="checkbox" id="'+refercho[a].mem_name+'" value="'+refercho[a].mem_id+'">';
+				content +=refercho[a].mem_name+'['+refercho[a].pos_name+']';
 				content +='</li>';
 			}
 		}
@@ -287,68 +345,156 @@ function referChoList(refercho,referDept){
 		content +='</li>';
 		
 	}
-//  	for(var c=0;c<ReferOk_arr.length;c++){
-//  		if($("input:checkbox").attr('id')==ReferOk_arr[c]){
-//  			$(this).prop("checked",true);
-//  		}
-//  	}
 	$("#referchoListBody").empty();
 	$("#referchoListBody").append(content);
 	
 }
+//참조자 선택 Modal //
 
-var ReferOk_arr=new Array();
-var ReferID_arr=new Array();
+// 참조자 선택 후 값 담기 //
 $(document).on('click','#ReferOK',function(){
-	$("input[type='checkbox']:checked").each(function(){
+	var ReferOk_arr=new Array();
+	var ReferID_arr=new Array();
+	$("#ReferinsertInput").empty();
+	$("#Referinsert").empty();
+	$("input[name='ReferCheckBox']:checked").each(function(){
 		var ReferOk = $(this).val();
 		var ReferID = $(this).attr('id');
 		ReferOk_arr.push(ReferOk);
 		ReferID_arr.push(ReferID);
 	});
 	//$("#Referinsert").text($("input[type='checkbox']:checked").val());
-	$("#ReferinsertInput").empry();
-	$("#Referinsert").empty();
 	$("#ReferinsertInput").val(ReferOk_arr);
 	$("#Referinsert").text(ReferID_arr);
 	$("#referChoList").modal('hide');
 });
-	
+//참조자 선택 후 값 담기 //	
 
 
 	
-	
 
 
 
+// 결재자 추가 AJAX //
+var SelfMem_Pos=$("input[name='SelfMem_Pos']").val()
+function PayOrgCall(){
+	console.log($("#pmsignName").children());
+	if($("#pmsignName").children().length > 2){
+		var LengthChk = $("#pmsignName").children().length;
+		LengthChk--;
+		var LineChoice=$("#pmsignName  th:nth-child("+LengthChk+")")[0].innerText;
+		var StartIndex=LineChoice.indexOf("[")+1;
+		var LastIndex=LineChoice.indexOf("]");
+		var Result = LineChoice.substring(StartIndex, LastIndex);
+	}
+	if(Result =='주임') SelfMem_Pos = 4;
+	else if(Result =='팀장') SelfMem_Pos = 3;
+	else if(Result =='사무국장') SelfMem_Pos=2;
+	else if(Result =='원장') SelfMem_Pos=1 ;
+	else SelfMem_Pos=$("input[name='SelfMem_Pos']").val();
+	$.ajax({
+		type:'get'
+		,url:'PayOrgCall.ajax'
+		,dataType:'json'
+		,data:{'SelfMem_Pos':SelfMem_Pos}
+		,success:function(data){
+			PayOrgCallList(data.PayOrgCall,data.OrgDept);
+		},error:function(e){
+		}
+	});
+}
+// 결재자 추가 AJAX //
 
+// 결재자 추가 모달 //
+
+function PayOrgCallList(OrgList,OrgDept){
+	var content='';
+
+	for(var i=0;i<OrgDept.length;i++){
+		content +='<li class="list-group-item" id='+OrgDept[i].dept_name+'>';
+		content +=OrgDept[i].dept_name;
+		content += '<ul class="list-group">';
+		for(var a=0;a<OrgList.length;a++){
+			if(OrgDept[i].dept_num == OrgList[a].dept_num){
+				content +='<li class="list-group-item">';
+				content +='<input class="form-check-input me-1" type="radio"'; 
+				content += ' name="OrgRadio" value="'+OrgList[a].mem_id+','+OrgList[a].pos_level+'">';
+				content +=OrgList[a].mem_name+'['+OrgList[a].pos_name+']';
+				content +='</li>';
+			}
+		}
+		content += '</ul>';
+		content +='</li>';
+		
+	}
+	$("#OrgDeptList").empty();
+	$("#OrgDeptList").append(content);
+}
+// 결재자 추가 모달 //
+
+// 결재자 추가 후 값 담기
+var OrgCnt=1;
+var OrgMem_name_ID=new Array();
+	$(document).on('click','#OrgDeptListOK',function(){
+		// console.log($("input[name='OrgRadio']:checked").val());
+
+		var OrgMem_idOne= $("input[name='OrgRadio']:checked").val().split(",")[0];
+		var OrgMem_idTwo= $("input[name='OrgRadio']:checked").val().split(",")[1];
+		var OrgMem_name =  $("input[name='OrgRadio']:checked").next().prevObject[0].offsetParent.innerText;
+		$("#"+OrgCnt).parent().prepend(OrgMem_name);
+		OrgCnt++;
+		$("#"+OrgCnt).css('display','none');
+		OrgCnt++;
+		OrgMem_name_ID.push(OrgMem_idOne);
+		$("#OrgPmSelected").val(OrgMem_name_ID);
+		console.log(OrgMem_name_ID);
+	 	$("#PayOrgCall").modal('hide');
+	 	
+	});
+
+//결재자 추가 후 값 담기
+
+// 결재라인 추가 //
 var count=0;
 $(document).on('click','#pmline',function(){
+	
 	if($("#pmsignName th").length == 4){
 		alert('결재 라인 지정은 최대 3명만 가능합니다.');
 		return;
 	}
 	count++;
 	var content1='';
-	content1 +='<th>결재 라인<input style="margin-left:11px;width:5px;"'; 
+	content1 +='<th><input style="margin-left:11px;width:5px;"'; 
 	content1 +='type="button" id='+count+' value="-" class="btn btn-sm btn-secondary" onclick="pmlinedel(this)"></th>';
 	var content2='';
 	count++;
-	content2 +='<td><input type="button" value="결재자 추가" id='+count+'></td>';
+	content2 +='<td><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#PayOrgCall" onclick="PayOrgCall()"';
+	content2 +='id='+count+' type="button">결재자 추가</button></td>';
 	$("#pmsignName").append(content1);
 	$("#pmsign").append(content2);
 });
+//결재라인 추가 //
 
+
+// 결재 라인 삭제 //
 function pmlinedel(e){
 	var idx=$(e).attr("id");
 	$("#"+idx).parent().remove();
+	if(idx == OrgCnt){
+		OrgCnt--;
+	}
 	idx++;
+	if(idx == OrgCnt){
+		OrgCnt--;
+	}
 	$("#"+idx).parent().remove();
-	
+	idx--;
+	idx--;
 }
+//결재 라인 삭제 //
 
 
-
+// 에디터 관련 //
 var config = {};
 config.editorResizeMode = "none"; // 에디터 크기조절 안됨
 config.file_upload_handler = function(file, pathReplace) {
@@ -358,7 +504,9 @@ config.file_upload_handler = function(file, pathReplace) {
 		pathReplace("/filephoto/noimage.png"); // data:image 경로를 변경
 	}
 }
+//에디터 관련 //
 
+// form 전송 //
 var editor = new RichTextEditor("#div_editor", config);
 function save() {
 	$("input[name='wp_content']").val(editor.getHTMLCode());
@@ -366,8 +514,9 @@ function save() {
 	if($("input[name='wp_content']").val().length < 11){
 		alert('최소 10글자 입력 해주세요.');
 	}else{
-		// $("form").submit();
+		$("form").submit();
 	}
 }
+//form 전송 //
 </script>
 </html>

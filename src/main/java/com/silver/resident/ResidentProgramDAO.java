@@ -15,4 +15,7 @@ public interface ResidentProgramDAO {
 
 	ResidentProgramDTO programDetail(String pr_idx);
 
+	void programDetailUpdate(String pr_idx, String pr_name, String pr_teacher, String pr_start, String pr_end,
+			String pr_goal, String pr_content, String pr_place, String pr_state, String pc_idxTwo);
+
 }

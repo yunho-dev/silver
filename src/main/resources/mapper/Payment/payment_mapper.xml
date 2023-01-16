@@ -48,6 +48,13 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 		select * from depart d order by dept_num desc
 	</select>
 	
+	<select id="PayOrgCall" resultType="payment">
+		select m.mem_id ,m.mem_name ,m.mem_state ,d.dept_name ,p.pos_name,d.dept_code,p.pos_level,d.dept_num,m.dept_num  from member m 
+		inner join depart d on m.dept_num =d.dept_num 
+		inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' 
+			and p.pos_num &lt; #{param1} order by p.pos_num
+	</select>
+	
 	
 </mapper>
 
