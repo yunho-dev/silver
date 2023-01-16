@@ -5,7 +5,7 @@
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.member.MemberOrgChartDAO">
 	<select id="memberOrgChartCall" resultType="member">
-		SELECT mem_name,mem_pnum,d.dept_name,p.pos_level 
+		SELECT mem_name,mem_pnum,d.dept_name,p.pos_level,d.dept_num  
 			FROM  `member` m  
 			inner join depart d 
 			on m.dept_num = d.dept_num 

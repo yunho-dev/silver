@@ -25,7 +25,13 @@
    <div class="page-heading">
        <h3>감염병 관리 히스토리</h3>
    </div>
-   <button onclick="goWirte()" class="btn btn-primary" style="float: right;">글작성</button>
+   <div class="page-content">
+   	<section class="row">
+   		<div class="card">
+   			<div class="card-body py-4 px-5">
+   
+   <button onclick="goWirte()" class="btn btn-primary" >글작성</button>
+  	<div class="d-flex align-items-center">
   <table class="table">
   <thead>
     <tr>
@@ -50,17 +56,11 @@
 		</td>
 		</tr>
 </table>
-<form class="row row-cols-lg-auto g-3 align-items-center">
-  <div class="col-12">
-    <div class="input-group">
-      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="입소자명 검색">
-    </div>
-  </div>
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">검색</button>
-  </div>
-</form>
-
+</div>
+</div>
+</div>
+</section>
+</div>
 </div>
 </div>
 <script>

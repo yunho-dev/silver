@@ -4,8 +4,36 @@
 >
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.donation.DonationDAO">
-
 	
+	<select id="donationListCall" resultType="hashmap">
+		SELECT do_idx, do_date, do_name, do_write, do_money 
+		FROM donation
+		limit 10 offset #{param1}	
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(do_idx) from donation
+	</select>
+	
+	<insert id="donationWrite" parameterType="hashmap">
+		INSERT INTO donation(do_date,do_name,do_goal,do_write,do_money)
+        VALUES(#{do_date},#{do_name},#{do_goal},#{do_write},#{do_money})
+	</insert>
+	
+	<select id="donationUpdateForm" 
+ 	resultType="donation" parameterType="int">
+ 		SELECT * from donation  where do_idx =#{param1}
+ 	</select>
+ 	
+ 	<update id="donationUpdate" parameterType="hashmap">
+ 		UPDATE donation set
+ 		do_date=#{do_date},
+ 		do_name=#{do_name},
+ 		do_goal=#{do_goal},
+ 		do_write=#{do_write},
+ 		do_money=#{do_money}
+ 		where do_idx=#{do_idx}
+ 	</update>
 </mapper>
 
 
