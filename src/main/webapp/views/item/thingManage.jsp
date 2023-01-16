@@ -130,10 +130,10 @@
 	var chkPage=new Array();
 	function search(page2){
 		var select=$("#selectPart").val();
-		thName = $('#filterHead input[name=th_name]').val();
-		thModel = $('#filterHead input[name=th_model]').val();
-		thPart = $('#filterHead select[name=th_part]').val();
-		thWrite = $('#filterHead input[name=th_write]').val();
+		var thName = $('#filterHead input[name=th_name]').val();
+		var thModel = $('#filterHead input[name=th_model]').val();
+		var thPart = $('#filterHead select[name=th_part]').val();
+		var thWrite = $('#filterHead input[name=th_write]').val();
 		select_change.push($("#selectPart").val());
 		if(flag){
 	        var select=$("#selectPart").val();
