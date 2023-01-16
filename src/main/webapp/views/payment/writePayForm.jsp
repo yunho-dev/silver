@@ -67,6 +67,8 @@
 										</tr>
 								</tbody>
 							 </table>
+								 <div id="content" style="display: none;">
+								</div>
 							</div>
 							<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 							<button type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
@@ -101,6 +103,7 @@
 var config = {};
 config.editorResizeMode = "none"; // 에디터 크기조절 안됨
 
+
 config.file_upload_handler = function(file, pathReplace) {
 	console.log(file); // 파일 정보 확인 가능
 	if (file.size > (1 * 1024 * 1024)) { // 1MB 이상의 사진일 경우..
@@ -110,7 +113,9 @@ config.file_upload_handler = function(file, pathReplace) {
 }
 
 var editor = new RichTextEditor("#div_editor", config);
+
 function save() {
+	
 	$("input[name='pf_content']").val(editor.getHTMLCode());
 	if($("input[name='pf_content']").val().length < 11){
 		alert('최소 10글자 입력 해주세요.');

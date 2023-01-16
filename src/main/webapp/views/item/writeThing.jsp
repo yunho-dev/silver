@@ -179,9 +179,9 @@
 	}
 	
 	function fileCheck(obj) {
-	    pathpoint = obj.val().lastIndexOf('.');
-	    filepoint = obj.val().substring(pathpoint+1, obj.val().length);
-	    filetype = filepoint.toLowerCase();
+		var pathpoint = obj.val().lastIndexOf('.');
+		var filepoint = obj.val().substring(pathpoint+1, obj.val().length);
+		var filetype = filepoint.toLowerCase();
 	    if(filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg') {
 	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
 	        obj.val(null);

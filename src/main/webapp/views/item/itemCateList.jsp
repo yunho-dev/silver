@@ -36,8 +36,8 @@
                     </div>
 			       <div class="card-header" style="background-color: #adb5bd; font-weight: bold; font-size: large;">
 			           카테고리 이름 : <input type="text" name="thCate" class="filter"> &nbsp;&nbsp;
-			           <button class="btn btn-secondary" onclick="search($(this))">검색</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="button" class="btn btn-primary ml-1" onclick="location.href='itemCateWrite.go'">
+			           <button class="btn btn-secondary" onclick="search($(this))">검색</button>
+						<button type="button" class="btn btn-primary ml-1" style="margin-left: 50px;" onclick="location.href='itemCateWrite.go'">
 							<span class="d-none d-sm-block">등록하기</span>
 						</button>
 					</div>
@@ -102,7 +102,7 @@
 	}
 	
 	function cateModify(modifyBtn){
-		itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
+		var itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
 		modifyBtn.closest('tr').find('#cateClick1').attr('onclick', '');
 		modifyBtn.closest('tr').find('#cateClick1').css('cursor', '');
 		modifyBtn.closest('tr').find('#cateClick2').attr('onclick', '');
@@ -141,7 +141,7 @@
 	}
 	
 	function search(searchBtn){
-		var itName = searchName = searchBtn.siblings('input.filter').val();
+		var itName = searchBtn.siblings('input.filter').val();
 		
 		$.ajax({
 			type:'GET',
