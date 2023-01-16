@@ -30,5 +30,11 @@ public class CarController {
 		logger.info(carIdx+"번 차량({}) 운행 기록 조회", carNum);
 		return service.getDriveHistory(carIdx);
 	}
+	
+	@GetMapping(value = "/getCarBookList.do")
+	public HashMap<String, Object> getCarBookList(int carIdx, String carNum){
+		logger.info(carIdx+"번 차량({}) 예약기록 조회", carNum);
+		return service.getCarBookList(carIdx);
+	}
 
 }

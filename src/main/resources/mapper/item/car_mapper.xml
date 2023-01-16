@@ -12,7 +12,13 @@
 	</select>
 	
 	<select id="getDriveHistory" resultType="car" parameterType="int">
-		SELECT * from carhistory WHERE car_idx = #{carNum}
+		SELECT * from carhistory WHERE car_idx = #{carIdx}
+	</select>
+	
+	<select id="getCarBookList" resultType="car" parameterType="int">
+		SELECT b.cb_idx, b.b_start, b.b_end, m.mem_name, b.b_cancel from book b
+			inner join `member` m ON m.mem_id = b.mem_id
+		where car_idx = #{carIdx}
 	</select>
 
 </mapper>

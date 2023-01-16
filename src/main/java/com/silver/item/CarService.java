@@ -30,9 +30,16 @@ public class CarService {
 		return mav;
 	}
 
-	public HashMap<String, Object> getDriveHistory(int carNum) {
+	public HashMap<String, Object> getDriveHistory(int carIdx) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.getDriveHistory(carNum);
+		ArrayList<ThingDTO> list = dao.getDriveHistory(carIdx);
+		result.put("list", list);
+		return result;
+	}
+
+	public HashMap<String, Object> getCarBookList(int carIdx) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ArrayList<ThingDTO> list = dao.getCarBookList(carIdx);
 		result.put("list", list);
 		return result;
 	}

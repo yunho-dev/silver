@@ -89,12 +89,13 @@
                         <div class="col-12 col-md-6">
                             <div class="card" >
                                 <div class="card-header" style="float:left; background-color: #e1f3ed;">
-								 	<a class="btn btn btn-primary" onclick='driveHistoryDo($(this))'>운행기록</a>
-								 	<a class="btn btn btn-secondary" onclick='driveBookDo($(this))'>사용예약</a>
+								 	<a class="btn btn btn-primary" id="carHis" onclick='driveHistoryDo($(this), this.id)'>운행기록</a>
+								 	<a class="btn btn btn-secondary" id="carBook" onclick='driveBookDo($(this), this.id)'>사용예약</a>
                                 </div>
                                 	<div id="plzCarChoice">
                                 		<p>&lt;&lt; 차량을 선택해 주세요 &gt;&gt;</p>
                                 	</div>
+                                	<!-- 차량 운행 기록 -->
                                 	<div class="modal-body" id="driveHistory" style="border: 1px solid; display: none;">
                                 		<form id="writeForm">
                                 			<div>
@@ -121,7 +122,7 @@
 														<input type="text" name="thName"><span id="WriteName">&nbsp;L</span>
 													</p><br>
 	                                				<p class="writeArea"><span id="WriteName">비고 : </span> 
-														<textarea class="form-control" id="b_content"
+														<textarea id="b_content"
 															rows="3" style="resize: none;"></textarea>
 													</p><br>
 	                                			</div>
@@ -150,18 +151,52 @@
                                                     <th>처리</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="historyList">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- 차량 운행 기록 끝 -->
+                                    
+                                    <!-- 차량 사용 예약 -->
+                                    <div class="modal-body" id="driveBook" style="border: 1px solid; display: none;">
+                                		<form id="writeForm">
+                                			<div>
+	                                			<h5 style="margin-bottom: 15px;">차량 사용 예약</h5>
+	                                			<div class="left">
+	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
+														<input type="text" name="thName">
+													</p><br>
+	                                				<p class="writeArea"><span id="WriteName">사용자 : </span> 
+														<input type="text" name="thName">
+													</p>
+	                                			</div>
+	                                			<div class="right">
+	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
+														<input type="text" name="thName">
+													</p>
+	                                			</div>
+                                			</div>
+                                			<div style="display:block;">
+                                				<a href="#" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
+                                			</div>
+                                		</form>
+                                	</div>
+                                    <!-- Table with no outer spacing -->
+                                    <div class="table-responsive" id="driveBookList" style="display: none;">
+                                    	<div class="card-header" >
+		                                    <h4 class="card-title"><span class="plsCarNumBook"></span>사용 예약 기록</h4>
+		                                </div>
+                                        <table class="table mb-0 table-lg" style="white-space:nowrap;">
+                                            <thead>
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>2022-05-23</td>
-                                                    <td>김순애</td>
-                                                    <td>서울 강서구</td>
-                                                    <td>급식미팅</td>
-                                                    <td>30KM</td>
-                                                    <td>30L</td>
-                                                    <td>없음</td>
-                                                    <td><a href="#" class="btn btn-sm btn-primary">수정</a></td>
+                                                    <th>순번</th>
+                                                    <th>이용 시작 시간</th>
+                                                    <th>이용 끝날 시간</th>
+                                                    <th>사용자</th>
+                                                    <th>취소 여부</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody id="bookList">
                                             </tbody>
                                         </table>
                                     </div>
@@ -180,38 +215,122 @@
 <script>
 	var carNum;
 	var carIdx;
+	var btnId = 'carHis';
+	
+	function driveHistoryDo(historyBtn, id) {
+		btnId = id;
+		$('#carBook').removeClass("btn btn btn-primary")
+		$('#carBook').addClass("btn btn btn-secondary")
+		historyBtn.removeClass("btn btn btn-secondary")
+		historyBtn.addClass("btn btn btn-primary")
+		if(carIdx != null && btnId == 'carHis'){
+			getHistoryList();
+		}
+	}
+	
+	function driveBookDo(bookBtn, id) {
+		btnId = id;
+		$('#carHis').removeClass("btn btn btn-primary")
+		$('#carHis').addClass("btn btn btn-secondary")
+		bookBtn.removeClass("btn btn btn-secondary")
+		bookBtn.addClass("btn btn btn-primary")
+		if(carIdx != null && btnId == 'carBook'){
+			getCarBookList();
+		}
+	}
 	
 	function showStory(elem){
 		carIdx = elem.find('td.carIdx').text();
 		carNum = elem.find('td.carNum').text();
+		if(btnId === 'carHis'){
+			getHistoryList();
+		}else{
+			getCarBookList();
+		}
+		
+	}
+	
+	function getHistoryList(){
 		$('#plzCarChoice').css('display', 'none');
+		$('#driveBook').css('display', 'none');
+		$('#driveBookList').css('display', 'none');
 		$('#driveHistory').css('display', 'inline-block');
 		$('#driveHistoryList').css('display', 'inline-block');
 		$('#driveHistoryList .plsCarNum').text(carNum+'\u00A0');
-		
 		$.ajax({
 			type:'GET',
 			url:'getDriveHistory.do',
 			data:{carIdx:carIdx, carNum:carNum},
 			dataType:'JSON',
 			success:function(data){
-				console.log(data)
+				drawHistoryList(data.list);
 			},
 			error:function(e){
 				console.log(e)
 			}
 		});
-		
+	}
+	function drawHistoryList(historyList){
+		var content='';
+		for(var i=0; i<historyList.length;i++){
+			var date=new Date(historyList[i].chis_date);
+			content +='<tr>';
+			content +='<td class="chis_idx">'+historyList[i].chis_idx+'</td>';
+			content +='<td>'+date.toLocaleDateString('ko-KR')+'</td>';
+			content +='<td>'+historyList[i].chis_driver+'</td>';
+			content +='<td>'+historyList[i].chis_place+'</td>';
+			content +='<td>'+historyList[i].chis_reason+'</td>';
+			content +='<td>'+historyList[i].chis_km+'</td>';
+			content +='<td>'+historyList[i].chis_liter+'</td>';
+			content +='<td>'+historyList[i].chis_bigo+'</td>';
+			content +='<td><a href="#" class="btn btn-sm btn-primary">수정</a></td>';
+			content +='</tr>';
+		}
+		$('#historyList').empty();
+		$('#historyList').append(content);
 	}
 	
-	function driveHistoryDo(historyBtn) {
-		console.log("기록 : ",carNum);
-		console.log(historyBtn)
+	function getCarBookList(){
+		$('#plzCarChoice').css('display', 'none');
+		$('#driveHistory').css('display', 'none');
+		$('#driveHistoryList').css('display', 'none');
+		$('#driveBook').css('display', 'inline-block');
+		$('#driveBookList').css('display', 'inline-block');
+		$('#driveBookList .plsCarNumBook').text(carNum+'\u00A0');
+		$.ajax({
+			type:'GET',
+			url:'getCarBookList.do',
+			data:{carIdx:carIdx, carNum:carNum},
+			dataType:'JSON',
+			success:function(data){
+				drawBookList(data.list);
+			},
+			error:function(e){
+				console.log(e)
+			}
+		});
 	}
 	
-	function driveBookDo(bookBtn) {
-		console.log("예약 : ",carNum);
-		console.log(bookBtn)
+	function drawBookList(bookList){
+		var content='';
+		for(var i=0; i<bookList.length;i++){
+			var startDate=new Date(bookList[i].b_start);
+			var endDate=new Date(bookList[i].b_end);
+			content +='<tr>';
+			content +='<td class="chis_idx">'+bookList[i].cb_idx+'</td>';
+			content +='<td>'+startDate.toLocaleString('ko-KR')+'</td>';
+			content +='<td>'+endDate.toLocaleString('ko-KR')+'</td>';
+			content +='<td>'+bookList[i].mem_name+'</td>';
+			if(bookList[i].b_cancel == 1){
+				content +='<td>취소 안 함</td>';
+			}else{
+				content +='<td style="color: red;">취소</td>';
+			}
+			
+			content +='</tr>';
+		}
+		$('#bookList').empty();
+		$('#bookList').append(content);
 	}
 
 </script>

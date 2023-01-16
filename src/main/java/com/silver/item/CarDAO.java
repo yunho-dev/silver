@@ -9,6 +9,8 @@ public interface CarDAO {
 
 	ArrayList<CarDTO> carList();
 
-	ArrayList<ThingDTO> getDriveHistory(int carNum);
+	ArrayList<ThingDTO> getDriveHistory(int carIdx);
+
+	ArrayList<ThingDTO> getCarBookList(int carIdx);
 
 }
