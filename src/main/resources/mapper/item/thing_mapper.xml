@@ -143,13 +143,12 @@
 	
 	<select id="totalCountManageSearch" resultType="int" parameterType="hashmap">
 		SELECT COUNT(it_name) FROM 
-			(SELECT i.it_name, t.th_model, t.th_part, t.th_date, t.th_money, count(th_name) AS thCnt, sum(th_money) AS thMoney, t.th_write
+			(SELECT i.it_name, t.th_model, t.th_part, t.th_date, t.th_money, count(th_name) AS thCnt, sum(th_money) AS thMoney
 			from thing t left outer join item i on t.it_idx = i.it_idx
 		WHERE
 			i.it_name LIKE CONCAT('%',#{thName},'%')
 			AND t.th_part LIKE CONCAT('%',#{thPart})
 			AND t.th_model LIKE CONCAT('%',#{thModel},'%')
-			AND t.th_write LIKE CONCAT('%',#{thWrite},'%')
 		GROUP BY t.th_model ORDER BY thCnt) AS cntManage;
 	</select>
 	

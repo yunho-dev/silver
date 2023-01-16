@@ -63,7 +63,7 @@
 						<div class="writeLeft">
 <!-- 							<p id="thIdx" style="display: none;"></p> -->
 							<p class="writeArea"><span id="WriteName">품명 : </span> 
-								<input type="text" name="thName">&nbsp;
+								<input type="text" name="thName" readonly="readonly" placeholder="클릭해 주세요" onclick="popThingHistory()" style="cursor: pointer;">&nbsp;
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">사용 목적 : </span> 
 								<input type="text" name="hisGoal">
@@ -152,6 +152,17 @@
 			});
 		}
 	})
+	
+	function popThingHistory(){
+		var url = "popThingHistoryList.go";
+        var name = "popThingHistoryList";
+		var option = "width = 500, height = 500, top = 100, left = 200, location = no";
+		window.open(url, name, option);
+	}
+	
+	function choiceRow(name){
+		$('#thingHistoryWrite input[name=thName]').val(name)
+	}
 	
 </script>
 </html>
