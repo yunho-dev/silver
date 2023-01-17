@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <style>
 	table{
@@ -50,7 +51,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title" style="float:left;">차량 등록 현황</h3>
-                                    <a class="btn btn btn-primary" id="carResist" style="float:right;">차량 정보 등록</a>
+                                    <a class="btn btn btn-primary" id="carResistBtn" data-bs-toggle="modal" data-bs-target="#carResist" style="float:right;">차량 정보 등록</a>
                                 </div>
                                 <div class="card-content">
                                         <!-- Table with outer spacing -->
@@ -69,7 +70,7 @@
                                                 </thead>
                                                 <tbody>
                                                 	<c:forEach items="${list}" var="car">
-														<tr onclick="showStory($(this))" style="cursor: pointer;">
+														<tr style="cursor: pointer;" onclick="showStory($(this))">
 															<td class="carIdx" style="display:none;">${car.car_idx}</td>
 															<td>${car.car_state}</td>
 															<td>${car.car_name}</td>
@@ -77,7 +78,7 @@
 															<td>${car.car_type}</td>
 															<td>${car.car_year}</td>
 															<td>${car.car_part}</td>
-															<td><a href="#" class="btn btn-sm btn-primary">수정</a></td>
+															<td><a class="btn btn-sm btn-primary" onclick="carModifyInfo($(this))" data-bs-toggle="modal" data-bs-target="#carModify">수정</a></td>
 														</tr>
 													</c:forEach>
                                                 </tbody>
@@ -140,7 +141,6 @@
                                         <table class="table mb-0 table-lg" style="white-space:nowrap;">
                                             <thead>
                                                 <tr>
-                                                    <th>순번</th>
                                                     <th>운행일</th>
                                                     <th>운전자</th>
                                                     <th>운행 지역</th>
@@ -152,9 +152,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="historyList">
+                                            <!-- 리스트가 들어가는 공간 -->
                                             </tbody>
                                         </table>
                                     </div>
+                                    <ul class="pagination1" id="pagination1" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
                                     <!-- 차량 운행 기록 끝 -->
                                     
                                     <!-- 차량 사용 예약 -->
@@ -200,11 +202,16 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <ul class="pagination2" id="pagination2" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
                             </div>
                         </div>
                     </div>
                 </section>
-                <!-- Basic Tables end -->
+                <!-- Tables end -->
+                <!-- 모달 -->
+                <jsp:include page="carResist.jsp"></jsp:include>
+                <jsp:include page="carModify.jsp"></jsp:include>
+                
 		</div>
 	</div>
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -213,12 +220,30 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
+	var showPage=1;
 	var carNum;
 	var carIdx;
 	var btnId = 'carHis';
 	const dateRegex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
 	const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
-	const numRegex = /^[0-9]+$/; 
+	const numRegex = /^[0-9]+$/; //숫자만
+	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
+	
+	/** 
+	 * 모달을 닫아주는 함수
+	 * num 설명
+	 * 1 : 차량 정보 등록 모달
+	 * 2 : 차량 정보 수정 모달
+	 */
+	function closeModal(num){
+		if(num === 1){
+			$('#carResist').modal('hide');
+			$('#carResistForm')[0].reset();
+		}else if(num === 2){
+			$('#carModify').modal('hide');
+			$('#carModfyForm')[0].reset();
+		}
+	}
 	
 	function driveHistoryDo(historyBtn, id) {
 		btnId = id;
@@ -242,18 +267,18 @@
 		}
 	}
 	
-	function showStory(elem){
-		carIdx = elem.find('td.carIdx').text();
-		carNum = elem.find('td.carNum').text();
+	function showStory(rowClick){
+		carIdx = rowClick.find('td.carIdx').text();
+		carNum = rowClick.find('td.carNum').text();
 		if(btnId === 'carHis'){
-			getHistoryList();
+			getHistoryList(showPage);
 		}else{
-			getCarBookList();
+			getCarBookList(showPage);
 		}
 		
 	}
 	
-	function getHistoryList(){
+	function getHistoryList(page){
 		$('#plzCarChoice').css('display', 'none');
 		$('#driveBook').css('display', 'none');
 		$('#driveBookList').css('display', 'none');
@@ -264,10 +289,18 @@
 		$.ajax({
 			type:'GET',
 			url:'getDriveHistory.do',
-			data:{carIdx:carIdx, carNum:carNum},
+			data:{carIdx:carIdx, carNum:carNum, page:page},
 			dataType:'JSON',
 			success:function(data){
 				drawHistoryList(data.list);
+				$("#pagination1").twbsPagination({
+					startPage : 1, // 시작 페이지
+					totalPages : data.total, // 총 페이지 수
+					visiblePages : 5, // 기본으로 보여줄 페이지 수
+					onPageClick : function(e, page) { // 클릭했을때 실행 내용
+						getHistoryList(page)
+					}
+				});
 			},
 			error:function(e){
 				console.log(e)
@@ -279,7 +312,7 @@
 		for(var i=0; i<historyList.length;i++){
 			var date=new Date(historyList[i].chis_date);
 			content +='<tr>';
-			content +='<td class="chis_idx">'+historyList[i].chis_idx+'</td>';
+			content +='<td class="chis_idx" style="display: none;">'+historyList[i].chis_idx+'</td>';
 			content +='<td>'+date.toLocaleDateString('ko-KR')+'</td>';
 			content +='<td>'+historyList[i].chis_driver+'</td>';
 			content +='<td>'+historyList[i].chis_place+'</td>';
@@ -403,6 +436,29 @@
 			});
 		}
 	})
+	
+	function carModifyInfo(carModifyBtn){
+		carIdx = carModifyBtn.closest('tr').find('td.carIdx').text();
+		carNum = carModifyBtn.closest('tr').find('td.carNum').text();
+		$.ajax({
+			type:'GET',
+			url:'getCarInfo.do',
+			data:{carIdx:carIdx, carNum:carNum},
+			dataType:'JSON',
+			success:function(data){
+				$('#carModify #carModfyForm input[name=carIdx]').val(data.result.car_idx);
+				$('#carModify #carModfyForm input[name=carName]').val(data.result.car_name);
+				$('#carModify #carModfyForm input[name=carNum]').val(data.result.car_num);
+				$('#carModify #carModfyForm input[name=carType]').val(data.result.car_type);
+				$('#carModify #carModfyForm select[name=carState]').val(data.result.car_state).attr('selected', 'selected');
+				$('#carModify #carModfyForm select[name=carPart]').val(data.result.car_part).attr('selected', 'selected');
+				$('#carModify #carModfyForm input[name=carYear]').val(data.result.car_year);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
 
 </script>
 </html>
