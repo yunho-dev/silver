@@ -152,7 +152,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="historyList">
-                                            <!-- 리스트가 들어가는 공간 -->
+                                            	<!-- 리스트가 들어가는 공간 -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -199,10 +199,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="bookList">
+                                            	<!-- 리스트가 들어가는 공간 -->
                                             </tbody>
                                         </table>
                                     </div>
-                                    <ul class="pagination2" id="pagination2" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
+                                    <ul class="pagination2" id="pagination2" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px; display: none;"></ul>
                             </div>
                         </div>
                     </div>
@@ -252,7 +253,11 @@
 		historyBtn.removeClass("btn btn btn-secondary")
 		historyBtn.addClass("btn btn btn-primary")
 		if(carIdx != null && btnId == 'carHis'){
-			getHistoryList();
+			flag2=true;
+			pageflag2=true;
+			showPage=1;
+			chkPage2=new Array();
+			getHistoryList(showPage);
 		}
 	}
 	
@@ -263,7 +268,11 @@
 		bookBtn.removeClass("btn btn btn-secondary")
 		bookBtn.addClass("btn btn btn-primary")
 		if(carIdx != null && btnId == 'carBook'){
-			getCarBookList();
+			flag=true;
+			pageflag=true;
+			page2=1;
+			chkPage=new Array();
+			getCarBookList(showPage);
 		}
 	}
 	
@@ -278,7 +287,12 @@
 		
 	}
 	
+	var flag2=true;
+	var pageflag2=true;
+	var chkPage2=new Array();
 	function getHistoryList(page){
+		$('#pagination1').css('display', 'inline-flex')
+		$('#pagination2').css('display', 'none')
 		$('#plzCarChoice').css('display', 'none');
 		$('#driveBook').css('display', 'none');
 		$('#driveBookList').css('display', 'none');
@@ -286,26 +300,40 @@
 		$('#driveHistoryList').css('display', 'inline-block');
 		$('#driveHistory .plsCarNum').text(carNum+'\u00A0');
 		$('#driveHistoryList .plsCarNum').text(carNum+'\u00A0');
-		$.ajax({
-			type:'GET',
-			url:'getDriveHistory.do',
-			data:{carIdx:carIdx, carNum:carNum, page:page},
-			dataType:'JSON',
-			success:function(data){
-				drawHistoryList(data.list);
-				$("#pagination1").twbsPagination({
-					startPage : 1, // 시작 페이지
-					totalPages : data.total, // 총 페이지 수
-					visiblePages : 5, // 기본으로 보여줄 페이지 수
-					onPageClick : function(e, page) { // 클릭했을때 실행 내용
-						getHistoryList(page)
-					}
-				});
-			},
-			error:function(e){
-				console.log(e)
-			}
-		});
+		if(flag2){
+	        var select=$("#selectPart").val();
+	        flag2=false;
+			$.ajax({
+				type:'GET',
+				url:'getDriveHistory.do',
+				data:{carIdx:carIdx, carNum:carNum, page:page},
+				dataType:'JSON',
+				success:function(data){
+					drawHistoryList(data.list);
+					chkPage2.push(data.total);
+	    			if(chkPage2.at(-2) != data.total){
+	    				pageflag2=true;
+	    			}
+					if(pageflag2 == true && $('.pagination2').data("twbs-pagination")){
+	                    $('.pagination2').twbsPagination('destroy');
+	                    pageflag2=false;
+	                }
+					$("#pagination1").twbsPagination({
+						startPage : 1, // 시작 페이지
+						totalPages : data.total, // 총 페이지 수
+						visiblePages : 5, // 기본으로 보여줄 페이지 수
+						onPageClick : function(e, page) { // 클릭했을때 실행 내용
+							getHistoryList(page)
+						}
+					});
+				},
+				error:function(e){
+					console.log(e)
+				},complete:function(){
+	    			flag2=true;
+	    		}
+			});
+		}
 	}
 	function drawHistoryList(historyList){
 		var content='';
@@ -327,7 +355,13 @@
 		$('#historyList').append(content);
 	}
 	
-	function getCarBookList(){
+	var flag=true;
+	var pageflag=true;
+	var page2=1;
+	var chkPage=new Array();
+	function getCarBookList(page2){
+		$('#pagination1').css('display', 'none')
+		$('#pagination2').css('display', 'inline-flex')
 		$('#plzCarChoice').css('display', 'none');
 		$('#driveHistory').css('display', 'none');
 		$('#driveHistoryList').css('display', 'none');
@@ -335,18 +369,40 @@
 		$('#driveBookList').css('display', 'inline-block');
 		$('#driveBook .plsCarNumBook').text(carNum+'\u00A0');
 		$('#driveBookList .plsCarNumBook').text(carNum+'\u00A0');
-		$.ajax({
-			type:'GET',
-			url:'getCarBookList.do',
-			data:{carIdx:carIdx, carNum:carNum},
-			dataType:'JSON',
-			success:function(data){
-				drawBookList(data.list);
-			},
-			error:function(e){
-				console.log(e)
-			}
-		});
+		if(flag){
+	        var select=$("#selectPart").val();
+	        flag=false;
+			$.ajax({
+				type:'GET',
+				url:'getCarBookList.do',
+				data:{carIdx:carIdx, carNum:carNum, 'page':page2},
+				dataType:'JSON',
+				success:function(data){
+					drawBookList(data.list);
+					chkPage.push(data.total);
+	    			if(chkPage.at(-2) != data.total){
+	    				pageflag=true;
+	    			}
+	    			if(pageflag == true && $('.pagination1').data("twbs-pagination")){
+	                    $('.pagination1').twbsPagination('destroy');
+	                    pageflag=false;
+	                }
+	    			$("#pagination2").twbsPagination({
+	    				startPage : 1 // 시작 페이지
+	    				,totalPages : data.total // 총 페이지 수
+	    				,visiblePages : 5 // 기본으로 보여줄 페이지 수
+	    				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+	    					getCarBookList(page);
+	    				}
+	    			});
+				},
+				error:function(e){
+					console.log(e)
+				},complete:function(){
+	    			flag=true;
+	    		}
+			});
+		}
 	}
 	
 	function drawBookList(bookList){

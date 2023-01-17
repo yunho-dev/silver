@@ -12,17 +12,24 @@
 	</select>
 	
 	<select id="totalCountDriveHistory" resultType="int" parameterType="int">
-		SELECT COUNT(chis_idx) FROM carhistory WHERE car_idx = #{carIdx} ORDER BY chis_date DESC;
+		SELECT COUNT(chis_idx) FROM carhistory WHERE car_idx = #{carIdx}
 	</select>
 	
 	<select id="getDriveHistory" resultType="car">
-		SELECT * from carhistory WHERE car_idx = #{param1} ORDER BY chis_date DESC LIMIT 3 OFFSET #{param2}
+		SELECT * from carhistory WHERE car_idx = #{param1} 
+			ORDER BY chis_date DESC LIMIT 3 OFFSET #{param2}
 	</select>
 	
-	<select id="getCarBookList" resultType="car" parameterType="int">
+	<select id="totalCountCarBookList" resultType="int" parameterType="int">
+		SELECT COUNT(b.cb_idx) FROM book b
+			INNER JOIN `member` m ON m.mem_id = b.mem_id
+		WHERE car_idx = #{carIdx}
+	</select>
+	
+	<select id="getCarBookList" resultType="car">
 		SELECT b.cb_idx, b.b_start, b.b_end, m.mem_name, b.b_cancel FROM book b
 			INNER JOIN `member` m ON m.mem_id = b.mem_id
-		WHERE car_idx = #{carIdx} ORDER BY b.cb_idx DESC
+		WHERE car_idx = #{param1} ORDER BY b.cb_idx DESC limit 5 offset #{param2}
 	</select>
 	
 	<insert id="carHistoryResist" parameterType="hashmap">

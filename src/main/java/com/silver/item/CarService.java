@@ -40,15 +40,29 @@ public class CarService {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ThingDTO> list = dao.getDriveHistory(carIdx, offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
 		result.put("list", list);
 		result.put("total", totalPages);
 		return result;
 	}
 
-	public HashMap<String, Object> getCarBookList(int carIdx) {
+	public HashMap<String, Object> getCarBookList(int carIdx, int page) {
+		/* 페이징 계산 */
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountCarBookList(carIdx);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.getCarBookList(carIdx);
+		ArrayList<ThingDTO> list = dao.getCarBookList(carIdx, offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
 		result.put("list", list);
+		result.put("total", totalPages);
 		return result;
 	}
 

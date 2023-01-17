@@ -30,15 +30,15 @@ public class CarController {
 	/* 차량 운행 기록 조회 */
 	@GetMapping(value = "/getDriveHistory.do")
 	public HashMap<String, Object> getDriveHistory(int carIdx, String carNum, int page){
-		logger.info(carIdx+"번 차량({}) 운행 기록 조회 접근", carNum);
+		logger.info(carIdx+"번 차량({}) {}페이지 운행 기록 조회 접근", carNum, page);
 		return service.getDriveHistory(carIdx, page);
 	}
 	
 	/* 차량 예약 기록 조회 */
 	@GetMapping(value = "/getCarBookList.do")
-	public HashMap<String, Object> getCarBookList(int carIdx, String carNum){
+	public HashMap<String, Object> getCarBookList(int carIdx, String carNum, int page){
 		logger.info(carIdx+"번 차량({}) 예약기록 조회 접근", carNum);
-		return service.getCarBookList(carIdx);
+		return service.getCarBookList(carIdx, page);
 	}
 	
 	/* 차량 운행 등록 */
