@@ -47,7 +47,7 @@ public class DonationService {
 	}
 
 	public void donationUpdate(HashMap<String, String> params) {
-		logger.info("서비드 이동확인");
+		logger.info("서비스 이동확인");
 		logger.info("params:{}",params);
 		int row = dao.donationUpdate(params);
 		

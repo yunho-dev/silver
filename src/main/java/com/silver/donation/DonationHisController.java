@@ -51,6 +51,20 @@ public class DonationHisController {
 		return "redirect:/donHistory";
 	}
 	
+	@RequestMapping(value = "/donHisUpdateForm")
+	public ModelAndView donHisUpdateForm(int dh_idx) {
+		logger.info("수정/상세보기폼 이동");
+		return service.donHisUpdateForm(dh_idx);
+	}
+	@RequestMapping(value = "/donHisUpdate")
+	public HashMap<String, Object> donHisUpdate (MultipartFile dh_Photo,
+			@RequestParam HashMap<String, String>params) {
+		logger.info("params:{}",params);
+		return service.donHisUpdate(dh_Photo, params);
+		
+		
+		
+	}
 	
 	
 	
