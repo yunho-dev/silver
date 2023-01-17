@@ -280,8 +280,10 @@
 		carIdx = rowClick.find('td.carIdx').text();
 		carNum = rowClick.find('td.carNum').text();
 		if(btnId === 'carHis'){
+			 $('.pagination1').twbsPagination('destroy');
 			getHistoryList(showPage);
 		}else{
+			 $('.pagination2').twbsPagination('destroy');
 			getCarBookList(showPage);
 		}
 		
@@ -480,10 +482,10 @@
 					if(data.finish == 1){
 						alert('등록 완료')
 						$("#historyWrite")[0].reset();
-						getHistoryList();
+						getHistoryList(showPage);
 					}else{
 						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
-						getHistoryList();
+						getHistoryList(showPage);
 					}
 				},
 				error:function(e){

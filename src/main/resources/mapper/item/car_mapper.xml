@@ -34,13 +34,26 @@
 	
 	<insert id="carHistoryResist" parameterType="hashmap">
 		<choose>
-			<when test="chisBigo != null and !chisBigo.equals('')">
-				INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter, chis_bigo)
-			VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter}, #{chisBigo});
+			<when test="!chisBigo.equals('')">
+				<if test="!chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter, chis_bigo)
+						VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter}, #{chisBigo});
+				</if>
+				<if test="chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_bigo)
+						VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisBigo});
+				</if>
 			</when>
 			<otherwise>
-				INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter)
-			VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter});
+				<if test="!chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter)
+						VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter});
+				</if>
+				<if test="chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km)
+					VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm});
+				</if>
+				
 			</otherwise>
 		</choose>
 	</insert>
