@@ -2,7 +2,6 @@ package com.silver.resident;
 
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import org.apache.ibatis.type.Alias;
 
@@ -22,6 +21,118 @@ public class ResidentDTO {
 	private Timestamp re_date;
 	private String ro_name;
 	private String re_daddr;
+	private int  fp_idx;
+	private int  fpc_idx;
+	private String  fp_oriFileName;
+	private String  fp_newFileName;
+	private Timestamp  fp_date;
+	private String re_age;
+	private String  file_fp_oriFileName;
+	private String  file_fp_newFileName;	
+	private int  cu_num;
+	private String  cu_content;
+	private int  cc_idx;
+	private String  co_write;
+	private Timestamp  co_start;
+	private Timestamp  co_end;
+	private String  co_event;
+	
+	
+	
+	
+	
+	
+	
+	public int getCu_num() {
+		return cu_num;
+	}
+	public void setCu_num(int cu_num) {
+		this.cu_num = cu_num;
+	}
+	public String getCu_content() {
+		return cu_content;
+	}
+	public void setCu_content(String cu_content) {
+		this.cu_content = cu_content;
+	}
+	public int getCc_idx() {
+		return cc_idx;
+	}
+	public void setCc_idx(int cc_idx) {
+		this.cc_idx = cc_idx;
+	}
+	public String getCo_write() {
+		return co_write;
+	}
+	public void setCo_write(String co_write) {
+		this.co_write = co_write;
+	}
+	public Timestamp getCo_start() {
+		return co_start;
+	}
+	public void setCo_start(Timestamp co_start) {
+		this.co_start = co_start;
+	}
+	public Timestamp getCo_end() {
+		return co_end;
+	}
+	public void setCo_end(Timestamp co_end) {
+		this.co_end = co_end;
+	}
+	public String getCo_event() {
+		return co_event;
+	}
+	public void setCo_event(String co_event) {
+		this.co_event = co_event;
+	}
+	public String getFile_fp_oriFileName() {
+		return file_fp_oriFileName;
+	}
+	public void setFile_fp_oriFileName(String file_fp_oriFileName) {
+		this.file_fp_oriFileName = file_fp_oriFileName;
+	}
+	public String getFile_fp_newFileName() {
+		return file_fp_newFileName;
+	}
+	public void setFile_fp_newFileName(String file_fp_newFileName) {
+		this.file_fp_newFileName = file_fp_newFileName;
+	}
+	public String getRe_age() {
+		return re_age;
+	}
+	public void setRe_age(String re_age) {
+		this.re_age = re_age;
+	}
+	public int getFp_idx() {
+		return fp_idx;
+	}
+	public void setFp_idx(int fp_idx) {
+		this.fp_idx = fp_idx;
+	}
+	public int getFpc_idx() {
+		return fpc_idx;
+	}
+	public void setFpc_idx(int fpc_idx) {
+		this.fpc_idx = fpc_idx;
+	}
+	public String getFp_oriFileName() {
+		return fp_oriFileName;
+	}
+	public void setFp_oriFileName(String fp_oriFileName) {
+		this.fp_oriFileName = fp_oriFileName;
+	}
+	public String getFp_newFileName() {
+		return fp_newFileName;
+	}
+	public void setFp_newFileName(String fp_newFileName) {
+		this.fp_newFileName = fp_newFileName;
+	}
+	public Timestamp getFp_date() {
+		return fp_date;
+	}
+	public void setFp_date(Timestamp fp_date) {
+		this.fp_date = fp_date;
+	}
 	public int getRe_idx() {
 		return re_idx;
 	}
