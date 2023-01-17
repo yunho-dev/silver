@@ -1,6 +1,7 @@
 package com.silver.payment;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import org.apache.ibatis.type.Alias;
 
@@ -37,10 +38,25 @@ public class PaymentDTO {
 	private String mem_state;
 	private String dept_name;
 	private String pos_name;
+	private String ho_type;
 	private int dept_code;
 	private int pos_level;
 	private int dept_num;
+	private ArrayList<String> resultList=new ArrayList<String>();
 	
+	
+	public String getHo_type() {
+		return ho_type;
+	}
+	public ArrayList<String> getResultList() {
+		return resultList;
+	}
+	public void setResultList(ArrayList<String> resultList) {
+		this.resultList = resultList;
+	}
+	public void setHo_type(String ho_type) {
+		this.ho_type = ho_type;
+	}
 	public int getDept_num() {
 		return dept_num;
 	}

@@ -28,7 +28,7 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>개인 결재함</h3>
+				<h3>열람 가능 결재함</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
@@ -69,9 +69,6 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input id="paymentwrite" type="button" class="btn btn-primary" value="결재 문서 등록">
-						</div>
 					</div>
 				</section>
 			</div>
@@ -97,23 +94,18 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-$(document).on('click','#paymentwrite',function(){
-	location.href="paymentwrite.go";
-});
-
-
 var page=1
 paymentCall(page);
 
 function paymentCall(page){
 	$.ajax({
 		type:'get'
-		,url:'selfpayment.ajax'
+		,url:'openpayment.ajax'
 		,dataType:'json'
 		,data:{'page':page}
 		,success:function(data){
 			console.log(data);
-			paymentListCall(data.paymentList);
+			paymentListCall(data.openList);
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
@@ -143,8 +135,6 @@ function paymentListCall(list){
 	$("#myPayMentList").empty();
 	$("#myPayMentList").append(content);
 }
-
-
 	
 </script>
 </html>

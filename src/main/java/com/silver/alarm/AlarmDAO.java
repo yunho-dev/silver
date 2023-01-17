@@ -13,5 +13,7 @@ public interface AlarmDAO {
 
 	int removeCount(int idx);
 
+	void PayAlarmInsert(String content, String linkaddr, String mem_id);
+
 
 }
