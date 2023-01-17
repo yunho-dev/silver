@@ -12,13 +12,26 @@
 	</select>
 	
 	<select id="getDriveHistory" resultType="car" parameterType="int">
-		SELECT * from carhistory WHERE car_idx = #{carIdx}
+		SELECT * from carhistory WHERE car_idx = #{carIdx} ORDER BY chis_idx DESC
 	</select>
 	
 	<select id="getCarBookList" resultType="car" parameterType="int">
-		SELECT b.cb_idx, b.b_start, b.b_end, m.mem_name, b.b_cancel from book b
-			inner join `member` m ON m.mem_id = b.mem_id
-		where car_idx = #{carIdx}
+		SELECT b.cb_idx, b.b_start, b.b_end, m.mem_name, b.b_cancel FROM book b
+			INNER JOIN `member` m ON m.mem_id = b.mem_id
+		WHERE car_idx = #{carIdx} ORDER BY chis_idx DESC
 	</select>
+	
+	<insert id="carHistoryResist" parameterType="hashmap">
+		<choose>
+			<when test="chisBigo != null and !chisBigo.equals('')">
+				INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter, chis_bigo)
+			VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter}, #{chisBigo});
+			</when>
+			<otherwise>
+				INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter)
+			VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter});
+			</otherwise>
+		</choose>
+	</insert>
 
 </mapper>

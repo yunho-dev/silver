@@ -44,4 +44,12 @@ public class CarService {
 		return result;
 	}
 
+	public HashMap<String, Object> carHistoryResist(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		int row = dao.carHistoryResist(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
+		return result;
+	}
+
 }

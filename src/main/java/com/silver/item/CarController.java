@@ -5,6 +5,8 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,6 +37,12 @@ public class CarController {
 	public HashMap<String, Object> getCarBookList(int carIdx, String carNum){
 		logger.info(carIdx+"번 차량({}) 예약기록 조회", carNum);
 		return service.getCarBookList(carIdx);
+	}
+	
+	@PostMapping(value = "/carHistoryResist.do")
+	public HashMap<String, Object> carHistoryResist(@RequestParam HashMap<String, String> params){
+		logger.info(params.get("carIdx")+"번 차량({}) 예약기록 조회", params.get("carNum"));
+		return service.carHistoryResist(params);
 	}
 
 }

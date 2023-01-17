@@ -1,6 +1,7 @@
 package com.silver.item;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,5 +13,7 @@ public interface CarDAO {
 	ArrayList<ThingDTO> getDriveHistory(int carIdx);
 
 	ArrayList<ThingDTO> getCarBookList(int carIdx);
+
+	int carHistoryResist(HashMap<String, String> params);
 
 }

@@ -97,9 +97,9 @@
                                 	</div>
                                 	<!-- 차량 운행 기록 -->
                                 	<div class="modal-body" id="driveHistory" style="border: 1px solid; display: none;">
-                                		<form id="writeForm">
+                                		<form id="historyWrite">
                                 			<div>
-	                                			<h5 style="margin-bottom: 15px;">운행 등록</h5>
+	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNum"></span>운행 등록</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">운행일 : </span> 
 														<input type="text" name="chisDate">
@@ -111,7 +111,7 @@
 														<input type="text" name="chisKm"><span id="WriteName">&nbsp;km</span>
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행목적 : </span> 
-														<input type="text" name="chisGoal">
+														<input type="text" name="chisReason">
 													</p><br>
 	                                			</div>
 	                                			<div class="right">
@@ -122,7 +122,7 @@
 														<input type="text" name="chisLiter"><span id="WriteName">&nbsp;L</span>
 													</p><br>
 	                                				<p class="writeArea"><span id="WriteName">비고 : </span> 
-														<textarea id="chisBigo"
+														<textarea id="chisBigo" name="chisBigo"
 															rows="3" style="resize: none;"></textarea>
 													</p><br>
 	                                			</div>
@@ -161,7 +161,7 @@
                                     <div class="modal-body" id="driveBook" style="border: 1px solid; display: none;">
                                 		<form id="writeForm">
                                 			<div>
-	                                			<h5 style="margin-bottom: 15px;">차량 사용 예약</h5>
+	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNumBook"></span>차량 사용 예약</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
 														<input type="text" name="thName">
@@ -259,6 +259,7 @@
 		$('#driveBookList').css('display', 'none');
 		$('#driveHistory').css('display', 'inline-block');
 		$('#driveHistoryList').css('display', 'inline-block');
+		$('#driveHistory .plsCarNum').text(carNum+'\u00A0');
 		$('#driveHistoryList .plsCarNum').text(carNum+'\u00A0');
 		$.ajax({
 			type:'GET',
@@ -299,6 +300,7 @@
 		$('#driveHistoryList').css('display', 'none');
 		$('#driveBook').css('display', 'inline-block');
 		$('#driveBookList').css('display', 'inline-block');
+		$('#driveBook .plsCarNumBook').text(carNum+'\u00A0');
 		$('#driveBookList .plsCarNumBook').text(carNum+'\u00A0');
 		$.ajax({
 			type:'GET',
@@ -340,7 +342,7 @@
 		var $chisDate = $('#driveHistory input[name=chisDate]');
 		var $chisPlace = $('#driveHistory input[name=chisPlace]');
 		var $chisKm = $('#driveHistory input[name=chisKm]');
-		var $chisGoal = $('#driveHistory input[name=chisGoal]');
+		var $chisReason = $('#driveHistory input[name=chisReason]');
 		var $chisDriver = $('#driveHistory input[name=chisDriver]');
 		var $chisLiter = $('#driveHistory input[name=chisLiter]');
 		var $chisBigo = $('#driveHistory #chisBigo');
@@ -357,17 +359,48 @@
 		}else if($chisKm.val().match(numRegex) == null){
 			alert("운행거리는 숫자만 입력해 주세요");
 			$chisKm.focus();
-		}else if($chisGoal.val()==''){
+		}else if($chisReason.val()==''){
 			alert("운행목적을 입력해 주세요");
-			$chisGoal.focus();
+			$chisReason.focus();
 		}else if($chisDriver.val()==''){
 			alert("운전자를 입력해 주세요");
 			$chisDriver.focus();
-		}else if($chisLiter.val()==''){
-			alert("운행목적을 입력해 주세요");
+		}else if($chisLiter.val() != '' && $chisLiter.val().match(numRegex) == null){
+			alert("주유량은 숫자만 입력해 주세요");
 			$chisLiter.focus();
 		}else{
-			console.log('아작스')
+			var formData = new FormData();
+			$('#historyWrite input').each(function(){
+				var key = $(this).attr('name');
+				var key2 = $chisBigo.attr('name');
+				var key3 = 'carIdx';
+				var key4 = 'carNum';
+				formData.append(key, $(this).val())
+				formData.append(key2, $chisBigo.val())
+				formData.append(key3, carIdx)
+				formData.append(key4, carNum)
+			})
+			$.ajax({
+				type:'POST',
+				url:'carHistoryResist.do',
+				processData:false, // 객체를 문자열로 바꾸지 않음
+				contentType:false, // 컨텐트 타입을 객체로 함
+				data: formData,
+				success:function(data){
+					console.log(data)
+					if(data.finish == 1){
+						alert('등록 완료')
+						$("#historyWrite")[0].reset();
+						getHistoryList();
+					}else{
+						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
+						getHistoryList();
+					}
+				},
+				error:function(e){
+					console.log(e)
+				}
+			});
 		}
 	})
 
