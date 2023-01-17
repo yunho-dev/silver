@@ -102,33 +102,33 @@
 	                                			<h5 style="margin-bottom: 15px;">운행 등록</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">운행일 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="chisDate">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행지역 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="chisPlace">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행거리 : </span> 
-														<input type="text" name="thName"><span id="WriteName">&nbsp;km</span>
+														<input type="text" name="chisKm"><span id="WriteName">&nbsp;km</span>
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행목적 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="chisGoal">
 													</p><br>
 	                                			</div>
 	                                			<div class="right">
 	                                				<p class="writeArea"><span id="WriteName">운전자 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="chisDriver">
 													</p><br>
 	                                				<p class="writeArea"><span id="WriteName">주유량 : </span> 
-														<input type="text" name="thName"><span id="WriteName">&nbsp;L</span>
+														<input type="text" name="chisLiter"><span id="WriteName">&nbsp;L</span>
 													</p><br>
 	                                				<p class="writeArea"><span id="WriteName">비고 : </span> 
-														<textarea id="b_content"
+														<textarea id="chisBigo"
 															rows="3" style="resize: none;"></textarea>
 													</p><br>
 	                                			</div>
                                 			</div>
                                 			<div style="display:block;">
-                                				<a href="#" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
+                                				<a id="cHisResist" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
                                 			</div>
                                 		</form>
                                 	</div>
@@ -216,6 +216,9 @@
 	var carNum;
 	var carIdx;
 	var btnId = 'carHis';
+	const dateRegex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+	const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
+	const numRegex = /^[0-9]+$/; 
 	
 	function driveHistoryDo(historyBtn, id) {
 		btnId = id;
@@ -332,6 +335,41 @@
 		$('#bookList').empty();
 		$('#bookList').append(content);
 	}
+	
+	$('#cHisResist').click(function(){
+		var $chisDate = $('#driveHistory input[name=chisDate]');
+		var $chisPlace = $('#driveHistory input[name=chisPlace]');
+		var $chisKm = $('#driveHistory input[name=chisKm]');
+		var $chisGoal = $('#driveHistory input[name=chisGoal]');
+		var $chisDriver = $('#driveHistory input[name=chisDriver]');
+		var $chisLiter = $('#driveHistory input[name=chisLiter]');
+		var $chisBigo = $('#driveHistory #chisBigo');
+		
+		if($chisDate.val().match(dateRegex) == null){
+			alert('운행일을 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08')
+			$chisDate.focus();
+		}else if($chisPlace.val()==''){
+			alert("운행지역을 입력해 주세요");
+			$chisPlace.focus();
+		}else if($chisKm.val()==''){
+			alert("운행거리를 입력해 주세요");
+			$chisKm.focus();
+		}else if($chisKm.val().match(numRegex) == null){
+			alert("운행거리는 숫자만 입력해 주세요");
+			$chisKm.focus();
+		}else if($chisGoal.val()==''){
+			alert("운행목적을 입력해 주세요");
+			$chisGoal.focus();
+		}else if($chisDriver.val()==''){
+			alert("운전자를 입력해 주세요");
+			$chisDriver.focus();
+		}else if($chisLiter.val()==''){
+			alert("운행목적을 입력해 주세요");
+			$chisLiter.focus();
+		}else{
+			console.log('아작스')
+		}
+	})
 
 </script>
 </html>
