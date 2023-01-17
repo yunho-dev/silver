@@ -45,10 +45,12 @@ public class NoticeController {
 		HttpSession session=request.getSession();
 		MemberDTO sessionDTO=(MemberDTO) session.getAttribute("loginId");
 		int pos=sessionDTO.getPos_level();
+		logger.info("mem_id 값 : "+sessionDTO.getMem_id());
 		logger.info("pos 값 : "+pos);
 		map.put("list", list);
 		map.put("page_idx", page_idx);
 		map.put("sessionLevel", pos);
+		map.put("SessionID", sessionDTO.getMem_id());
 		return map;
 	}
 	

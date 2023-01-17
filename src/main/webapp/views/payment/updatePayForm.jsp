@@ -78,13 +78,13 @@
 											<td colspan="2">
 												<div id="div_editor"></div>
 												<div id="content" style="display: none;">${payformUpdate.pf_content}</div>
-											<input type="hidden" name="pf_content" value="${payformUpdate.pf_content}"/>
+											<input type="hidden" style="display: none;" name="pf_content" value="${payformUpdate.pf_content}"/>
 											</td>
 										</tr>
 								</tbody>
 							 </table>
-								 <div id="content" style="display: none;">
-								</div>
+<!-- 								 <div id="content" style="display: none;"> -->
+<!-- 								</div> -->
 							</div>
 							<button type="button" class="btn btn-primary" onclick="save()">수정하기</button>
 							<button type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
@@ -129,7 +129,6 @@ config.file_upload_handler = function(file, pathReplace) {
 
 var editor = new RichTextEditor("#div_editor", config);
 editor.setHTMLCode($("#content").html());
-
 function save() {
 	$("input[name='pf_content']").val(editor.getHTMLCode());
 	console.log($("#selected").val());

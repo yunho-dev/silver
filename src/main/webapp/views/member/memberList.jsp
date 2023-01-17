@@ -323,20 +323,20 @@ function updateForm(listRow){
 		data:{'memId':memId},
 		dataType:'JSON',
 		success:function(data){
-			$(".modal-body .writeLeft input[name=memName]").attr('value',data.detail.mem_name);
-			$(".modal-body .writeLeft input[name=memId]").attr('value',data.detail.mem_id);
-			$(".modal-body .writeLeft select[name=departName]").val(data.detail.dept_name);
-			$(".modal-body .writeLeft input[name=memIndate]").attr('value',data.detail.mem_indate);
-			$(".modal-body .writeLeft input[name=memBirth]").attr('value',data.detail.mem_birth);
-			$(".modal-body .writeLeft input[name=memAddr]").attr('value',data.detail.mem_addr);			
+			$("#updateMember input[name=memName]").attr('value',data.detail.mem_name);
+			$("#updateMember input[name=memId]").attr('value',data.detail.mem_id);
+			$("#updateMember select[name=departName]").val(data.detail.dept_name);
+			$("#updateMember input[name=memIndate]").attr('value',data.detail.mem_indate);
+			$("#updateMember input[name=memBirth]").attr('value',data.detail.mem_birth);
+			$("#updateMember input[name=memAddr]").attr('value',data.detail.mem_addr);			
 			
-			$(".modal-body .writeRight select[name=posName]").val(data.detail.pos_name);
-			$(".modal-body .writeRight select[name=partName]").val(data.detail.part_name);
-			$(".modal-body .writeRight input[name=memPnum]").attr('value',data.detail.mem_pnum);
-			$(".modal-body .writeRight input[name=memGender]").attr('value',data.detail.mem_gender);
-			$(".modal-body .writeRight input[name=memDaddr]").attr('value',data.detail.mem_daddr);
-			$(".modal-body .writeRight input[name=memEmail]").attr('value',data.detail.mem_email);
-			$(".modal-body .writeRight select[name=memState]").val(data.detail.mem_state);			
+			$("#updateMember select[name=posName]").val(data.detail.pos_name);
+			$("#updateMember select[name=partName]").val(data.detail.part_name);
+			$("#updateMember input[name=memPnum]").attr('value',data.detail.mem_pnum);
+			$("#updateMember input[name=memGender]").attr('value',data.detail.mem_gender);
+			$("#updateMember input[name=memDaddr]").attr('value',data.detail.mem_daddr);
+			$("#updateMember input[name=memEmail]").attr('value',data.detail.mem_email);
+			$("#updateMember select[name=memState]").val(data.detail.mem_state);			
 			
 			var newFileName = data.detailPhoto;
 			//사진 체크

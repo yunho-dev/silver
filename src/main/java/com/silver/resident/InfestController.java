@@ -31,22 +31,7 @@ public class InfestController {
 		return infestservice.infestListCall(page);
 	}
 	
-	@GetMapping(value = "/infestSearch")
-	@ResponseBody
-	public HashMap<String, Object>infestSearch(@RequestParam String select,@RequestParam String seacontent
-			,@RequestParam int page){
-		HashMap<String, Object> map=new HashMap<String, Object>();
-		int total=infestservice.searchinfestTotal(select,seacontent);
-		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
-		page=(page-1)*10;
-		logger.info("total 값 : "+total);
-		logger.info("page_idx 값 : "+page_idx);
-		logger.info("select 값 : "+select);
-		logger.info("page 값은 : "+page);
-		map.put("page_idx", page_idx);
-		map.put("list", infestservice.searchinfest(select, seacontent,page));
-		return map;
-	}
+	
 	@GetMapping(value="/infestListHistory")
 	public String infestListHistory() {
 		logger.info("히스토리 이동");
@@ -74,21 +59,24 @@ public class InfestController {
 		logger.info("params:{}"+params);
 		//logger.info("re_idx:{}"+re_idx);
 		infestservice.infestHistoryWrite(params);
-		return "resident/infestListHistory";
+		String re_idx= params.get("re_idx");
+		return "redirect:/infestListHistory?re_idx="+re_idx;
 	}
 	@RequestMapping(value ="/infestHistoryWriteUpdateForm") 
-	public ModelAndView infestHistoryWriteUpdateForm (int if_idx) {
+	public ModelAndView infestHistoryWriteUpdateForm (int re_idx) {
 		logger.info("수정폼 이동");
-		logger.info("if_idx",if_idx);
+		logger.info("if_idx",re_idx);
 		
-		return infestservice.infestHistoryWriteUpdateForm(if_idx); 
+		return infestservice.infestHistoryWriteUpdateForm(re_idx); 
 	}
 	 @RequestMapping(value = "/infestHistoryUpdate") 
 	 public String infestHistoryUpdate(
 			 @RequestParam HashMap<String, String>params) {
 		 logger.info("params:{}"+params);
 		 infestservice.infestHistoryUpdate(params);
-		 return "resident/infestListHistory";
+		 String re_idx=params.get("re_idx");
+		 return "redirect:/infestListHistory?re_idx="+re_idx;
+//		 return "resident/infestListHistory?re_idx="+re_idx;
 	 }
 	 
 }

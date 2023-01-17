@@ -61,5 +61,41 @@ public interface ThingDAO {
 	void writeThState(int thIdx);
 
 	int getThIdx(String thName);
+
+	ThingDTO getThingHistoryDetail(String hisIdx);
+
+	int updateThingHistory(HashMap<String, Object> params);
+
+	int totalCountThBookList();
+
+	ArrayList<ThingDTO> getThingBookList(int offset);
+
+	int totalCountBookSearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> getThingBookSearch(ThingDTO dto);
+
+	int totalCntThResiList();
+
+	int totalCntThMemiList();
+
+	ArrayList<ThingDTO> thingResidentList(int offset);
+
+	ArrayList<ThingDTO> thingMemberList(int offset);
+
+	int totalCountThResiSearch(HashMap<String, String> params);
+
+	int totalCountThMemSearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> geThResiSearch(ThingDTO dto);
+
+	ArrayList<ThingDTO> geThMemSearch(ThingDTO dto);
+
+	int thBookCheck(HashMap<String, String> params);
+
+	int thingBookWrite(HashMap<String, String> params);
+
+	ThingDTO getThingBookDetail(String cbIdx);
+
+	int thingBookCancel(int cbIdx, String bContent, String bookWriter);
 	
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+   
+<mapper namespace="com.silver.resident.ResidentProgramGategoryDAO">
+
+	<select id="list" resultType="procategory">
+		select pc_idx,pc_cate from procategory;
+	</select>
+	
+	<select id="detailCall" resultType="procategory">
+		select pc_idx,pc_cate from procategory where pc_idx=#{param1};
+	</select>
+	
+	<update id="CategoryUpdateComplete">
+		update procategory set pc_cate=#{param2} where pc_idx=#{param1};
+	</update>
+	
+	<insert id="CategoryWriteComplete" parameterType="procategory">
+		insert into procategory(pc_idx,pc_cate) values(#{pc_idx},#{pc_cate});
+	</insert>
+
+</mapper>

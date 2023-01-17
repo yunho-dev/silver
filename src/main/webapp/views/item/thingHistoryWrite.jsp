@@ -63,7 +63,7 @@
 						<div class="writeLeft">
 <!-- 							<p id="thIdx" style="display: none;"></p> -->
 							<p class="writeArea"><span id="WriteName">품명 : </span> 
-								<input type="text" name="thName">&nbsp;
+								<input type="text" name="thName" readonly="readonly" placeholder="클릭해 주세요" onclick="popThingHistory()" style="cursor: pointer;">&nbsp;
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">사용 목적 : </span> 
 								<input type="text" name="hisGoal">
@@ -143,7 +143,7 @@
 					if(data.finish == 1){
 						location.reload();
 					}else{
-						alert('서버와 통신은 했으나 등록중 오류가 발생했습니다 \n다시 시도해 주세요')
+						alert('서버와 통신은 했으나 등록중 오류가 발생했습니다 \n다시 시도해 주세요 \n현상이 지속되면 새로고침 후 진행해 주세요')
 					}
 				},
 				error:function(e){
@@ -152,6 +152,17 @@
 			});
 		}
 	})
+	
+	function popThingHistory(){
+		var url = "popThingHistoryList.go";
+        var name = "popThingHistoryList";
+		var option = "width = 500, height = 500, top = 100, left = 200, location = no";
+		window.open(url, name, option);
+	}
+	
+	function choiceRow(name){
+		$('#thingHistoryWrite input[name=thName]').val(name)
+	}
 	
 </script>
 </html>

@@ -39,9 +39,23 @@ public class ThingDTO {
 	//manage calculation
 	private int thCnt;
 	private int sumMoney;
+	//thing book
+	private int cb_idx;
+	private Timestamp b_start;
+	private String b_startFake;
+	private Timestamp b_end;
+	private String b_write;
+	private String re_name; // 예약 이름(입소자)
+	private String mem_name; // 예약 이름(직원)
+	private String userName; // 입력받은거 담음
+	private String b_cancel;
+	private String b_content;
+	private String bookCancelFake;
+	//thing book insert - 직원 or 입소자 list
+	private String re_idx;
+	private String mem_id;
 	
 	public int getTh_idx() {
-		System.out.println(th_idx);
 		return th_idx;
 	}
 	public void setTh_idx(int th_idx) {
@@ -202,6 +216,84 @@ public class ThingDTO {
 	}
 	public void setSumMoney(int sumMoney) {
 		this.sumMoney = sumMoney;
+	}
+	public int getCb_idx() {
+		return cb_idx;
+	}
+	public void setCb_idx(int cb_idx) {
+		this.cb_idx = cb_idx;
+	}
+	public Timestamp getB_start() {
+		return b_start;
+	}
+	public void setB_start(Timestamp b_start) {
+		this.b_start = b_start;
+	}
+	public Timestamp getB_end() {
+		return b_end;
+	}
+	public void setB_end(Timestamp b_end) {
+		this.b_end = b_end;
+	}
+	public String getB_write() {
+		return b_write;
+	}
+	public void setB_write(String b_write) {
+		this.b_write = b_write;
+	}
+	public String getRe_name() {
+		return re_name;
+	}
+	public void setRe_name(String re_name) {
+		this.re_name = re_name;
+	}
+	public String getB_startFake() {
+		return b_startFake;
+	}
+	public void setB_startFake(String b_startFake) {
+		this.b_startFake = b_startFake;
+	}
+	public String getMem_name() {
+		return mem_name;
+	}
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getRe_idx() {
+		return re_idx;
+	}
+	public void setRe_idx(String re_idx) {
+		this.re_idx = re_idx;
+	}
+	public String getMem_id() {
+		return mem_id;
+	}
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
+	public String getB_cancel() {
+		return b_cancel;
+	}
+	public void setB_cancel(String b_cancel) {
+		this.b_cancel = b_cancel;
+	}
+	public String getBookCancelFake() {
+		return bookCancelFake;
+	}
+	public void setBookCancelFake(String bookCancelFake) {
+		this.bookCancelFake = bookCancelFake;
+	}
+	public String getB_content() {
+		return b_content;
+	}
+	public void setB_content(String b_content) {
+		this.b_content = b_content;
 	}
 	
 }

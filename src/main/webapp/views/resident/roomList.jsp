@@ -467,6 +467,63 @@ roomlistCall();
         	//$('#appendroomtable').append(floor,inroomName,Total,damdangSelect);
         	var content='';
         	for(var i=0;i<list.length;i++){
+        		content+='<div class="accordion" id="accordionExample">';
+        	    content+='<div class="accordion-item">';
+        	    content+='<h2 class="accordion-header" id="headingOne">';
+
+        	    content+='<thead class="thead-dark">';
+        	    
+        	    content+='<table class="table mb-0">';
+
+        	    content+='<button class="accordion-button col-md-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="roomName">'+list[i].ro_name+'</button>';
+        	    
+        	    content+='</table>';
+        	    
+        	    content+='</thead>';
+
+        	    content+='</h2>';
+
+        	    content+='<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">';
+        	    content+='<div class="accordion-body col-md-3">';
+
+        	    content+='<tbody>';
+        	    content+='<tr>';
+        	    content+='<td class="text-bold-500">';
+        	    
+        	    content+='<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#delresdient" style="float: right;">'+"삭제"+'</button>';
+        	    content+='</td>';
+        	    content+='</tr>';
+        	    content+='</tbody>';
+        	    content+='<tfoot>';
+        	    content+='<tr>';
+        	    content+='<td>';
+        	    content+='<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomUpdate">'+"생활실수정"+'</button>';
+        	    content+='</td>';
+        	    content+='</tr>';
+        	    content+='<tr>';
+        	    content+='</tr>';
+        	    content+='</tfoot>';
+
+        	    content+='</div>';
+        	    content+='</div>';
+
+
+        	    content+='</div>';
+        	    content+='</div>';
+
+
+        	    content+='</div>';
+        	    content+='</div>';
+        	}
+        	$('#appendroomtable').append(content);
+        	
+        	
+
+        }
+        
+        /*
+        var content='';
+        	for(var i=0;i<list.length;i++){
         	content+='<div class="table-responsive col-md-3">';
         	content+='<table class="table mb-0">';
         	content+='<thead class="thead-dark">';
@@ -492,12 +549,29 @@ roomlistCall();
         	content+='</tfoot>';
         	content+='</table>';
         	content+='</div>';
-        	}
-        	$('#appendroomtable').append(content);
-        	
-        	
-
-        }
+        */
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

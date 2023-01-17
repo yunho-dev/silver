@@ -25,7 +25,13 @@
    <div class="page-heading">
        <h3>감염병 관리 히스토리</h3>
    </div>
-   <button onclick="goWirte()" class="btn btn-primary" style="float: right;">글작성</button>
+   <div class="page-content">
+   	<section class="row">
+   		<div class="card">
+   			<div class="card-body py-4 px-5">
+   
+   <button onclick="goWirte()" class="btn btn-primary" >글작성</button>
+  	<div class="d-flex align-items-center">
   <table class="table">
   <thead>
     <tr>
@@ -50,17 +56,11 @@
 		</td>
 		</tr>
 </table>
-<form class="row row-cols-lg-auto g-3 align-items-center">
-  <div class="col-12">
-    <div class="input-group">
-      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="입소자명 검색">
-    </div>
-  </div>
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">검색</button>
-  </div>
-</form>
-
+</div>
+</div>
+</div>
+</section>
+</div>
 </div>
 </div>
 <script>
@@ -70,6 +70,8 @@ $(".timeSub").text(result);
 
 var url=window.location.search.split('?re_idx=')[1];
 console.log("idx 값 : "+url);
+var uri=window.location.search.split('?if_idx=')[2];
+console.log("idx 값 : "+uri);
 function goWirte(){
 	location.href="infestHistoryWriteForm?re_idx="+url;
 }
@@ -82,7 +84,7 @@ function infestListHistoryCall(page){
 	$.ajax({
 		type:'get',
 		url:'infestListHistoryCall',
-		data:{'page':page,'re_idx':url},
+		data:{'page':page,'re_idx':url,'if_idx':uri},
 		dataType:'json',
 		success:function(data){
 			console.log(data);
@@ -115,7 +117,7 @@ function drawList(list){
 		content +='<td class="timeSub">'+list[i].if_date+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
 		content +='<td>'
-		content +="<a href='infestHistoryWriteUpdateForm?if_idx="+list[i].if_idx+"'>"+list[i].if_jusa+"</a>";
+		content +="<a href='infestHistoryWriteUpdateForm?re_idx="+list[i].if_idx+"'>"+list[i].if_jusa+"</a>";
 		content +='</td>';
 		content +='<td>'+list[i].if_name+'</td>';
 		content +='<td>'+list[i].if_comment+'</td>';

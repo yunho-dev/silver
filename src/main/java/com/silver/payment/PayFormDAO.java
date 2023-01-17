@@ -21,5 +21,13 @@ public interface PayFormDAO {
 
 	void payformupdate_do(String pf_idx, String selected, String pf_title, String pf_content);
 
+	void writepayForm_do(PayFormDTO payformDTO);
+
+	int AllFormSearchTotal(String select, String seacontent);
+
+	ArrayList<PayFormDTO> AllFormSearch(String select, String seacontent, int page);
+
+
+
 
 }

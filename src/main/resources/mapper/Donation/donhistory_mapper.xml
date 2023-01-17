@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
+<mapper namespace="com.silver.donation.DonationHisDAO">
+	
+	<select id="donHistoryCall" resultType="hashmap">
+		SELECT dh_idx, dh_date, dh_write, dh_money 
+		FROM donhistory
+		limit 10 offset #{param1}	
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(dh_idx) from donhistory
+	</select>
+	
+	<insert id="donWrite" parameterType="donhistory" useGeneratedKeys="true" keyColumn="dh_idx"
+	keyProperty="dh_idx">
+		INSERT into donhistory(dh_money, dh_cate, dh_goal, dh_date, dh_write)
+        VALUES(#{dh_money},#{dh_cate},#{dh_goal},#{dh_date},#{dh_write})
+	</insert>
+	
+	<insert id="photoInsert">
+		insert into filephoto(fp_oriFileName, fp_newFileName, dh_idx, fpc_idx)
+        values(#{param1},#{param2},#{param3}, 7);
+	</insert>
+</mapper>
+
+
+

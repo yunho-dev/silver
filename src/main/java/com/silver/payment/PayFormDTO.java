@@ -12,8 +12,16 @@ public class PayFormDTO {
 	private String pf_subject;
 	private int pf_count;
 	private String mem_name;
+	private String mem_id;
 	
 	
+	
+	public String getMem_id() {
+		return mem_id;
+	}
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
 	public String getMem_name() {
 		return mem_name;
 	}

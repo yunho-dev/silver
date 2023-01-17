@@ -5,7 +5,57 @@
 
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.payment.PaymentDAO">
-
+	<select id="MyPayListCall" resultType="payment">
+		select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where m.mem_id =#{param1}
+					order by p.pm_idx desc limit 10 offset #{param2};
+	</select>
+	
+	<select id="MyPayListCallTotal" resultType="int">
+		select count(p.pm_idx)
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where m.mem_id =#{param1}
+	</select>
+	
+	<select id="modalPayFormList" resultType="payment">
+		select p.pf_idx ,p.pf_cate ,p.pf_content ,p.pf_count,p.pf_subject,m.mem_name 
+			from payform p,member m  where p.pf_write =m.mem_id 
+			<if test="param1.equals('휴가')">
+				and p.pf_cate ='휴가'
+			</if>
+			<if test="param1.equals('지출결의서')">
+				and p.pf_cate ='지출결의서'
+			</if>
+			<if test="param1.equals('품의서')">
+				and p.pf_cate ='품의서'
+			</if>
+			<if test="param1.equals('경위서')">
+				and p.pf_cate ='경위서'
+			</if>
+				order by p.pf_count desc
+	</select>
+	
+	<select id="PayMentReferCho_ajax" resultType="payment">
+		select m.mem_id ,m.mem_name ,m.mem_state ,d.dept_name ,p.pos_name,d.dept_code,p.pos_level,d.dept_num,m.dept_num  from member m 
+inner join depart d on m.dept_num =d.dept_num 
+inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' order by p.pos_num 
+	</select>
+	
+	<select id="referDept" resultType="payment">
+		select * from depart d order by dept_num desc
+	</select>
+	
+	<select id="PayOrgCall" resultType="payment">
+		select m.mem_id ,m.mem_name ,m.mem_state ,d.dept_name ,p.pos_name,d.dept_code,p.pos_level,d.dept_num,m.dept_num  from member m 
+		inner join depart d on m.dept_num =d.dept_num 
+		inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' 
+			and p.pos_num &lt; #{param1} order by p.pos_num
+	</select>
+	
+	
 </mapper>
 
 

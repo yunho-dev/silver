@@ -162,7 +162,7 @@ public class ThingController {
 		return service.getThingHistoryList(page);
 	}
 	
-	@GetMapping(value = "getThingHistorySearch.do")
+	@GetMapping(value = "/getThingHistorySearch.do")
 	public HashMap<String, Object> getThingHistorySearch(@RequestParam HashMap<String, String> params){
 		logger.info("비품 사용내역 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
 		return service.getThingHistorySearch(params);
@@ -173,4 +173,127 @@ public class ThingController {
 	public HashMap<String, Object> thingHistoryWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
 		return service.thingHistoryWrite(params, request);
 	}
+	
+	/* 비품 사용내역 조회 - 등록 - 비품목록 */
+	@GetMapping(value = "/popThingHistoryList.go")
+	public ModelAndView popThingHistoryList() {
+		ModelAndView mav = new ModelAndView("item/popThingHistoryList");
+		return mav;
+	}
+	
+	@GetMapping(value = "/getPopThHisSearch.do")
+	public HashMap<String, Object> getPopThHisSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 사용내역(팝업) "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		params.put("thModel", "");
+		params.put("hisName", "");
+		params.put("checkAllView", "");
+		return service.getThingHistorySearch(params);
+	}
+	
+	/* 비품 사용내역 상세보기 */
+	@GetMapping(value = "/getThingHistoryDetail.do")
+	public HashMap<String, Object> getThingHistoryDetail(String hisIdx){
+		logger.info(hisIdx+"번째 비품에 대한 사용내역 상세보기 or 수정할 데이터 요청");
+		return service.getThingHistoryDetail(hisIdx);
+	}
+	
+	/* 비품 사용내역 수정하기 */
+	@PostMapping(value = "/updateThingHistory.do")
+	public HashMap<String, Object> getThingHistoryUpdate(@RequestParam HashMap<String, Object> params, HttpServletRequest request){
+		logger.info("비품 사용내역 수정 접근");
+		return service.updateThingHistory(params, request);
+	}
+	
+	/* 비품 사용예약으로 이동 */
+	@GetMapping(value = "/thingBook.go")
+	public ModelAndView thingBook() {
+		logger.info("비품 사용 예약으로 이동 요청");
+		ModelAndView mav = new ModelAndView("item/thingBook");
+		return mav;
+	}
+	
+	/* 비품 예약 조회 리스트 */
+	@GetMapping(value = "/getThingBook.do")
+	public HashMap<String, Object> getThingBook(int page){
+		logger.info("비품예약 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.getThingBook(page);
+	}
+	
+	/* 비품 예약 검색 */
+	@GetMapping(value = "/getThingBookSearch.do")
+	public HashMap<String, Object> getThingBookSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 사용내역 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThingBookSearch(params);
+	}
+	
+	/* 비품 예약 -> 사용자 -> 입소자 리스트 */
+	@GetMapping(value = "/thingResidentList.go")
+	public ModelAndView thingResidentList() {
+		ModelAndView mav = new ModelAndView("item/thingResidentList");
+		return mav;
+	}
+	/* 입소자 리스트 조회 */
+	@GetMapping(value = "/thingResidentList.do")
+	public HashMap<String, Object> thingResidentList(int page){
+		logger.info("비품 예약 등록 - 입소자 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.thingResidentList(page);
+	}
+	/* 입소자 검색 */
+	@GetMapping(value = "/getThResiSearch.do")
+	public HashMap<String, Object> getThResiSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 예약 등록 - 입소자 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThResiSearch(params);
+	}
+	
+	/* 비품 예약 -> 사용자 -> 직원 리스트 */
+	@GetMapping(value = "/thingMemberList.go")
+	public ModelAndView thingMemberList() {
+		ModelAndView mav = new ModelAndView("item/thingMemberList");
+		return mav;
+	}
+	/* 직원 리스트 조회 */
+	@GetMapping(value = "/thingMemberList.do")
+	public HashMap<String, Object> thingMemberList(int page){
+		logger.info("비품 예약 등록 - 직원 "+page+"페이지 리스트(ajax) 데이터 요청");
+		return service.thingMemberList(page);
+	}
+	/* 직원 검색 */
+	@GetMapping(value = "/getThMemberSearch.do")
+	public HashMap<String, Object> getThMemberSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 예약 등록 - 직원 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getThMemberSearch(params);
+	}
+	/* 비품 예약 -> 품명 */
+	@GetMapping(value = "/popThList.go")
+	public ModelAndView popThList() {
+		ModelAndView mav = new ModelAndView("item/popThList");
+		return mav;
+	}
+	
+	/* 비품검색 */
+	@GetMapping(value = "/getPopThSearch.do")
+	public HashMap<String, Object> getPopThSearch(@RequestParam HashMap<String, String> params){
+		logger.info("비품 예약 등록 - 비품 검색 "+params.get("page")+"페이지 검색(ajax) 데이터 요청");
+		return service.getPopThSearch(params);
+	}
+	
+	/* 비품 예약 등록 */
+	@PostMapping(value = "/thingBookWrite.do")
+	public HashMap<String, Object> thingBookWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		return service.thingBookWrite(params, request);
+	}
+	
+	/* 비품 예약 상세보기 */
+	@GetMapping(value = "/getThingBookDetail.do")
+	public HashMap<String, Object> getThingBookDetail(String cbIdx){
+		logger.info(cbIdx+"번째 예약에 대한 사용내역 상세보기");
+		return service.getThingBookDetail(cbIdx);
+	}
+	
+	@PostMapping(value = "/thingBookCancel.do")
+	public HashMap<String, Object> thingBookCancel(int cbIdx, String bContent, HttpServletRequest request){
+		logger.info("비품 수정 접근");
+		return service.thingBookCancel(cbIdx, bContent, request);
+	}
+	
 }

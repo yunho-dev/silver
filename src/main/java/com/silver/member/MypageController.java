@@ -74,7 +74,7 @@ public class MypageController {
 		@ResponseBody
 		public HashMap<String, Object> getMypageUpdateForm(@RequestParam String memId){
 			
-			logger.info(memId+" 사원번호에 대한 직원정보 수정 요청");
+			logger.info(memId+" 사원번호에 대한 마이페이지 수정 요청");
 			return service.getMypageUpdateForm(memId);
 		}
 		
@@ -82,7 +82,7 @@ public class MypageController {
 		@PostMapping(value = "/mypageUpdate.do")
 		@ResponseBody
 		public HashMap<String, Object> mypageUpdate(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
-			logger.info("직원 수정 컨트롤러");
+			logger.info("마이페이지 수정 컨트롤러");
 			logger.info("params:{}",params);
 			logger.info("memPhoto:{}",memPhoto);
 			return service.mypageUpdate(memPhoto, params);
@@ -92,8 +92,81 @@ public class MypageController {
 		@RequestMapping(value="/edulistCall.do")
 		@ResponseBody
 		public HashMap<String, Object> edulistCall(@RequestParam HashMap<String, String> params){
-			logger.info("Ajax 멤버 학력 뽑아오기");
+			logger.info("마이페이지 학력 뽑아오기");
 			return service.edulistCall(params);
+		}
+
+		// 마이페이지 자격증 리스트 불러오기
+		@RequestMapping(value="/certlistCall.do")
+		@ResponseBody
+		public HashMap<String, Object> certlistCall(@RequestParam HashMap<String, String> params){
+			logger.info("마이페이지 자격증 뽑아오기");
+			return service.certlistCall(params);
+		}
+
+		// 마이페이지 경력 리스트 불러오기
+		@RequestMapping(value="/careerlistCall.do")
+		@ResponseBody
+		public HashMap<String, Object> careerlistCall(@RequestParam HashMap<String, String> params){
+			logger.info("마이페이지 경력 뽑아오기");
+			return service.careerlistCall(params);
+		}
+
+		// 마이페이지 서류파일 리스트 불러오기
+		@RequestMapping(value="/paperlistCall.do")
+		@ResponseBody
+		public HashMap<String, Object> paperlistCall(@RequestParam HashMap<String, String> params){
+			logger.info("마이페이지 경력 뽑아오기");
+			return service.paperlistCall(params);
+		}		
+
+		// 마이페이지 결제문서 리스트 불러오기
+		@RequestMapping(value="/mypaymentlistCall.do")
+		@ResponseBody
+		public HashMap<String, Object> mypaymentlistCall(@RequestParam HashMap<String, String> params){
+			logger.info("마이페이지 결제문서 뽑아오기");
+			return service.mypaymentlistCall(params);
+		}
+		
+		// 마이페이지 학력 등록
+		@PostMapping(value = "/EduWrite.do")
+		@ResponseBody
+		public HashMap<String, Object> EduWrite(@RequestParam HashMap<String, String> params){
+
+			logger.info("학력 등록 컨트롤러");
+			logger.info("params:{}",params);
+			return service.EduWrite(params);
+		}
+
+		// 마이페이지 자격증 등록
+		@PostMapping(value = "/CertWrite.do")
+		@ResponseBody
+		public HashMap<String, Object> CertWrite(@RequestParam HashMap<String, String> params){
+
+			logger.info("자격증 등록 컨트롤러");
+			logger.info("params:{}",params);
+			return service.CertWrite(params);
+		}		
+		
+		// 마이페이지 경력 등록
+		@PostMapping(value = "/CareerWrite.do")
+		@ResponseBody
+		public HashMap<String, Object> CareerWrite(@RequestParam HashMap<String, String> params){
+
+			logger.info("경력 등록 컨트롤러");
+			logger.info("params:{}",params);
+			return service.CareerWrite(params);
+		}	
+		
+		
+		
+		// 마이페이지 자격증 수정 폼에 대한 정보 컨트롤러
+		@GetMapping(value = "/getMemberCertUpdateForm.go")
+		@ResponseBody
+		public HashMap<String, Object> getMemberCertUpdateForm(@RequestParam String Cename){
+			
+			logger.info(Cename+ "학력에 대한 정보 수정 요청");
+			return service.getMemberCertUpdateForm(Cename);
 		}
 		
 }

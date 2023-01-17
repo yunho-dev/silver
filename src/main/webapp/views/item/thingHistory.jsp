@@ -43,8 +43,8 @@
 					<h3>비품 사용 내역 조회</h3>
 			</div>
 			<div style="float:right; margin-bottom: 5px;">
-					 <a href="#" class="btn btn btn-primary" id="goBtn">내역조회</a>
-					 <a href="#" class="btn btn btn-secondary" id="goBtn">예약조회</a>
+					 <a class="btn btn btn-primary" id="goBtn">사용내역조회</a>
+					 <a href="thingBook.go" class="btn btn btn-secondary" id="goBtn">사용예약조회</a>
 				</div><div style="clear:both;"></div>
 			<!-- Table head options start -->
              <section class="section">
@@ -87,7 +87,9 @@
                      </div>
                  </div>
              </section>
+             <!-- 모달 -->
              <jsp:include page="thingHistoryWrite.jsp"></jsp:include>
+             <jsp:include page="thingHistoryDetail.jsp"></jsp:include>
 		</div>
 	</div>
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -128,13 +130,29 @@
 		for(var i=0; i<historyList.length;i++){
 			var rentDate=new Date(historyList[i].his_rent);
 			var returnDate=new Date(historyList[i].his_return);
-			content +='<tr class="thHistoryRow">';
-			content +='<td>'+historyList[i].his_idx+'</td>';
-			content +='<td>'+historyList[i].th_name+'</td>';
+			content +='<tr class="thHistoryRow" data-bs-toggle="modal" data-bs-target="#thingHistoryDetail" onclick="detail($(this))">';
+			if(historyList[i].his_idx == 0){
+				content +='<td class="his_idx">이력없음</td>';
+			}else{
+				content +='<td class="his_idx">'+historyList[i].his_idx+'</td>';
+			}
+			if(historyList[i].th_name == null){
+				content +='<td>없음</td>';
+			}else{
+				content +='<td>'+historyList[i].th_name+'</td>';
+			}
 			content +='<td>'+historyList[i].th_part+'</td>';
-			content +='<td>'+historyList[i].his_name+'</td>';
-			content +='<td>'+rentDate.toLocaleDateString('ko-KR')+'</td>';
-			if(historyList[i].his_return == '1900-01-01'){
+			if(historyList[i].his_name == null){
+				content +='<td>없음</td>';
+			}else{
+				content +='<td>'+historyList[i].his_name+'</td>';
+			}
+			if(historyList[i].his_rent == null){
+				content +='<td>없음</td>';
+			}else{
+				content +='<td>'+rentDate.toLocaleDateString('ko-KR')+'</td>';
+			}
+			if(historyList[i].his_return == null){
 				content +='<td>없음</td>';
 			}else{
 				content +='<td>'+returnDate.toLocaleDateString('ko-KR')+'</td>';
@@ -151,10 +169,10 @@
 	var page2=1;
 	var chkPage=new Array();
 	function search(page2){
-		thName = $('#filterHead input[name=th_name]').val();
-		thModel = $('#filterHead input[name=th_model]').val();
-		hisName = $('#filterHead input[name=his_name]').val();
-		checkAllView = '비사용중';
+		var thName = $('#filterHead input[name=th_name]').val();
+		var thModel = $('#filterHead input[name=th_model]').val();
+		var hisName = $('#filterHead input[name=his_name]').val();
+		var checkAllView = '비사용중';
 		if($('#filterHead #checkAllView').is(":checked")){
 			checkAllView = '전체';
 		}
@@ -192,6 +210,57 @@
 	    		}
 			});
 		}
+	}
+	
+	function detail(listRow){
+		var hisIdx = $(listRow).find('td.his_idx').text();
+		var data = $(listRow).data('id');
+	    $(".modal-body #hisIdx").html(data);
+	    $.ajax({
+	    	type:'GET',
+			url:'getThingHistoryDetail.do',
+			data:{hisIdx:hisIdx},
+			dataType:'JSON',
+			success:function(data){
+				var noData = '';
+				if(data.detail==null){
+					$('.modal-body .noData').css('display', 'block')
+					$(".modal-body .left #hisIdx").val(noData);
+					$(".modal-body .left .th_name").text(noData);
+					$(".modal-body .left .th_model").text(noData);
+					$(".modal-body .left .th_money").text(noData);
+					$(".modal-body .left .th_spon").text(noData);
+					$(".modal-body .left .his_name").text(noData);
+					$(".modal-body .left .his_goal").text(noData);
+					$(".modal-body .right .th_part").text(noData);
+					$(".modal-body .right .th_state").text(noData);
+					$(".modal-body .right .th_date").text(noData);
+					$(".modal-body .right .his_rent").text(noData);
+					$(".modal-body .right .his_return").text(noData);
+					$(".modal-body .right .his_write").text(noData);
+					$(".modal-body .his_bigo").text(noData);
+				}else{
+					$('.modal-body .noData').css('display', 'none')
+					$(".modal-body .left #hisIdx").val(data.detail.his_idx);
+					$(".modal-body .left .th_name").text(data.detail.th_name);
+					$(".modal-body .left .th_model").text(data.detail.th_model);
+					$(".modal-body .left .th_money").text(data.detail.th_money);
+					$(".modal-body .left .th_spon").text(data.detail.th_spon);
+					$(".modal-body .left .his_name").text(data.detail.his_name);
+					$(".modal-body .left .his_goal").text(data.detail.his_goal);
+					$(".modal-body .right .th_part").text(data.detail.th_part);
+					$(".modal-body .right .th_state").text(data.detail.th_state);
+					$(".modal-body .right .th_date").text(data.detail.th_date);
+					$(".modal-body .right .his_rent").text(data.detail.his_rent);
+					$(".modal-body .right .his_return").text(data.detail.his_return);
+					$(".modal-body .right .his_write").text(data.detail.his_write);
+					$(".modal-body .his_bigo").text(data.detail.his_bigo);
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+	    })
 	}
 	
 	

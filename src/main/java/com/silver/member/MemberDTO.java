@@ -57,7 +57,48 @@ public class MemberDTO {
 	private int re_idx;
 	private int offset;
 	
+	private int pm_idx;
+	private String pm_subject;
+	private int pf_idx;
+	private String pm_state;
+	private String pf_cate;
 	
+	
+	
+	
+	
+	
+	
+	public int getPm_idx() {
+		return pm_idx;
+	}
+	public void setPm_idx(int pm_idx) {
+		this.pm_idx = pm_idx;
+	}
+	public String getPm_subject() {
+		return pm_subject;
+	}
+	public void setPm_subject(String pm_subject) {
+		this.pm_subject = pm_subject;
+	}
+	public int getPf_idx() {
+		return pf_idx;
+	}
+	public void setPf_idx(int pf_idx) {
+		this.pf_idx = pf_idx;
+	}
+	public String getPm_state() {
+		return pm_state;
+	}
+	public void setPm_state(String pm_state) {
+		this.pm_state = pm_state;
+	}
+	public String getPf_cate() {
+		return pf_cate;
+	}
+	public void setPf_cate(String pf_cate) {
+		this.pf_cate = pf_cate;
+	}
 	public int getOffset() {
 		return offset;
 	}
