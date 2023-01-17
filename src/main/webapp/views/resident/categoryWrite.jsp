@@ -38,7 +38,7 @@
 				<section class="row">
 					<div class="card">
 						<div class="card-body py-4 px-5">
-						<form action="write.do" method="post">
+						<form action="CategoryWriteComplete" method="post">
 							<div class="d-flex align-items-center">
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">제목</span> 

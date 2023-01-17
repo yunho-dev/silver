@@ -31,15 +31,16 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 		
 			<div class="col-12 col-md-6 order-md-1 order-last">
-				<h3>후원금 리스트</h3>
+				<h3>후원금 사용내역 조회</h3>
 			</div>
+				<button onclick="location.href='donHisWriteForm'" class="btn btn-primary" >글작성</button>
 		    <!-- Hoverable rows start -->
 		    <section class="sectionThingList">
 		        <div class="row" id="table-hover-row">
 		            <div class="col-12">
 		                <div class="card" style="margin-bottom: 1%">
 		                    <div class="card-header" id="filterHead" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
-		                        후원자 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
+		                        카테고리 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
 		                        
 		                        후원날짜 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
 		                        ~&nbsp;&nbsp;&nbsp; <input type="text" name="th_dona" class="filter"> &nbsp;&nbsp;
@@ -52,32 +53,36 @@
 		                           <thead>
 		                               <tr>
 		                                   <th>순번</th>
-		                                   <th>날짜</th>
-		                                   <th>후원자</th>
+		                                   <th>사용날짜</th>
 		                                   <th>등록자</th>
 		                                   <th>금액</th>
 		                               </tr>
 		                           </thead>
-		                           <tbody id="donationlist">
+		                           <tbody id="donHistoryList">
 		                           	<!-- 리스트가 들어가는 공간 -->
 		                           </tbody>
 		                       </table>
 		                   </div>
 							<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
 					</div>
-		                   <div class="buttons" style="text-align: right; margin-right: 5%;">
-		                   	<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeThing">등록하기</a>
-		                   </div>
+		                   
 		                </div>
 		            </div>
 						
 		    </section>
-		    <!-- Hoverable rows end -->
-		    
-		    <%-- <!-- 모달 -->
-			<jsp:include page="detailThing.jsp"></jsp:include>
-			<jsp:include page="writeThing.jsp"></jsp:include> --%>
-			
+		    <footer>
+	<div class="footer clearfix mb-0 text-muted">
+		<div class="float-start">
+			<p>2023 Final Project</p>
+		</div>
+	<div class="float-end">
+		<p>
+			Create With <span class="text-danger"><i
+				class="bi bi-heart"></i></span> by <a href="http://ahmadsaugi.com">Gudi</a>
+		</p>
+	</div>
+	</div>
+</footer>
 	    </div>
 	</div>
     
@@ -88,5 +93,56 @@
 </body>
 <script>
 
+var url=window.location.search.split('?do_idx=')[1];
+console.log("idx 값 : "+url);
+
+var showPage = 1;
+donHistoryCall(showPage);
+
+
+function donHistoryCall(page){
+	
+	$.ajax({
+		type:'get',
+		url:'donHistoryCall',
+		data:{page:page},
+		dataType:'json',
+		success:function(data){
+			//console.log(data);
+			drawList(data.list);
+			
+			$('#pagination').twbsPagination({
+				startPage:1,
+				totalPages:data.total,
+				visiblePages:5,
+				onPageClick:function(e, page){
+					//console.log(e);
+					//console.log(page);
+				donHistoryCall(page);	
+				}
+				
+			});
+		},
+		error:function(e){
+			console.log(e);
+		}
+	});
+	
+}
+function drawList(list){
+	var content = '';
+	
+	for (var i = 0; i < list.length; i++) {
+		content +='<tr onclick=location.href="donationUpdateForm?do_idx='+list[i].dh_idx+'">';
+		content +='<td>'+list[i].dh_idx+'</td>';
+		content +='<td>'+list[i].dh_date+'</td>';
+		content +='<td>'+list[i].dh_write+'</td>';
+		content +='<td>'+list[i].dh_money+'</td>';
+		content +='</tr>';
+	}
+	
+	$('#donHistoryList').empty();
+	$('#donHistoryList').append(content);
+}
 </script>
     

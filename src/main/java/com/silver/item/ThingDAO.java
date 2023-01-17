@@ -73,5 +73,29 @@ public interface ThingDAO {
 	int totalCountBookSearch(HashMap<String, String> params);
 
 	ArrayList<ThingDTO> getThingBookSearch(ThingDTO dto);
+
+	int totalCntThResiList();
+
+	int totalCntThMemiList();
+
+	ArrayList<ThingDTO> thingResidentList(int offset);
+
+	ArrayList<ThingDTO> thingMemberList(int offset);
+
+	int totalCountThResiSearch(HashMap<String, String> params);
+
+	int totalCountThMemSearch(HashMap<String, String> params);
+
+	ArrayList<ThingDTO> geThResiSearch(ThingDTO dto);
+
+	ArrayList<ThingDTO> geThMemSearch(ThingDTO dto);
+
+	int thBookCheck(HashMap<String, String> params);
+
+	int thingBookWrite(HashMap<String, String> params);
+
+	ThingDTO getThingBookDetail(String cbIdx);
+
+	int thingBookCancel(int cbIdx, String bContent, String bookWriter);
 	
 }

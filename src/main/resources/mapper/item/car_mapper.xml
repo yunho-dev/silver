@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
+<mapper namespace="com.silver.item.CarDAO">
+	
+	<!-- 차량목록 -->
+	<select id="carList" resultType="car">
+		select * from car
+	</select>
+	
+	<select id="getDriveHistory" resultType="car" parameterType="int">
+		SELECT * from carhistory WHERE car_idx = #{carIdx}
+	</select>
+	
+	<select id="getCarBookList" resultType="car" parameterType="int">
+		SELECT b.cb_idx, b.b_start, b.b_end, m.mem_name, b.b_cancel from book b
+			inner join `member` m ON m.mem_id = b.mem_id
+		where car_idx = #{carIdx}
+	</select>
+
+</mapper>

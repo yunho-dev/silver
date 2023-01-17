@@ -45,7 +45,6 @@
 									<span class="input-group-text" id="basic-addon1">제목</span> 
 									<input type="text" class="form-control" aria-label="Username" 
 										aria-describedby="basic-addon1" name="pc_cate" value="${list.pc_cate}" autofocus>
-
 								</div>
 							</div>
 							<button type="submit" class="btn btn-primary">수정하기</button>

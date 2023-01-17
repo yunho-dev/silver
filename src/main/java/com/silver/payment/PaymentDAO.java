@@ -11,4 +11,12 @@ public interface PaymentDAO {
 
 	int MyPayListCallTotal(String mem_id);
 
+	ArrayList<PayFormDTO> modalPayFormList(String payFormDropDown);
+
+	ArrayList<PaymentDTO> PayMentReferCho_ajax();
+
+	ArrayList<PaymentDTO> referDept();
+
+	ArrayList<PaymentDTO> PayOrgCall(int selfMem_Pos);
+
 }

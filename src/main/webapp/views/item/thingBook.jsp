@@ -18,14 +18,18 @@
 </head>
 <style>
 	.filter{
-		width: 15%;
+		width: 90px;
 	}
-	.thHistoryRow{
+	.thBookRow{
 		cursor: pointer;
 	}
-	
 	#goBtn{
 		margin-top: 10px;
+	}
+	#checkAllView{
+		vertical-align: -8px;
+    	width: 30px;
+    	height: 30px;
 	}
 </style>
 <body>
@@ -48,8 +52,11 @@
                          <div class="card" style="margin-bottom: 1%">
                              <div class="card-header" id="filterHead" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
 		                        품명 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
-		                        사용자 : <input type="text" name="b_write" class="filter"> &nbsp;&nbsp;
+		                        사용자 : <input type="text" name="user" class="filter"> &nbsp;&nbsp;
 		                        예약 시작 날짜 : <input type="text" name="b_start" class="filter"> &nbsp;&nbsp;
+		                        <label class="form-check-label" for="customColorCheck2">전체보기 : 
+		                        	<input type="checkbox" id="checkAllView">
+		                        </label> &nbsp;&nbsp;
 		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
 		                    </div>
 							<!-- table head dark -->
@@ -61,7 +68,8 @@
 							                <th>품명</th>
 							                <th>이용 시작일</th>
 							                <th>이용 종료일</th>
-							                <th>예약자</th>
+							                <th>사용자</th>
+							                <th>취소 여부</th>
 							            </tr>
 							        </thead>
 							        <tbody id="list">
@@ -72,12 +80,14 @@
 							<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
                          </div>
 						<div class="buttons" style="text-align: right; margin-right: 5%;">
-		                   	<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#thingHistoryWrite">등록하기</a>
+		                   	<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#thingBookWrite">등록하기</a>
 						</div>
                      </div>
                  </div>
              </section>
              <!-- 모달 -->
+             <jsp:include page="thingBookWrite.jsp"></jsp:include>
+             <jsp:include page="thingBookDetail.jsp"></jsp:include>
 		</div>
 	</div>
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -118,12 +128,21 @@
 		for(var i=0; i<bookList.length;i++){
 			var startDate=new Date(bookList[i].b_start);
 			var endDate=new Date(bookList[i].b_end);
-			content +='<tr class="thBookRow">';
+			content +='<tr class="thBookRow" data-bs-toggle="modal" data-bs-target="#thingBookDetail" onclick="detail($(this))">';
 			content +='<td class="cb_idx">'+bookList[i].cb_idx+'</td>';
 			content +='<td>'+bookList[i].th_name+'</td>';
 			content +='<td>'+startDate.toLocaleDateString('ko-KR')+'</td>';
 			content +='<td>'+endDate.toLocaleDateString('ko-KR')+'</td>';
-			content +='<td>'+bookList[i].b_write+'</td>';
+			if(bookList[i].re_name!=null){
+				content +='<td>'+bookList[i].re_name+'</td>';
+			}else{
+				content +='<td style="color: blue;">'+bookList[i].mem_name+'</td>';
+			}
+			if(bookList[i].b_cancel == 1){
+				content +='<td>X</td>';
+			}else{
+				content +='<td style="color: red;">O</td>';
+			}
 			content +='</tr>';
 		}
 		$('#list').empty();
@@ -133,25 +152,86 @@
 	var flag=true;
 	var pageflag=true;
 	var page2=1;
+	var select_change=new Array();
+	var select_change2=new Array();
 	var chkPage=new Array();
 	function search(page2){
-		thName = $('#filterHead input[name=th_name]').val();
-		bWrite = $('#filterHead input[name=b_write]').val();
-		bStart = $('#filterHead input[name=b_start]').val();
-		$.ajax({
-			type:'GET',
-			url:'getThingBookSearch.do',
-			data:{'page':page2, thName:thName, bWrite:bWrite, bStart:bStart},
-			dataType:'JSON',
-			success:function(data){
-				console.log(data)
-			},
-			error:function(e){
-				console.log(data)
-			}
-		});
+		var thName = $('#filterHead input[name=th_name]').val();
+		var userName = $('#filterHead input[name=user]').val();
+		var bStart = $('#filterHead input[name=b_start]').val();
+		var checkAllView = '비사용중';
+		if($('#filterHead #checkAllView').is(":checked")){
+			checkAllView = '전체';
+		}
+		if(flag){
+			flag=false;
+			$.ajax({
+				type:'GET',
+				url:'getThingBookSearch.do',
+				data:{'page':page2, thName:thName, userName:userName, bStart:bStart, checkAllView:checkAllView},
+				dataType:'JSON',
+				success:function(data){
+					drawList(data.list);
+					chkPage.push(data.total);
+					if(chkPage.at(-2) != data.total){
+	    				pageflag=true;
+	    			}
+					if(pageflag == true && $('.pagination').data("twbs-pagination")){
+	                    $('.pagination').twbsPagination('destroy');
+	                    pageflag=false;
+	                }
+					$("#pagination").twbsPagination({
+	    				startPage : 1 // 시작 페이지
+	    				,totalPages : data.total // 총 페이지 수
+	    				,visiblePages : 5 // 기본으로 보여줄 페이지 수
+	    				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+	    					search(page);
+	    				}
+	    			});
+				},
+				error:function(e){
+					console.log(data)
+				},complete:function(){
+	    			flag=true;
+	    		}
+			});
+		}
 	}
 	
+	function detail(listRow){
+		var cbIdx = $(listRow).find('td.cb_idx').text();
+	    $.ajax({
+	    	type:'GET',
+			url:'getThingBookDetail.do',
+			data:{cbIdx:cbIdx},
+			dataType:'JSON',
+			success:function(data){
+				var startDate = new Date(data.detail.b_start)
+				var endDate = new Date(data.detail.b_end)
+				$("#thingBookDetail #cbIdx").val(data.detail.cb_idx);
+				$("#thingBookDetail .th_name").text(data.detail.th_name);
+				if(data.detail.mem_name == null){
+					$("#thingBookDetail .b_name").text(data.detail.re_name);
+				}else{
+					$("#thingBookDetail .b_name").text(data.detail.mem_name);
+				}
+				$("#thingBookDetail .b_write").text(data.detail.b_write);
+				$("#thingBookDetail .b_start").text(startDate.toLocaleDateString('ko-KR'));
+				$("#thingBookDetail .b_end").text(endDate.toLocaleDateString('ko-KR'));
+				if(data.detail.b_cancel == 1){
+					$("#thingBookDetail #hideComent").css('display', 'none');
+					$("#thingBookDetail .b_cancel").text('취소 안 함').css('color', 'blue');
+				}else{
+					$("#thingBookDetail .b_cancel").text('취소').css('color', 'red');
+					$("#thingBookDetail #hideComent").css('display', 'block');
+					$("#thingBookDetail .b_coment").text(data.detail.b_content);
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+	    });
+	}
 	
 </script>
 </html>

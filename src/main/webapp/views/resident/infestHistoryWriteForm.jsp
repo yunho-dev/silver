@@ -26,44 +26,62 @@
    <div class="page-heading">
        <h3>감염병 관리 히스토리 작성</h3>
    </div>
- 
+  <section class="row">
+  	<div class="card">
+  		<div class="card-body py-4 px-5">
   <form action="infestHistoryWrite" method="post">
-  <button  class="btn btn-primary" style="float: right; ">등록</button>     
+  <button  class="btn btn-primary">등록</button>     
   <table class="table">
   <thead>
     <tr>  
-      <th scope="col">작성자</th>
+      <th scope="col" style="width:20%;">작성자</th>
       <td>
-      	<input type="text" name="if_write"/>	
+      	<input type="text" name="if_write" style="width: 100%;"/>	
       </td>
     </tr> 
     <tr>  
-      <th scope="col">예방접종내역</th>
+      <th scope="col" style="width:20%;">예방접종내역</th>
       <td>
-      	<input type="text" name="if_jusa"/>	
+      	<input type="text" name="if_jusa" style="width: 100%;"/>	
       </td>
     <tr>  
-      <th scope="col">감염병 명</th>
+      <th scope="col" style="width:20%;">감염병 명</th>
       <td>
-      	<input type="text" name="if_name"/>	
-      </td>
-    </tr>
-    <tr>  
-      <th scope="col">현재 감염 상태</th>
-      <td>
-      	<input type="text" name="if_state"/>	
+      	<input type="text" name="if_name" style="width: 100%;"/>	
       </td>
     </tr>
     <tr>  
-      <th scope="col">조치</th>
+      <th scope="col" style="width:20%;">현재 감염 상태</th>
       <td>
-      	<input type="text" name="if_comment"/>	
+      	<input type="text" name="if_state" style="width: 100%;"/>	
+      </td>
+    </tr>
+    <tr>  
+      <th scope="col" style="width:20%;">조치</th>
+      <td>
+      	<input type="text" name="if_comment" style="width: 100%;"/>	
       </td>
     </tr>
   </thead>
 </table>
 <input type="hidden" name="re_idx" value="${re_idx}">
 </form>
+</div>
+</div>
+</section>
+<footer>
+	<div class="footer clearfix mb-0 text-muted">
+		<div class="float-start">
+			<p>2023 Final Project</p>
+		</div>
+	<div class="float-end">
+		<p>
+			Create With <span class="text-danger"><i
+				class="bi bi-heart"></i></span> by <a href="http://ahmadsaugi.com">Gudi</a>
+		</p>
+	</div>
+	</div>
+</footer>
 </div>
 </div>
 

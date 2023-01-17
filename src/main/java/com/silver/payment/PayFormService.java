@@ -95,6 +95,19 @@ public class PayFormService {
 		
 		return mav;
 	}
+
+
+	public int AllFormSearchTotal(HttpServletRequest request)  {
+		String select=request.getParameter("select");
+		String seacontent=request.getParameter("seacontent");
+		return payformdao.AllFormSearchTotal(select,seacontent);
+	}
+
+	public ArrayList<PayFormDTO> AllFormSearch(HttpServletRequest request, int page) {
+		String select=request.getParameter("select");
+		String seacontent=request.getParameter("seacontent");
+		return payformdao.AllFormSearch(select,seacontent,page);
+	}
 	
 	
 	

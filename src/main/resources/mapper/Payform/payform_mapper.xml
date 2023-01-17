@@ -7,9 +7,9 @@
 <mapper namespace="com.silver.payment.PayFormDAO">
 	
 	<select id="mylistCall" resultType="payformdto">
-		select p.pf_idx ,p.pf_cate ,p.pf_subject ,p.pf_count,p.pf_subject,m.mem_name  
+		select p.pf_idx ,p.pf_cate ,p.pf_count,p.pf_subject,m.mem_name  
 			from payform p,member m  where p.pf_write =#{param1} and p.pf_write =m.mem_id 
-				order by p.pf_count limit 10 offset #{param2};
+				order by p.pf_count desc limit 10 offset #{param2};
 	</select>
 	
 	<select id="mylistCallTotal" resultType="int">
@@ -17,13 +17,13 @@
 	</select>
 	
 	<select id="AlllistCallTotal" resultType="int">
-		select count(p.pf_idx) from payform p ;
+		select count(p.pf_idx) from payform p where not pf_write in('삭제됨')
 	</select>
 	
 	<select id="alllistCall" resultType="payformdto">
-		select p.pf_idx ,p.pf_cate ,p.pf_subject ,p.pf_count,p.pf_subject,m.mem_name  
+		select p.pf_idx ,p.pf_cate,p.pf_count,p.pf_subject,m.mem_name  
 			from payform p,member m  where p.pf_write =m.mem_id 
-				order by p.pf_count limit 10 offset #{param1};
+				order by p.pf_count desc limit 10 offset #{param1};
 	</select>
 	
 	<select id="payfromdetail" resultType="payformdto">
@@ -45,6 +45,30 @@
 			#{pf_cate},#{mem_id},#{pf_content},#{pf_subject}
 			)
 	</insert>
+	
+	<select id="AllFormSearchTotal" resultType="int">
+		select count(p.pf_idx)  
+			from payform p,member m  where p.pf_write =m.mem_id
+		<if test="param1.equals('form')">
+			and p.pf_cate =#{param2}
+		</if>
+		<if test="param1.equals('write')">
+			and m.mem_name =#{param2}
+		</if>
+	</select>
+	
+	<select id="AllFormSearch" resultType="payformdto">
+		select p.pf_idx ,p.pf_cate ,p.pf_subject ,p.pf_count,p.pf_subject,m.mem_name  
+			from payform p,member m  where p.pf_write =m.mem_id 
+		<if test="param1.equals('form')">
+			and p.pf_cate =#{param2}
+		</if>
+		<if test="param1.equals('write')">
+			and m.mem_name =#{param2}
+		</if>
+		order by p.pf_count limit 10 offset #{param3};
+	</select>
+
 
 </mapper>
 

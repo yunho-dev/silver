@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,6 +28,55 @@ public class ThingService {
 		
 	public ThingService(ThingDAO dao) {
 		this.dao = dao;
+	}
+	
+	/**
+	 * ---------로그인한 사람 이름을 가져오는 메서드---------<br>
+	 * HttpServletRequest 을 넣으면 세션에 저장되어있는 로그인한 사람의 이름을 반환함 <br>
+	 * 로그인한 사람의 이름을 가져오지 못한 경우 '로그인 안 하고 작성'이라는 문자열을 반환함
+	 * @param request
+	 * @return String
+	 */
+	public String writer(HttpServletRequest request) {
+		String writer = "로그인 안 하고 작성";
+		HttpSession session=request.getSession();
+		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
+		logger.info("SessionDTO : "+SessionDTO);
+		if(SessionDTO != null) {
+			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
+			writer = SessionDTO.getMem_name();
+		}
+		return writer;
+	}
+	
+	/**
+	 * ---------파일 저장 메서드---------<br>
+	 * 파일 객체와 확장자를 넣으면 파일 저장 후 저장된 파일명을 반환
+	 * @param photo 파일 객체
+	 * @param ext 확장자명
+	 * @return 저장한 파일명
+	 */
+	private String fileSave(MultipartFile photo, String ext) {
+		logger.info("파일 저장 기능 접근");
+		// 1. 새 파일명 생성
+		String newFileName = System.currentTimeMillis()+ext;
+		logger.info("서버에 저장될 파일명이 생성되었습니다. 파일명 : "+newFileName);
+		
+		// 2. 저장
+		try {
+			byte[] bytes = photo.getBytes();
+			Path path = Paths.get("C:/filephoto/"+newFileName);
+			logger.info("저장될 파일 경로 : {}", path);
+			Files.write(path, bytes);
+			logger.info("파일 저장 완료");
+		} catch (IOException e) {
+			logger.info("파일 저장 실패! 저장될 파일 이름을 초기화합니다.");
+			newFileName = "";
+			e.toString();
+		}
+		
+		// 3. 새 파일 명 반환
+		return newFileName;
 	}
 
 	public HashMap<String, Object> getThingList(int page) {
@@ -103,19 +151,9 @@ public class ThingService {
 		dto.setTh_money(Integer.parseInt(params.get("thMoney")));
 		dto.setTh_spon(params.get("thSpon"));
 		
-		/* 등록자 세션 처리 */
-		String thWrite = "로그인 안 하고 작성";
-		
-		HttpSession session=request.getSession();
-		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
-		logger.info("SessionDTO : "+SessionDTO);
-		if(SessionDTO != null) {
-			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
-			thWrite = SessionDTO.getMem_name();
-		}
+		String thWrite = writer(request);
 		dto.setTh_write(thWrite);
 		logger.info("db에 작성될 등록자 이름 : "+dto.getTh_write());
-		//---
 
 		int row = dao.thingWrite(dto);
 		int thIdx = dto.getTh_idx();
@@ -140,36 +178,6 @@ public class ThingService {
 		return result;
 	}
 	
-	/* 파일 저장 메서드 */
-	/**
-	 * 파일 객체와 확장자를 넣으면 파일 저장 후 저장된 파일명을 반환
-	 * @param photo 파일 객체
-	 * @param ext 확장자명
-	 * @return 저장한 파일명
-	 */
-	private String fileSave(MultipartFile photo, String ext) {
-		logger.info("파일 저장 기능 접근");
-		// 1. 새 파일명 생성
-		String newFileName = System.currentTimeMillis()+ext;
-		logger.info("서버에 저장될 파일명이 생성되었습니다. 파일명 : "+newFileName);
-		
-		// 2. 저장
-		try {
-			byte[] bytes = photo.getBytes();
-			Path path = Paths.get("C:/filephoto/"+newFileName);
-			logger.info("저장될 파일 경로 : {}", path);
-			Files.write(path, bytes);
-			logger.info("파일 저장 완료");
-		} catch (IOException e) {
-			logger.info("파일 저장 실패! 저장될 파일 이름을 초기화합니다.");
-			newFileName = "";
-			e.toString();
-		}
-		
-		// 3. 새 파일 명 반환
-		return newFileName;
-	}
-	
 	public boolean thingCheck(String thName) {
 		String thingCheck = dao.thingCheck(thName);
 		return thingCheck == null? false : true;
@@ -180,15 +188,7 @@ public class ThingService {
 			HttpServletRequest request) {
 		logger.info("params : {}",params);
 		/* 등록자 세션 처리 */
-		String thWrite = "로그인 안 하고 작성";
-		
-		HttpSession session=request.getSession();
-		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
-		logger.info("SessionDTO : "+SessionDTO);
-		if(SessionDTO != null) {
-			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
-			thWrite = SessionDTO.getMem_name();
-		}
+		String thWrite = writer(request);
 		params.put("thWrite", thWrite);
 		logger.info("db에 작성될 등록자 이름 : "+params.get("thWrite"));
 		
@@ -296,7 +296,6 @@ public class ThingService {
 		ThingDTO dto = new ThingDTO();
 		dto.setTh_name(params.get("thName"));
 		dto.setTh_part(params.get("thPart"));
-		dto.setTh_write(params.get("thWrite"));
 		dto.setTh_model(params.get("thModel"));
 		dto.setOffset(offset);
 		
@@ -364,16 +363,7 @@ public class ThingService {
 		logger.info("받아온 데이터 : "+params);
 		
 		/* 등록자 세션 처리 */
-		String hisWrite = "로그인 안 하고 작성";
-		
-		HttpSession session=request.getSession();
-		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
-		logger.info("SessionDTO : "+SessionDTO);
-		if(SessionDTO != null) {
-			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
-			hisWrite = SessionDTO.getMem_name();
-		}
-		
+		String hisWrite = writer(request);
 		params.put("hisWrite", hisWrite);
 		
 		int thIdx = dao.getThIdx(params.get("thName"));
@@ -401,16 +391,8 @@ public class ThingService {
 	}
 
 	public HashMap<String, Object> updateThingHistory(HashMap<String, Object> params, HttpServletRequest request) {
-		logger.info("params : {}",params);
-		String hisWrite = "로그인 안 하고 작성";
-		
-		HttpSession session=request.getSession();
-		MemberDTO SessionDTO=(MemberDTO) session.getAttribute("loginId");
-		logger.info("SessionDTO : "+SessionDTO);
-		if(SessionDTO != null) {
-			logger.info("세션이 존재합니다 세션에 저장된 이름 : "+SessionDTO.getMem_name());
-			hisWrite = SessionDTO.getMem_name();
-		}
+		logger.info("받아온 데이터 : {}",params);
+		String hisWrite = writer(request);
 		params.put("hisWrite", hisWrite);
 		logger.info("db에 작성될 등록자 이름 : "+params.get("hisWrite"));
 		
@@ -436,37 +418,7 @@ public class ThingService {
 		result.put("total", totalPages);
 		return result;
 	}
-	
-	/*
-	 * public HashMap<String, Object> getThingHistorySearch(HashMap<String, String> params) {
-		logger.info("받아온 데이터 : {}", params);
-		logger.info("비품 검색 기능 접근");
-		int page = Integer.parseInt(params.get("page"));
-		int offset = 10*(page-1);
-		int totalCount = dao.totalCountHistorySearch(params);
-		logger.info("게시글 총 개수 : "+totalCount);
-		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
-		logger.info("총 페이지 수 : "+totalPages);
-		
-		ThingDTO dto = new ThingDTO();
-		dto.setTh_name(params.get("thName"));
-		dto.setTh_model(params.get("thModel"));
-		dto.setHis_name(params.get("hisName"));
-		dto.setTh_state(params.get("checkAllView"));
-		dto.setOffset(offset);
-		
-		logger.info("검색된 비품 사용내역 목록을 가져옵니다.");
-		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
-		list = dao.getThingHistorySearch(dto);
-		if(totalPages==0) {
-			totalPages = 1;
-		}
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		result.put("list", list);
-		result.put("total", totalPages);
-		return result;
-	}
-	 * */
+
 	public HashMap<String, Object> getThingBookSearch(HashMap<String, String> params) {
 		logger.info("받아온 데이터 : {}", params);
 		logger.info("비품 검색 기능 접근");
@@ -479,8 +431,9 @@ public class ThingService {
 		
 		ThingDTO dto = new ThingDTO();
 		dto.setTh_name(params.get("thName"));
-		dto.setRe_name(params.get("bWrite"));
+		dto.setUserName(params.get("userName"));
 		dto.setB_startFake(params.get("bStart"));
+		dto.setBookCancelFake(params.get("checkAllView"));
 		dto.setOffset(offset);
 		
 		logger.info("검색된 비품 사용내역 목록을 가져옵니다.");
@@ -492,7 +445,168 @@ public class ThingService {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("list", list);
 		result.put("total", totalPages);
-		return null;
+		return result;
+	}
+	
+	public HashMap<String, Object> thingResidentList(int page) {
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCntThResiList();
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		logger.info("비품 목록을 가져옵니다.");
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		ArrayList<ThingDTO> thingResiList = dao.thingResidentList(offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		result.put("list", thingResiList);
+		result.put("total", totalPages);
+		return result;
+	}
+
+	public HashMap<String, Object> thingMemberList(int page) {
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCntThMemiList();
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		logger.info("비품 목록을 가져옵니다.");
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		ArrayList<ThingDTO> thingMemiList = dao.thingMemberList(offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		result.put("list", thingMemiList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	public HashMap<String, Object> getThResiSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("입소자 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThResiSearch(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setRe_idx(params.get("id"));
+		dto.setRe_name(params.get("name"));
+		dto.setOffset(offset);
+		
+		logger.info("검색된 입소자 목록을 가져옵니다.");
+		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
+		list = dao.geThResiSearch(dto);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+
+	public HashMap<String, Object> getThMemberSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("직원 검색 기능 접근");
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThMemSearch(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setMem_id(params.get("id"));
+		dto.setMem_name(params.get("name"));
+		dto.setOffset(offset);
+		
+		logger.info("검색된 직원 목록을 가져옵니다.");
+		ArrayList<ThingDTO> list = new ArrayList<ThingDTO>();
+		list = dao.geThMemSearch(dto);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	public HashMap<String, Object> getPopThSearch(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		logger.info("비품 검색 기능 접근");
+		
+		/* dao 재사용 하기위해 초기화 */
+		params.put("thWrite", "");
+		params.put("thSpon", "");
+		params.put("thPart", "");
+		params.put("thState", "");
+		
+		int page = Integer.parseInt(params.get("page"));
+		int offset = 10*(page-1);
+		int totalCount = dao.totalCountThFilterList(params);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기)
+		logger.info("총 페이지 수 : "+totalPages);
+		
+		ThingDTO dto = new ThingDTO();
+		dto.setTh_name(params.get("thName"));
+		dto.setTh_write(params.get("thWrite"));
+		dto.setTh_spon(params.get("thSpon"));
+		dto.setTh_part(params.get("thPart"));
+		dto.setTh_state(params.get("thState"));
+		dto.setOffset(offset);
+		
+		ArrayList<ThingDTO> thingList = dao.getThingListSearch(dto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		result.put("list", thingList);
+		result.put("total", totalPages);
+		return result;
+	}
+	
+	public HashMap<String, Object> thingBookWrite(HashMap<String, String> params, HttpServletRequest request) {
+		logger.info("비품 예약 등록 접근");
+		logger.info("받아온 데이터 : {}", params);
+		String bookWriter = writer(request);
+		params.put("bookWriter", bookWriter);
+		int check = 0;
+		int affect = 0;
+		check = dao.thBookCheck(params);
+		if(check == 0) {
+			affect = dao.thingBookWrite(params);
+		}
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("check", check);
+		result.put("affect", affect);
+		return result;
+	}
+	
+	public HashMap<String, Object> getThingBookDetail(String cbIdx) {
+		ThingDTO dto = dao.getThingBookDetail(cbIdx);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		return result;
+	}
+
+	public HashMap<String, Object> thingBookCancel(int cbIdx, String bContent, HttpServletRequest request) {
+		logger.info("비품 예약 취소 접근");
+		logger.info("받아온 데이터 : {}, {}", cbIdx, bContent);
+		String bookWriter = writer(request);
+		logger.info(bookWriter);
+		int row = dao.thingBookCancel(cbIdx, bContent, bookWriter);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("update", row);
+		return result;
 	}
 
 }
