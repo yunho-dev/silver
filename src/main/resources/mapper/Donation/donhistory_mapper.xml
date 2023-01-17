@@ -25,6 +25,11 @@
 		insert into filephoto(fp_oriFileName, fp_newFileName, dh_idx, fpc_idx)
         values(#{param1},#{param2},#{param3}, 7);
 	</insert>
+	
+	<select id="donHisUpdateForm" 
+ 	resultType="donhistory" parameterType="int">
+ 		SELECT * from donhistory  where dh_idx =#{param1}
+ 	</select>
 </mapper>
 
 

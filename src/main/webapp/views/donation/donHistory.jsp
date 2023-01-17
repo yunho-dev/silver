@@ -133,7 +133,7 @@ function drawList(list){
 	var content = '';
 	
 	for (var i = 0; i < list.length; i++) {
-		content +='<tr onclick=location.href="donationUpdateForm?do_idx='+list[i].dh_idx+'">';
+		content +='<tr onclick=location.href="donHisUpdateForm?dh_idx='+list[i].dh_idx+'">';
 		content +='<td>'+list[i].dh_idx+'</td>';
 		content +='<td>'+list[i].dh_date+'</td>';
 		content +='<td>'+list[i].dh_write+'</td>';

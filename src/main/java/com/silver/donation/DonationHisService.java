@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @Service
 public class DonationHisService {
@@ -89,6 +89,27 @@ public class DonationHisService {
 		
 		// 3. 새 파일 명 반환
 		return newFileName;
+	}
+
+	public ModelAndView donHisUpdateForm(int dh_idx) {
+		logger.info("이동확인");
+		DonationHisDTO dto = dao.donHisUpdateForm(dh_idx);
+		ModelAndView mav = new ModelAndView("donation/donHisUpdateForm");
+		mav.addObject("donhistory",dto);
+		return mav;
+	}
+
+	public HashMap<String, Object> donHisUpdate(MultipartFile dh_Photo,HashMap<String, String> params) {
+		DonationHisDTO dto = new DonationHisDTO();
+		Date dhdate = Date.valueOf(params.get("dh_date"));
+		logger.info("서비스 이동확인");
+		logger.info("params:{}",params);
+		dto.setDh_cate(params.get("dh_cate"));
+		dto.setDh_goal(params.get("dh_goal"));
+		dto.setDh_write(params.get("dh_write"));
+		dto.setDh_date(dhdate);
+		return null;
+		
 	}
 	
 

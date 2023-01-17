@@ -25,7 +25,7 @@
                     </div>
                     <h1 class="auth-title">Log in.</h1>
 
-                    <form action="memberlogin.do" method="post">
+                    <form action="memberlogin" method="post">
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="text" class="form-control form-control-xl" name="id" value="${mem_id}" placeholder="Username">
                             <div class="form-control-icon">
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="password" class="form-control form-control-xl" name="pw" value="${mem_pw}" placeholder="Password">
+                            <input type="password" class="form-control form-control-xl" name="pw" placeholder="Password">
                             <div class="form-control-icon">
                                 <i class="bi bi-shield-lock"></i>
                             </div>
