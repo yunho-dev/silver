@@ -1,6 +1,7 @@
 package com.silver.item;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
 
@@ -25,6 +26,15 @@ public class CarDTO {
 	private int chis_km;
 	private int chis_liter;
 	private String chis_bigo;
+	//운행 예약
+	private int cb_idx;
+	private String b_write;
+	private Timestamp b_start;
+	private Timestamp b_end;
+	private String b_content;
+	private String mem_id;
+	private String mem_name;
+	private int b_cancel;
 	
 	public int getCar_idx() {
 		return car_idx;
@@ -121,6 +131,54 @@ public class CarDTO {
 	}
 	public void setChis_bigo(String chis_bigo) {
 		this.chis_bigo = chis_bigo;
+	}
+	public int getCb_idx() {
+		return cb_idx;
+	}
+	public void setCb_idx(int cb_idx) {
+		this.cb_idx = cb_idx;
+	}
+	public String getB_write() {
+		return b_write;
+	}
+	public void setB_write(String b_write) {
+		this.b_write = b_write;
+	}
+	public Timestamp getB_start() {
+		return b_start;
+	}
+	public void setB_start(Timestamp b_start) {
+		this.b_start = b_start;
+	}
+	public Timestamp getB_end() {
+		return b_end;
+	}
+	public void setB_end(Timestamp b_end) {
+		this.b_end = b_end;
+	}
+	public String getB_content() {
+		return b_content;
+	}
+	public void setB_content(String b_content) {
+		this.b_content = b_content;
+	}
+	public String getMem_id() {
+		return mem_id;
+	}
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
+	public String getMem_name() {
+		return mem_name;
+	}
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
+	}
+	public int getB_cancel() {
+		return b_cancel;
+	}
+	public void setB_cancel(int b_cancel) {
+		this.b_cancel = b_cancel;
 	}
 
 }

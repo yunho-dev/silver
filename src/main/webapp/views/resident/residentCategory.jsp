@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="assets/css/app.css">
 
 <style>
-	#residentList{border-collapse:collapse; width:100%; height:700px;}
-	#residentList thead{float:left; width:900px; }
-	#residentList tbody{overflow-y:auto; overflow-x:hidden; float:left; width:900px; height:600px;white-space:nowrap;}
-	.residentList{text-align: center;}
+	#residentCateList{border-collapse:collapse; width:100%; height:700px;}
+	#residentCateList thead{float:left; width:900px; }
+	#residentCateList tbody{overflow-y:auto; overflow-x:hidden; float:left; width:900px; height:600px;white-space:nowrap;}
+	.residentCateList{text-align: center;}
 	th{ width:140px; height:70px;}
 	td{ width:140px; height:68px;}
 </style>
@@ -39,20 +39,10 @@
          
          
          
-         <form action="residentsearch.do" method="post">
-		<div class="option_re_state">
-				<select name="re_state">					
-					<option value="입소중">입소중</option>
-					<option value="외출">외출</option>
-					<option value="외박">외박</option>
-					<option value="입원중">입원중</option>
-					<option value="퇴소">퇴소</option>
-				</select>
-		</div>
-		
-		
+         <form action="residentCateSearch.do" method="post">
+				
 		<div class="option_re_name">
-			<input type="text" name="re_name">
+			<input type="text" name="re_name" >
 		</div>
          <button class="btn btn-primary">검색</button>
        </form>
@@ -60,7 +50,7 @@
          
          
                          <!-- Basic Tables start -->
-                         <a href="residentwriteForm.go" class="btn btn-primary">신규등록</a>	
+                         <a href="residentupdateCateForm.go" class="btn btn-primary">신규등록</a>	
                          
                          
                 <section class="section">
@@ -73,7 +63,7 @@
                                        
                                         <!-- Table with outer spacing -->
                                         <div class="table-responsive">
-                                            <table class="table table-lg" id="residentList">
+                                            <table class="table table-lg" id="residentCateList">
                                                 
                                                 
                                             <thead class="thead-dark">
@@ -92,7 +82,7 @@
                                             	<c:forEach items="${resident}" var="rd">
 													<tr>
 														<td>${rd.re_idx}</td>
-														<td><a href="residentdetail.go?re_idx=${rd.re_idx}">${rd.re_name}</a></td>
+														<td><a href="residentCateDetail.go?re_idx=${rd.re_idx}">${rd.re_name}</a></td>
 														<td>${rd.re_gender}</td>
 														<td>${rd.re_age}</td>
 														<td>${rd.re_grade}</td>
