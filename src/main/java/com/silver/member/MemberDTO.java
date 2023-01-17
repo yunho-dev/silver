@@ -63,12 +63,32 @@ public class MemberDTO {
 	private String pm_state;
 	private String pf_cate;
 	
+	private int edu_idx;
+	private int ce_idx;
+	private int ca_idx;
 	
 	
 	
 	
 	
-	
+	public int getEdu_idx() {
+		return edu_idx;
+	}
+	public void setEdu_idx(int edu_idx) {
+		this.edu_idx = edu_idx;
+	}
+	public int getCe_idx() {
+		return ce_idx;
+	}
+	public void setCe_idx(int ce_idx) {
+		this.ce_idx = ce_idx;
+	}
+	public int getCa_idx() {
+		return ca_idx;
+	}
+	public void setCa_idx(int ca_idx) {
+		this.ca_idx = ca_idx;
+	}
 	public int getPm_idx() {
 		return pm_idx;
 	}

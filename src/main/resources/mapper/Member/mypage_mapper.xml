@@ -163,5 +163,37 @@
 	<select id="getMemberCertUpdateForm" resultType="member" parameterType="String">
 		SELECT * from cert where ce_name=#{Cename}
 	</select>
-		
+	
+	<!-- 학력 수정폼 데이터 가져오기  -->
+	<select id="getMemberEduUpdateForm" resultType="member" parameterType="String">
+		SELECT * from edu where edu_name=#{Eduname}
+	</select>
+	
+	<!-- 경력 수정폼 데이터 가져오기  -->
+	<select id="getMemberCareerUpdateForm" resultType="member" parameterType="String">
+		SELECT * from career where ca_name=#{Caname}
+	</select>
+	
+	<!-- 마이페이지 학력 수정  -->	
+	<update id="EduUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE edu set mem_id=#{mem_id},edu_name=#{edu_name},edu_pass=#{edu_pass},edu_success=#{edu_success},edu_start=#{edu_start},edu_end=#{edu_end} 
+			where edu_idx=#{edu_idx}
+	</update>	
+	
+	<!-- 마이페이지 자격증 수정 -->	
+	<update id="CertUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE cert set mem_id=#{mem_id},ce_name=#{ce_name},ce_place=#{ce_place},ce_date=#{ce_date}
+			where ce_idx=#{ce_idx}
+	</update>	
+	
+	<!-- 마이페이지 경력 수정 -->	
+	<update id="CareerUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE career set mem_id=#{mem_id},ca_name=#{ca_name},ca_work=#{ca_work},ca_pos=#{ca_pos},ca_start=#{ca_start},ca_end=#{ca_end}
+			where ca_idx=#{ca_idx}
+	</update>	
+	
+	<!--마이페이지 비빌번호 수정  -->
+	<update id="ChangePassword" parameterType="hashmap">
+		UPDATE member set mem_id=#{memId},mem_pw=#{pw} where mem_id=#{memId}	
+	</update>		
 </mapper>

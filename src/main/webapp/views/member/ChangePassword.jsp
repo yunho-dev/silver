@@ -41,53 +41,53 @@
     .writeAreaSpon{
     	margin-top: 5px;
         margin-bottom: 5px;
-    }    
+    } 
+	#checkPwd{
+  		color : red;
+  		font-size: 12px;
+	}       
 </style>
 <body>
 	<!--large size Modal -->
-	<div class="modal fade text-left" id="writeCareer" tabindex="-1" role="dialog"
+	<div class="modal fade text-left" id="ChangePassword" tabindex="-1" role="dialog"
 	    aria-labelledby="myModalLabel17" aria-hidden="true">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
 	        role="document">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <h4 class="modal-title" id="myModalLabel17">학력 등록</h4>
+	                <h4 class="modal-title" id="myModalLabel17">비밀번호 변경</h4>
 	                <button type="button" class="close" data-bs-dismiss="modal"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
 	            </div>
-	            <form id="memberCareerWriteForm">
+	            <form id="ChangePasswordForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
 						<input type="hidden" name='memId' value="${info.mem_id}">
 						<p id="memId" style="display: none;"></p> 
-							<p class="writeArea"><span id="WriteName">직장명 : </span> 
-								<input type="text" name="careerName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="직장명을 입력해 주세요">
+<!-- 							<p class="writeArea"><span id="WriteName">기존 비밀번호 : </span> 
+								<input type="text" name="memPw" style="width:200px;height:30px;font-size:12px;" value="" placeholder="기존 비밀번호를 입력해 주세요">
+							</p> <br> -->
+																									
+							<p class="writeArea"><span id="WriteName">새 비밀번호: </span> 
+								<input type="text" name="memNpw" style="width:200px;height:30px;font-size:12px;" value="" placeholder="비밀번호를 확인해 주세요">
 							</p> <br>
-							<p class="writeArea"><span id="WriteName">담당업무 : </span> 
-								<input type="text" name="careerWork" style="width:200px;height:30px;font-size:12px;" value="" placeholder="담당업무를 입력해 주세요">
+							<p class="writeArea"><span id="WriteName">새 비밀번호 확인: </span> 
+								<input type="text" name="memNApw" style="width:200px;height:30px;font-size:12px;" onkeyup="checkPwd()" value="" placeholder="새로운 비밀번호를 입력해 주세요">
+								<div id="checkPwd"></div>
 							</p> <br>
-							<p class="writeArea"><span id="WriteName">직책 : </span> 
-								<input type="text" name="careerPos" style="width:200px;height:30px;font-size:12px;" value="" placeholder="직책을 입력해 주세요">
-							</p> <br>							
-																										
 						</div>
 						<div class="writeRight">
-							<p class="writeArea"><span id="WriteName">입사일 : </span> 
-								<input type="text" name="careerStart" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입사일을 입력해 주세요">
-							</p> <br>
-							<p class="writeArea"><span id="WriteName">퇴사일 : </span> 
-								<input type="text" name="careerEnd" style="width:200px;height:30px;font-size:12px;" value="" placeholder="퇴사일을 입력해 주세요">
-							</p> <br>																												
+																											
 						</div>
 						<div>
 						</div>
 		            </div>
 		            <div class="modal-footer" >
 		            	<div style="margin: auto;">
-		            		<button type="button" class="btn btn-primary ml-1" id="mypageCareerRegist">
-			                    <span class="d-none d-sm-block">등록하기</span>
+		            		<button type="button" class="btn btn-primary ml-1" id="mypagePasswordUpdate">
+			                    <span class="d-none d-sm-block">수정하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
 			                    data-bs-dismiss="modal">
@@ -102,48 +102,34 @@
 </body>
 <script>
 
+//비밀번호 확인 실시간 검증
+function checkPwd(){
+	var pw = document.getElementById('memNpw').value;
+	var pwChk = document.getElementById('memNApw').value;
+	
+	if(pw!=pwChk){
+		document.getElementById('checkPwd').style.color = 'red';
+		document.getElementById('checkPwd').innerHTML = "! 동일한 암호를 입력하세요.";
+	}else{
+		document.getElementById('checkPwd').style.color = "green";
+		document.getElementById('checkPwd').innerHTML = "암호가 일치합니다."; 
+	}
+}
 
-//경력 등록 유효성 검사
-$("#mypageCareerRegist").click(function(){
-	var $memId = $('#memberCareerWriteForm input[name=memId]');
-	/* Left */
-	var $careerName = $('#memberCareerWriteForm input[name=careerName]');
-	var $careerWork = $('#memberCareerWriteForm input[name=careerWork]');
-	var $careerPos = $('#memberCareerWriteForm input[name=careerPos]');
+// 비밀번호 수정 유효성 검사 
+$("#mypagePasswordUpdate").click(function(){
+	var $memId = $('#ChangePasswordForm input[name=memId]');
 
-	/* Right */
-	var $careerStart = $('#memberCareerWriteForm input[name=careerStart]');
-	var $careerEnd = $('#memberCareerWriteForm input[name=careerEnd]');
-
-	/* 날짜 정규식 */
-	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+	var $memNpw = $('#ChangePasswordForm input[name=memNpw]');
 	
 	var formData = new FormData(); // 파일 + 텍스트 전송을 위한 FormData 객체
 	
 	
-		if($careerName.val()==''){
-			alert("직장명을 입력해 주세요");
-			$careerName.focus();
-		}else if($careerWork.val()==''){
-			alert("담당업무를 입력해 주세요");
-			$careerWork.focus();
-		}else if($careerPos.val()==''){
-			alert("직책을 선택해 주세요");
-			$careerPos.focus();
-		}else if($careerStart.val()==''){
-			alert("입사일을 입력해 주세요");
-			$careerStart.focus();
-		}else if($careerStart.val().match(regex) == null){
-			alert("입사일 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
-			$careerStart.focus();			
-		}else if($careerEnd.val()==''){
-			alert("퇴사일 입력해 주세요");
-			$careerEnd.focus();
-		}else if($careerEnd.val().match(regex) == null){
-			alert("퇴사일 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
-			$careerEnd.focus();			
+		if($memNpw.val()==''){
+			alert("새 비밀번호를 입력해 주세요");
+			$memNpw.focus();
 		}else{
-			$('#memberCareerWriteForm input').each(function(){
+			$('#ChangePasswordForm input').each(function(){
 				var key = $(this).attr('name');
 
 
@@ -153,7 +139,7 @@ $("#mypageCareerRegist").click(function(){
 			
 			$.ajax({
 				type:'POST',
-				url:'CareerWrite.do',
+				url:'ChangePassword.do',
 				processData:false, // 객체를 문자열로 바꾸지 않음
 				contentType:false, // 컨텐트 타입을 객체로 함
 				data: formData,

@@ -45,7 +45,7 @@
 </style>
 <body>
 	<!--large size Modal -->
-	<div class="modal fade text-left" id="writeCareer" tabindex="-1" role="dialog"
+	<div class="modal fade text-left" id="CareerUpdate" tabindex="-1" role="dialog"
 	    aria-labelledby="myModalLabel17" aria-hidden="true">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
 	        role="document">
@@ -57,10 +57,11 @@
 	                    &times;
 	                </button>
 	            </div>
-	            <form id="memberCareerWriteForm">
+	            <form id="memberCareerUpdateForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
 						<input type="hidden" name='memId' value="${info.mem_id}">
+						<input type="hidden" name='careerIdx'>
 						<p id="memId" style="display: none;"></p> 
 							<p class="writeArea"><span id="WriteName">직장명 : </span> 
 								<input type="text" name="careerName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="직장명을 입력해 주세요">
@@ -86,8 +87,8 @@
 		            </div>
 		            <div class="modal-footer" >
 		            	<div style="margin: auto;">
-		            		<button type="button" class="btn btn-primary ml-1" id="mypageCareerRegist">
-			                    <span class="d-none d-sm-block">등록하기</span>
+		            		<button type="button" class="btn btn-primary ml-1" id="mypageCareerUpdate">
+			                    <span class="d-none d-sm-block">수정하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
 			                    data-bs-dismiss="modal">
@@ -102,18 +103,18 @@
 </body>
 <script>
 
-
 //경력 등록 유효성 검사
-$("#mypageCareerRegist").click(function(){
-	var $memId = $('#memberCareerWriteForm input[name=memId]');
+$("#mypageCareerUpdate").click(function(){
+	var $memId = $('#memberCareerUpdateForm input[name=memId]');
+	var $careerIdx = $('#memberCareerUpdateForm input[name=careerIdx]');
 	/* Left */
-	var $careerName = $('#memberCareerWriteForm input[name=careerName]');
-	var $careerWork = $('#memberCareerWriteForm input[name=careerWork]');
-	var $careerPos = $('#memberCareerWriteForm input[name=careerPos]');
+	var $careerName = $('#memberCareerUpdateForm input[name=careerName]');
+	var $careerWork = $('#memberCareerUpdateForm input[name=careerWork]');
+	var $careerPos = $('#memberCareerUpdateForm input[name=careerPos]');
 
 	/* Right */
-	var $careerStart = $('#memberCareerWriteForm input[name=careerStart]');
-	var $careerEnd = $('#memberCareerWriteForm input[name=careerEnd]');
+	var $careerStart = $('#memberCareerUpdateForm input[name=careerStart]');
+	var $careerEnd = $('#memberCareerUpdateForm input[name=careerEnd]');
 
 	/* 날짜 정규식 */
 	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
@@ -143,7 +144,7 @@ $("#mypageCareerRegist").click(function(){
 			alert("퇴사일 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
 			$careerEnd.focus();			
 		}else{
-			$('#memberCareerWriteForm input').each(function(){
+			$('#memberCareerUpdateForm input').each(function(){
 				var key = $(this).attr('name');
 
 
@@ -153,7 +154,7 @@ $("#mypageCareerRegist").click(function(){
 			
 			$.ajax({
 				type:'POST',
-				url:'CareerWrite.do',
+				url:'CareerUpdate.do',
 				processData:false, // 객체를 문자열로 바꾸지 않음
 				contentType:false, // 컨텐트 타입을 객체로 함
 				data: formData,

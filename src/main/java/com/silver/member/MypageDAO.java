@@ -91,5 +91,23 @@ public interface MypageDAO {
 	
 	// 마이페이지 자격증 수정 폼 요청
 	MemberDTO getMemberCertUpdateForm(String Cename);
+	
+	// 마이페이지 학력 수정 폼 요청
+	MemberDTO getMemberEduUpdateForm(String Eduname);
+	
+	// 마이페이지 경력 수정 폼 요청 
+	MemberDTO getMemberCareerUpdateForm(String Caname);
+	
+	// 마이페이지 학력 수정
+	int EduUpdate(MemberDTO dto);
+	
+	// 마이페이지 자격증 수정
+	int CertUpdate(MemberDTO dto);
+	
+	// 마이페이지 경력 수정 
+	int CareerUpdate(MemberDTO dto);
+	
+	// 마이페이지 비밀번호 수정 서비스 
+	int ChangePassword(HashMap<String, String> params);
 
 }
