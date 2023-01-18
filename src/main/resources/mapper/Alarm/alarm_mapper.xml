@@ -10,6 +10,11 @@
 			select m.mem_id,'안읽음',#{param1},5,#{param2} from `member` m where m.mem_id not in(#{param3});
 	</insert>
 	
+	<insert id="PayAlarmInsert">
+		insert into alread(mem_id,ar_cnt,ar_content,ac_idx,ar_addr) 
+			values(#{param3},'안읽음',#{param1},2,#{param2})
+	</insert>
+	
 	<select id="AlarmCall" resultType="alarm">
 		select * from alread a  where a.mem_id =#{param1} order by ar_idx desc;
 	</select>

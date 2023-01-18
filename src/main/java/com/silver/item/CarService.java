@@ -30,17 +30,73 @@ public class CarService {
 		return mav;
 	}
 
-	public HashMap<String, Object> getDriveHistory(int carIdx) {
+	public HashMap<String, Object> getDriveHistory(int carIdx, int page) {
+		/* 페이징 계산 */
+		//3개씩만 보여줌
+		int offset = 3*(page-1);
+		int totalCount = dao.totalCountDriveHistory(carIdx);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%3>0 ? (totalCount/3)+1 : (totalCount/3);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.getDriveHistory(carIdx);
+		ArrayList<ThingDTO> list = dao.getDriveHistory(carIdx, offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
+		logger.info("tpage : "+totalPages);
 		result.put("list", list);
+		result.put("total", totalPages);
 		return result;
 	}
 
-	public HashMap<String, Object> getCarBookList(int carIdx) {
+	public HashMap<String, Object> getCarBookList(int carIdx, int page) {
+		/* 페이징 계산 */
+		// 5개씩 보여줌
+		int offset = 5*(page-1);
+		int totalCount = dao.totalCountCarBookList(carIdx);
+		logger.info("게시글 총 개수 : "+totalCount);
+		int totalPages = totalCount%5>0 ? (totalCount/5)+1 : (totalCount/5);//총 페이지 수 = 게시물 총 갯수 / 페이지당 보여줄 수 (나누기) 
+		logger.info("총 페이지 수 : "+totalPages);
+		
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.getCarBookList(carIdx);
+		ArrayList<ThingDTO> list = dao.getCarBookList(carIdx, offset);
+		if(totalPages==0) {
+			totalPages = 1;
+		}
 		result.put("list", list);
+		result.put("total", totalPages);
+		return result;
+	}
+
+	public HashMap<String, Object> carHistoryResist(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		int row = dao.carHistoryResist(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
+		return result;
+	}
+
+	public HashMap<String, Object> carResist(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		int row = dao.carResist(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
+		return result;
+	}
+
+	public HashMap<String, Object> getCarInfo(int carIdx) {
+		CarDTO dto = new CarDTO();
+		dto = dao.getCarInfo(carIdx);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", dto);
+		return result;
+	}
+
+	public HashMap<String, Object> carModify(HashMap<String, String> params) {
+		int row = dao.carModify(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
 		return result;
 	}
 

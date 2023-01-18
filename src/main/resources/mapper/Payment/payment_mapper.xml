@@ -55,6 +55,109 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 			and p.pos_num &lt; #{param1} order by p.pos_num
 	</select>
 	
+	<insert id="PayMentInsert_First" parameterType="payment" useGeneratedKeys="true" keyColumn="pm_idx"
+	keyProperty="pm_idx">
+		insert into payment(pm_dept,pm_bigo,pm_open,pm_subject,pm_content,pf_idx,mem_id) values(
+			#{pm_dept},#{pm_bigo},#{pm_open},#{pm_subject},#{pm_content},#{pf_idx},#{mem_id}
+		)
+	</insert>
+	
+	<insert id="PayMentHoli" parameterType="payment">
+	insert into payholiday(pm_idx,ho_start,ho_end,ho_type) values(
+		#{pm_idx},#{ho_start},#{ho_end},#{ho_type}
+		)
+	</insert>
+	
+	<select id="TeamMember" resultType="string">
+		select m.mem_id from `member` m inner join depart d on m.dept_num =d.dept_num
+			where d.dept_name =#{param1}; 
+	</select>
+	
+	<insert id="AddRefer" parameterType="payment">
+	insert into payrefer(par_name,pm_idx) values
+		<foreach collection="resultList" item="item" separator="," >
+		(#{item},#{pm_idx})
+		</foreach>
+	</insert>
+	
+	<insert id="FileUpload">
+		insert into pfile(pm_idx,paf_oriFileName,paf_newFileName) values(
+		#{param1},#{param2},#{param3}
+		)
+	</insert>
+	<select id="GetDept" resultType="string">
+	select p.pos_level  from member m inner join `position` p 
+		on m.pos_num =p.pos_num where m.mem_id =#{param1};
+	</select>
+	
+	<insert id="insertLine">
+		insert into payline(pl_hp,pl_level,pm_idx) values(#{param2},#{param1},#{param3})
+	</insert>
+	
+	<select id="detailPayment_do" resultType="payment">
+		select * from payment p left join payholiday p2 on p.pm_idx =p2.pm_idx 
+		inner join payform p3 on p.pf_idx =p3.pf_idx 
+		inner join member m on p.mem_id =m.mem_id 
+		where p.pm_idx =#{param1};
+	</select>
+	
+	<select id="ReferDto" resultType="payment">
+		select m.mem_id,d.dept_name ,m.mem_name,p2.pos_name  from payrefer p 
+		inner join member m on m.mem_id =p.par_name 
+		inner join depart d on d.dept_num =m.dept_num 
+		inner JOIN position p2 on m.pos_num =p2.pos_num 
+		where p.pm_idx =#{param1};
+	</select>
+	
+	<select id="PmlineDto" resultType="payment">
+		select * from payline p 
+	inner join member m on p.pl_hp=m.mem_id
+	inner join depart d on m.dept_num =d.dept_num 
+		where pm_idx =#{param1};
+	</select>
+	
+	<select id="PayFile" resultType="payment">
+		select p2.paf_newFileName,p2.paf_oriFileName from pfile p2 where pm_idx =#{param1}
+	</select>
+	
+<!-- 	<select id="SignMember" resultType="string"> -->
+<!-- 		select p.mem_id  from payment p where p.pm_idx=#{param1} -->
+<!-- 		union -->
+<!-- 		select p2.pl_hp  from payline p2 where p2.pm_idx=#{param1};  -->
+<!-- 	</select> -->
+	
+	
+<!-- 	<select id="paysign" resultType="com.silver.member.MemberDTO"> -->
+<!-- 		select * from sign s where s.mem_id= -->
+<!-- 		<foreach collection="signMember" item="item"> -->
+<!-- 		#{item} -->
+<!-- 		</foreach> -->
+<!-- 	</select> -->
+
+		<update id="MySangSin" parameterType="payment">
+			update payment set pm_self=1,pm_state='진행' where pm_idx=#{pm_idx}	
+		</update>
+		
+		<select id="WhoFirst" resultType="string">
+			select pl_hp  from payline p where pm_idx =#{param1} LIMIT 1;
+		</select>
+		
+		<select id="MySign" resultType="string">
+			select s.si_newFileName from sign s where s.mem_id=#{param1};
+		</select>
+		
+		<select id="referPmIdx" resultType="string">
+			select pm_idx  from payrefer p where par_name =#{param1}
+		</select>
+		
+		<select id="openPayment" resultType="payment">
+			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx =#{param1}
+		</select>
+	
+	
 	
 </mapper>
 

@@ -8,7 +8,7 @@
 
 
 	<select id="resident" resultType="rd">
-			select * from resident order by re_idx desc
+			select *,RIGHT(YEAR(now()),2)-left(re_jumin,2)+100 as re_age from resident order by re_idx desc
 	</select>
 	
 	<select id="residentsearch" resultType="rd" parameterType="hashmap">
@@ -24,11 +24,28 @@
 			</if>
 			order by re_idx desc
 	</select>
-	
-	<select id="residentdetail" resultType="rd" parameterType="String">
-		select* from resident where re_idx = #{re_idx}
+	<select id="residentCateSearch" resultType="rd" parameterType="hashmap">
+			select * from resident where
+			<if test="re_name != null and re_name != ''">
+				<![CDATA[re_name=#{re_name} ]]>
+			</if>
+			order by re_idx desc
 	</select>
-		
+
+	<select id="residentdetail" resultType="rd" parameterType="String">	
+		select *,f.fp_newFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=4;
+	</select>
+	<!-- 
+	<select id="residentFiledetail" resultType="rd" parameterType="String">	
+		select r.re_idx, f.fp_newFileName as file_fp_newFileName, f.fp_oriFileName as file_fp_oriFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=5;
+	</select>
+	 -->
+	
+	<select id="residentFiledetail" resultType="rdfile" parameterType="String">	
+		select r.re_idx, f.fp_newFileName, f.fp_oriFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=5;
+	</select>
+
+
 	<insert id="residentwrite"
 		useGeneratedKeys="true"
 		keyColumn="re_idx"
@@ -60,9 +77,43 @@
 			,#{re_date}
 			,#{ro_name}
 			,#{re_daddr}) 
-	</insert>		
+	</insert>
+	
+	
+	<insert id="residentphotoInsert" >
+		INSERT INTO filephoto(re_idx,fp_oriFileName, fp_newFileName, fpc_idx)
+			VALUES(#{param1}, #{param2}, #{param3}, 4);
+	</insert>
+	
 
-		
+	<insert id="residentfileInsert"  >
+		INSERT INTO filephoto(re_idx,fp_oriFileName, fp_newFileName, fpc_idx)
+			VALUES(#{param1}, #{param2}, #{param3}, 5);
+	</insert>
+	 
+	
+	
+	<update id="residentphotoUpload"  >
+			UPDATE filephoto SET				
+				fp_oriFileName = #{param2},
+				fp_newFileName = #{param3}
+			WHERE re_idx = #{param1} and fpc_idx=4
+	</update>
+	<update id="residentfileUpload" 
+		useGeneratedKeys="true"
+		keyColumn="fp_idx"
+		keyProperty="fp_idx">
+		UPDATE filephoto SET				
+				fp_oriFileName = #{param2},
+				fp_newFileName = #{param3}
+			WHERE re_idx = #{param1} and fpc_idx=5
+	</update>
+	
+	
+	
+	
+	
+
 	<update id="residentupdate" parameterType="hashmap">
 		UPDATE resident SET
 			re_name = #{re_name},
