@@ -226,6 +226,34 @@ public class MypageController {
 			logger.info("비밀번호 수정 컨트롤러");
 			logger.info("params:{}",params);
 			return service.ChangePassword(params);
-		}			
+		}
 		
+		// 마이페이지 서류파일 등록
+		@PostMapping(value = "/memberwriteFileInsert.do")
+		@ResponseBody
+		public HashMap<String, Object> memberwriteFileInsert(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
+			logger.info("서류파일 등록 컨트롤러");
+			logger.info("params:{}",params);
+			logger.info("memPhoto:{}",memPhoto);
+			return service.memberwriteFileInsert(memPhoto, params);
+		}
+		
+		// 마이페이지 서류파일 수정 폼 이동
+		@GetMapping(value = "/getdocuFileUpdateForm.go")
+		@ResponseBody
+		public HashMap<String, Object> getdocuFileUpdateForm(@RequestParam String Fpidx){
+			
+			logger.info(Fpidx +" 서류파일에 대한 전자서명 수정 요청");
+			return service.getdocuFileUpdateForm(Fpidx);
+		}
+		
+		// 마이페이지 서류파일 수정
+		@PostMapping(value = "/memberdocuFileUpdateForm.do")
+		@ResponseBody
+		public HashMap<String, Object> memberdocuFileUpdateForm(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
+			logger.info("서류파일 등록 컨트롤러");
+			logger.info("params:{}",params);
+			logger.info("memPhoto:{}",memPhoto);
+			return service.memberdocuFileUpdateForm(memPhoto, params);
+		}		
 }

@@ -166,6 +166,8 @@
                     	<jsp:include page="CertUpdate.jsp"></jsp:include>
                     	<jsp:include page="EduUpdate.jsp"></jsp:include>
                     	<jsp:include page="CareerUpdate.jsp"></jsp:include>
+                    	<jsp:include page="writeFileInsert.jsp"></jsp:include>
+                    	<jsp:include page="docuFileUpdate.jsp"></jsp:include>
 					</div>
 
 
@@ -629,6 +631,7 @@ function paperlistCall(showpage3) {
 					if(showpage3!=page){
 						paperlistCall(showpage3);
 						showpage3=page;
+						console.log(showpage3);
 					}
 				}
 			});         
@@ -639,14 +642,23 @@ function paperlistCall(showpage3) {
     });
  }
  
- // 서퓨파일 리스트 그리는 함수
+ // 서류파일 리스트 그리는 함수
 function paperdrawList(paperList){
 	var content='';
 	if(paperList.length < 1){
 		var msg = "등록된 서류파일이 없습니다.";
+		content+='<div class="card-header">'+"경력"+'</div>';
+		content+='<div class="card-body" >';
+		content+='<table class="table table-striped" id="mytable">';				
 		content += '<tr>';
 		content += '<td colspan="3">'+msg+'</td>';	
 		content += '</tr>';
+        content+='</table>';  
+     	content+='<div class="buttons">';
+     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeFileInsert">서류파일 등록</a>';
+        content+='</div>';
+        content+='</div>';
+        content+='</div>';		
 		
 		$('#undertable').empty();
 		$('#undertable').append(content);
@@ -656,7 +668,8 @@ function paperdrawList(paperList){
 		content+='<table class="table table-striped" id="mytable">';
         content+='<thead>';
         content+='<tr>';
-        content+='<th>'+"파일이름"+'</th>';
+        content+='<th>'+"파일번호"+'</th>';
+        content+='<th>'+"파일제목"+'</th>';
         content+='<th>'+"파일등록일"+'</th>';
         content+='<th></th>';
        	content+='</tr>';
@@ -665,12 +678,12 @@ function paperdrawList(paperList){
 		for(var i=0; i<paperList.length; i++){
 			
 			content+='<tr>';
-/* 			content+='<td class="mem_id">'+paperList[i].mem_id+'</td>'; */
+			content+='<td class="fp_idx">'+paperList[i].fp_idx+'</td>'; 
 			content+='<td class="fp_oriFileName">'+paperList[i].fp_oriFileName+'</td>';
 			content+='<td>'+paperList[i].fp_date+'</td>';
 			content+='<td>';
 	     	content+='<div class="buttons">';
-	        content+='<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">수정하기</a>';
+	        content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#docuFileUpdate" id="modify" onclick=docuFileUpdateForm($(this))>수정하기</a>';
 	        content+='</div>';
 			content+='</td>';
 			content+='</tr>';	
@@ -688,7 +701,7 @@ function paperdrawList(paperList){
 		content+='</div>';
 		content+='</div>';
      	content+='<div class="buttons">';
-        content+='<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">서류파일 등록</a>';
+     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeFileInsert">서류파일 등록</a>';
         content+='</div>';
         content+='</div>';
         content+='</div>';
@@ -698,16 +711,17 @@ function paperdrawList(paperList){
 	}   
 } 
  
-
- 
+var flag=true;
+var pageflag=true;
+var chkPage=new Array(); 
  
 // 결제문서 리스트 부르기
 function mypaymentlistCall(showpage4) { 
 	
 	var memId = $('#tablemarin').find('td.marin').text();
 	
-
-	
+	if(flag){
+		flag=false;
     $.ajax({
        type:'GET',
        url:'mypaymentlistCall.do',
@@ -715,26 +729,38 @@ function mypaymentlistCall(showpage4) {
        datatype:'JSON',
        success:function(data){
           console.log(data);
-
           mypaymentdrawList(data.list);
-          			       
+
+      	chkPage.push(data.total);
+		if(chkPage.at(-2) != data.total){
+			pageflag=true;
+		}		
+		
+		if(pageflag == true && $('.pagination').data("twbs-pagination")){
+            $('.pagination').twbsPagination('destroy');
+            pageflag=false;
+        }
         	
 			$("#pagination").twbsPagination({
 				startPage : 1, // 시작 페이지
 				totalPages : data.total, // 총 페이지 수
 				visiblePages : 5, // 기본으로 보여줄 페이지 수
 				onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					
 					if(showpage4!=page){
-						mypaymentlistCall(showpage4);
 						showpage4=page;
+						mypaymentlistCall(showpage4);
 					}
 				}
 			});         
        },
        error:function(e){
           console.log(e);
-       }    
+       },complete:function(){
+			flag=true;    
+       }
     });
+	}
  }
  
  // 결제문서 리스트 그리는 함수
@@ -758,7 +784,6 @@ function mypaymentdrawList(mypaymentList){
         content+='<th>'+"제목"+'</th>';
         content+='<th>'+"결제양식"+'</th>';
         content+='<th>'+"결제상태"+'</th>';
-        content+='<th></th>';
        	content+='</tr>';
         content+='</thead>';
 		content+='<tbody id="list">';
@@ -885,6 +910,39 @@ function CareerUpdateForm(listRow){
  
  
 } 
+
+// 서류파일 정보 불러오는 ajax 함수
+function docuFileUpdateForm(listRow){
+	var Fpidx = listRow.closest('tr').find('.fp_idx').text();
+	console.log(listRow.closest('tr').find('.fp_idx').text());
+	
+	
+    $.ajax({
+    	type:'GET',
+		url:'getdocuFileUpdateForm.go',
+		data:{'Fpidx':Fpidx},
+		dataType:'JSON',
+		success:function(data){
+			
+			$("#docuFileUpdate input[name=FpIdx]").attr('value',data.detailPhoto.fp_idx);
+			$("#docuFileUpdate select[name=fpcCate]").val(data.detail.fpc_cate);
+			
+			var newFileName = data.detailPhoto;
+			// 파일 체크
+			if(newFileName != null || newFileName == ''){
+				$("#docuFileUpdate .memdocumentOri").text(data.detailPhoto.fp_newFileName);
+			}else{
+				$("#docuFileUpdate .memdocumentOri").text('없음');
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+}
+
+
+
  
 </script>
 </html>

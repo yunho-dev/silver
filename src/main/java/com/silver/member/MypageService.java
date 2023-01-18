@@ -269,6 +269,7 @@ public class MypageService {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		ArrayList<MemberDTO> paperList=dao.paperlistCall(dto);
+		logger.info("dto :"+dto);
 		logger.info("가져온 서류파일 리스트:{}",paperList);
 		result.put("list", paperList);
 		result.put("total", totalPages);
@@ -281,6 +282,7 @@ public class MypageService {
 		int page = Integer.parseInt(params.get("page"));
 		int offset = 10*(page-1);
 		int totalCount = dao.totalCountmypaymentList(params);
+		logger.info("params: "+params);
 		logger.info("게시글 총 개수 : "+totalCount);
 		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
 		logger.info("총 페이지 수 : "+totalPages);
@@ -511,5 +513,120 @@ public class MypageService {
 		HashMap<String, Object> result=new HashMap<String, Object>();
 		result.put("memId", memId);
 		return result;		
+	}
+	
+	// 서류파일 등록 서비스 
+	public HashMap<String, Object> memberwriteFileInsert(MultipartFile memPhoto, HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setFpc_cate(params.get("fpcCate"));
+		
+		dto.setFpc_idx(dao.findFpcidx(dto));
+
+		
+		logger.info("추출된 번호:"+dao.findFpcidx(dto));
+		
+		
+		int FpcIdx=dto.getFpc_idx();
+
+		String memId = dto.getMem_id();
+
+		
+		if(memPhoto != null){
+			String oriFileName = memPhoto.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = pfileSave(memPhoto,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("")) {
+					dao.PFileInsert(oriFileName, newFileName,memId,FpcIdx);
+				}
+			}
+		}
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	private String pfileSave(MultipartFile photo, String ext) {
+		logger.info("파일 저장 기능 접근");
+		// 1. 새 파일명 생성
+		String newFileName = System.currentTimeMillis()+ext;
+		logger.info("서버에 저장될 파일명이 생성되었습니다. 파일명 : "+newFileName);
+		
+		// 2. 저장
+		try {
+			byte[] bytes = photo.getBytes();
+			Path path = Paths.get("C:/pfile/"+newFileName);
+			logger.info("저장될 파일 경로 : {}", path);
+			Files.write(path, bytes);
+			logger.info("파일 저장 완료");
+		} catch (IOException e) {
+			logger.info("파일 저장 실패! 저장될 파일 이름을 초기화합니다.");
+			newFileName = "";
+			e.toString();
+		}
+		
+		// 3. 새 파일 명 반환
+		return newFileName;
+	}
+
+	// 서류파일 수정 요청 폼 서비스
+	public HashMap<String, Object> getdocuFileUpdateForm(String Fpidx) {
+			
+		MemberDTO photoDto = dao.Finddoucment(Fpidx);
+		int fpc_idx=photoDto.getFpc_idx();
+		MemberDTO dto= dao.FindFpcateName(fpc_idx);
+		logger.info("가져온 데이터 : {}", dto);
+		
+		logger.info("사진데이터 : {}", photoDto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		result.put("detailPhoto", photoDto);
+		return result;
+
+		
+
+	}
+	
+	// 서류파일 수정 서비스
+	public HashMap<String, Object> memberdocuFileUpdateForm(MultipartFile memPhoto, HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setFpc_cate(params.get("fpcCate"));
+		dto.setFp_idx(Integer.parseInt(params.get("FpIdx")));
+		
+		dto.setFpc_idx(dao.findFpcidx(dto));
+
+		
+		logger.info("추출된 번호:"+dao.findFpcidx(dto));
+		
+		
+		int FpcIdx=dto.getFpc_idx();
+		int FcIdx=dto.getFp_idx();
+		String memId = dto.getMem_id();
+
+		
+		if(memPhoto != null){
+			String oriFileName = memPhoto.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = pfileSave(memPhoto,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("")) {
+					dao.PFileUpdate(oriFileName, newFileName,memId,FpcIdx,FcIdx);
+				}
+			}
+		}
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
 	}	
+	
 }

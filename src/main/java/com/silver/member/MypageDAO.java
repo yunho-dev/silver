@@ -109,5 +109,21 @@ public interface MypageDAO {
 	
 	// 마이페이지 비밀번호 수정 서비스 
 	int ChangePassword(HashMap<String, String> params);
+	
+	// 서류파일 등록
+	void PFileInsert(String oriFileName, String newFileName, String memId, int fpcIdx);
+		
+	// 서류파일 카테고리 번호 추출
+	int findFpcidx(MemberDTO dto);
+	
+	// 서류파일 존재 유무
+	MemberDTO Finddoucment(String fpidx);
+	
+	// 서류파일 카테고리 뽑기
+	MemberDTO FindFpcateName(int fpc_idx);
+	
+	// 서류파일 업데이트
+	void PFileUpdate(String oriFileName, String newFileName, String memId, int fpcIdx, int fcIdx);
+
 
 }
