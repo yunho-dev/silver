@@ -26,4 +26,8 @@ public interface CarDAO {
 
 	int carModify(HashMap<String, String> params);
 
+	CarDTO getDriveHistoryModifyInfo(int chisIdx);
+
+	int carHistoryModify(HashMap<String, String> params);
+
 }

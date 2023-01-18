@@ -94,7 +94,24 @@ public class CarService {
 	}
 
 	public HashMap<String, Object> carModify(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
 		int row = dao.carModify(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
+		return result;
+	}
+
+	public HashMap<String, Object> getDriveHistoryModifyInfo(int chisIdx) {
+		CarDTO dto = new CarDTO();
+		dto = dao.getDriveHistoryModifyInfo(chisIdx);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", dto);
+		return result;
+	}
+
+	public HashMap<String, Object> carHistoryModify(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		int row = dao.carHistoryModify(params);
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("finish", row);
 		return result;
