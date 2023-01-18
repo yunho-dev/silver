@@ -3,10 +3,15 @@ package com.silver.item;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.silver.member.MemberDTO;
 
 
 @Service
@@ -94,9 +99,44 @@ public class CarService {
 	}
 
 	public HashMap<String, Object> carModify(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
 		int row = dao.carModify(params);
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("finish", row);
+		return result;
+	}
+
+	public HashMap<String, Object> getDriveHistoryModifyInfo(int chisIdx) {
+		CarDTO dto = new CarDTO();
+		dto = dao.getDriveHistoryModifyInfo(chisIdx);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", dto);
+		return result;
+	}
+
+	public HashMap<String, Object> carHistoryModify(HashMap<String, String> params) {
+		logger.info("받아온 데이터 : {}", params);
+		int row = dao.carHistoryModify(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
+		return result;
+	}
+
+	public HashMap<String, Object> carBookResist(HashMap<String, String> params, HttpServletRequest request) {
+		logger.info("받아온 요소 : {}", params);
+		
+		ThingService thingService = new ThingService(null);
+		String bookWriter = thingService.writer(request);
+		params.put("bookWriter", bookWriter);
+		int check = 0;
+		check = dao.carBookCheck(params);
+		int row = 0;
+		if(check == 0) {
+			row = dao.carBookResist(params);
+		}
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("finish", row);
+		result.put("check", check);
 		return result;
 	}
 

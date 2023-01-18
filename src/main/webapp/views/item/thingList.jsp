@@ -227,7 +227,7 @@
 			success:function(data){
 				$(".modal-body .left .th_name").text(data.detail.th_name);
 				$(".modal-body .left .th_model").text(data.detail.th_model);
-				$(".modal-body .left .th_money").text(data.detail.th_money);
+				$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
 				$(".modal-body .left .th_write").text(data.detail.th_write);
 				$(".modal-body .right .th_part").text(data.detail.th_part);
 				$(".modal-body .right .th_date").text(data.detail.th_date);

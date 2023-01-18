@@ -122,7 +122,7 @@
 	                                				<p class="writeArea"><span id="WriteName">주유량 : </span> 
 														<input type="text" name="chisLiter"><span id="WriteName">&nbsp;L</span>
 													</p><br>
-	                                				<p class="writeArea"><span id="WriteName">비고 : </span> 
+	                                				<p class="writeArea"><span id="WriteName">비고 : </span><br>
 														<textarea id="chisBigo" name="chisBigo"
 															rows="3" style="resize: none;"></textarea>
 													</p><br>
@@ -161,25 +161,26 @@
                                     
                                     <!-- 차량 사용 예약 -->
                                     <div class="modal-body" id="driveBook" style="border: 1px solid; display: none;">
-                                		<form id="writeForm">
+                                		<form id="bookWrite">
                                 			<div>
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNumBook"></span>차량 사용 예약</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="bStart">
 													</p><br>
 	                                				<p class="writeArea"><span id="WriteName">사용자 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
+														<input type="hidden" name="bMemId" readonly="readonly">
 													</p>
 	                                			</div>
 	                                			<div class="right">
 	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="bEnd">
 													</p>
 	                                			</div>
                                 			</div>
                                 			<div style="display:block;">
-                                				<a href="#" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
+                                				<a id="carBookResistBtn" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
                                 			</div>
                                 		</form>
                                 	</div>
@@ -212,6 +213,7 @@
                 <!-- 모달 -->
                 <jsp:include page="carResist.jsp"></jsp:include>
                 <jsp:include page="carModify.jsp"></jsp:include>
+                <jsp:include page="carHistoryModify.jsp"></jsp:include>
                 
 		</div>
 	</div>
@@ -226,15 +228,17 @@
 	var carIdx;
 	var btnId = 'carHis';
 	const dateRegex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-	const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
+	//const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
+	const dateTimeRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/; // 날짜+시간+분
 	const numRegex = /^[0-9]+$/; //숫자만
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
 	
 	/** 
-	 * 모달을 닫아주는 함수
+	 * 모달을 닫아주는 함수 (나중에 스위치-케이스문으로 바꿀 예정)
 	 * num 설명
 	 * 1 : 차량 정보 등록 모달
 	 * 2 : 차량 정보 수정 모달
+	 * 3 : 차량 운행 기록 수정 모달
 	 */
 	function closeModal(num){
 		if(num === 1){
@@ -243,6 +247,9 @@
 		}else if(num === 2){
 			$('#carModify').modal('hide');
 			$('#carModfyForm')[0].reset();
+		}else if(num === 3){
+			$('#carHisotryModifyModal').modal('hide');
+			$('#carHistoryModfyForm')[0].reset();
 		}
 	}
 	
@@ -339,18 +346,24 @@
 	}
 	function drawHistoryList(historyList){
 		var content='';
-		for(var i=0; i<historyList.length;i++){
-			var date=new Date(historyList[i].chis_date);
+		if(historyList.length != 0){
+			for(var i=0; i<historyList.length;i++){
+				content +='<tr>';
+				var date=new Date(historyList[i].chis_date);
+				content +='<td class="chis_idx" style="display: none;">'+historyList[i].chis_idx+'</td>';
+				content +='<td>'+date.toLocaleDateString('ko-KR')+'</td>';
+				content +='<td>'+historyList[i].chis_driver+'</td>';
+				content +='<td>'+historyList[i].chis_place+'</td>';
+				content +='<td>'+historyList[i].chis_reason+'</td>';
+				content +='<td>'+historyList[i].chis_km+'km</td>';
+				content +='<td>'+historyList[i].chis_liter+'L</td>';
+				content +='<td>'+historyList[i].chis_bigo+'</td>';
+				content +='<td><a class="btn btn-sm btn-primary" id="carHisotryModifyBtn" onclick="carHistoryModifyInfo($(this))" data-bs-toggle="modal" data-bs-target="#carHisotryModifyModal">수정</a></td>';
+				content +='</tr>';
+			}
+		}else{
 			content +='<tr>';
-			content +='<td class="chis_idx" style="display: none;">'+historyList[i].chis_idx+'</td>';
-			content +='<td>'+date.toLocaleDateString('ko-KR')+'</td>';
-			content +='<td>'+historyList[i].chis_driver+'</td>';
-			content +='<td>'+historyList[i].chis_place+'</td>';
-			content +='<td>'+historyList[i].chis_reason+'</td>';
-			content +='<td>'+historyList[i].chis_km+'</td>';
-			content +='<td>'+historyList[i].chis_liter+'</td>';
-			content +='<td>'+historyList[i].chis_bigo+'</td>';
-			content +='<td><a href="#" class="btn btn-sm btn-primary">수정</a></td>';
+			content +='<td colspan="8">등록된 운행 기록이 없습니다.</td>';
 			content +='</tr>';
 		}
 		$('#historyList').empty();
@@ -409,22 +422,28 @@
 	
 	function drawBookList(bookList){
 		var content='';
-		for(var i=0; i<bookList.length;i++){
-			var startDate=new Date(bookList[i].b_start);
-			var endDate=new Date(bookList[i].b_end);
-			content +='<tr>';
-			content +='<td class="chis_idx">'+bookList[i].cb_idx+'</td>';
-			content +='<td>'+startDate.toLocaleString('ko-KR')+'</td>';
-			content +='<td>'+endDate.toLocaleString('ko-KR')+'</td>';
-			content +='<td>'+bookList[i].mem_name+'</td>';
-			if(bookList[i].b_cancel == 1){
-				content +='<td>취소 안 함</td>';
-			}else{
-				content +='<td style="color: red;">취소</td>';
+		if(bookList.length != 0){
+			for(var i=0; i<bookList.length;i++){
+				var startDate=new Date(bookList[i].b_start);
+				var endDate=new Date(bookList[i].b_end);
+				content +='<tr>';
+				content +='<td class="chis_idx">'+bookList[i].cb_idx+'</td>';
+				content +='<td>'+startDate.toLocaleString('ko-KR')+'</td>';
+				content +='<td>'+endDate.toLocaleString('ko-KR')+'</td>';
+				content +='<td>'+bookList[i].mem_name+'</td>';
+				if(bookList[i].b_cancel == 1){
+					content +='<td>취소 안 함</td>';
+				}else{
+					content +='<td style="color: red;">취소</td>';
+				}
+				
+				content +='</tr>';
 			}
-			
+		}else{
+			content +='<tr>';
+			content +='<td colspan="5">등록된 예약이 없습니다.</td>';
 			content +='</tr>';
-		}
+		}//end of if
 		$('#bookList').empty();
 		$('#bookList').append(content);
 	}
@@ -485,7 +504,6 @@
 						getHistoryList(showPage);
 					}else{
 						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
-						getHistoryList(showPage);
 					}
 				},
 				error:function(e){
@@ -495,6 +513,7 @@
 		}
 	})
 	
+	/* 차량 정보 수정 input 박스에 정보 불러오는 함수 */
 	function carModifyInfo(carModifyBtn){
 		carIdx = carModifyBtn.closest('tr').find('td.carIdx').text();
 		carNum = carModifyBtn.closest('tr').find('td.carNum').text();
@@ -517,6 +536,99 @@
 			}
 		});
 	}
+	
+	function carHistoryModifyInfo(carHistoryModifyBtn){
+		chisIdx = carHistoryModifyBtn.closest('tr').find('td.chis_idx').text();
+		$.ajax({
+			type:'GET',
+			url:'getDriveHistoryModifyInfo.do',
+			data:{chisIdx:chisIdx, carNum:carNum},
+			dataType:'JSON',
+			success:function(data){
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisIdx]').val(data.result.chis_idx);
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisDate]').val(data.result.chis_date);
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisPlace]').val(data.result.chis_place);
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisKm]').val(data.result.chis_km);
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisReason]').val(data.result.chis_reason);
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisDriver]').val(data.result.chis_driver);
+				$('#carHisotryModifyModal #carHistoryModfyForm input[name=chisLiter]').val(data.result.chis_liter);
+				
+				if(data.result.chis_bigo === '없음'){
+					$('#carHisotryModifyModal #carHistoryModfyForm textarea[name=chisBigo]').val('');
+				}else{
+					$('#carHisotryModifyModal #carHistoryModfyForm textarea[name=chisBigo]').val(data.result.chis_bigo);
+				}
+			},
+			error:function(e){
+				console.log(data)
+			}
+		});
+	}
+	
+	/* 차량 예약 팝업 요청 */
+	$('#selectMember').click(function(){
+		var url = "thingMemberList.go";
+        var name = "MemberList";
+		var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+		window.open(url, name, option)
+	})
+	
+	function choiceRow(idx, name, judge){
+		$('#driveBook input[name=bMem]').val(name)
+		$('#driveBook input[name=bMemId]').val(idx)
+	}
+	
+	/* 차량 예약 */
+	$('#carBookResistBtn').click(function(){
+		$bStart = $('#driveBook input[name=bStart]');
+		$bEnd = $('#driveBook input[name=bEnd]');
+		$bMem = $('#driveBook input[name=bMem]');
+		$bMemId = $('#driveBook input[name=bMemId]');
+		
+		if($bStart.val().match(dateTimeRegex) == null){
+			alert('예약 시작 날짜를 형식에 맞게 입력해 주세요 \n형식 : yyyy-MM-dd hh:mm:ss\n예)2023-01-08 09:13:00')
+		}else if($bEnd.val().match(dateTimeRegex) == null){
+			alert('예약 끝날 날짜를 형식에 맞게 입력해 주세요 \n형식 : yyyy-MM-dd hh:mm:ss\n예)2023-01-08 09:13:00')
+		}else if($bMemId.val() == ''){
+			alert('사용자를 선택해 주세요');
+		}else{
+			var formData = new FormData();
+			$('#bookWrite input').each(function(){
+				var key = $(this).attr('name');
+				var key2 = 'carIdx';
+				var key3 = 'carNum';
+				formData.append(key, $(this).val())
+				formData.append(key2, carIdx)
+				formData.append(key3, carNum)
+			})
+			
+			$.ajax({
+				type:'POST',
+				url:'carBookResist.do',
+				processData:false, // 객체를 문자열로 바꾸지 않음
+				contentType:false, // 컨텐트 타입을 객체로 함
+				data: formData,
+				success:function(data){
+					if(data.check > 0){
+						alert('시간이 겹치는 예약이 '+data.check+'건 있습니다. \n예약 시간을 바꿔서 다시 시도해 주세요')
+					}
+					if(data.check == 0 && data.finish == 1){
+						alert('예약이 등록되었습니다.')
+						$("#bookWrite")[0].reset();
+						getCarBookList(page2);
+					}
+					if(data.finish > 1){
+						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
+					}
+				},
+				error:function(e){
+					console.log(e)
+				}
+			});
+			
+		}
+		
+	});
 
 </script>
 </html>

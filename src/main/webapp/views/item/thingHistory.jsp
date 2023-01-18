@@ -244,7 +244,7 @@
 					$(".modal-body .left #hisIdx").val(data.detail.his_idx);
 					$(".modal-body .left .th_name").text(data.detail.th_name);
 					$(".modal-body .left .th_model").text(data.detail.th_model);
-					$(".modal-body .left .th_money").text(data.detail.th_money);
+					$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
 					$(".modal-body .left .th_spon").text(data.detail.th_spon);
 					$(".modal-body .left .his_name").text(data.detail.his_name);
 					$(".modal-body .left .his_goal").text(data.detail.his_goal);
