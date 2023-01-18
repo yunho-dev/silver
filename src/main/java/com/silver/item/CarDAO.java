@@ -30,4 +30,8 @@ public interface CarDAO {
 
 	int carHistoryModify(HashMap<String, String> params);
 
+	int carBookResist(HashMap<String, String> params);
+
+	int carBookCheck(HashMap<String, String> params);
+
 }

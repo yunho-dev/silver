@@ -85,5 +85,19 @@
 		</set>
 			WHERE chis_idx = #{chisIdx}
 	</update>
-
+	
+	<insert id="carBookResist" parameterType="hashmap">
+		insert into book(car_idx, b_write, b_start, b_end, mem_id)
+			values(#{carIdx}, #{bookWriter}, #{bStart}, #{bEnd}, #{bMemId})
+	</insert>
+	
+	<select id="carBookCheck" resultType="int" parameterType="hashmap">
+		select COUNT(cb_idx) 
+		from book
+		where car_idx = #{carIdx}
+			and b_cancel = 1 
+			and b_start <![CDATA[<]]> #{bEnd}
+			and b_end <![CDATA[>]]> #{bStart}
+	</select>
+	
 </mapper>

@@ -161,25 +161,26 @@
                                     
                                     <!-- 차량 사용 예약 -->
                                     <div class="modal-body" id="driveBook" style="border: 1px solid; display: none;">
-                                		<form id="writeForm">
+                                		<form id="bookWrite">
                                 			<div>
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNumBook"></span>차량 사용 예약</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="bStart">
 													</p><br>
 	                                				<p class="writeArea"><span id="WriteName">사용자 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
+														<input type="hidden" name="bMemId" readonly="readonly">
 													</p>
 	                                			</div>
 	                                			<div class="right">
 	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="thName">
+														<input type="text" name="bEnd">
 													</p>
 	                                			</div>
                                 			</div>
                                 			<div style="display:block;">
-                                				<a href="#" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
+                                				<a id="carBookResistBtn" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
                                 			</div>
                                 		</form>
                                 	</div>
@@ -227,7 +228,8 @@
 	var carIdx;
 	var btnId = 'carHis';
 	const dateRegex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-	const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
+	//const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
+	const dateTimeRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/; // 날짜+시간+분
 	const numRegex = /^[0-9]+$/; //숫자만
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
 	
@@ -562,6 +564,71 @@
 			}
 		});
 	}
+	
+	/* 차량 예약 팝업 요청 */
+	$('#selectMember').click(function(){
+		var url = "thingMemberList.go";
+        var name = "MemberList";
+		var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+		window.open(url, name, option)
+	})
+	
+	function choiceRow(idx, name, judge){
+		$('#driveBook input[name=bMem]').val(name)
+		$('#driveBook input[name=bMemId]').val(idx)
+	}
+	
+	/* 차량 예약 */
+	$('#carBookResistBtn').click(function(){
+		$bStart = $('#driveBook input[name=bStart]');
+		$bEnd = $('#driveBook input[name=bEnd]');
+		$bMem = $('#driveBook input[name=bMem]');
+		$bMemId = $('#driveBook input[name=bMemId]');
+		
+		if($bStart.val().match(dateTimeRegex) == null){
+			alert('예약 시작 날짜를 형식에 맞게 입력해 주세요 \n형식 : yyyy-MM-dd hh:mm:ss\n예)2023-01-08 09:13:00')
+		}else if($bEnd.val().match(dateTimeRegex) == null){
+			alert('예약 끝날 날짜를 형식에 맞게 입력해 주세요 \n형식 : yyyy-MM-dd hh:mm:ss\n예)2023-01-08 09:13:00')
+		}else if($bMemId.val() == ''){
+			alert('사용자를 선택해 주세요');
+		}else{
+			var formData = new FormData();
+			$('#bookWrite input').each(function(){
+				var key = $(this).attr('name');
+				var key2 = 'carIdx';
+				var key3 = 'carNum';
+				formData.append(key, $(this).val())
+				formData.append(key2, carIdx)
+				formData.append(key3, carNum)
+			})
+			
+			$.ajax({
+				type:'POST',
+				url:'carBookResist.do',
+				processData:false, // 객체를 문자열로 바꾸지 않음
+				contentType:false, // 컨텐트 타입을 객체로 함
+				data: formData,
+				success:function(data){
+					if(data.check > 0){
+						alert('시간이 겹치는 예약이 '+data.check+'건 있습니다. \n예약 시간을 바꿔서 다시 시도해 주세요')
+					}
+					if(data.check == 0 && data.finish == 1){
+						alert('예약이 등록되었습니다.')
+						$("#bookWrite")[0].reset();
+						getCarBookList(page2);
+					}
+					if(data.finish > 1){
+						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
+					}
+				},
+				error:function(e){
+					console.log(e)
+				}
+			});
+			
+		}
+		
+	});
 
 </script>
 </html>

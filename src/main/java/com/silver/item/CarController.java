@@ -2,8 +2,11 @@ package com.silver.item;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,4 +85,10 @@ public class CarController {
 		return service.carHistoryModify(params);
 	}
 	
+	/* 차량 예약 등록 */
+	@PostMapping(value = "/carBookResist.do")
+	public HashMap<String, Object> carBookResist(@RequestParam HashMap<String, String> params, HttpServletRequest request){
+		logger.info(params.get("carIdx")+"번 차량({}) 운행 등록 접근", params.get("carNum"));
+		return service.carBookResist(params, request);
+	}
 }
