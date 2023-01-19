@@ -11,8 +11,9 @@ public class ResidentProgramDTO {
 	private int pr_idx;
 	private String pr_name;
 	private String pr_teacher;
-	private Timestamp pr_start;
-	private Timestamp pr_end;
+	//pr_star,pr_end timestamp-> String으로 변경해주었다
+	private String pr_start;
+	private String pr_end;
 	private String pr_content;
 	private String pr_goal;
 	private String pr_place;
@@ -41,16 +42,18 @@ public class ResidentProgramDTO {
 	public void setPr_teacher(String pr_teacher) {
 		this.pr_teacher = pr_teacher;
 	}
-	public Timestamp getPr_start() {
+	
+	
+	public String getPr_start() {
 		return pr_start;
 	}
-	public void setPr_start(Timestamp pr_start) {
+	public void setPr_start(String pr_start) {
 		this.pr_start = pr_start;
 	}
-	public Timestamp getPr_end() {
+	public String getPr_end() {
 		return pr_end;
 	}
-	public void setPr_end(Timestamp pr_end) {
+	public void setPr_end(String pr_end) {
 		this.pr_end = pr_end;
 	}
 	public String getPr_content() {

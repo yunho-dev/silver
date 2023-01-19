@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +25,7 @@
 <script type="text/javascript" src="richtexteditor/rte.js"></script>
 <script type="text/javascript"
 	src='richtexteditor/plugins/all_plugins.js'></script>
+	
 </head>
 <body>
 	<div id="app">
@@ -32,25 +34,32 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>카테고리명 수정</h3>
+				<h3>인수인계 등록</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
 					<div class="card">
 						<div class="card-body py-4 px-5">
-						<form action="CategoryUpdateComplete" method="post">
-						<input type="hidden" name="pc_idx" value="${list.pc_idx}">
+						<form action="writecomplete" method="post"><!-- form은 데이터넘기기위한녀석임 form안에 작업 완료시 이동할 경로 /writecomplete로이동-->
 							<div class="d-flex align-items-center">
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">제목</span> 
 									<input type="text" class="form-control" aria-label="Username" 
-										aria-describedby="basic-addon1" name="pc_cate" value="${list.pc_cate}" autofocus>
+										aria-describedby="basic-addon1" name="bd_title" autofocus>
 								</div>
 							</div>
-<!-- 							<button type="submit" class="btn btn-primary">수정하기</button> -->
-							<button type="button" class="btn btn-primary" onclick="save()">수정하기</button>
+								<div class="input-group mb-3">
+									<span class="input-group-text" id="basic-addon1">내용</span> 
+									<input type="text" class="form-control" aria-label="Username" 
+										aria-describedby="basic-addon1" name="bd_content">
+								</div>
+								
+							
+<!-- 		48번</div>지우고 이거풀어라					</div> -->
+<!-- 							<button type="submit" class="btn btn-primary">등록하기</button> -->
+							<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 							<button type="button" class="btn btn-secondary"
-								onclick="location.href='residentProgramGategory'">뒤로가기</button>
+								onclick="location.href='nextList'">뒤로가기</button>
 							</form>
 						</div>
 					</div>
@@ -81,9 +90,12 @@
 </body>
 <script>
 function save(){
-	$("input[name='pc_cate']").val();
-	if($("input[name='pc_cate']").val().length < 1){
-		alert('글자를 입력해주세요');
+	$("input[name='bd_title']").val();
+	$("input[name='bd_content']").val();
+	if($("input[name='bd_title']").val().length < 1){
+		alert('제목을 입력해주세요');
+	}else if($("input[name='bd_content']").val().length < 1){
+		alert('내용을 입력해주세요');
 	}else{
 		$("form").submit();
 	}

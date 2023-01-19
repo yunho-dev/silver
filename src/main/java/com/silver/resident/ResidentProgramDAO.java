@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.silver.boardnext.NextDTO;
+
 @Mapper
 public interface ResidentProgramDAO {
 
-	ArrayList<ResidentProgramDTO> programlist();
+//	ArrayList<ResidentProgramDTO> programlist();
 
 	int ProgramWriteComplete(ResidentProgramDTO dto);
 
@@ -16,6 +18,10 @@ public interface ResidentProgramDAO {
 	ResidentProgramDTO programDetail(String pr_idx);
 
 	void programDetailUpdate(String pr_idx, String pr_name, String pr_teacher, String pr_start, String pr_end,
-			String pr_goal, String pr_content, String pr_place, String pr_state, String pc_idxTwo);
+			String pr_goal, String pr_content, String pr_place, String pr_state, String pc_idx);
+
+	int residientprogramSizeTotal();
+
+	ArrayList<ResidentProgramDTO> listCall(int page);
 
 }

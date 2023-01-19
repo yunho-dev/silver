@@ -37,25 +37,23 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 
 			<div class="page-heading">
-				<h3>입소자 프로그램</h3>
+				<h3>인수인계</h3>
 			</div>
 			
 			<div class="page-content">
 				<section class="row">
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
-						<input id="programwritebutton" type="button" class="btn btn-primary" value="프로그램 등록" style="margin-bottom:10px;" onclick='programWrite()'>
+						<input id="nextwritebutton" type="button" class="btn btn-primary" value="인수인계 등록" style="margin-bottom:10px;" onclick='nextWrite()'>
 							<div class="d-flex align-items-center">
 								<table class="table table-bordered table-hover"
 									style="text-align: center;">
 									<thead>
 										<tr>
-											<th>순번</th>
-											<th>프로그램명</th>
-											<th>강사명</th>
-											<th>시작시간</th>
-											<th>종료시간</th>
-											<th>카테고리</th>
+											<th>글 번호</th>
+											<th>제목</th>
+											<th>작성자</th>
+											<th>날짜</th>
 											<th></th>
 										</tr>
 									</thead>
@@ -77,7 +75,6 @@
 							</div>
 						</div>
 						<!-- pagination -->
-						
 						
 
 					</div>
@@ -120,7 +117,7 @@ AjaxCall(page);
 function AjaxCall(page) {
 	$.ajax({
 		type : 'get',
-		url : 'ProgramListCall.ajax',
+		url : 'nextListCall.ajax',
 		dataType : 'json',
 		data : {
 			"page" : page
@@ -149,21 +146,17 @@ function drawList(list){
 	var content = '';
 	for(var i=0;i<list.length;i++){
 		content +='<tr>';
-		content +='<td>'+list[i].pr_idx+'</td>';
-		content +='<td>'+list[i].pr_name+'</td>';
-		content +='<td>'+list[i].pr_teacher+'</td>';
+		content +='<td>'+list[i].bd_idx+'</td>';
+		content +="<td><a href='nextDetail?bd_idx="+list[i].bd_idx+"'>"+list[i].bd_title+'</td>';
+		content +='<td>'+list[i].mem_name+'</td>';
 		
-		var date = new Date(list[i].pr_start);
+		var date = new Date(list[i].bd_date);
+		
 		content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ 
 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
 		
-		var date = new Date(list[i].pr_end);
-		content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ 
-		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
-		
-		content +='<td>'+list[i].pc_cate+'</td>';
 		content += '<td>'
-			+ "<button class='btn btn-primary btn-sm' onclick=location.href='programDetail?pr_idx="+list[i].pr_idx+"'>상세보기/수정</button>"
+			+ "<button class='btn btn-primary btn-sm' onclick=location.href='nextUpdateForm?bd_idx="+list[i].bd_idx+"'>수정</button>"
 			+ "</td>";
 		
 		content +='</tr>';
@@ -174,19 +167,18 @@ function drawList(list){
 
 
 
-
 // listCall();
 
 // function listCall(){
 // 	$.ajax({
 // 		type:'GET',
-// 		url:'ProgramlistCall',
+// 		url:'nextListCall',
 // 		data:{},
 // 		dataType:'JSON',
 // 		success:function(data){
 // 				console.log(data);
 // 				console.log("여기는 리스트콜입니다");
-// 				drawList(data.programlist);//data에 있는 programlist를 전달받을거다
+// 				drawList(data.nextList); //data에 있는 nextlist를 전달받을거다
 // 		},
 // 		error:function(e){
 // 			console.log(e);
@@ -198,21 +190,17 @@ function drawList(list){
 // 	var content = '';
 // 	for(var i=0;i<list.length;i++){
 // 		content +='<tr>';
-// 		content +='<td>'+list[i].pr_idx+'</td>';
-// 		content +='<td>'+list[i].pr_name+'</td>';
-// 		content +='<td>'+list[i].pr_teacher+'</td>';
+// 		content +='<td>'+list[i].bd_idx+'</td>';
+// 		content +="<td><a href='nextDetail?bd_idx="+list[i].bd_idx+"'>"+list[i].bd_title+'</td>';
+// 		content +='<td>'+list[i].mem_name+'</td>';
 		
-// 		var date = new Date(list[i].pr_start);
+// 		var date = new Date(list[i].bd_date);
+		
 // 		content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ 
 // 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
 		
-// 		var date = new Date(list[i].pr_end);
-// 		content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ 
-// 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
-		
-// 		content +='<td>'+list[i].pc_cate+'</td>';
 // 		content += '<td>'
-// 			+ "<button class='btn btn-primary btn-sm' onclick=location.href='programDetail?pr_idx="+list[i].pr_idx+"'>상세보기/수정</button>"
+// 			+ "<button class='btn btn-primary btn-sm' onclick=location.href='nextUpdateForm?bd_idx="+list[i].bd_idx+"'>수정</button>"
 // 			+ "</td>";
 		
 // 		content +='</tr>';
@@ -221,9 +209,9 @@ function drawList(list){
 // 	$("#list").append(content);
 // }
 
-function programWrite(){
-	console.log("프로그램 등록 버튼 누르셧죠?");
-	location.href='programWrite';
+function nextWrite(){
+	console.log("인수인계 등록 버튼 누르셧죠?");
+	location.href='nextWrite';
 }
 
 </script>

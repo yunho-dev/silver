@@ -41,7 +41,7 @@
 					<div class="card">
 						<div class="card-body py-4 px-5">
 						<form action="programDetailUpdate" method="post">
-							<input type="hidden" name="pr_idx" value="${list.pr_idx}">
+<%-- 							<input type="hidden" name="pr_idx" value="${list.pr_idx}"> --%>
 								<div class="d-flex align-items-center">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">프로그램명</span> 
@@ -102,20 +102,25 @@
 										<span class="input-group-text" id="basic-addon1">카테고리번호</span> 
 										
 									<select name="pc_idx">
-										<option
-										<c:if test="${list.pc_idx == 1}">selected</c:if>>
-										사고능력향상
-										</option>
-										<option
-										<c:if test="${list.pc_idx == 2}">selected</c:if>>
-										운동능력향상
-										</option>
-										<option
-										<c:if test="${list.pc_idx == 3}">selected</c:if>>
-										인지능력향상
-										</option>
+										<c:forEach items="${procategory}" var="pc">
+											<option value="${pc.pc_idx}" ${pc.pc_idx == list.pc_idx ? 'selected="selected"' : ''}>${pc.pc_cate}</option>	
+										</c:forEach>			
 									</select>
-									<input type="hidden" name="pc_idxTwo" value="${list.pc_idx}">
+									<!-- 삼항연산자로 value=pc_idx 주고 pc.pc_idx == list.pc_idx 이라는 조건을 주고 참일 경우 selected -->
+<!-- 										<option -->
+<%-- 										<c:if test="${list.pc_idx == 1}">selected</c:if>> --%>
+<!-- 										사고능력향상 -->
+<!-- 										</option> -->
+<!-- 										<option -->
+<%-- 										<c:if test="${list.pc_idx == 2}">selected</c:if>> --%>
+<!-- 										운동능력향상 -->
+<!-- 										</option> -->
+<!-- 										<option -->
+<%-- 										<c:if test="${list.pc_idx == 3}">selected</c:if>> --%>
+<!-- 										인지능력향상 -->
+<!-- 										</option> -->
+<!-- 									</select> -->
+<%-- 									<input type="hidden" name="pc_idxTwo" value="${list.pc_idx}"> --%>
 									<!-- name이랑 value를 사용자에게 보여주지 않고 넘길때 hidden 사용 -->
 								</div>
 									

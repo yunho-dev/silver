@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.silver.boardnext.NextDTO;
+
 @Controller
 public class ResdientProgramController {
 	
@@ -31,21 +33,22 @@ public class ResdientProgramController {
 		
 		return "resident/programList";
 	}
-	
-	@RequestMapping(value="/ProgramlistCall")
-	@ResponseBody
-	public HashMap<String, Object> ProgramlistCall(){
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		logger.info("프로그램 리스트콜 start");
-		ArrayList<ResidentProgramDTO> programlist = residientprogramservice.programlist();
-		logger.info("프로그램 리스트콜 ing");
-		map.put("programlist", programlist);
-		
-		return map;
-		
-	}
+
+// 리스트 ajax처리함
+//	@RequestMapping(value="/ProgramlistCall")
+//	@ResponseBody
+//	public HashMap<String, Object> ProgramlistCall(){
+//		
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		
+//		logger.info("프로그램 리스트콜 start");
+//		ArrayList<ResidentProgramDTO> programlist = residientprogramservice.programlist();
+//		logger.info("프로그램 리스트콜 ing");
+//		map.put("programlist", programlist);
+//		
+//		return map;
+//		
+//	}
 	
 	@GetMapping(value="/programWrite")
 	public ModelAndView programWrite() {
@@ -55,21 +58,21 @@ public class ResdientProgramController {
 	}
 	
 	@PostMapping(value="/ProgramWriteComplete")
-	public ModelAndView ProgramWriteComplete(HttpServletRequest req,ResidentProgramDTO dto) {
-		logger.info("번호:"+dto.getPr_idx());
-		logger.info("이름:"+dto.getPr_name());
-		logger.info("선생:"+dto.getPr_teacher());
-		logger.info("시작:"+dto.getPr_start());
-		logger.info("끄읕:"+dto.getPr_end());
-		logger.info("내용:"+dto.getPr_content());
-		logger.info("목표:"+dto.getPr_goal());
-		logger.info("장소:"+dto.getPr_place());
-		logger.info("상태:"+dto.getPr_state());
-		logger.info("카테고리:"+dto.getPc_idx());
+	public ModelAndView ProgramWriteComplete(HttpServletRequest req,String pr_name, String pr_teacher,
+			String pr_start, String pr_end,String pr_goal, String pr_content, String pr_place, String pr_state,int pc_idx) {
+//		logger.info("번호:"+dto.getPr_idx());
+//		logger.info("이름:"+dto.getPr_name());
+//		logger.info("선생:"+dto.getPr_teacher());
+//		logger.info("시작:"+dto.getPr_start());
+//		logger.info("끄읕:"+dto.getPr_end());
+//		logger.info("내용:"+dto.getPr_content());
+//		logger.info("목표:"+dto.getPr_goal());
+//		logger.info("장소:"+dto.getPr_place());
+//		logger.info("상태:"+dto.getPr_state());
+//		logger.info("카테고리:"+dto.getPc_idx());
 		
-		return residientprogramservice.ProgramWriteComplete(req,dto.getPr_idx(),
-				dto.getPr_name(),dto.getPr_teacher(),dto.getPr_start(),dto.getPr_end(),dto.getPr_goal(),
-				dto.getPr_content(),dto.getPr_place(),dto.getPr_state(),dto.getPc_idx());
+		
+		return residientprogramservice.ProgramWriteComplete(req,pr_name,pr_teacher,pr_start,pr_end,pr_goal,pr_content,pr_place,pr_state,pc_idx);
 	}
 	
 	@GetMapping(value="/programDetail")
@@ -91,12 +94,32 @@ public class ResdientProgramController {
 		logger.info("업데이트 내용:"+req.getParameter("pr_content"));
 		logger.info("업데이트 장소:"+req.getParameter("pr_place"));
 		logger.info("업데이트 상태:"+req.getParameter("pr_state"));
-		//logger.info("업데이트 카테고리:"+req.getParameter("pc_idx"));
-		logger.info("업데이트 카테고리 순번:"+req.getParameter("pc_idxTwo"));
+		logger.info("업데이트 카테고리:"+req.getParameter("pc_idx"));
+//		logger.info("업데이트 카테고리 순번:"+req.getParameter("pc_idxTwo"));
 		
 		
 		return residientprogramservice.programDetailUpdate(req);
 		
+	}
+	
+	@GetMapping(value="/ProgramListCall.ajax")
+	@ResponseBody
+	public HashMap<String, Object> ProgramListCall(HttpServletRequest request,@RequestParam int page) {
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int total=residientprogramservice.residientprogramSizeTotal();
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<ResidentProgramDTO> list=residientprogramservice.listCall(page);
+//		HttpSession session=request.getSession();
+//		MemberDTO sessionDTO=(MemberDTO) session.getAttribute("loginId");
+//		int pos=sessionDTO.getPos_level();
+//		logger.info("mem_id 값 : "+sessionDTO.getMem_id());
+//		logger.info("pos 값 : "+pos);
+		map.put("list", list);
+		map.put("page_idx", page_idx);
+//		map.put("sessionLevel", pos);
+//		map.put("SessionID", sessionDTO.getMem_id());
+		return map;
 	}
 
 	
