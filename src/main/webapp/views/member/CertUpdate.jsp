@@ -61,6 +61,7 @@
 		            <div class="modal-body">
 						<div class="writeLeft">
 						<input type="hidden" name='memId' value="${info.mem_id}">
+						<input type="hidden" name='certIdx'>
 						<p id="memId" style="display: none;"></p> 
 							<p class="writeArea"><span id="WriteName">자격증 명 : </span> 
 								<input type="text" name="certName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="자격증명을 입력해 주세요">
@@ -97,7 +98,64 @@
 </body>
 <script>
 
+//자격증 업데이트 유효성 검사
+$("#mypageCertUpdate").click(function(){
+	var $memId = $('#memberCertUpdateForm input[name=memId]');
+	var $certIdx = $('#memberCertUpdateForm input[name=certIdx]');
+	/* Left */
+	var $certName = $('#memberCertUpdateForm input[name=certName]');
+	var $certPlace = $('#memberCertUpdateForm input[name=certPlace]');
 
+	/* Right */
+	var $certDate = $('#memberCertUpdateForm input[name=certDate]');
+
+	/* 날짜 정규식 */
+	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+	
+	var formData = new FormData(); // 파일 + 텍스트 전송을 위한 FormData 객체
+	
+	
+		if($certName.val()==''){
+			alert("자격증명을 입력해 주세요");
+			$certName.focus();
+		}else if($certPlace.val()==''){
+			alert("시행처를 입력해 주세요");
+			$certPlace.focus();
+		}else if($certDate.val()==''){
+			alert("취득일을 입력해 주세요");
+			$certDate.focus();
+		}else if($certDate.val().match(regex) == null){
+			alert("취득일을 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
+			$certDate.focus();			
+		}else{
+			$('#memberCertUpdateForm input').each(function(){
+				var key = $(this).attr('name');
+				
+				formData.append(key, $(this).val());				
+				
+			})
+			
+			$.ajax({
+				type:'POST',
+				url:'CertUpdate.do',
+				processData:false, // 객체를 문자열로 바꾸지 않음
+				contentType:false, // 컨텐트 타입을 객체로 함
+				data: formData,
+				success:function(data){
+					if(data.memId != null){
+						location.reload();
+					}
+				},
+				error:function(e){
+					console.log(e)
+				}
+			});
+			
+		} 
+	
+
+	
+});
 
 
 </script>

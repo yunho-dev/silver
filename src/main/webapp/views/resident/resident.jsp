@@ -14,7 +14,14 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
 
-
+<style>
+	#residentList{border-collapse:collapse; width:100%; height:700px;}
+	#residentList thead{float:left; width:900px; }
+	#residentList tbody{overflow-y:auto; overflow-x:hidden; float:left; width:900px; height:600px;white-space:nowrap;}
+	.residentList{text-align: center;}
+	th{ width:140px; height:70px;}
+	td{ width:140px; height:68px;}
+</style>
 
 </head>
  <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -44,15 +51,6 @@
 		</div>
 		
 		
-		<%-- 
-		<div>
-				<select id="ro_name" name="ro_name">
-					<option disabled selected>생활실</option>
-					<option value="0">퇴소</option>
-				</select>
-		</div>		  
-		--%>
-		
 		<div class="option_re_name">
 			<input type="text" name="re_name">
 		</div>
@@ -61,27 +59,23 @@
          
          
          
-         
-         <!-- Table head options start -->
+                         <!-- Basic Tables start -->
+                         <a href="residentwriteForm.go" class="btn btn-primary">신규등록</a>	
+                         
+                         
                 <section class="section">
-                    <div class="row" id="table-head">
-                        <div class="col-12">
+                        <div class="col-12 col-md-6" style="width:62%;">
                             <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Table head options</h4>
-                                </div>
                                 <div class="card-content">
-                                    <div class="card-body">
-                                        <p>Similar to tables and dark tables, use the modifier classes <code
-                                                class="highlighter-rouge">.thead-light</code> or <code
-                                                class="highlighter-rouge">.thead-dark</code> to
-                                            make <code class="highlighter-rouge">&lt;thead&gt;</code>s appear light or
-                                            dark gray.
-                                        </p>
-                                    </div>
-                                    <!-- table head dark -->
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
+                                    <div class="card-body"  id="residentList">
+                                       
+                                       
+                                       
+                                        <!-- Table with outer spacing -->
+                                        <div class="table-responsive">
+                                            <table class="table table-lg" id="residentList">
+                                                
+                                                
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th>번호</th>
@@ -93,55 +87,30 @@
 													<th>현황</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
                                             
-                                            
-                                            
+                                            <tbody >                                            
                                             	<c:forEach items="${resident}" var="rd">
 													<tr>
 														<td>${rd.re_idx}</td>
-														<td><a href="residentdetail.go?re_idx=${rd.re_idx}">${rd.re_name}</a></th>
+														<td><a href="residentdetail.go?re_idx=${rd.re_idx}">${rd.re_name}</a></td>
 														<td>${rd.re_gender}</td>
-														<td>${rd.re_jumin}</td>
+														<td>${rd.re_age}</td>
 														<td>${rd.re_grade}</td>
 														<td>${rd.ro_name}</td>
 														<td>${rd.re_state}</td>														
 													</tr>
 												</c:forEach>
-                                            
-                                            	</table>
-													<a href="residentwriteForm.go" class="btn btn-primary">신규등록</a>		
-												</form>
-											     </span>
-                                            
-                                            
                                             </tbody>
-                                        </table>
+                                                
+                                                                                             
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>                      
                 </section>
-                <!-- Table head options end -->
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-
-         
-         
-         
-         
-         
-         
+                <!-- Basic Tables end -->
          
          
        </div>

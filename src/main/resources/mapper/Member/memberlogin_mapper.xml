@@ -5,7 +5,7 @@
 <!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
 <mapper namespace="com.silver.member.MemberLoginDAO">
 	<select id="memberlogin" resultType="com.silver.member.MemberDTO">
-		select m.mem_id ,m.mem_name ,m.mem_gender ,m.mem_email ,m.mem_birth ,m.mem_pnum ,m.mem_addr ,m.mem_daddr,
+		select m.mem_id,m.mem_pw ,m.mem_name ,m.mem_gender ,m.mem_email ,m.mem_birth ,m.mem_pnum ,m.mem_addr ,m.mem_daddr,
 		m.mem_num ,p.pos_name ,p.pos_level,part_name,dept_name
 		from member m 
 		inner join position p 
@@ -14,7 +14,7 @@
 		on p2.part_num = m.part_num
 		INNER JOIN depart d
 		on d.dept_num = m.dept_num
-   		where mem_id =${param1} and mem_pw =${param2} ;
+   		where mem_id =#{param1};
 	</select>
 </mapper>
 

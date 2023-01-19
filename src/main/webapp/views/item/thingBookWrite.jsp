@@ -85,7 +85,7 @@
 								<input type="text" name="bStart"><br>
 							</p><br>
 							<p class="writeArea">
-								<span id="WriteName">얘약 끝날 날짜 : </span> 
+								<span id="WriteName">예약 끝날 날짜 : </span> 
 								<input type="text" name="bEnd"><br>
 							</p>
 						</div>

@@ -11,8 +11,93 @@
 		select * from car
 	</select>
 	
-	<select id="getDriveHistory" resultType="car" parameterType="int">
-		SELECT * from carhistory WHERE car_idx = #{carNum}
+	<select id="totalCountDriveHistory" resultType="int" parameterType="int">
+		SELECT COUNT(chis_idx) FROM carhistory WHERE car_idx = #{carIdx}
 	</select>
-
+	
+	<select id="getDriveHistory" resultType="car">
+		SELECT * from carhistory WHERE car_idx = #{param1} 
+			ORDER BY chis_date DESC LIMIT 3 OFFSET #{param2}
+	</select>
+	
+	<select id="totalCountCarBookList" resultType="int" parameterType="int">
+		SELECT COUNT(b.cb_idx) FROM book b
+			INNER JOIN `member` m ON m.mem_id = b.mem_id
+		WHERE car_idx = #{carIdx}
+	</select>
+	
+	<select id="getCarBookList" resultType="car">
+		SELECT b.cb_idx, b.b_start, b.b_end, m.mem_name, b.b_cancel FROM book b
+			INNER JOIN `member` m ON m.mem_id = b.mem_id
+		WHERE car_idx = #{param1} ORDER BY b.cb_idx DESC limit 5 offset #{param2}
+	</select>
+	
+	<insert id="carHistoryResist" parameterType="hashmap">
+		<choose>
+			<when test="!chisBigo.equals('')">
+				<if test="!chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter, chis_bigo)
+						VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter}, #{chisBigo});
+				</if>
+				<if test="chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_bigo)
+						VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisBigo});
+				</if>
+			</when>
+			<otherwise>
+				<if test="!chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km, chis_liter)
+						VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm}, #{chisLiter});
+				</if>
+				<if test="chisLiter.equals('')">
+					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km)
+					VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm});
+				</if>
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<insert id="carResist" parameterType="hashmap">
+		INSERT into car(it_idx, car_name, car_num, car_state, car_part, car_type, car_year)
+			VALUES(5, #{carName}, #{carNum}, #{carState}, #{carPart}, #{carType}, #{carYear});
+	</insert>
+	
+	<select id="getCarInfo" parameterType="int" resultType="car">
+		select * from car where car_idx = #{carIdx}
+	</select>
+	
+	<update id="carModify" parameterType="hashmap">
+		UPDATE car 
+			SET car_name=#{carName}, car_num=#{carNum}, car_state=#{carState}, car_part=#{carPart}, car_type=#{carType}, car_year=#{carYear}
+		where car_idx=#{carIdx}
+	</update>
+	
+	<select id="getDriveHistoryModifyInfo" parameterType="int" resultType="car">
+		SELECT * from carhistory WHERE chis_idx = #{chisIdx}
+	</select>
+	
+	<update id="carHistoryModify" parameterType="hashmap">
+		UPDATE carhistory
+		<set>
+			chis_date=#{chisDate}, chis_driver=#{chisDriver}, chis_place=#{chisPlace}, chis_reason=#{chisReason}, chis_km=#{chisKm}, 
+			<if test="!chisLiter.equals('')">chis_liter=#{chisLiter},</if>
+			<if test="!chisBigo.equals('')">chis_bigo=#{chisBigo},</if>
+		</set>
+			WHERE chis_idx = #{chisIdx}
+	</update>
+	
+	<insert id="carBookResist" parameterType="hashmap">
+		insert into book(car_idx, b_write, b_start, b_end, mem_id)
+			values(#{carIdx}, #{bookWriter}, #{bStart}, #{bEnd}, #{bMemId})
+	</insert>
+	
+	<select id="carBookCheck" resultType="int" parameterType="hashmap">
+		select COUNT(cb_idx) 
+		from book
+		where car_idx = #{carIdx}
+			and b_cancel = 1 
+			and b_start <![CDATA[<]]> #{bEnd}
+			and b_end <![CDATA[>]]> #{bStart}
+	</select>
+	
 </mapper>

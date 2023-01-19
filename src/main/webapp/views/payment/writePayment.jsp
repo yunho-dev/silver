@@ -17,6 +17,12 @@ overflow: auto;
 display: block;
 }
 </style>
+<!-- <link rel="stylesheet" href="richtexteditor/runtime/richtexteditor_content.css"> -->
+<link rel="stylesheet" href="res/style.css" />
+<link rel="stylesheet" href="richtexteditor/rte_theme_default.css" />
+<script type="text/javascript" src="richtexteditor/rte.js"></script>
+<script type="text/javascript"
+		src='richtexteditor/plugins/all_plugins.js'></script>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link
 	href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"
@@ -28,11 +34,6 @@ display: block;
 <link rel="stylesheet"
 	href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
-<link rel="stylesheet" href="richtexteditor/runtime/richtexteditor_content.css">
-<link rel="stylesheet" href="richtexteditor/rte_theme_default.css" />
-<script type="text/javascript" src="richtexteditor/rte.js"></script>
-<script type="text/javascript"
-		src='richtexteditor/plugins/all_plugins.js'></script>
 </head>
 <body>
 	<div id="app">
@@ -51,10 +52,10 @@ display: block;
 							<div class="d-flex align-items-center">
 							<div class="container">
 							 <div class="row justify-content-between">
-							<table class="table table-bordered table-hover row" style="width: 400px;">
+							<table class="table table-bordered table-hover row" style="width: 600px;">
 								<tbody>
 									<tr>
-										<th>결재 양식</th>
+										<th class="col-md-2">결재 양식</th>
 										<td>
 											<select id="payFormDropDown" name="payFormDropDown" onchange="payFormDropDownCall()">
 												<option>휴가</option>
@@ -132,15 +133,26 @@ display: block;
 								
 							</div>
 							
-						
+						<div class="input-group mb-3">
+						  <span class="input-group-text" id="inputGroup-sizing-default">제목</span>
+						  <input type="text" class="form-control" name="PaymentSubject" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+						</div>
 						<div id="div_editor"></div>
 						<input type="hidden" name="wp_content"/>
+							<div class="mb-3">
+							  <label for="formFileMultiple" class="form-label"></label>
+							  <input class="form-control" name="PayMentFile" type="file" id="formFileMultiple" multiple>
+							</div>
+							<div class="input-group">
+							  <span class="input-group-text">의견란</span>
+							  <textarea class="form-control" name="bigoContent" aria-label="With textarea"></textarea>
+							</div>
 							<div style="text-align: center;margin-top: 30px;">
 								<button type="button" type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 								<button type="button" type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
 							</div>
 						</div>
-						<input type="file">
+						
 					</div>
 					<div class="modal fade" id="PayFormCallList" tabindex="-1" role="dialog" 
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -204,7 +216,7 @@ display: block;
 			   	  	<ul class="list-group" id="OrgDeptList">
 			   	  	</ul>
      			 </div>
-     			 <input type="hidden" name="OrgPmSelected" value="">
+     			 <input type="hidden" name="OrgPmSelected" id="OrgPmSelected" value="">
      			 <div class="modal-footer">
      			 	<button id="OrgDeptListOK" type="button" class="btn btn-primary">선택</button>
      			 	<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">취소</button>
@@ -212,6 +224,7 @@ display: block;
 			   </div>
 			</div>
 			</div>
+			<input type="hidden" name="PMlineIndex" value="">
 			</form>
 				</section>
 			</div>
@@ -283,7 +296,7 @@ function PayFormModal(){
 		var content = '';
 		for(var i=0;i<MPFlist.length;i++){
 			content +='<tr>';
-			content +='<td><input type="radio" name="chk_info">'
+			content +='<td><input type="radio" name="chk_info" value="'+MPFlist[i].pf_idx+'">'
 			content +='<textarea style="display:none;">'+MPFlist[i].pf_content+'</textarea>';
 			content +='</td>';
 			content +='<td>'+MPFlist[i].pf_cate+'</td>';
@@ -379,13 +392,25 @@ $(document).on('click','#ReferOK',function(){
 var SelfMem_Pos=$("input[name='SelfMem_Pos']").val()
 function PayOrgCall(){
 	console.log($("#pmsignName").children());
-	if($("#pmsignName").children().length > 2){
-		var LengthChk = $("#pmsignName").children().length;
-		LengthChk--;
+	var LengthChk = $("#pmsignName").children().length;
+	LengthChk--;
+	if(LengthChk == 2){
+		// LengthChk--;
 		var LineChoice=$("#pmsignName  th:nth-child("+LengthChk+")")[0].innerText;
 		var StartIndex=LineChoice.indexOf("[")+1;
 		var LastIndex=LineChoice.indexOf("]");
 		var Result = LineChoice.substring(StartIndex, LastIndex);
+		console.log("result 값은 : "+Result);
+		// $(document).on('click','#OrgDeptListOK',function(){});
+	}
+	if(LengthChk == 3){
+		// LengthChk--;
+		// LengthChk--;
+		var LineChoice=$("#pmsignName  th:nth-child("+LengthChk+")")[0].innerText;
+		var StartIndex=LineChoice.indexOf("[")+1;
+		var LastIndex=LineChoice.indexOf("]");
+		var Result = LineChoice.substring(StartIndex, LastIndex);
+		console.log("result 값은 : "+Result);
 	}
 	if(Result =='주임') SelfMem_Pos = 4;
 	else if(Result =='팀장') SelfMem_Pos = 3;
@@ -441,6 +466,12 @@ var OrgMem_name_ID=new Array();
 		var OrgMem_idOne= $("input[name='OrgRadio']:checked").val().split(",")[0];
 		var OrgMem_idTwo= $("input[name='OrgRadio']:checked").val().split(",")[1];
 		var OrgMem_name =  $("input[name='OrgRadio']:checked").next().prevObject[0].offsetParent.innerText;
+		
+// 		$("#"+OrgCnt).parent().prepend(OrgMem_name);
+// 		OrgCnt++;
+// 		$("#"+OrgCnt).css('display','none');
+// 		OrgCnt++;
+		// OrgCnt=count;
 		$("#"+OrgCnt).parent().prepend(OrgMem_name);
 		OrgCnt++;
 		$("#"+OrgCnt).css('display','none');
@@ -469,27 +500,25 @@ $(document).on('click','#pmline',function(){
 	var content2='';
 	count++;
 	content2 +='<td><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#PayOrgCall" onclick="PayOrgCall()"';
-	content2 +='id='+count+' type="button">결재자 추가</button></td>';
+	content2 +='id='+count+' type="button" id="NotEmptyButton">결재자 추가</button></td>';
 	$("#pmsignName").append(content1);
 	$("#pmsign").append(content2);
+	console.log("추가 count 값 : "+count);
+	// console.log("추가 OrgCnt 값 : "+OrgCnt);
 });
 //결재라인 추가 //
 
 
 // 결재 라인 삭제 //
 function pmlinedel(e){
-	var idx=$(e).attr("id");
+	idx=$(e).attr("id");
+	console.log("삭제1 count 값 : "+count);
 	$("#"+idx).parent().remove();
-	if(idx == OrgCnt){
-		OrgCnt--;
-	}
 	idx++;
-	if(idx == OrgCnt){
-		OrgCnt--;
-	}
 	$("#"+idx).parent().remove();
-	idx--;
-	idx--;
+	console.log("삭제2 count 값 : "+count);
+	// console.log("삭제 OrgCnt 값 : "+OrgCnt);
+	console.log($("#OrgPmSelected").val().substring($("#OrgPmSelected").val().lastIndexOf(",")));
 }
 //결재 라인 삭제 //
 
@@ -514,6 +543,13 @@ function save() {
 	if($("input[name='wp_content']").val().length < 11){
 		alert('최소 10글자 입력 해주세요.');
 	}else{
+			console.log("ㅁㅁㅁ"+$("#NotEmptyButton").html());
+		if($("input[name='chk_info']").val() == null){
+			alert('결재 양식을 선택해주세요');
+			return;
+		}
+		console.log("숫자"+$("#pmsignName th").length);
+		$("input[name='PMlineIndex']").val($("#pmsignName"))
 		$("form").submit();
 	}
 }

@@ -103,7 +103,7 @@
 <script>
 
 
-//학력 등록 유효성 검사
+//경력 등록 유효성 검사
 $("#mypageCareerRegist").click(function(){
 	var $memId = $('#memberCareerWriteForm input[name=memId]');
 	/* Left */

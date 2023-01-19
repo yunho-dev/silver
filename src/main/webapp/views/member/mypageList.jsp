@@ -126,8 +126,9 @@
 								<tr>
 									<td>
 									<div class="buttons">
-									<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">비밀번호 변경</a>
-									</div>									
+									<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#ChangePassword">비밀번호 변경</a>
+									</div>
+									<jsp:include page="ChangePassword.jsp"></jsp:include>										
 									</td>
 
 									<td colspan="6">
@@ -163,6 +164,10 @@
                     	<jsp:include page="writeCert.jsp"></jsp:include>
                     	<jsp:include page="writeCareer.jsp"></jsp:include>
                     	<jsp:include page="CertUpdate.jsp"></jsp:include>
+                    	<jsp:include page="EduUpdate.jsp"></jsp:include>
+                    	<jsp:include page="CareerUpdate.jsp"></jsp:include>
+                    	<jsp:include page="writeFileInsert.jsp"></jsp:include>
+                    	<jsp:include page="docuFileUpdate.jsp"></jsp:include>
 					</div>
 
 
@@ -278,7 +283,9 @@ function EdulistCall(showpage) {
           console.log(data);
 
           edudrawList(data.list);
-        	
+          
+      	 if(data.list!=""){
+        	  
 			$("#pagination").twbsPagination({
 				startPage : 1, // 시작 페이지
 				totalPages : data.total, // 총 페이지 수
@@ -294,6 +301,8 @@ function EdulistCall(showpage) {
 					console.log(e);
 				}
 			});         
+          } 
+        	
        },
        error:function(e){
           console.log(e);
@@ -310,9 +319,18 @@ function edudrawList(eduList){
 	
 	if(eduList.length < 1){
 		var msg = "등록된 학력이 없습니다.";
+		content+='<div class="card-header">'+"학력"+'</div>';
+		content+='<div class="card-body" >';
+		content+='<table class="table table-striped" id="mytable">';
 		content += '<tr>';
 		content += '<td colspan="6">'+msg+'</td>';	
 		content += '</tr>';
+        content+='</table>';
+     	content+='<div class="buttons">';
+        content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeEdu">학력 등록</a>';
+        content+='</div>';
+        content+='</div>';
+        content+='</div>';
 		
 		$('#undertable').empty();
 		$('#undertable').append(content);
@@ -340,7 +358,7 @@ function edudrawList(eduList){
 			content+='<td>'+eduList[i].edu_success+'</td>';
 			content+='<td>';
 	     	content+='<div class="buttons">';
-	        content+='<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">수정하기</a>';
+	     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#EduUpdate" id="modify" onclick=EduUpdateForm($(this))>수정하기</a>';
 	        content+='</div>';
 			content+='</td>';
 			content+='</tr>';	
@@ -384,7 +402,7 @@ function certlistCall(showpage1) {
           console.log(data);
 
           certdrawList(data.list);
-          			         
+       	 if(data.list!=""){		         
         	
 			$("#pagination").twbsPagination({
 				startPage : 1, // 시작 페이지
@@ -396,7 +414,8 @@ function certlistCall(showpage1) {
 						showpage1=page;
 					}
 				}
-			});         
+			}); 
+       	 }
        },
        error:function(e){
           console.log(e);
@@ -409,10 +428,20 @@ function certdrawList(certList){
 	var content='';
 	if(certList.length < 1){
 		var msg = "등록된 자격증이 없습니다.";
+		content+='<div class="card-header">'+"자격증"+'</div>';
+		content+='<div class="card-body" >';
+		content+='<table class="table table-striped" id="mytable">';		
+		
 		content += '<tr>';
 		content += '<td colspan="5">'+msg+'</td>';	
 		content += '</tr>';
-		
+        content+='</table>'; 
+     	content+='<div class="buttons">';
+     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeCert">자격증 등록</a>';
+        content+='</div>';
+        content+='</div>';
+        content+='</div>';
+        
 		$('#undertable').empty();
 		$('#undertable').append(content);
 	}else{
@@ -479,8 +508,10 @@ function careerlistCall(showpage2) {
        datatype:'JSON',
        success:function(data){
           console.log(data);
-
+          
           careerdrawList(data.list);                  
+
+          if(data.list!=""){
         	
 			$("#pagination").twbsPagination({
 				startPage : 1, // 시작 페이지
@@ -493,6 +524,7 @@ function careerlistCall(showpage2) {
 					}
 				}
 			});         
+          }
        },
        error:function(e){
           console.log(e);
@@ -505,9 +537,18 @@ function careerdrawList(careerList){
 	var content='';
 	if(careerList.length < 1){
 		var msg = "등록된 경력이 없습니다.";
+		content+='<div class="card-header">'+"경력"+'</div>';
+		content+='<div class="card-body" >';
+		content+='<table class="table table-striped" id="mytable">';
 		content += '<tr>';
 		content += '<td colspan="6">'+msg+'</td>';	
 		content += '</tr>';
+        content+='</table>';  
+     	content+='<div class="buttons">';
+     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeCareer">경력 등록</a>';
+        content+='</div>';
+        content+='</div>';
+        content+='</div>';
 		
 		$('#undertable').empty();
 		$('#undertable').append(content);
@@ -535,7 +576,7 @@ function careerdrawList(careerList){
 			content +='<td>'+careerList[i].ca_start +'   ~   '+careerList[i].ca_end+'</td>';
 			content+='<td>';
 	     	content+='<div class="buttons">';
-	        content+='<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">수정하기</a>';
+	     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#CareerUpdate" id="modify" onclick=CareerUpdateForm($(this))>수정하기</a>';
 	        content+='</div>';
 			content+='</td>';
 			content+='</tr>';	
@@ -590,6 +631,7 @@ function paperlistCall(showpage3) {
 					if(showpage3!=page){
 						paperlistCall(showpage3);
 						showpage3=page;
+						console.log(showpage3);
 					}
 				}
 			});         
@@ -600,14 +642,23 @@ function paperlistCall(showpage3) {
     });
  }
  
- // 서퓨파일 리스트 그리는 함수
+ // 서류파일 리스트 그리는 함수
 function paperdrawList(paperList){
 	var content='';
 	if(paperList.length < 1){
 		var msg = "등록된 서류파일이 없습니다.";
+		content+='<div class="card-header">'+"경력"+'</div>';
+		content+='<div class="card-body" >';
+		content+='<table class="table table-striped" id="mytable">';				
 		content += '<tr>';
 		content += '<td colspan="3">'+msg+'</td>';	
 		content += '</tr>';
+        content+='</table>';  
+     	content+='<div class="buttons">';
+     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeFileInsert">서류파일 등록</a>';
+        content+='</div>';
+        content+='</div>';
+        content+='</div>';		
 		
 		$('#undertable').empty();
 		$('#undertable').append(content);
@@ -617,7 +668,8 @@ function paperdrawList(paperList){
 		content+='<table class="table table-striped" id="mytable">';
         content+='<thead>';
         content+='<tr>';
-        content+='<th>'+"파일이름"+'</th>';
+        content+='<th>'+"파일번호"+'</th>';
+        content+='<th>'+"파일제목"+'</th>';
         content+='<th>'+"파일등록일"+'</th>';
         content+='<th></th>';
        	content+='</tr>';
@@ -626,12 +678,12 @@ function paperdrawList(paperList){
 		for(var i=0; i<paperList.length; i++){
 			
 			content+='<tr>';
-/* 			content+='<td class="mem_id">'+paperList[i].mem_id+'</td>'; */
+			content+='<td class="fp_idx">'+paperList[i].fp_idx+'</td>'; 
 			content+='<td class="fp_oriFileName">'+paperList[i].fp_oriFileName+'</td>';
 			content+='<td>'+paperList[i].fp_date+'</td>';
 			content+='<td>';
 	     	content+='<div class="buttons">';
-	        content+='<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">수정하기</a>';
+	        content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#docuFileUpdate" id="modify" onclick=docuFileUpdateForm($(this))>수정하기</a>';
 	        content+='</div>';
 			content+='</td>';
 			content+='</tr>';	
@@ -649,7 +701,7 @@ function paperdrawList(paperList){
 		content+='</div>';
 		content+='</div>';
      	content+='<div class="buttons">';
-        content+='<a href="#" class="btn btn-sm btn-primary" style="font-size:3pt;">서류파일 등록</a>';
+     	content+='<a class="btn btn-sm btn-primary" style="font-size:3pt;" data-bs-toggle="modal" data-bs-target="#writeFileInsert">서류파일 등록</a>';
         content+='</div>';
         content+='</div>';
         content+='</div>';
@@ -659,16 +711,17 @@ function paperdrawList(paperList){
 	}   
 } 
  
-
- 
+var flag=true;
+var pageflag=true;
+var chkPage=new Array(); 
  
 // 결제문서 리스트 부르기
 function mypaymentlistCall(showpage4) { 
 	
 	var memId = $('#tablemarin').find('td.marin').text();
 	
-
-	
+	if(flag){
+		flag=false;
     $.ajax({
        type:'GET',
        url:'mypaymentlistCall.do',
@@ -676,26 +729,38 @@ function mypaymentlistCall(showpage4) {
        datatype:'JSON',
        success:function(data){
           console.log(data);
-
           mypaymentdrawList(data.list);
-          			       
+
+      	chkPage.push(data.total);
+		if(chkPage.at(-2) != data.total){
+			pageflag=true;
+		}		
+		
+		if(pageflag == true && $('.pagination').data("twbs-pagination")){
+            $('.pagination').twbsPagination('destroy');
+            pageflag=false;
+        }
         	
 			$("#pagination").twbsPagination({
 				startPage : 1, // 시작 페이지
 				totalPages : data.total, // 총 페이지 수
 				visiblePages : 5, // 기본으로 보여줄 페이지 수
 				onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					
 					if(showpage4!=page){
-						mypaymentlistCall(showpage4);
 						showpage4=page;
+						mypaymentlistCall(showpage4);
 					}
 				}
 			});         
        },
        error:function(e){
           console.log(e);
-       }    
+       },complete:function(){
+			flag=true;    
+       }
     });
+	}
  }
  
  // 결제문서 리스트 그리는 함수
@@ -719,7 +784,6 @@ function mypaymentdrawList(mypaymentList){
         content+='<th>'+"제목"+'</th>';
         content+='<th>'+"결제양식"+'</th>';
         content+='<th>'+"결제상태"+'</th>';
-        content+='<th></th>';
        	content+='</tr>';
         content+='</thead>';
 		content+='<tbody id="list">';
@@ -770,6 +834,7 @@ function CertUpdateForm(listRow){
 		data:{'Cename':Cename},
 		dataType:'JSON',
 		success:function(data){
+			$("#memberCertUpdateForm input[name=certIdx]").attr('value',data.detail.ce_idx);
 			$("#memberCertUpdateForm input[name=certName]").attr('value',data.detail.ce_name);
 			$("#memberCertUpdateForm input[name=certPlace]").attr('value',data.detail.ce_place);
 			$("#memberCertUpdateForm input[name=certDate]").attr('value',data.detail.ce_date);
@@ -783,7 +848,101 @@ function CertUpdateForm(listRow){
  
  
 } 
+
+
+//학력 수정에 데이터 넘기는 함수
+function EduUpdateForm(listRow){
+	
+	var Eduname = listRow.closest('tr').find('.edu_name').text();
+	console.log(listRow.closest('tr').find('.edu_name').text());
+
+    /* $(".modal-body #memId").html(memId);  */
+	
+    $.ajax({
+    	type:'GET',
+		url:'getMemberEduUpdateForm.go',
+		data:{'Eduname':Eduname},
+		dataType:'JSON',
+		success:function(data){
+			$("#memberEduUpdateForm input[name=eduIdx]").attr('value',data.detail.edu_idx);
+			$("#memberEduUpdateForm input[name=eduName]").attr('value',data.detail.edu_name);
+			$("#memberEduUpdateForm input[name=eduPass]").attr('value',data.detail.edu_pass);
+			$("#memberEduUpdateForm select[name=eduSuccess]").val(data.detail.edu_success);
+			$("#memberEduUpdateForm input[name=eduStart]").attr('value',data.detail.edu_start);
+			$("#memberEduUpdateForm input[name=eduEnd]").attr('value',data.detail.edu_end);								
+			
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
  
+ 
+} 
+
+
+//경력 수정에 데이터 넘기는 함수
+function CareerUpdateForm(listRow){
+	
+	var Caname = listRow.closest('tr').find('.ca_name').text();
+	console.log(listRow.closest('tr').find('.ca_name').text());
+
+    /* $(".modal-body #memId").html(memId);  */
+	
+    $.ajax({
+    	type:'GET',
+		url:'getMemberCareerUpdateForm.go',
+		data:{'Caname':Caname},
+		dataType:'JSON',
+		success:function(data){
+			$("#memberCareerUpdateForm input[name=careerIdx]").attr('value',data.detail.ca_idx);
+			$("#memberCareerUpdateForm input[name=careerName]").attr('value',data.detail.ca_name);
+			$("#memberCareerUpdateForm input[name=careerWork]").attr('value',data.detail.ca_work);
+			$("#memberCareerUpdateForm input[name=careerPos]").attr('value',data.detail.ca_pos);
+			$("#memberCareerUpdateForm input[name=careerStart]").attr('value',data.detail.ca_start);
+			$("#memberCareerUpdateForm input[name=careerEnd]").attr('value',data.detail.ca_end);								
+			
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+ 
+ 
+} 
+
+// 서류파일 정보 불러오는 ajax 함수
+function docuFileUpdateForm(listRow){
+	var Fpidx = listRow.closest('tr').find('.fp_idx').text();
+	console.log(listRow.closest('tr').find('.fp_idx').text());
+	
+	
+    $.ajax({
+    	type:'GET',
+		url:'getdocuFileUpdateForm.go',
+		data:{'Fpidx':Fpidx},
+		dataType:'JSON',
+		success:function(data){
+			
+			$("#docuFileUpdate input[name=FpIdx]").attr('value',data.detailPhoto.fp_idx);
+			$("#docuFileUpdate select[name=fpcCate]").val(data.detail.fpc_cate);
+			
+			var newFileName = data.detailPhoto;
+			// 파일 체크
+			if(newFileName != null || newFileName == ''){
+				$("#docuFileUpdate .memdocumentOri").text(data.detailPhoto.fp_newFileName);
+			}else{
+				$("#docuFileUpdate .memdocumentOri").text('없음');
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+    });
+}
+
+
+
  
 </script>
 </html>

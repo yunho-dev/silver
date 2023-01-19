@@ -111,9 +111,9 @@
 			content +='<td>'+manageList[i].it_name+'</td>';
 			content +='<td>'+manageList[i].th_model+'</td>';
 			content +='<td>'+manageList[i].th_part+'</td>';
-			content +='<td>'+manageList[i].th_money+'</td>';
+			content +='<td>'+manageList[i].th_money.toLocaleString('ko-KR')+'&#8361;</td>';
 			content +='<td>'+manageList[i].thCnt+'</td>';
-			content +='<td>'+manageList[i].sumMoney+'</td>';
+			content +='<td>'+manageList[i].sumMoney.toLocaleString('ko-KR')+'&#8361;</td>';
 			content +='</tr>';
 		}
 		$('#list').empty();
