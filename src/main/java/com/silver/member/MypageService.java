@@ -11,6 +11,7 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ public class MypageService {
 	Logger logger=LoggerFactory.getLogger(getClass());
 	
 	@Autowired MypageDAO dao;
+	@Autowired PasswordEncoder encoder;
 
 	// 파일 저장 등록
 	private String fileSave(MultipartFile photo, String ext) {
@@ -267,6 +269,7 @@ public class MypageService {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		ArrayList<MemberDTO> paperList=dao.paperlistCall(dto);
+		logger.info("dto :"+dto);
 		logger.info("가져온 서류파일 리스트:{}",paperList);
 		result.put("list", paperList);
 		result.put("total", totalPages);
@@ -279,6 +282,7 @@ public class MypageService {
 		int page = Integer.parseInt(params.get("page"));
 		int offset = 10*(page-1);
 		int totalCount = dao.totalCountmypaymentList(params);
+		logger.info("params: "+params);
 		logger.info("게시글 총 개수 : "+totalCount);
 		int totalPages = totalCount%10>0 ? (totalCount/10)+1 : (totalCount/10);
 		logger.info("총 페이지 수 : "+totalPages);
@@ -377,7 +381,7 @@ public class MypageService {
 		return result;
 	}
 	
-	// 마이페이지 자격증 수정폼에대한 서비스
+	// 마이페이지 자격증 수정 폼에 대한 서비스
 	public HashMap<String, Object> getMemberCertUpdateForm(String Cename) {
 		MemberDTO  dto = dao.getMemberCertUpdateForm(Cename);
 		logger.info("가져온 데이터 : {}", dto);
@@ -385,4 +389,244 @@ public class MypageService {
 		result.put("detail", dto);
 		return result;
 	}
+
+	// 마이페이지 학력 수정 폼에 대한 서비스
+	public HashMap<String, Object> getMemberEduUpdateForm(String Eduname) {
+		MemberDTO  dto = dao.getMemberEduUpdateForm(Eduname);
+		logger.info("가져온 데이터 : {}", dto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		return result;
+	}	
+	
+	// 마이페이지 경력 수정 폼에 대한 서비스
+	public HashMap<String, Object> getMemberCareerUpdateForm(String Caname) {
+		MemberDTO  dto = dao.getMemberCareerUpdateForm(Caname);
+		logger.info("가져온 데이터 : {}", dto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		return result;
+	}
+	
+	// 마이페이지 학력 수정 서비스
+	public HashMap<String, Object> EduUpdate(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		Date EduStart = Date.valueOf(params.get("eduStart"));
+		Date EduEnd = Date.valueOf(params.get("eduEnd"));
+		dto.setEdu_start(EduStart);
+		dto.setEdu_end(EduEnd);
+		
+		dto.setMem_id(params.get("memId"));
+		dto.setEdu_name(params.get("eduName"));
+		dto.setEdu_pass(params.get("eduPass"));	
+		dto.setEdu_success(params.get("eduSuccess"));
+		dto.setEdu_idx(Integer.parseInt(params.get("eduIdx")));
+		
+		
+		int row = dao.EduUpdate(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("Update한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 마이페이지 자격증 수정 서비스
+	public HashMap<String, Object> CertUpdate(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		Date CertDate = Date.valueOf(params.get("certDate"));
+		dto.setCe_date(CertDate);
+
+		
+		dto.setMem_id(params.get("memId"));
+		dto.setCe_name(params.get("certName"));
+		dto.setCe_place(params.get("certPlace"));	
+		dto.setCe_idx(Integer.parseInt(params.get("certIdx")));
+
+		
+		
+		int row = dao.CertUpdate(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("Update한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 마이페이지 경력 수정 서비스
+	public HashMap<String, Object> CareerUpdate(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		Date CareerStart = Date.valueOf(params.get("careerStart"));
+		Date CareerEnd = Date.valueOf(params.get("careerEnd"));
+		dto.setCa_start(CareerStart);
+		dto.setCa_end(CareerEnd);
+		
+		dto.setMem_id(params.get("memId"));
+		dto.setCa_name(params.get("careerName"));
+		dto.setCa_work(params.get("careerWork"));	
+		dto.setCa_pos(params.get("careerPos"));
+		dto.setCa_idx(Integer.parseInt(params.get("careerIdx")));
+
+		
+		
+		int row = dao.CareerUpdate(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("Update한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 비밀번호 수정 서비스 
+	public HashMap<String, Object> ChangePassword(HashMap<String, String> params) {
+		logger.info("비밀번호 수정 서비스");
+		logger.info("params:{}",params);
+		MemberDTO dto = new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		String plain_pw =params.get("memNpw");
+		String enc_pw =encoder.encode(plain_pw);
+		logger.info("plain_pw:"+plain_pw);
+		logger.info("enc_pw:"+enc_pw);
+		
+		params.put("pw", enc_pw);
+		logger.info("params:{}",params);
+		
+		int success= dao.ChangePassword(params);
+		logger.info("change success:"+success);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+success);
+		logger.info("Update한 memId : "+memId);
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;		
+	}
+	
+	// 서류파일 등록 서비스 
+	public HashMap<String, Object> memberwriteFileInsert(MultipartFile memPhoto, HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setFpc_cate(params.get("fpcCate"));
+		
+		dto.setFpc_idx(dao.findFpcidx(dto));
+
+		
+		logger.info("추출된 번호:"+dao.findFpcidx(dto));
+		
+		
+		int FpcIdx=dto.getFpc_idx();
+
+		String memId = dto.getMem_id();
+
+		
+		if(memPhoto != null){
+			String oriFileName = memPhoto.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = pfileSave(memPhoto,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("")) {
+					dao.PFileInsert(oriFileName, newFileName,memId,FpcIdx);
+				}
+			}
+		}
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	private String pfileSave(MultipartFile photo, String ext) {
+		logger.info("파일 저장 기능 접근");
+		// 1. 새 파일명 생성
+		String newFileName = System.currentTimeMillis()+ext;
+		logger.info("서버에 저장될 파일명이 생성되었습니다. 파일명 : "+newFileName);
+		
+		// 2. 저장
+		try {
+			byte[] bytes = photo.getBytes();
+			Path path = Paths.get("C:/pfile/"+newFileName);
+			logger.info("저장될 파일 경로 : {}", path);
+			Files.write(path, bytes);
+			logger.info("파일 저장 완료");
+		} catch (IOException e) {
+			logger.info("파일 저장 실패! 저장될 파일 이름을 초기화합니다.");
+			newFileName = "";
+			e.toString();
+		}
+		
+		// 3. 새 파일 명 반환
+		return newFileName;
+	}
+
+	// 서류파일 수정 요청 폼 서비스
+	public HashMap<String, Object> getdocuFileUpdateForm(String Fpidx) {
+			
+		MemberDTO photoDto = dao.Finddoucment(Fpidx);
+		int fpc_idx=photoDto.getFpc_idx();
+		MemberDTO dto= dao.FindFpcateName(fpc_idx);
+		logger.info("가져온 데이터 : {}", dto);
+		
+		logger.info("사진데이터 : {}", photoDto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		result.put("detailPhoto", photoDto);
+		return result;
+
+		
+
+	}
+	
+	// 서류파일 수정 서비스
+	public HashMap<String, Object> memberdocuFileUpdateForm(MultipartFile memPhoto, HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		MemberDTO dto = new MemberDTO();
+		dto.setMem_id(params.get("memId"));
+		dto.setFpc_cate(params.get("fpcCate"));
+		dto.setFp_idx(Integer.parseInt(params.get("FpIdx")));
+		
+		dto.setFpc_idx(dao.findFpcidx(dto));
+
+		
+		logger.info("추출된 번호:"+dao.findFpcidx(dto));
+		
+		
+		int FpcIdx=dto.getFpc_idx();
+		int FcIdx=dto.getFp_idx();
+		String memId = dto.getMem_id();
+
+		
+		if(memPhoto != null){
+			String oriFileName = memPhoto.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = pfileSave(memPhoto,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("")) {
+					dao.PFileUpdate(oriFileName, newFileName,memId,FpcIdx,FcIdx);
+				}
+			}
+		}
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}	
+	
 }

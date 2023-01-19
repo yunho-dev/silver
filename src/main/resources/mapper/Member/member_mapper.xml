@@ -61,7 +61,7 @@
 
 	<!-- 직원 상세정보 사진 가져오기  -->	
 	<select id="photoView" resultType="member" parameterType="String">
-	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id}
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id} and fpc_idx=9
 	</select>
 	
 	<!-- 사진 삽입 -->
@@ -101,7 +101,7 @@
 
 	<!-- 직원 사진 업데이트 -->
 	<update id="photoUpdate">
-		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3}
+		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3} and fpc_idx=9
 	</update>
 	
 	<!-- 직원 수정폼 데이터 가져오기  -->
@@ -116,7 +116,7 @@
 	
 	<!-- 직원 사진 업데이트시 사진 유무 판별 -->	
 	<select id="findphoto" resultType="member" parameterType="String">
-	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId} and fpc_idx=9
 	</select>		
 
 

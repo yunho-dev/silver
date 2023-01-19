@@ -17,7 +17,7 @@
 	
 	<!-- 마이페이지 프로필 사진 가져오기  -->
 	<select id="mypage2" resultType="member" parameterType="String">
-	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id}
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{mem_id} and fpc_idx=9
 	</select>	
 	
 	<!-- 마이페이지 전자서명 가져오기 -->
@@ -63,7 +63,7 @@
 	
 	<!-- 마이페이지 업데이트 개인 프로필 사진 가져오기 -->
 	<select id="photoMypageView" resultType="member" parameterType="String">
-	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId} and fpc_idx=9
 	</select>
 
 	<!-- 프로필 사진 삽입 -->
@@ -74,12 +74,12 @@
 	
 	<!-- 프로필 사진 업데이트 -->
 	<update id="photoUpdate">
-		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3}
+		UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2} where mem_id=#{param3} and fpc_idx=9
 	</update>
 	
 	<!-- 마이페이지 프로필 업데이트시 사진 유무 판별 -->	
 	<select id="findphoto" resultType="member" parameterType="String">
-	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId}
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId} and fpc_idx=9
 	</select>	
 	
 	<!-- 마이페이지 업데이트 -->
@@ -120,12 +120,12 @@
 	
 	<!-- 마이페이지 서류파일 리스트 총 갯수 -->	
 	<select id="totalCountpaperList" resultType="int" parameterType="hashmap">
-		SELECT COUNT(mem_id) FROM filephoto where mem_id=#{memId}
+		SELECT COUNT(mem_id) FROM filephoto where mem_id=#{memId} and (fpc_idx=1 or fpc_idx=2 or fpc_idx=3 or fpc_idx=10)
 	</select>
 
 	<!-- 마이페이지 서류파일 리스트 가져오기 -->
 	<select id="paperlistCall" resultType="member" parameterType="member">
-		select * from filephoto where mem_id=#{mem_id} ORDER BY mem_id DESC limit 10 offset #{offset}
+		select * from filephoto where mem_id=#{mem_id} and (fpc_idx=1 or fpc_idx=2 or fpc_idx=3 or fpc_idx=10) ORDER BY mem_id DESC limit 10 offset #{offset}
 	</select>
 
 	<!-- 마이페이지 결제문서 리스트 총 갯수 -->	
@@ -163,5 +163,65 @@
 	<select id="getMemberCertUpdateForm" resultType="member" parameterType="String">
 		SELECT * from cert where ce_name=#{Cename}
 	</select>
-		
+	
+	<!-- 학력 수정폼 데이터 가져오기  -->
+	<select id="getMemberEduUpdateForm" resultType="member" parameterType="String">
+		SELECT * from edu where edu_name=#{Eduname}
+	</select>
+	
+	<!-- 경력 수정폼 데이터 가져오기  -->
+	<select id="getMemberCareerUpdateForm" resultType="member" parameterType="String">
+		SELECT * from career where ca_name=#{Caname}
+	</select>
+	
+	<!-- 마이페이지 학력 수정  -->	
+	<update id="EduUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE edu set mem_id=#{mem_id},edu_name=#{edu_name},edu_pass=#{edu_pass},edu_success=#{edu_success},edu_start=#{edu_start},edu_end=#{edu_end} 
+			where edu_idx=#{edu_idx}
+	</update>	
+	
+	<!-- 마이페이지 자격증 수정 -->	
+	<update id="CertUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE cert set mem_id=#{mem_id},ce_name=#{ce_name},ce_place=#{ce_place},ce_date=#{ce_date}
+			where ce_idx=#{ce_idx}
+	</update>	
+	
+	<!-- 마이페이지 경력 수정 -->	
+	<update id="CareerUpdate" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE career set mem_id=#{mem_id},ca_name=#{ca_name},ca_work=#{ca_work},ca_pos=#{ca_pos},ca_start=#{ca_start},ca_end=#{ca_end}
+			where ca_idx=#{ca_idx}
+	</update>	
+	
+	<!--마이페이지 비빌번호 수정  -->
+	<update id="ChangePassword" parameterType="hashmap">
+		UPDATE member set mem_id=#{memId},mem_pw=#{pw} WHERE mem_id=#{memId}	
+	</update>	
+	
+	<!-- 마이페이지 서류파일 카테고리 번호 추출 -->	
+	<select id="findFpcidx" resultType="int">
+		SELECT fpc_idx FROM filephotocode WHERE fpc_cate=#{fpc_cate}
+	</select>
+	
+	<!-- 마이페이지 서류파일 등록  -->
+	<insert id="PFileInsert" >
+	INSERT INTO filephoto(fp_oriFileName, fp_newFileName, mem_id, fpc_idx)
+			VALUES(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+	
+	<!-- 해당 서류파일 정보 뽑기  -->
+	<select id="Finddoucment" resultType="member" parameterType="String">
+		SELECT * FROM filephoto WHERE fp_idx=#{fpidx}
+	</select>
+	
+	<!-- 해당 서류파일 카테고리 가져오기 -->
+	<select id="FindFpcateName" resultType="member" parameterType="int">
+		SELECT fpc_cate FROM filephotocode WHERE fpc_idx=#{fpc_idx}
+	</select>
+	
+	<!-- 마이페이지 서류파일 업데이트  -->
+	<update id="PFileUpdate">
+	UPDATE filephoto set fp_oriFileName=#{param1}, fp_newFileName=#{param2},mem_id=#{param3},fpc_idx=#{param4}
+		WHERE fp_idx=#{param5}
+	</update>
+	
 </mapper>

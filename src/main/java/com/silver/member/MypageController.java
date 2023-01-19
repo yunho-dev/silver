@@ -165,8 +165,95 @@ public class MypageController {
 		@ResponseBody
 		public HashMap<String, Object> getMemberCertUpdateForm(@RequestParam String Cename){
 			
-			logger.info(Cename+ "학력에 대한 정보 수정 요청");
+			logger.info(Cename+" 자격증에 대한 정보 수정 요청");
 			return service.getMemberCertUpdateForm(Cename);
 		}
 		
+		// 마이페이지 학력 수정 폼에 대한 정보 컨트롤러
+		@GetMapping(value = "/getMemberEduUpdateForm.go")
+		@ResponseBody
+		public HashMap<String, Object> getMemberEduUpdateForm(@RequestParam String Eduname){
+			
+			logger.info(Eduname+" 학력에 대한 정보 수정 요청");
+			return service.getMemberEduUpdateForm(Eduname);
+		}
+		
+		// 마이페이지 경력 수정 폼에 대한 정보 컨트롤러
+		@GetMapping(value = "/getMemberCareerUpdateForm.go")
+		@ResponseBody
+		public HashMap<String, Object> getMemberCareerUpdateForm(@RequestParam String Caname){
+			
+			logger.info(Caname+" 경력에 대한 정보 수정 요청");
+			return service.getMemberCareerUpdateForm(Caname);
+		}
+		
+		
+		// 마이페이지 학력 수정
+		@PostMapping(value = "/EduUpdate.do")
+		@ResponseBody
+		public HashMap<String, Object> EduUpdate(@RequestParam HashMap<String, String> params){
+
+			logger.info("학력 수정 컨트롤러");
+			logger.info("params:{}",params);
+			return service.EduUpdate(params);
+		}
+
+		// 마이페이지 자격증 수정
+		@PostMapping(value = "/CertUpdate.do")
+		@ResponseBody
+		public HashMap<String, Object> CertUpdate(@RequestParam HashMap<String, String> params){
+
+			logger.info("자격증 수정 컨트롤러");
+			logger.info("params:{}",params);
+			return service.CertUpdate(params);
+		}		
+		
+		// 마이페이지 경력 수정
+		@PostMapping(value = "/CareerUpdate.do")
+		@ResponseBody
+		public HashMap<String, Object> CareerUpdate(@RequestParam HashMap<String, String> params){
+
+			logger.info("경력 수정 컨트롤러");
+			logger.info("params:{}",params);
+			return service.CareerUpdate(params);
+		}			
+		
+		// 마이페이지 비밀번호 수정
+		@PostMapping(value = "/ChangePassword.do")
+		@ResponseBody
+		public HashMap<String, Object> ChangePassword(@RequestParam HashMap<String, String> params){
+
+			logger.info("비밀번호 수정 컨트롤러");
+			logger.info("params:{}",params);
+			return service.ChangePassword(params);
+		}
+		
+		// 마이페이지 서류파일 등록
+		@PostMapping(value = "/memberwriteFileInsert.do")
+		@ResponseBody
+		public HashMap<String, Object> memberwriteFileInsert(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
+			logger.info("서류파일 등록 컨트롤러");
+			logger.info("params:{}",params);
+			logger.info("memPhoto:{}",memPhoto);
+			return service.memberwriteFileInsert(memPhoto, params);
+		}
+		
+		// 마이페이지 서류파일 수정 폼 이동
+		@GetMapping(value = "/getdocuFileUpdateForm.go")
+		@ResponseBody
+		public HashMap<String, Object> getdocuFileUpdateForm(@RequestParam String Fpidx){
+			
+			logger.info(Fpidx +" 서류파일에 대한 전자서명 수정 요청");
+			return service.getdocuFileUpdateForm(Fpidx);
+		}
+		
+		// 마이페이지 서류파일 수정
+		@PostMapping(value = "/memberdocuFileUpdateForm.do")
+		@ResponseBody
+		public HashMap<String, Object> memberdocuFileUpdateForm(MultipartFile memPhoto, @RequestParam HashMap<String, String> params){
+			logger.info("서류파일 등록 컨트롤러");
+			logger.info("params:{}",params);
+			logger.info("memPhoto:{}",memPhoto);
+			return service.memberdocuFileUpdateForm(memPhoto, params);
+		}		
 }

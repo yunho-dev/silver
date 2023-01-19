@@ -14,7 +14,9 @@ public interface CarDAO {
 
 	int totalCountDriveHistory(int carIdx);
 	
-	ArrayList<ThingDTO> getCarBookList(int carIdx);
+	ArrayList<ThingDTO> getCarBookList(int carIdx, int offset);
+	
+	int totalCountCarBookList(int carIdx);
 
 	int carHistoryResist(HashMap<String, String> params);
 
@@ -24,5 +26,12 @@ public interface CarDAO {
 
 	int carModify(HashMap<String, String> params);
 
+	CarDTO getDriveHistoryModifyInfo(int chisIdx);
+
+	int carHistoryModify(HashMap<String, String> params);
+
+	int carBookResist(HashMap<String, String> params);
+
+	int carBookCheck(HashMap<String, String> params);
 
 }
