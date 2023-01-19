@@ -24,8 +24,15 @@ public class PaymentHistoryDTO {
 	private int dept_code;
 	private int pos_level;
 	private int dept_num;
+	private int rowNum;
 	
 	
+	public int getRowNum() {
+		return rowNum;
+	}
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
+	}
 	public String getMem_id() {
 		return mem_id;
 	}
