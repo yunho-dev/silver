@@ -91,4 +91,11 @@ public class CarController {
 		logger.info(params.get("carIdx")+"번 차량({}) 운행 등록 접근", params.get("carNum"));
 		return service.carBookResist(params, request);
 	}
+	
+	/* 차량 예약 상세보기 */
+	@GetMapping(value = "/getCarBookDetail.do")
+	public HashMap<String, Object> getCarBookDetail(int cbIdx, String carNum){
+		logger.info(carNum+"차량의 {}번 예약 상세보기 접근", cbIdx);
+		return service.getCarBookDetail(cbIdx);
+	}
 }

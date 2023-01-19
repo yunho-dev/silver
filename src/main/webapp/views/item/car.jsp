@@ -38,6 +38,10 @@
     	text-align: center;
     	margin-top: 17px;
     }
+    #detailName{
+    	font-weight: bolder;
+    	font-size: large;
+    }
 </style>
 <body>
 	<div id="app">
@@ -254,6 +258,10 @@
 		case 3:
 			$('#carHisotryModifyModal').modal('hide');
 			$('#carHistoryModfyForm')[0].reset();
+			break;
+		case 4:
+			$('#carBookCancel').modal('hide');
+			$('#cancleForm')[0].reset();
 			break;
 		default:
 			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
@@ -639,6 +647,33 @@
 	/* 예약 상세보기 */
 	function carBookDetail(bookListRow){
 		var cbIdx = bookListRow.find('td.cb_idx').text();
+		$.ajax({
+			type:'GET',
+			url:'getCarBookDetail.do',
+			data:{cbIdx:cbIdx, carNum:carNum},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				var startDate = new Date(data.detail.b_start)
+				var endDate = new Date(data.detail.b_end)
+				$("#carBookDetail #cbIdx").val(data.detail.cb_idx);
+				$("#carBookDetail .b_start").text(startDate.toLocaleString('ko-KR'));
+				$("#carBookDetail .b_writer").text(data.detail.b_write);
+				$("#carBookDetail .b_end").text(endDate.toLocaleString('ko-KR'));
+				$("#carBookDetail .bMem").text(data.detail.mem_name);
+				if(data.detail.b_cancel == 1){
+					$("#carBookDetail #hideComent").css('display', 'none');
+					$("#carBookDetail .b_cancel").text('취소 안 함').css('color', 'blue');
+				}else{
+					$("#carBookDetail .b_cancel").text('취소').css('color', 'red');
+					$("#carBookDetail #hideComent").css('display', 'block');
+					$("#carBookDetail .b_coment").text(data.detail.b_content);
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 	}
 
 </script>

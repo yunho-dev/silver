@@ -100,4 +100,10 @@
 			and b_end <![CDATA[>]]> #{bStart}
 	</select>
 	
+	<select id="getCarBookDetail" resultType="car" parameterType="int">
+		SELECT b.cb_idx, b.car_idx, b.b_write, b.b_start, b.b_end, b.b_content, b.b_cancel, b.mem_id, m.mem_name from book b
+			INNER JOIN `member` m on b.mem_id = m.mem_id
+		WHERE cb_idx = #{cbIdx}
+	</select>
+	
 </mapper>

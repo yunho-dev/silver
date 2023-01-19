@@ -34,4 +34,6 @@ public interface CarDAO {
 
 	int carBookCheck(HashMap<String, String> params);
 
+	CarDTO getCarBookDetail(int cbIdx);
+
 }

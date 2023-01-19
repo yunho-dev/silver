@@ -48,26 +48,27 @@
 	                    &times;
 	                </button>
 	            </div>
-	            <div class="modal-body">
+	             <div class="modal-body">
 					<div class="left">
 						<p>
 							<input id="cbIdx" type="text" style="display: none;">
 						</p>
-						<p><span id="detailName">이용 시작 시간 : </span><span class="b_start"></span></p>
-						<p><span id="detailName">등록자 : </span><span class="b_writer"></span></p>
-						<p><span id="detailName">사용자 : </span><span class="b_writer"></span></p>
+						<p><span id="detailName">품명 : </span><span class="th_name"></span></p>
+						<p><span id="detailName">사용자 : </span><span class="b_name"></span></p>
+						<p><span id="detailName">등록자 : </span><span class="b_write"></span></p>
 					</div>
-					<div class="right">
-						<p><span id="detailName">이용 끝날 시간 : </span><span class="b_end"></span></p>
+					<div class="right" style="margin-top: 20px">
+						<p><span id="detailName">이용 시작 날짜 : </span><span class="b_start"></span></p>
+						<p><span id="detailName">이용 끝날 날짜 : </span><span class="b_end"></span></p>
 						<p><span id="detailName">취소 여부 : </span><span class="b_cancel"></span></p>
 					</div>
-					<div id="hideComent" style="float: left; display: inline-block;">
-					<p><span id="detailName">취소 사유 : </span><span class="b_coment"></span></p>
+					<div id="hideComent" style="float: left; width: 100%; display: none;">
+						<p><span id="detailName">취소 사유 : </span><span class="b_coment"></span></p>
 					</div>
 	            </div>
 	            <div class="modal-footer" >
 	            	<div style="margin: auto;">
-	            		<button type="button" class="btn btn-primary ml-1"  id="bookCancel" data-bs-target="#id" data-bs-toggle="modal">
+	            		<button type="button" class="btn btn-primary ml-1"  id="bookCancel" data-bs-target="#thingBookCancel" data-bs-toggle="modal">
 		                    <i class="bx bx-check d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">예약 취소</span>
 		                </button>
@@ -78,15 +79,16 @@
 		                </button>
 	                </div>
 	                <!-- 취소 모달 -->
+	                <jsp:include page="thingBookCancel.jsp"></jsp:include>
 	            </div>
 	        </div>
 		</div>
 	</div>
 </body>
 <script>
-	/* $('#bookCancel').click(function(){
+	$('#bookCancel').click(function(){
 		var cbIdx = $('#thingBookDetail #cbIdx').val();
 		$('#thingBookCancel #cancleForm .canceIdx').val(cbIdx);
-	}) */
+	})
 </script>
 </html>

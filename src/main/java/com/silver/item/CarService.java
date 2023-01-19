@@ -140,4 +140,12 @@ public class CarService {
 		return result;
 	}
 
+	public HashMap<String, Object> getCarBookDetail(int cbIdx) {
+		CarDTO dto = new CarDTO();
+		dto = dao.getCarBookDetail(cbIdx);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		return result;
+	}
+
 }

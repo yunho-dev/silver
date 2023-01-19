@@ -18,7 +18,7 @@
 </head>
 <body>
 	<!--Danger theme Modal -->
-	<div class="modal fade text-left" id="thingBookCancel" tabindex="-1"
+	<div class="modal fade text-left" id="carBookCancel" tabindex="-1"
 	    role="dialog" aria-labelledby="myModalLabel120"
 	    aria-hidden="true">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -26,9 +26,9 @@
 	        <div class="modal-content">
 	            <div class="modal-header bg-danger">
 	                <h5 class="modal-title white" id="myModalLabel120">
-	                    비품 예약 취소
+	                    차량 예약 취소
 	                </h5>
-	                <button type="button" class="close" onclick="closeCancelModal()"
+	                <button type="button" class="close" onclick="closeModal(4)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -47,22 +47,17 @@
 			                    <span class="d-none d-sm-block">저장</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-		                    onclick="closeCancelModal()" >
+		                    onclick="closeModal(4)" >
 		                    <i class="bx bx-x d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">닫기</span>
 		                </button>
-		                </div>
+		           </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 </body>
 <script>
-	function closeCancelModal(){
-		$('#thingBookCancel').modal('hide');
-		$('#cancleForm')[0].reset();
-	}
-	
 	$('#update').click(function(){
 		var cbIdx = $('#cancleForm .canceIdx').val();
 		var bContent = $('#cancleForm  #b_content').val();

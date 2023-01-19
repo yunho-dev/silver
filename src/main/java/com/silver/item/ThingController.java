@@ -290,7 +290,7 @@ public class ThingController {
 		return service.getThingBookDetail(cbIdx);
 	}
 	
-	@PostMapping(value = "/thingBookCancel.do")
+	@PostMapping(value = "/bookCancel.do")
 	public HashMap<String, Object> thingBookCancel(int cbIdx, String bContent, HttpServletRequest request){
 		logger.info("비품 수정 접근");
 		return service.thingBookCancel(cbIdx, bContent, request);
