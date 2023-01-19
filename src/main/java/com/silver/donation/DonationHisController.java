@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +41,7 @@ public class DonationHisController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/donWrite")
+	@PostMapping(value = "/donWrite")
 	public String donWrite (MultipartFile dh_Photo,@RequestParam HashMap<String, String>params){
 		logger.info("후원금 작성내역");
 		logger.info("params:{}",params);
@@ -57,11 +58,12 @@ public class DonationHisController {
 		return service.donHisUpdateForm(dh_idx);
 	}
 	@RequestMapping(value = "/donHisUpdate")
-	public HashMap<String, Object> donHisUpdate (MultipartFile dh_Photo,
+	public String donHisUpdate (MultipartFile dh_Photo,
 			@RequestParam HashMap<String, String>params) {
 		logger.info("params:{}",params);
-		return service.donHisUpdate(dh_Photo, params);
-		
+
+		service.donHisUpdate(dh_Photo, params);
+		return "redirect:/donHistory";
 		
 		
 	}

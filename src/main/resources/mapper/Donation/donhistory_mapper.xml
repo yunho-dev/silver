@@ -30,6 +30,30 @@
  	resultType="donhistory" parameterType="int">
  		SELECT * from donhistory  where dh_idx =#{param1}
  	</select>
+ 	
+ 	<update id="donHisUpdate" parameterType="donhistory">
+ 		UPDATE donhistory SET 
+ 		dh_money=#{dh_money}, 
+ 		dh_cate=#{dh_cate}, 
+ 		dh_goal=#{dh_goal}, 
+ 		dh_date=#{dh_date}, 
+ 		dh_write=#{dh_write} 
+ 		WHERE dh_idx=#{dh_idx}
+ 	</update>
+ 	
+ 	<select id="findphoto" resultType="donhistory" parameterType="String">
+	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx 
+	FROM filephoto 
+	WHERE dh_idx=#{dhidx}
+	</select>	
+ 	
+ 	<update id="photoUpdate">
+		UPDATE filephoto set 
+		fp_oriFileName=#{param1}, 
+		fp_newFileName=#{param2}.
+		fpc_idx=#{param3} 
+		where dh_idx=#{param4}
+	</update>
 </mapper>
 
 

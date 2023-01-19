@@ -43,22 +43,42 @@
       <th scope="col" style="width:20%;">카테고리</th>
       <td>
       	<select name="dh_cate" style="width:200px;height:30px;font-size:12px;">
-			<option<c:if test="${donhistory.dh_cate eq '물품구매'}">selected</c:if>>
-			물품구매
-			</option>
-			<option<c:if test="${donhistory.dh_cate eq '회식'}">selected</c:if>>
-			회식
-			</option>
-			<option<c:if test="${donhistory.dh_cate eq '시설유지보수'}">selected</c:if>>
-			시설유지보수
-			</option>
-			<option<c:if test="${donhistory.dh_cate eq '인건비'}">selected</c:if>>
-			인건비
-			</option>
-			<option<c:if test="${donhistory.dh_cate eq '기타'}">selected</c:if>>
-			기타
-			</option>
-			
+      		<c:if test="${donhistory.dh_cate eq '물품구매'}">
+      			<option value="물품구매" selected=selected>물품구매</option>
+      			<option value="회식">회식</option>
+      			<option value="시설유지보수">시설유지보수</option>
+      			<option value="인건비">인건비</option>
+      			<option value="기타">기타</option>
+      		</c:if>
+      		<c:if test="${donhistory.dh_cate eq '회식'}">
+      			<option value="회식" selected=selected>회식</option>
+      			<option value="물품구매">물품구매</option>
+      			<option value="시설유지보수">시설유지보수</option>
+      			<option value="인건비">인건비</option>
+      			<option value="기타">기타</option>
+      		</c:if>
+      		<c:if test="${donhistory.dh_cate eq '시설유지보수'}">
+      			<option value="시설유지보수" selected=selected>시설유지보수</option>
+      			<option value="물품구매">물품구매</option>
+      			<option value="회식">회식</option>
+      			<option value="인건비">인건비</option>
+      			<option value="기타">기타</option>
+      		</c:if>
+      		<c:if test="${donhistory.dh_cate eq '인건비'}">
+      			<option selected=selected>인건비</option>
+      			<option value="회식">회식</option>
+      			<option value="시설유지보수">시설유지보수</option>
+      			<option value="물품구매">물품구매</option>
+      			<option value="기타">기타</option>
+      		</c:if>
+      		<c:if test="${donhistory.dh_cate eq '기타'}">
+      			<option selected=selected>기타</option>
+      			<option value="회식">회식</option>
+      			<option value="시설유지보수">시설유지보수</option>
+      			<option value="인건비">인건비</option>
+      			<option value="물품구매">물품구매</option>
+      		</c:if>
+
 		</select> 	
       </td>
     <tr>  
@@ -83,11 +103,12 @@
       <th scope="col" style="width:20%;">첨부파일</th>
       <td>
       	<input name="dh_Photo" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">	
+      	<span>기존 사진 : </span><img src="/filephoto/${photoinfo.fp_newFileName}" alt="사진" style="width:110px;height:140px"><br/><br/>
       </td>
     </tr>
   </thead>
 </table>
-<input type="hidden" name="dh_idx" value="${dh_idx}">
+<input type="hidden" name="dh_idx" value="${donhistory.dh_idx}">
 </form>
 </div>
 </div>

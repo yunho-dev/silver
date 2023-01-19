@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.silver.member.MemberDTO;
 
 @Service
 public class DonationHisService {
@@ -43,6 +46,14 @@ public class DonationHisService {
 		dto.setDh_cate(params.get("dh_cate"));
 		dto.setDh_goal(params.get("dh_goal"));
 		dto.setDh_write(params.get("dh_write"));
+		logger.info("머니 params : "+params.get("dh_money"));
+		logger.info("머니 params 형 : "+params.get("dh_money").getClass());
+		int ChangeDh_money=Integer.parseInt(params.get("dh_money"));
+		logger.info("머니 형 변환 값 전 : "+dto.getDh_money());
+		dto.setDh_money(ChangeDh_money);
+		logger.info("머니 형 변환 값 전 : "+dto.getDh_money());
+		
+		logger.info("params:{}",params);
 		dto.setDh_date(dhdate);
 		int row = dao.donWrite(dto);
 		int dhidx = dto.getDh_idx();
@@ -107,8 +118,42 @@ public class DonationHisService {
 		dto.setDh_cate(params.get("dh_cate"));
 		dto.setDh_goal(params.get("dh_goal"));
 		dto.setDh_write(params.get("dh_write"));
+		int dh_idx = Integer.parseInt(params.get("dh_idx"));
+		dto.setDh_idx(dh_idx);
+		
+		logger.info(params.get("dh_idx"));
+		logger.info("머니 params : "+params.get("dh_money"));
+		logger.info("머니 params 형 : "+params.get("dh_money").getClass()); 
+		int ChangeDh_money=Integer.parseInt(params.get("dh_money"));
+		logger.info("머니 형 변환 값 전 : "+dto.getDh_money());
+		dto.setDh_money(ChangeDh_money);
+		logger.info("머니 형 변환 값 전 : "+dto.getDh_money());
+		 
 		dto.setDh_date(dhdate);
-		return null;
+		
+		int row = dao.donHisUpdate(dto);
+		logger.info("영향받은 행:"+row);
+		int dhidx = dto.getDh_idx();
+		
+		if(dh_Photo != null){
+			DonationHisDTO photofind = dao.findphoto(dhidx);
+			String oriFileName = dh_Photo.getOriginalFilename();
+			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+				String newFileName = fileSave(dh_Photo,ext);
+				logger.info("서버에 저장될 파일 이름 : "+newFileName);
+				if(!newFileName.equals("") && photofind != null ) {
+					dao.photoUpdate(oriFileName, newFileName, dhidx);
+				}else if(!newFileName.equals("") && photofind == null) {
+					dao.photoInsert(oriFileName, newFileName, dhidx);
+				}
+			}
+		}
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("dhidx", dhidx);
+		return result;
 		
 	}
 	
