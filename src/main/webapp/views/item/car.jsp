@@ -68,7 +68,7 @@
                                                         <th>처리</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody> <!-- 여기 아작스로 나중에 변경하자 -->
                                                 	<c:forEach items="${list}" var="car">
 														<tr style="cursor: pointer;" onclick="showStory($(this))">
 															<td class="carIdx" style="display:none;">${car.car_idx}</td>
@@ -189,7 +189,7 @@
                                     	<div class="card-header" >
 		                                    <h4 class="card-title"><span class="plsCarNumBook"></span>사용 예약 기록</h4>
 		                                </div>
-                                        <table class="table mb-0 table-lg" style="white-space:nowrap;">
+                                        <table class="table table-hover mb-lg" style="white-space:nowrap; cursor: pointer;">
                                             <thead>
                                                 <tr>
                                                     <th>순번</th>
@@ -214,7 +214,7 @@
                 <jsp:include page="carResist.jsp"></jsp:include>
                 <jsp:include page="carModify.jsp"></jsp:include>
                 <jsp:include page="carHistoryModify.jsp"></jsp:include>
-                
+                <jsp:include page="carBookDetail.jsp"></jsp:include>
 		</div>
 	</div>
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -239,17 +239,24 @@
 	 * 1 : 차량 정보 등록 모달
 	 * 2 : 차량 정보 수정 모달
 	 * 3 : 차량 운행 기록 수정 모달
+	 * 4 : 차량 예약 취소 모달
 	 */
 	function closeModal(num){
-		if(num === 1){
+		 switch (num) {
+		case 1:
 			$('#carResist').modal('hide');
 			$('#carResistForm')[0].reset();
-		}else if(num === 2){
+			break;
+		case 2:
 			$('#carModify').modal('hide');
 			$('#carModfyForm')[0].reset();
-		}else if(num === 3){
+			break;
+		case 3:
 			$('#carHisotryModifyModal').modal('hide');
 			$('#carHistoryModfyForm')[0].reset();
+			break;
+		default:
+			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
 		}
 	}
 	
@@ -426,8 +433,8 @@
 			for(var i=0; i<bookList.length;i++){
 				var startDate=new Date(bookList[i].b_start);
 				var endDate=new Date(bookList[i].b_end);
-				content +='<tr>';
-				content +='<td class="chis_idx">'+bookList[i].cb_idx+'</td>';
+				content +='<tr style="height: 57px;" onclick="carBookDetail($(this))" data-bs-toggle="modal" data-bs-target="#carBookDetail">';
+				content +='<td class="cb_idx">'+bookList[i].cb_idx+'</td>';
 				content +='<td>'+startDate.toLocaleString('ko-KR')+'</td>';
 				content +='<td>'+endDate.toLocaleString('ko-KR')+'</td>';
 				content +='<td>'+bookList[i].mem_name+'</td>';
@@ -569,7 +576,7 @@
 	$('#selectMember').click(function(){
 		var url = "thingMemberList.go";
         var name = "MemberList";
-		var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+		var option = "width = 500, height = 500, top = 100, left = 500, location = no"
 		window.open(url, name, option)
 	})
 	
@@ -625,10 +632,14 @@
 					console.log(e)
 				}
 			});
-			
 		}
 		
 	});
+	
+	/* 예약 상세보기 */
+	function carBookDetail(bookListRow){
+		var cbIdx = bookListRow.find('td.cb_idx').text();
+	}
 
 </script>
 </html>
