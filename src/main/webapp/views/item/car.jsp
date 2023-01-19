@@ -30,6 +30,11 @@
         float: right;
         box-sizing: border-box;
     }
+    div.regiBottom{
+    	display: inline-block;
+    	width: 100%;
+    	text-align: center;
+    }
     #WriteName {
     	font-weight: bolder;
     	font-size: large;
@@ -106,34 +111,35 @@
                                 			<div>
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNum"></span>운행 등록</h5>
 	                                			<div class="left">
-	                                				<p class="writeArea"><span id="WriteName">운행일 : </span> 
-														<input type="text" name="chisDate">
+	                                				<p class="writeArea" ><span id="WriteName">운행일 </span> 
+														&nbsp;&nbsp;&nbsp;&nbsp;<input type="date" name="chisDate">
 													</p><br>
-													<p class="writeArea"><span id="WriteName">운행지역 : </span> 
+													<p class="writeArea"><span id="WriteName">운행지역 </span> 
 														<input type="text" name="chisPlace">
 													</p><br>
-													<p class="writeArea"><span id="WriteName">운행거리 : </span> 
+													<p class="writeArea"><span id="WriteName">운행거리 </span> 
 														<input type="text" name="chisKm"><span id="WriteName">&nbsp;km</span>
 													</p><br>
-													<p class="writeArea"><span id="WriteName">운행목적 : </span> 
+													<p class="writeArea"><span id="WriteName">운행목적 </span> 
 														<input type="text" name="chisReason">
 													</p><br>
 	                                			</div>
 	                                			<div class="right">
-	                                				<p class="writeArea"><span id="WriteName">운전자 : </span> 
+	                                				<p class="writeArea"><span id="WriteName">운전자 </span> 
 														<input type="text" name="chisDriver">
 													</p><br>
-	                                				<p class="writeArea"><span id="WriteName">주유량 : </span> 
+	                                				<p class="writeArea"><span id="WriteName">주유량 </span> 
 														<input type="text" name="chisLiter"><span id="WriteName">&nbsp;L</span>
 													</p><br>
-	                                				<p class="writeArea"><span id="WriteName">비고 : </span><br>
-														<textarea id="chisBigo" name="chisBigo"
-															rows="3" style="resize: none;"></textarea>
+	                                				<p class="writeArea">
+	                                				<span id="WriteName">비고 </span><br>
+													<textarea id="chisBigo" name="chisBigo"
+														rows="3" style="resize: none; width: 100%;"></textarea>
 													</p><br>
 	                                			</div>
                                 			</div>
-                                			<div style="display:block;">
-                                				<a id="cHisResist" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
+                                			<div class="regiBottom">
+                                				<a id="cHisResist" class="btn btn-primary">저장</a>
                                 			</div>
                                 		</form>
                                 	</div>
@@ -170,21 +176,21 @@
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNumBook"></span>차량 사용 예약</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
-														<input type="text" name="bStart">
+														<input type="text" name="bStart" onchange="dateCheck()">
 													</p><br>
+													<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
+														<input type="text" name="bEnd" onchange="dateCheck()">
+													</p>
+	                                			</div>
+	                                			<div class="right">
 	                                				<p class="writeArea"><span id="WriteName">사용자 : </span> 
 														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
 														<input type="hidden" name="bMemId" readonly="readonly">
 													</p>
 	                                			</div>
-	                                			<div class="right">
-	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="bEnd">
-													</p>
-	                                			</div>
                                 			</div>
-                                			<div style="display:block;">
-                                				<a id="carBookResistBtn" class="btn btn-primary" style="text-align: center; float: right;">저장</a>
+                                			<div class="regiBottom">
+                                				<a id="carBookResistBtn" class="btn btn-primary">저장</a>
                                 			</div>
                                 		</form>
                                 	</div>
@@ -232,10 +238,28 @@
 	var carIdx;
 	var btnId = 'carHis';
 	const dateRegex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-	//const dateTimeRegex = /([0-2][0-9]{3})-([0-1][0-9])-([0-3][0-9]) ([0-5][0-9]):([0-5][0-9])(([\-\+]([0-1][0-9])\:00))?/; //시간 날짜 정규식
 	const dateTimeRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/; // 날짜+시간+분
 	const numRegex = /^[0-9]+$/; //숫자만
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
+	
+	function dateCheck() {
+		$bStart = $('#driveBook input[name=bStart]');
+		$bEnd = $('#driveBook input[name=bEnd]');
+		if($bStart.val().match(dateTimeRegex) != null && $bEnd.val().match(dateTimeRegex) != null){
+			$.ajax({
+				type:'GET',
+				url:'carBookRealTimeCheck.do',
+				data:{carIdx:carIdx, bStart:$bStart.val(), bEnd:$bEnd.val()},
+				dataType:'JSON',
+				success:function(data){
+					console.log(data)
+				},
+				error:function(e){
+					console.log(data)
+				}
+			});
+		}
+	}
 	
 	/** 
 	 * 모달을 닫아주는 함수 (나중에 스위치-케이스문으로 바꿀 예정)

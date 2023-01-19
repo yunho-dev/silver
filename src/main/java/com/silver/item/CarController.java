@@ -92,6 +92,12 @@ public class CarController {
 		return service.carBookResist(params, request);
 	}
 	
+	/* 비품 예약 실시간 날짜 체크 */
+	@GetMapping(value = "/carBookRealTimeCheck.do")
+	public HashMap<String, Object> carBookRealTimeCheck(@RequestParam HashMap<String, String> params) {
+		return service.carBookRealTimeCheck(params);
+	}
+	
 	/* 차량 예약 상세보기 */
 	@GetMapping(value = "/getCarBookDetail.do")
 	public HashMap<String, Object> getCarBookDetail(int cbIdx, String carNum){

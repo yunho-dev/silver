@@ -47,36 +47,36 @@
 	            <form id="carResistForm">
 		            <div class="modal-body">
 						<div class="left">
-							<p class="writeArea"><span id="WriteName">차량명 : </span> 
-								<input type="text" name="carName">
+							<p class="writeArea"><span id="WriteName">차량명 </span> 
+								<input type="text" name="carName" style="margin-left: 22px;">
 							</p> <br>
-							<p class="writeArea"><span id="WriteName">차량 번호 : </span> 
+							<p class="writeArea"><span id="WriteName">차량 번호 </span> 
 								<input type="text" name="carNum">
 							</p> <br>
-							<p class="writeArea"><span id="WriteName">차 종 : </span> 
-								<input type="text" name="carType">
+							<p class="writeArea"><span id="WriteName">차 종 </span> 
+								<input type="text" name="carType" style="margin-left: 35px;">
 							</p> <br>
 						</div>
 						<div class="right">
 							<p class="writeArea"> 
-								<span id="WriteName">차량 상태 : </span>
-								<select name="carState">
+								<span id="WriteName">차량 상태 </span>
+								<select name="carState" style="margin-left: 5px;">
 									<option value="" selected="selected" style="display: none;">선택</option>
 									<option value="운행 가능">운행 가능</option>
 									<option value="운행 보류">운행 보류</option>
 								</select>
 							</p> <br>
 							<p class="writeArea"> 
-								<span id="WriteName">구분 : </span>
-								<select name="carPart">
+								<span id="WriteName">구분 </span>
+								<select name="carPart" style="margin-left: 46px;">
 									<option value="" selected="selected" style="display: none;">선택</option>
 									<option value="후원">후원</option>
 									<option value="렌탈">렌탈</option>
 									<option value="직접 구매">직접 구매</option>
 								</select>
 							</p> <br>
-							<p class="writeArea"><span id="WriteName">연식 : </span> 
-								<input type="text" name="carYear">
+							<p class="writeArea"><span id="WriteName">연식 </span> 
+								<input type="text" name="carYear" style="margin-left: 46px;">
 							</p>
 						</div>
 		            </div>
