@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +29,12 @@ public class ResdientProgramController {
 			   
 
 	@GetMapping(value="/programList")
-	public String residentProgramGategory() {
-		logger.info("카테고리컨트롤러");
+	public String residentProgramGategory(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("입소자 프로그램 조회");
+		
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		
 		return "resident/programList";
 	}

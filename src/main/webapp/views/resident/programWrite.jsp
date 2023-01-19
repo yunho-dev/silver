@@ -31,6 +31,11 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="//mugifly.github.io/jquery-simple-datetimepicker/jquery.simple-dtpicker.js"></script>
 <!-- datepicker -->
+<style>
+span{
+	width:130px;
+}
+</style>
 	
 </head>
 <body>
@@ -97,7 +102,7 @@
 									</select>	
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="basic-addon1">카테고리번호</span> 
+									<span class="input-group-text" id="basic-addon1">카테고리</span> 
 									<select name="pc_idx">
 										<option value="">선택해주세요.</option>
 										<c:forEach items="${procategory}" var="pc">
@@ -138,6 +143,7 @@
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/js/pages/dashboard.js"></script>
 	<script src="assets/js/main.js"></script>
+
 </body>
 <script>
 function save(){
@@ -168,7 +174,7 @@ function save(){
 	}else if($("select[name='pr_state']").val() == ""||null){
 		alert('상태를 선택해주세요');
 	}else if($("select[name='pc_idx']").val() == ""||null){
-		alert('카테고리 번호를 선택해주세요');
+		alert('카테고리를 선택해주세요');
 	}else{
 		$("form").submit();
 	}

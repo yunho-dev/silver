@@ -28,9 +28,14 @@ public class NextController {
 	
 	@Autowired NextService nextservice;
 	
+	//인수인계 컨트롤러
 	@GetMapping(value="/nextList")
-	public String nextList() {
-		logger.info("인수인계컨트롤러");
+	public String nextList(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("인수인계 컨트롤러");
+		
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		
 		return "next/nextList";
 	}
@@ -48,6 +53,7 @@ public class NextController {
 //	return map;
 //	}
 	
+	//
 	@GetMapping(value="/nextWrite")
 	public String nextWrite() {
 		

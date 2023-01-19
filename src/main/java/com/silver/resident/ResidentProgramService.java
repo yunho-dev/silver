@@ -55,8 +55,8 @@ public class ResidentProgramService {
 		dto.setPr_state(pr_state);
 		dto.setPc_idx(pc_idx);
 		
-		int row = residentprogramdao.ProgramWriteComplete(dto);
-		
+//		int row = residentprogramdao.ProgramWriteComplete(dto);
+		residentprogramdao.ProgramWriteComplete(dto);
 		
 		ModelAndView mav = new ModelAndView("resident/programList");
 //		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();
