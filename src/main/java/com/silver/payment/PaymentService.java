@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,6 +39,7 @@ public class PaymentService {
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
 				
+	
 		return paymentdao.MyPayListCall(mem_id,page);
 	}
 
@@ -204,19 +206,22 @@ public class PaymentService {
 		
 	}
 
-	public ModelAndView detailPayment_do(int pm_idx) {
+	public ModelAndView detailPayment_do(int pm_idx, HttpServletRequest request) {
 		ModelAndView mav=new ModelAndView("payment/detailPayment");
 		PaymentDTO PayDto=paymentdao.detailPayment_do(pm_idx);
 		ArrayList<PaymentDTO> ReferDto=paymentdao.ReferDto(pm_idx);
 		ArrayList<PaymentDTO> PmlineDto=paymentdao.PmlineDto(pm_idx);
 		ArrayList<PaymentDTO> PayFile=paymentdao.PayFile(pm_idx);
-		// ArrayList<String> SignMember=paymentdao.SignMember(pm_idx);
-		// ArrayList<MemberDTO> paysign=paymentdao.paysign(SignMember);
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		String SignImg=paymentdao.SignImg(mem_id);
 		mav.addObject("PayDto",PayDto);
 		mav.addObject("ReferDto",ReferDto);
 		mav.addObject("PayFile",PayFile);
 		mav.addObject("PmlineDto",PmlineDto);
-		// mav.addObject("paysign",paysign);
+		mav.addObject("SessionID",mem_id);
+		mav.addObject("SignImg",SignImg);
 		return mav;
 	}
 
@@ -224,10 +229,12 @@ public class PaymentService {
 		int row = paymentdao.MySangSin(payDto);
 		if(row > 0) {
 			String NextChk= FirstPmLineCall(payDto.getPm_idx());
-			alservice.notiAlarm(payDto.getMem_name(), payDto.getPm_idx(), "결재 문서", NextChk);
-			
+			if(NextChk.isEmpty()) {
+				row=2; // 결재자 미지정 후 결재 등록 했을 때
+			}else {
+				alservice.notiAlarm(payDto.getMem_name(), payDto.getPm_idx(), "결재 문서", NextChk);
+			}
 		}
-		
 		return row;
 	}
 
@@ -247,17 +254,91 @@ public class PaymentService {
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
 		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
 		ArrayList<PaymentDTO> openPayment=new ArrayList<PaymentDTO>();
+
 		for (String str : referPmIdx) {
 			logger.info("str : "+str);
 			openPayment.addAll(paymentdao.openPayment(str));
 		}
+		
 		
 		for (PaymentDTO open : openPayment) {
 			logger.info("open : "+open.getPm_subject());
 		}
 		
 		return openPayment;
+	}
+
+//	public ArrayList<PaymentDTO> FirstWaitPayment(HttpServletRequest request) {
+//		HttpSession session=request.getSession();
+//		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+//		String mem_id=memberDTO.getMem_id();
+//		return paymentdao.FirstWaitPayment(mem_id);
+//	}
+
+	public ArrayList<PaymentDTO> SecondWaitPayment(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		int mem_posLevel=memberDTO.getPos_level()+1;
+		ArrayList<PaymentDTO> WaitPmLine=paymentdao.WaitPm(mem_id,mem_posLevel);
+		
+		return WaitPmLine;
+	}
+
+	public void PmSangSin(PaymentDTO payDto) {
+		String writePayMent=paymentdao.writePayMent(payDto);
+		if(payDto.getPm_state().equals("상신")) {
+			// 상신 하기
+			paymentdao.GoPayment(payDto); // 비고란 수정 
+			paymentdao.PmChange(payDto); // 결재라인 수정 
+			String isNext="";
+			isNext=paymentdao.isNext(payDto); // 최종결재자인지 확인
+			logger.info("최종 결재자 확인 + "+isNext);
+			logger.info("최종 결재자 확인1 + "+payDto.getPl_hp());
+			if(isNext == null) {
+				// 최종 결재자일 경우
+				logger.info("최종 결재자 입니다.");
+				int finish = paymentdao.FinishPayment(payDto);
+				if(finish > 0) {
+					logger.info("finish 완료");
+					ArrayList<String> FinishAlarmSearch=paymentdao.FinishAlarmSearch(payDto);
+					for (String str : FinishAlarmSearch) {
+						logger.info("최종 결재 알람 수신 멤버 : "+str);
+						// 최종 결재 알람 전송
+						alservice.notiAlarm(writePayMent, payDto.getPm_idx(), "결재 완료", str);
+					}
+					// 문서 양식 사용 수 증가
+					paymentdao.PayFormUpCnt(payDto);
+				}
+			}else {
+				// 다음 결재자가 있을때 알람 전송
+				alservice.notiAlarm(writePayMent, payDto.getPm_idx(), "결재 진행", isNext);
+			}
+		}else if(payDto.getPm_state().equals("반려")) {
+			paymentdao.GoPayment(payDto); // 비고란 수정 
+			paymentdao.PmBackChange(payDto); // 결재라인 수정
+//			String isNext=""; //
+//			isNext=paymentdao.isNext(payDto); // 최종결재자인지 확인
+//			if(isNext == null) {
+//				logger.info("최종 결재 반려자 입니다.");
+				int finish = paymentdao.FinishBackPayment(payDto);
+				if(finish > 0) {
+					// 문서 반려 완료
+					ArrayList<String> FinishAlarmSearch=paymentdao.FinishBackAlarmSearch(payDto);
+					for (String str : FinishAlarmSearch) {
+						logger.info("최종 반려 알람 수신 멤버 : "+str);
+						// 최종 반려 알람 전송
+						alservice.notiAlarm(writePayMent, payDto.getPm_idx(), "결재 반려", str);
+					}
+//				}else {
+//					
+//				}
+				
+			}
+		}
+		
 	}
 	
 

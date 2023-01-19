@@ -114,9 +114,9 @@ public class PaymentController {
 	}
 	
 	@GetMapping(value="/detailPayment.do")
-	public ModelAndView detailPayment_do(@RequestParam int pm_idx) {
+	public ModelAndView detailPayment_do(@RequestParam int pm_idx,HttpServletRequest request) {
 		
-		return paymentservice.detailPayment_do(pm_idx);
+		return paymentservice.detailPayment_do(pm_idx,request);
 	}
 	
 	@ResponseBody
@@ -125,11 +125,12 @@ public class PaymentController {
 		HashMap<String,Object> map=new HashMap<String, Object>();
 		logger.info("idx 값은 : "+payDto.getPm_idx());
 		logger.info("mem_id 값은 : "+payDto.getMem_id());
-		
 		int success= paymentservice.MySangSin(payDto);
-		if(success > 0) {
+		if(success == 1) {
 			String MySign= paymentservice.MySign(payDto);
 			map.put("MySign", MySign);
+		}else if(success == 2) {
+			map.put("NonNext", "결재자가 없습니다. 문서 작성 다시 부탁드립니다.");
 		}
 		map.put("success", success);
 		return map;
@@ -151,6 +152,43 @@ public class PaymentController {
 		return map;
 	}
 	
+	@GetMapping(value="/waitPayment")
+	public String waitPayment_go() {
+		return "/payment/waitPayment";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/waitpayment.ajax")
+	public HashMap<String, Object> waitpayment_ajax(@RequestParam int page,HttpServletRequest request){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		// ArrayList<PaymentDTO> FirstWaitPayment= paymentservice.FirstWaitPayment(request);
+//		for (PaymentDTO paymentDTO : FirstWaitPayment) {
+//			logger.info("paymentDTO"+paymentDTO.getPm_idx());
+//		}
+		ArrayList<PaymentDTO> SecondWaitPayment = paymentservice.SecondWaitPayment(request);
+//		map.put("first", FirstWaitPayment);
+		map.put("sec", SecondWaitPayment);
+		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/PmSangSin.ajax")
+	public HashMap<String, Object> PmSangSin_ajax(@RequestBody PaymentDTO payDto){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		logger.info("PMSangSin IDX : "+payDto.getPm_idx());
+		logger.info("PMSangSin mem_id : "+payDto.getMem_id());
+		logger.info("PMSangSin mem_name : "+payDto.getMem_name());
+		logger.info("PMSangSin pm_state : "+payDto.getPm_state());
+		logger.info("PMSangSin pm_bigo : "+payDto.getPm_bigo());
+		paymentservice.PmSangSin(payDto);
+		if(payDto.getPm_state().equals("상신")) {
+		String MySign= paymentservice.MySign(payDto);
+		map.put("MySignGo", MySign);
+		} else if(payDto.getPm_state().equals("반려")) {
+			map.put("MySignBack", "반려");
+		}
+		return map;
+	}
 	
 	
 	

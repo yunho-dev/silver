@@ -28,7 +28,7 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>개인 결재함</h3>
+				<h3>결재 대기 결재함</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
@@ -69,43 +69,9 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input id="paymentwrite" type="button" class="btn btn-primary" value="결재 문서 등록">
-						</div>
 					</div>
 				</section>
 			</div>
-			
-			<div class="modal fade" id="PayHistory" tabindex="-1" role="dialog" 
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			 <div class="modal-dialog modal-lg">
-			   <div class="modal-content">
-			   	 <div class="modal-header">
-			   	 	<h3>결재 로그</h3>
-			   	 </div>
-			   	  <div class="modal-body table-wrapper-scroll-y my-custom-scrollbar" style="margin: 0 auto">
-			   	  	<table class="table table-bordered table-hover row">
-			   	  		<thead>	
-			   	  			<tr>
-			   	  				<th>순번</th>
-			   	  				<th>기안자</th>
-			   	  				<th>IP</th>
-			   	  				<th>결재 상태</th>
-			   	  				<th>결재 라인</th>
-			   	  				<th>시간</th>
-			   	  			</tr>
-			   	  		<thead>	
-			   	  			<tbody id="PHLIST">
-			   	  			</tbody>
-			   	  	</table>
-     			 </div>
-     			 <div class="modal-footer">
-     			 	<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">닫기</button>
-     			 </div>
-			   </div>
-			</div>
-			</div>
-			
 			<footer>
 				<div class="footer clearfix mb-0 text-muted">
 					<div class="float-start">
@@ -128,23 +94,18 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-$(document).on('click','#paymentwrite',function(){
-	location.href="paymentwrite.go";
-});
-
-
 var page=1
 paymentCall(page);
 
 function paymentCall(page){
 	$.ajax({
 		type:'get'
-		,url:'selfpayment.ajax'
+		,url:'waitpayment.ajax'
 		,dataType:'json'
 		,data:{'page':page}
 		,success:function(data){
 			console.log(data);
-			paymentListCall(data.paymentList);
+			paymentListCall(data.first,data.sec);
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
@@ -159,56 +120,35 @@ function paymentCall(page){
 	});
 }
 
-function paymentListCall(list){
+function paymentListCall(first,sec){
 	var content ='';
-	for(var i=0;i<list.length;i++){
+// 	for(var i=0;i<first.length;i++){
+// 		if(first[i].pm_idx != undefined){
+// 		content +="<tr>";
+// 		content +="<td>"+first[i].pm_idx+"</td>";
+// 		content +="<td><a href='detailPayment.do?pm_idx="+first[i].pm_idx+"'>"+first[i].pm_subject+"</a></td>";
+// 		content +="<td>"+first[i].pf_cate+"</td>";
+// 		content +="<td>"+first[i].mem_name+"</td>";
+// 		content +="<td>"+first[i].pm_state+"</td>";
+// 		content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'></td>"
+// 		content +="</tr>";
+// 		}
+// 	}
+	for(var i=0;i<sec.length;i++){
+		if(sec[i].pm_idx != undefined){
 		content +="<tr>";
-		content +="<td>"+list[i].pm_idx+"</td>";
-		content +="<td><a href='detailPayment.do?pm_idx="+list[i].pm_idx+"'>"+list[i].pm_subject+"</a></td>";
-		content +="<td>"+list[i].pf_cate+"</td>";
-		content +="<td>"+list[i].mem_name+"</td>";
-		content +="<td>"+list[i].pm_state+"</td>";
-		content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'";
-		content +="data-bs-toggle='modal' data-bs-target='#PayHistory' onclick='PayHistoryCall("+list[i].pm_idx+")'></td>";
+		content +="<td>"+sec[i].pm_idx+"</td>";
+		content +="<td><a href='detailPayment.do?pm_idx="+sec[i].pm_idx+"'>"+sec[i].pm_subject+"</a></td>";
+		content +="<td>"+sec[i].pf_cate+"</td>";
+		content +="<td>"+sec[i].mem_name+"</td>";
+		content +="<td>"+sec[i].pm_state+"</td>";
+		content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'></td>"
 		content +="</tr>";
+		}
 	}
 	$("#myPayMentList").empty();
 	$("#myPayMentList").append(content);
 }
-
-function PayHistoryCall(pm_idx){
-	console.log("IDX 값 : "+pm_idx);
-	$.ajax({
-		type:'get'
-		,url:'PayHistory.ajax'
-		,data:{'pm_idx':pm_idx}
-		,dataType:'json'
-		,success:function(data){
-			console.log(data);
-			PayHistoryCallList(data.hisList);
-		},error:function(e){
-			console.log(e);
-		}
-	});
-}
-
-function PayHistoryCallList(PHlist){
-	var content ='';
-	for(var i=0;i<PHlist.length;i++){
-		content +='<tr>';
-		content +='<td>'+PHlist[i].ph_idx+'</td>';
-		content +='<td>'+PHlist[i].ph_name+'</td>';
-		content +='<td>'+PHlist[i].ph_ip+'</td>';
-		content +='<td>'+PHlist[i].ph_state+'</td>';
-		content +='<td>'+PHlist[i].mem_name+'['+PHlist[i].dept_name+']</td>';
-		content +='<td>'+PHlist[i].ph_date+'</td>';
-		content +='</tr>';
-	}
-	$("#PHLIST").empty();
-	$("#PHLIST").append(content);
-}
-
-
 	
 </script>
 </html>

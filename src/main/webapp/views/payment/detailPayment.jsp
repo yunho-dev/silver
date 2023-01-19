@@ -138,19 +138,38 @@ display: block;
 								 						${PayDto.mem_name}[${PayDto.pm_dept}]
 								 					</th>
 								 					<c:forEach items="${PmlineDto}" var="line">
-								 					<th>${line.mem_name}[${line.dept_name}]</th>
+								 					<th class="${line.mem_id}">${line.mem_name}[${line.dept_name}]</th>
 								 					</c:forEach>
 								 				</tr>
 								 			</thead>
 								 			<tbody>
-								 				<tr style="width: 120px;height: 120px;" id="MySangSin">
-								 					<c:if test="${PayDto.pm_self eq 0}">
+								 				<tr style="width: 120px;height: 120px;" >
+								 					<c:if test="${PayDto.pm_self eq 0 && SessionID eq PayDto.mem_id}">
 								 						<td><button type="button"
 								 						class="btn btn-primary btn-sm" onclick="SangSin()">상신하기</button></td>
 								 					</c:if>
 								 					<c:if test="${PayDto.pm_self eq 1}">
-								 						<td></td>
+								 						<td id="MySangSin" style="text-align: center">
+								 						<img style="width: 60px;height: 60px;" src="/sign/${SignImg}"></td>
 								 					</c:if>
+								 					<c:forEach items="${PmlineDto}" var="line">
+								 					<c:if test="${PayDto.pm_self eq 1 && SessionID eq line.pl_hp}">
+								 					<td class="${line.mem_id}"><button type="button"
+								 						class="btn btn-primary btn-sm"  value="상신"
+								 						onclick="PmSangSin(this)">상신하기
+								 						</button>
+								 						<button type="button"
+								 						class="btn btn-primary btn-sm"  value="반려"
+								 						onclick="PmSangSin(this)">반려하기
+								 						</button>
+								 					</td>
+								 					</c:if>
+								 					<c:if test="${PayDto.pm_self eq 1 && line.pl_ch eq 1}">
+								 					<td class="${line.mem_id}" id="SignShow">
+								 					<img style="width: 60px;height: 60px;" src="/sign/${SignImg}">
+								 					</td>
+								 					</c:if>
+								 					</c:forEach>
 								 				</tr>
 								 			</tbody>
 								 		</table>
@@ -179,8 +198,14 @@ display: block;
 							</div>
 							<div class="input-group">
 							  <span class="input-group-text">의견란</span>
-							  <textarea style="resize: none;" class="form-control" name="bigoContent" readonly="readonly"  
+							  <c:if test="${PayDto.pm_state eq '진행' || PayDto.pm_state eq '등록'}">
+							  <textarea style="resize: none;" id="bigoContent" class="form-control" name="bigoContent"  
 							  aria-label="With textarea">${PayDto.pm_bigo}</textarea>
+							  </c:if>
+							  <c:if test="${PayDto.pm_state eq '반려'}">
+							  <textarea style="resize: none;" id="bigoContent" class="form-control" name="bigoContent"  
+							  aria-label="With textarea" readonly>${PayDto.pm_bigo}</textarea>
+							  </c:if>
 							</div>
 							<div style="text-align: center;margin-top: 30px;">
 								<button type="button" type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
@@ -188,6 +213,10 @@ display: block;
 						</div>
 						
 					</div>
+					
+					
+					
+					
 		
 			
 			
@@ -251,21 +280,30 @@ display: block;
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-function SangSin(){
+var pm_bigo=$("#bigoContent").val();
+$("#bigoContent").on('keyup',function(){
+	pm_bigo=$(this).val();
+	console.log("aa"+pm_bigo);
+});
+function SangSin(page){
 var Idx="${PayDto.pm_idx}";
 var mem_id="${PayDto.mem_id}"
 var mem_name="${PayDto.mem_name}";
+var pf_idx="${PayDto.pf_idx}";
 console.log(Idx);
 console.log(mem_id);
 	$.ajax({
 		type:'post'
 		,url:'MySangSin.ajax'
-		,data: JSON.stringify({'pm_idx':Idx,'mem_id':mem_id,'mem_name':mem_name})
+		,data: JSON.stringify({'pm_idx':Idx,'mem_id':mem_id,'mem_name':mem_name,'pf_idx':pf_idx,'pm_bigo':pm_bigo})
 		,dataType:'json'
 		,contentType: 'application/json; charset=utf-8'
 		,success:function(data){
 			console.log(data);
 			MySangSinListCall(data.MySign);
+			if(data.NonNext != ''){
+				alert(MySign);
+			}
 		},error:function(e){
 			console.log(e);
 		}
@@ -275,10 +313,47 @@ console.log(mem_id);
 
 function MySangSinListCall(list){
 	var content='';
-	content += '<td><img src="C:/sign/'+list+'"></td>'
+	content += '<img src="C:/sign/'+list.si_newFileName+'"/>'
 	$("#MySangSin").empty();
 	$("#MySangSin").append(content);
 }
+
+
+function PmSangSin(e){
+	var pm_idx="${PayDto.pm_idx}";
+	var mem_id=$(e).parent()[0].classList[0];
+	var mem_name = $("."+mem_id)[0].innerText;
+	var StartIndex=mem_name.indexOf("[")
+	var Result = mem_name.substring(0, StartIndex);
+	var pm_state=$(e).val();
+	var pf_idx="${PayDto.pf_idx}";
+	console.log(pm_bigo);
+	
+	$.ajax({
+		type:'post'
+		,url:'PmSangSin.ajax'
+		,dataType:'json'
+		,contentType: 'application/json; charset=utf-8'
+		,data:JSON.stringify({'pm_idx':pm_idx,'mem_id':mem_id,'mem_name':Result,'pm_state':pm_state,'pm_bigo':pm_bigo,'pf_idx':pf_idx})
+		,success:function(data){
+			console.log(data);
+			if(pm_state == '상신'){
+				$("#SignShow").append('<img src="C:/sign/'+data.MySignGo.si_newFileName+'"/>');
+			}else{
+				$("#SignShow").append(data.MySignGo);
+			}
+			
+		},error:function(e){
+			console.log(e);
+		}
+	});
+	
+	
+}
+
+
+
+
 
 
 

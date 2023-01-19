@@ -135,11 +135,15 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 <!-- 	</select> -->
 
 		<update id="MySangSin" parameterType="payment">
-			update payment set pm_self=1,pm_state='진행' where pm_idx=#{pm_idx}	
+			update payment set pm_self=1,pm_state='진행',pm_bigo=#{pm_bigo} where pm_idx=#{pm_idx}	
 		</update>
 		
 		<select id="WhoFirst" resultType="string">
 			select pl_hp  from payline p where pm_idx =#{param1} LIMIT 1;
+		</select>
+		
+		<select id="SignImg" resultType="string">
+			select s.si_newFileName from sign s where s.mem_id=#{param1};
 		</select>
 		
 		<select id="MySign" resultType="string">
@@ -154,11 +158,96 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
 			from member m 
 				inner join payment p on m.mem_id =p.mem_id 
-				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx =#{param1}
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx = #{param1}
+<!-- 				<foreach collection="referPmIdx" separator="," open="(" close=")"> -->
+<!-- 					#{referPmIdx} -->
+<!-- 				</foreach> -->
+<!-- 				order by p.pm_idx desc limit 10 offset 0 -->
+		</select>
+		
+<!-- 		<select id="FirstWaitPayment" resultType="payment"> -->
+<!-- 			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state  -->
+<!-- 			from member m  -->
+<!-- 				inner join payment p on m.mem_id =p.mem_id  -->
+<!-- 				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_self =0 and p.mem_id=#{param1} -->
+<!-- 				order by p.pm_idx desc; -->
+<!-- 		</select> -->
+		
+		<select id="pmSelfOne" resultType="string">
+			select pm_idx  from payment p where pm_self =1 and mem_id =#{param1}
+		</select>
+		
+<!-- 		<select id="WaitPm" resultType="string"> -->
+<!-- 			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state -->
+<!-- 			from member m  -->
+<!-- 				inner join payment p on m.mem_id =p.mem_id  -->
+<!-- 				inner join payform p2 on p2.pf_idx  =p.pf_idx  -->
+<!-- 				inner join payline p3 on p.pm_idx =p3.pm_idx  -->
+<!-- 				where p3.pm_idx =#{param1} and p3.pl_ch =0  -->
+<!-- 				order by p.pm_idx desc limit 1; -->
+<!-- 		</select> -->
+		
+		<select id="WaitPm" resultType="payment">
+			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state,p3.pl_hp ,p3.pl_level 
+					from member m 
+					inner join payment p on m.mem_id =p.mem_id 
+					inner join payform p2 on p2.pf_idx  =p.pf_idx 
+					inner join payline p3 on p.pm_idx =p3.pm_idx 
+					where p.pm_state not in('등록','완료','반려') 
+					and p3.pl_hp =#{param1} and p3.pl_ch =0 and p3.pl_level not in(#{param2}) ;
 		</select>
 	
-	
-	
+		
+		
+		<update id="PmChange" parameterType="payment">
+			update payline set pl_ch=1 where pm_idx = #{pm_idx} and pl_hp=#{mem_id}
+		</update>
+		
+		<update id="PmBackChange" parameterType="payment">
+			update payline set pl_ch=2 where pm_idx = #{pm_idx} and pl_hp=#{mem_id}
+		</update>
+		
+		<select id="isNext" parameterType="payment" resultType="string">
+			select pl_hp from payline where pm_idx=#{pm_idx} and 
+				pl_idx=(select pl_idx from payline p where pl_hp=#{mem_id} and p.pm_idx=#{pm_idx})+1 
+		</select>
+		
+		<update id="GoPayment" parameterType="payment">
+			update payment set pm_bigo=#{pm_bigo} where pm_idx = #{pm_idx}
+		</update>
+		
+		<update id="FinishPayment" parameterType="payment">
+			update payment set pm_state='완료' where pm_idx=#{pm_idx}
+		</update>
+		
+		<update id="FinishBackPayment" parameterType="payment">
+			update payment set pm_state='반려' where pm_idx=#{pm_idx}
+		</update>
+		
+		
+		<select id="FinishAlarmSearch" parameterType="payment" resultType="string">
+		select p2.mem_id  from payment p2 where p2.pm_idx = #{pm_idx}
+		UNION  
+		select p.pl_hp from payline p where p.pm_idx = #{pm_idx} and p.pl_hp not in(#{mem_id});
+		</select>
+		
+		<select id="FinishBackAlarmSearch" parameterType="payment" resultType="string">
+		select p.mem_id  from payment p where p.pm_idx =#{pm_idx}   
+		UNION
+		select p.pl_hp  from payline p where p.pm_idx =#{pm_idx}
+		and p.pl_idx &lt; (select p3.pl_idx from payline p3 where p3.pl_hp=#{mem_id} and p3.pm_idx=#{pm_idx});
+		</select>
+		
+		<update id="PayFormUpCnt">
+			update payform set pf_count=pf_count+1 where pf_idx=#{pf_idx}
+		</update>
+		
+		<select id="writePayMent" resultType="string" parameterType="payment">
+			select mem_name from `member` m where m.mem_id =(select mem_id  from payment p2 where p2.pm_idx =#{pm_idx})
+		</select>
+		
+		
+
 </mapper>
 
 
