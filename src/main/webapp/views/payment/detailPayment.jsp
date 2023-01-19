@@ -142,34 +142,8 @@ display: block;
 								 					</c:forEach>
 								 				</tr>
 								 			</thead>
-								 			<tbody>
-								 				<tr style="width: 120px;height: 120px;" >
-								 					<c:if test="${PayDto.pm_self eq 0 && SessionID eq PayDto.mem_id}">
-								 						<td><button type="button"
-								 						class="btn btn-primary btn-sm" onclick="SangSin()">상신하기</button></td>
-								 					</c:if>
-								 					<c:if test="${PayDto.pm_self eq 1}">
-								 						<td id="MySangSin" style="text-align: center">
-								 						<img style="width: 60px;height: 60px;" src="/sign/${SignImg}"></td>
-								 					</c:if>
-								 					<c:forEach items="${PmlineDto}" var="line">
-								 					<c:if test="${PayDto.pm_self eq 1 && SessionID eq line.pl_hp}">
-								 					<td class="${line.mem_id}"><button type="button"
-								 						class="btn btn-primary btn-sm"  value="상신"
-								 						onclick="PmSangSin(this)">상신하기
-								 						</button>
-								 						<button type="button"
-								 						class="btn btn-primary btn-sm"  value="반려"
-								 						onclick="PmSangSin(this)">반려하기
-								 						</button>
-								 					</td>
-								 					</c:if>
-								 					<c:if test="${PayDto.pm_self eq 1 && line.pl_ch eq 1}">
-								 					<td class="${line.mem_id}" id="SignShow">
-								 					<img style="width: 60px;height: 60px;" src="/sign/${SignImg}">
-								 					</td>
-								 					</c:if>
-								 					</c:forEach>
+								 			<tbody >
+								 				<tr style="width: 120px;height: 120px;" id="DFList" >
 								 				</tr>
 								 			</tbody>
 								 		</table>
@@ -202,7 +176,7 @@ display: block;
 							  <textarea style="resize: none;" id="bigoContent" class="form-control" name="bigoContent"  
 							  aria-label="With textarea">${PayDto.pm_bigo}</textarea>
 							  </c:if>
-							  <c:if test="${PayDto.pm_state eq '반려'}">
+							  <c:if test="${PayDto.pm_state eq '반려' || PayDto.pm_state eq '완료'}">
 							  <textarea style="resize: none;" id="bigoContent" class="form-control" name="bigoContent"  
 							  aria-label="With textarea" readonly>${PayDto.pm_bigo}</textarea>
 							  </c:if>
@@ -285,7 +259,64 @@ $("#bigoContent").on('keyup',function(){
 	pm_bigo=$(this).val();
 	console.log("aa"+pm_bigo);
 });
-function SangSin(page){
+
+DetailListCall();
+function DetailListCall(){
+	var Idx="${PayDto.pm_idx}";
+	var mem_id="${PayDto.mem_id}"
+	
+	$.ajax({
+		type:'get'
+		,url:'DetailPaymentListCall.ajax'
+		,data:{'pm_idx':Idx,'mem_id':mem_id}
+		,dataType:'json'
+		,success:function(data){
+			console.log(data);
+			DFListListCall(data);
+		},error:function(e){
+			console.log(e);
+		}
+	});
+}
+
+function DFListListCall(data){
+	var pm_self="${PayDto.pm_self}";
+	var SessionID="${SessionID}";
+	var mem_id="${PayDto.mem_id}";
+	var content = '';
+	if(pm_self == 0 && SessionID == mem_id){
+		content += '<td><button type="button" class="btn btn-primary btn-sm" onclick="SangSin()">상신하기</button></td>'
+	}else if(pm_self == 1){
+		content += '<td id="MySangSin" style="text-align: center">';
+		content += '<img style="width: 60px;height: 60px;" src="/sign/'+data.MySign+'"></td>';
+	}
+	if(!data.AnotherSign.length == 0){
+		for (var i = 0; i < data.AnotherSign.length; i++) {
+			if (data.line[i].pl_ch == 0 && pm_self == 1 && data.line[i].pl_hp == SessionID) {
+				content += '<td class="'+data.line[i].mem_id+'"><button type="button"';
+				content += 'class="btn btn-primary btn-sm"  value="상신" onclick="PmSangSin(this)">상신하기</button>';
+				content += '<button type="button" class="btn btn-primary btn-sm"  value="반려" onclick="PmSangSin(this)">반려하기 </button> </td>';
+			}
+			else if(data.line[i].pl_ch == 1 && pm_self == 1){
+				content += '<td id="MySangSin" style="text-align: center">';
+				content += '<img style="width: 60px;height: 60px;" src="/sign/'+data.AnotherSign[i].si_newFileName+'"></td>';
+			}else if(data.line[i].pl_ch == 2 && pm_self == 1){
+				content +='<td id="MySangSin" style="text-align: center">반려</td>';
+			}else{
+				content +='<td id="MySangSin" style="text-align: center"></td>';
+			}
+		}	
+	}
+	$("#DFList").empty();
+	$("#DFList").append(content);
+	
+}
+
+
+
+
+function SangSin(){
+console.log("성공1?");
 var Idx="${PayDto.pm_idx}";
 var mem_id="${PayDto.mem_id}"
 var mem_name="${PayDto.mem_name}";
@@ -299,25 +330,14 @@ console.log(mem_id);
 		,dataType:'json'
 		,contentType: 'application/json; charset=utf-8'
 		,success:function(data){
-			console.log(data);
-			MySangSinListCall(data.MySign);
-			if(data.NonNext != ''){
-				alert(MySign);
-			}
+			console.log("성공2?");
+			DetailListCall();
 		},error:function(e){
 			console.log(e);
 		}
 	});
 
 }
-
-function MySangSinListCall(list){
-	var content='';
-	content += '<img src="C:/sign/'+list.si_newFileName+'"/>'
-	$("#MySangSin").empty();
-	$("#MySangSin").append(content);
-}
-
 
 function PmSangSin(e){
 	var pm_idx="${PayDto.pm_idx}";
@@ -337,12 +357,7 @@ function PmSangSin(e){
 		,data:JSON.stringify({'pm_idx':pm_idx,'mem_id':mem_id,'mem_name':Result,'pm_state':pm_state,'pm_bigo':pm_bigo,'pf_idx':pf_idx})
 		,success:function(data){
 			console.log(data);
-			if(pm_state == '상신'){
-				$("#SignShow").append('<img src="C:/sign/'+data.MySignGo.si_newFileName+'"/>');
-			}else{
-				$("#SignShow").append(data.MySignGo);
-			}
-			
+			DetailListCall();
 		},error:function(e){
 			console.log(e);
 		}

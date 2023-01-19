@@ -190,7 +190,49 @@ public class PaymentController {
 		return map;
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/DetailPaymentListCall.ajax")
+	public HashMap<String, Object> DetailPaymentListCall_ajax(@RequestParam int pm_idx,@RequestParam String mem_id){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		logger.info("DetailPayment pm_idx : "+pm_idx);
+		logger.info("DetailPayment mem_id : "+mem_id);
+		String MySign= paymentservice.MyWriteSign(mem_id);
+		logger.info("MySign : "+MySign);
+		ArrayList<String> pl_hp=paymentservice.pl_hp(pm_idx);
+		if(!pl_hp.isEmpty()) {
+			logger.info("pl_hp : "+pl_hp.toString());
+			ArrayList<PaymentDTO> AnotherSign = paymentservice.AnotherSign(pl_hp);
+			ArrayList<PaymentDTO> PmlineDto=paymentservice.PmlineDto(pm_idx);
+			for (PaymentDTO DTO : AnotherSign) {
+				logger.info("AnotherSign file : "+DTO.getSi_newFileName());
+				logger.info("AnotherSign mem : "+DTO.getMem_id());
+			}
+			map.put("AnotherSign", AnotherSign);
+			map.put("line", PmlineDto);
+		}
+		map.put("MySign", MySign);
+		return map;
+	}
 	
+	@GetMapping(value="/goingPayment")
+	public String goingPayment_go(){
+		
+		return "payment/goingPayment";
+	}
+	
+	// 진행 중 결재 리스트 출력
+	@ResponseBody
+	@GetMapping(value="/goingpayment.ajax")
+	public HashMap<String, Object> goingpayment_ajax(HttpServletRequest request,@RequestParam int page){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int total=paymentservice.goingpaymentTotal_ajax(request);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> goingpayment=paymentservice.goingpayment_ajax(request,page);
+		map.put("goingpayment", goingpayment);
+		map.put("page_idx", page_idx);
+		return map;
+	}
 	
 	
 	

@@ -7,11 +7,42 @@
 <mapper namespace="com.silver.payment.PaymentHistoryDAO">
 
 	<select id="hisList" resultType="phPayment">
-		select p.ph_idx ,(select m2.mem_name from member m2 where m2.mem_id=p.ph_name) as ph_name,p.ph_ip,p.ph_state ,m.mem_name,d.dept_name  ,p.ph_date ,p.pm_idx 
+		select row_number() over(order by p.ph_idx) as rowNum,(select m2.mem_name from member m2 where m2.mem_id=p.ph_name) as ph_name,p.ph_ip,p.ph_state ,m.mem_name,d.dept_name  ,p.ph_date ,p.pm_idx 
 			from payhistory p inner join member m on p.ph_line =m.mem_id 
 			inner join depart d on m.dept_num =d.dept_num 
 			where pm_idx =#{param1} order by ph_idx desc;
 	</select>
+	
+	<insert id="PayHistoryWriteinsert"  parameterType="phPayment">
+		insert into payhistory(ph_name,ph_ip,ph_state,ph_line,pm_idx) values(
+			#{ph_name},#{ph_ip},#{ph_state},#{ph_line},#{pm_idx}
+		)
+	</insert>
+	
+	<insert id="WriteInsert_MySangSin"  parameterType="phPayment">
+		insert into payhistory(ph_name,ph_ip,ph_state,ph_line,pm_idx) values(
+			#{ph_name},#{ph_ip},#{ph_state},#{ph_line},#{pm_idx}
+		)
+	</insert>
+	
+	<insert id="WriteInsert_NotFinalSangSin" parameterType="phPayment">
+		insert into payhistory(ph_name,ph_ip,ph_state,ph_line,pm_idx) values(
+			#{ph_name},#{ph_ip},#{ph_state},#{ph_line},#{pm_idx}
+		)
+	</insert>
+	
+	<insert id="WriteInsert_FialSangSin" parameterType="phPayment">
+		insert into payhistory(ph_name,ph_ip,ph_state,ph_line,pm_idx) values(
+			#{ph_name},#{ph_ip},#{ph_state},#{ph_line},#{pm_idx}
+		)
+	</insert>
+	
+	<insert id="WriteInsert_BackSangSin" parameterType="phPayment">
+		insert into payhistory(ph_name,ph_ip,ph_state,ph_line,pm_idx) values(
+			#{ph_name},#{ph_ip},#{ph_state},#{ph_line},#{pm_idx}
+		)
+	</insert>
+	
 
 </mapper>
 

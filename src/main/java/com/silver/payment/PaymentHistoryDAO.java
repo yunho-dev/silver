@@ -9,4 +9,14 @@ public interface PaymentHistoryDAO {
 
 	ArrayList<PaymentHistoryDTO> hisList(int pm_idx);
 
+	void PayHistoryWriteinsert(PaymentHistoryDTO phDto);
+
+	void WriteInsert_MySangSin(PaymentHistoryDTO phDto);
+
+	void WriteInsert_NotFinalSangSin(PaymentHistoryDTO phDto);
+
+	void WriteInsert_FialSangSin(PaymentHistoryDTO phDto);
+
+	void WriteInsert_BackSangSin(PaymentHistoryDTO phDto);
+
 }
