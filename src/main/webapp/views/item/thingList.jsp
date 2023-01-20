@@ -224,7 +224,7 @@
 			url:'getThingDetail.do',
 			data:{thIdx:thIdx},
 			dataType:'JSON',
-			success:function(data){
+			success:function(data){ //#으로 바꾸기 detailThing
 				$(".modal-body .left .th_name").text(data.detail.th_name);
 				$(".modal-body .left .th_model").text(data.detail.th_model);
 				$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');

@@ -34,10 +34,10 @@
                         <h3 class="card-title">카테고리 조회</h3>
                         <p>사용량이 많은 카테고리 순으로 정렬되어 보여집니다<br>원하는 카테고리를 클릭해 주세요</p>
                     </div>
-			       <div class="card-header" style="background-color: #adb5bd; font-weight: bold; font-size: large;">
+			       <div class="card-header" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
 			           카테고리 이름 : <input type="text" name="thCate" class="filter"> &nbsp;&nbsp;
 			           <button class="btn btn-secondary" onclick="search($(this))">검색</button>
-						<button type="button" class="btn btn-primary ml-1" style="margin-left: 50px;" onclick="location.href='itemCateWrite.go'">
+						<button type="button" class="btn btn-secondary ml-1" style="margin-left: 50px;" onclick="location.href='itemCateWrite.go'">
 							<span class="d-none d-sm-block">등록하기</span>
 						</button>
 					</div>

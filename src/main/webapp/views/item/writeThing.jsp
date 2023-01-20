@@ -58,7 +58,6 @@
 	            <form id="writeForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
-<!-- 							<p id="thIdx" style="display: none;"></p> -->
 							<p class="writeArea"><span id="WriteName">품명 : </span> 
 								<input type="text" name="thName">&nbsp;<a class="btn btn-primary" id="thingCheck">중복검사</a>
 							</p> <br>

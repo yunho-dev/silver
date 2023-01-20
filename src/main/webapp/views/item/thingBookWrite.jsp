@@ -82,11 +82,11 @@
 						<div class="writeRight">
 							<p class="writeArea">
 								<span id="WriteName">예약 시작 날짜 : </span> 
-								<input type="date" name="bStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p><br>
 							<p class="writeArea">
 								<span id="WriteName">예약 끝날 날짜 : </span> 
-								<input type="date" name="bEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p>
 							<p class="writeArea">
 								<span id="dateCheck" style="color: #B1B1B1; font-size: medium;">예약 시작 날짜와 끝날 날짜를 선택해 주세요</span>
@@ -114,9 +114,17 @@
 	const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
 
 	function closeWriteModal(){
+		var $bStart = $('#writeForm input[name=bStart]');
+		var $bEnd = $('#writeForm input[name=bEnd]');
 		$('#thingBookWrite').modal('hide');
 		$('#writeForm')[0].reset();
 		$('#writeForm input[name=user]').attr('onclick','alert("사용자 구분을 먼저 선택해 주세요")')
+		$bStart.attr('type', 'text')
+		$bEnd.attr('type', 'text')
+		$bStart.attr('readonly', true)
+		$bEnd.attr('readonly', true)
+		$bStart.attr('placeholder', '품명을 먼저 선택해 주세요')
+		$bEnd.attr('placeholder', '품명을 먼저 선택해 주세요')
 	}
 	
 	function changeUser(selected){
@@ -154,8 +162,10 @@
 		}
 		var $bStart = $('#writeForm input[name=bStart]');
 		var $bEnd = $('#writeForm input[name=bEnd]');
-		$bStart.removeAttr("readonly")
-		$bEnd.removeAttr("readonly")
+		$bStart.attr('type', 'date')
+		$bEnd.attr('type', 'date')
+		$bStart.attr('readonly', false)
+		$bEnd.attr('readonly', false)
 		$bStart.removeAttr("placeholder")
 		$bEnd.removeAttr("placeholder")
 	}

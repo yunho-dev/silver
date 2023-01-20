@@ -118,7 +118,7 @@
 														<input type="text" name="chisPlace">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행거리 </span> 
-														<input type="text" name="chisKm"><span id="WriteName">&nbsp;km</span>
+														<input type="text" name="chisKm" style="width: 150px;"><span id="WriteName">&nbsp;km</span>
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행목적 </span> 
 														<input type="text" name="chisReason">
@@ -178,15 +178,20 @@
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
 														<input type="text" name="bStart" onchange="dateCheck()">
 													</p><br>
-													<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="bEnd" onchange="dateCheck()">
-													</p>
-	                                			</div>
-	                                			<div class="right">
-	                                				<p class="writeArea"><span id="WriteName">사용자 : </span> 
+													<p class="writeArea"><span id="WriteName">사용자 : </span> <br>
 														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
 														<input type="hidden" name="bMemId" readonly="readonly">
-													</p>
+													</p><br>
+	                                			</div>
+	                                			<div class="right">
+	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
+														<input type="text" name="bEnd" onchange="dateCheck()">
+													</p><br>
+	                                			</div>
+	                                			<div style="width: 100%; float: left; text-align: center;">
+	                                				<p class="writeArea">
+	                                					<span id="dateCheck" style="color: #B1B1B1; font-size: large;"></span> 
+													</p><br>
 	                                			</div>
                                 			</div>
                                 			<div class="regiBottom">
@@ -243,8 +248,9 @@
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
 	
 	function dateCheck() {
-		$bStart = $('#driveBook input[name=bStart]');
-		$bEnd = $('#driveBook input[name=bEnd]');
+		var $bStart = $('#driveBook input[name=bStart]');
+		var $bEnd = $('#driveBook input[name=bEnd]');
+		var $dateCheck = $('#driveBook #dateCheck')
 		if($bStart.val().match(dateTimeRegex) != null && $bEnd.val().match(dateTimeRegex) != null){
 			$.ajax({
 				type:'GET',
@@ -252,7 +258,13 @@
 				data:{carIdx:carIdx, bStart:$bStart.val(), bEnd:$bEnd.val()},
 				dataType:'JSON',
 				success:function(data){
-					console.log(data)
+					if(data.check === 0){
+						$dateCheck.text('중복된 예약 날짜가 없습니다.')
+						$dateCheck.css('color', 'green')
+					}else{
+						$dateCheck.text('중복된 예약 날짜가 '+data.check+'개 있습니다.')
+						$dateCheck.css('color', 'red')
+					}
 				},
 				error:function(e){
 					console.log(data)
@@ -262,7 +274,7 @@
 	}
 	
 	/** 
-	 * 모달을 닫아주는 함수 (나중에 스위치-케이스문으로 바꿀 예정)
+	 * 모달을 닫아주는 함수
 	 * num 설명
 	 * 1 : 차량 정보 등록 모달
 	 * 2 : 차량 정보 수정 모달
@@ -271,19 +283,19 @@
 	 */
 	function closeModal(num){
 		 switch (num) {
-		case 1:
+		case 1: // 차량 정보 등록 모달
 			$('#carResist').modal('hide');
 			$('#carResistForm')[0].reset();
 			break;
-		case 2:
+		case 2: // 차량 정보 수정 모달
 			$('#carModify').modal('hide');
 			$('#carModfyForm')[0].reset();
 			break;
-		case 3:
+		case 3: // 차량 운행 기록 수정 모달
 			$('#carHisotryModifyModal').modal('hide');
 			$('#carHistoryModfyForm')[0].reset();
 			break;
-		case 4:
+		case 4: // 차량 예약 취소 모달
 			$('#carBookCancel').modal('hide');
 			$('#cancleForm')[0].reset();
 			break;

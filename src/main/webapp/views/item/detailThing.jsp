@@ -25,7 +25,6 @@
         width: 50%;
         float: right;
         box-sizing: border-box;
-        margin-top: 0;
     }
     #detailName {
     	font-weight: bolder;
@@ -63,7 +62,9 @@
 						<span id="detailName">상태 : </span><span class="th_state"></span> <br>
 						<p class='hiddenSpon' style="display: none;"><span id="detailName">후원자 : </span><span class="th_spon"></span></p> <br>
 					</div>
-					<img class="th_photo" style="width: 30%; display: none;"/>
+					<div class="bottom" style="width: 100%; float: left;">
+						<img class="th_photo" style="width: 30%; display: none;"/>
+					</div>
 	            </div>
 	            <div class="modal-footer" >
 	            	<div style="margin: auto;">
