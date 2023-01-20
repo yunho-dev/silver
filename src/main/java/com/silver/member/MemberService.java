@@ -11,6 +11,7 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,7 @@ public class MemberService {
 	Logger logger=LoggerFactory.getLogger(getClass());
 	
 	@Autowired MemberDAO dao;
-	
+	@Autowired PasswordEncoder encoder;
 	// 직원 목록 가져오는 서비스
 	public HashMap<String, Object> memberlist(int page) {
 		
@@ -93,13 +94,22 @@ public class MemberService {
 		dto.setMem_birth(params.get("memBirth"));	
 		dto.setMem_addr(params.get("memAddr"));
 		dto.setPos_name(params.get("posName"));
-		dto.setMem_pw(params.get("memPw"));
 		dto.setPart_name(params.get("partName"));
 		dto.setMem_pnum(params.get("memPnum"));
 		dto.setMem_gender(params.get("memGender"));
 		dto.setMem_daddr(params.get("memDaddr"));
 		dto.setMem_email(params.get("memEmail"));
 		dto.setMem_num(params.get("memId"));
+		
+		
+		// dto.setMem_pw(params.get("memPw")); 
+		String plain_pw=params.get("memPw");
+		String enc_pw=encoder.encode(plain_pw);
+		
+		logger.info("plain_pw:"+plain_pw);
+		logger.info("enc_pw:"+enc_pw);		
+		dto.setMem_pw(enc_pw);
+		
 		
 		dto.setPos_num(dao.findpos(dto));
 		dto.setPart_num(dao.findpart(dto));
@@ -169,7 +179,6 @@ public class MemberService {
 		dto.setMem_birth(params.get("memBirth"));	
 		dto.setMem_addr(params.get("memAddr"));
 		dto.setPos_name(params.get("posName"));
-		dto.setMem_pw(params.get("memPw"));
 		dto.setPart_name(params.get("partName"));
 		dto.setMem_pnum(params.get("memPnum"));
 		dto.setMem_gender(params.get("memGender"));
@@ -177,6 +186,15 @@ public class MemberService {
 		dto.setMem_email(params.get("memEmail"));
 		dto.setMem_num(params.get("memId"));
 		dto.setMem_state(params.get("memState"));
+		
+		//dto.setMem_pw(params.get("memPw"));
+		
+		String plain_pw=params.get("memPw");
+		String enc_pw=encoder.encode(plain_pw);
+		
+		logger.info("plain_pw:"+plain_pw);
+		logger.info("enc_pw:"+enc_pw);		
+		dto.setMem_pw(enc_pw);
 		
 		dto.setPos_num(dao.findpos(dto));
 		dto.setPart_num(dao.findpart(dto));
