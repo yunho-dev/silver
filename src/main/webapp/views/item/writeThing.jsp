@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -84,7 +87,7 @@
 								</select>
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">취득일자 : </span>
-								<input type="date" name="thDate" id="datepicker"> <!-- date picker -->
+								<input type="text" name="thDate" id="getDate">
 							</p> <br>
 							<p class="writeAreaSpon" style="display: none;">
 								<span id="WriteName">후원자 : </span>

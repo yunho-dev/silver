@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	table{
@@ -112,7 +115,7 @@
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNum"></span>운행 등록</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea" ><span id="WriteName">운행일 </span> 
-														&nbsp;&nbsp;&nbsp;&nbsp;<input type="date" name="chisDate">
+														&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="chisDate" id="chisDate">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행지역 </span> 
 														<input type="text" name="chisPlace">
@@ -176,7 +179,7 @@
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNumBook"></span>차량 사용 예약</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
-														<input type="text" name="bStart" onchange="dateCheck()">
+														<input type="text" name="bStart" id="datepicker" onchange="dateCheck()">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">사용자 : </span> <br>
 														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
@@ -185,7 +188,7 @@
 	                                			</div>
 	                                			<div class="right">
 	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="bEnd" onchange="dateCheck()">
+														<input type="text" name="bEnd" id="datepicker" onchange="dateCheck()">
 													</p><br>
 	                                			</div>
 	                                			<div style="width: 100%; float: left; text-align: center;">
@@ -246,6 +249,27 @@
 	const dateTimeRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/; // 날짜+시간+분
 	const numRegex = /^[0-9]+$/; //숫자만
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
+	
+	$(function() {
+	       //input을 datepicker로 선언
+	       $("#chisDate").datepicker({
+	           dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+	           ,changeYear: true //option값 년 선택 가능
+	           ,changeMonth: true //option값  월 선택 가능                
+	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+	           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+	           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+	           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+	           ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+	           ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	       });                    
+	       
+	       //초기값을 오늘 날짜로 설정해줘야 합니다.
+	       $('#chisDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+	   });
 	
 	function dateCheck() {
 		var $bStart = $('#driveBook input[name=bStart]');
