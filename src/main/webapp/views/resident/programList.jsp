@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="assets/css/app.css">
 <link rel="shortcut icon" href="assets/images/favicon.svg"
 	type="image/x-icon">
+<script src="assets/js/jquery.twbsPagination.js"></script>
 
 </head>
 
@@ -64,16 +65,25 @@
 								</table>
 							</div>
 						</div>
+						
+						<!-- pagination -->
+						<div class="card-body py-4 px-5" style="margin:0 auto;">
+							<div id="pagint">
+								<div class="container">
+									<nav aria-label="Page navigation" style="text-align: center;">
+										<ul class="pagination" id="pagination"></ul>
+									</nav>
+								</div>
+							</div>
+						</div>
+						<!-- pagination -->
+						
+						
 
 					</div>
 				</section>
 			</div>
-			
-			
-			
-			
 
-			
 
 			<!--footer-->
 			<footer>
@@ -100,25 +110,41 @@
 </body>
 
 <script>
-listCall();
+var page = 1;
 
-function listCall(){
+//프로그램 리스트뽑기
+AjaxCall(page);
+
+//프로그램 리스트를 불러오는 ajax함수
+function AjaxCall(page) {
 	$.ajax({
-		type:'GET',
-		url:'ProgramlistCall',
-		data:{},
-		dataType:'JSON',
-		success:function(data){
-				console.log(data);
-				console.log("여기는 리스트콜입니다");
-				drawList(data.programlist);//data에 있는 programlist를 전달받을거다
+		type : 'get',
+		url : 'ProgramListCall.ajax',
+		dataType : 'json',
+		data : {
+			"page" : page
 		},
-		error:function(e){
+		success : function(data) {
+			drawList(data.list);//Controller 에서 put으로 list라는 이름에 담아줄걸 가져온다
+// 			btnChk(data.sessionLevel);
+			session=data.SessionID;
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					AjaxCall(page);
+				}
+			});
+		},
+		error : function(e) {
 			console.log(e);
 		}
 	});
+
 }
 
+//프로그램 리스트를 그리는 함수
 function drawList(list){
 	var content = '';
 	for(var i=0;i<list.length;i++){
@@ -145,6 +171,55 @@ function drawList(list){
 	$("#list").empty();
 	$("#list").append(content);
 }
+
+
+
+
+// listCall();
+
+// function listCall(){
+// 	$.ajax({
+// 		type:'GET',
+// 		url:'ProgramlistCall',
+// 		data:{},
+// 		dataType:'JSON',
+// 		success:function(data){
+// 				console.log(data);
+// 				console.log("여기는 리스트콜입니다");
+// 				drawList(data.programlist);//data에 있는 programlist를 전달받을거다
+// 		},
+// 		error:function(e){
+// 			console.log(e);
+// 		}
+// 	});
+// }
+
+// function drawList(list){
+// 	var content = '';
+// 	for(var i=0;i<list.length;i++){
+// 		content +='<tr>';
+// 		content +='<td>'+list[i].pr_idx+'</td>';
+// 		content +='<td>'+list[i].pr_name+'</td>';
+// 		content +='<td>'+list[i].pr_teacher+'</td>';
+		
+// 		var date = new Date(list[i].pr_start);
+// 		content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ 
+// 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
+		
+// 		var date = new Date(list[i].pr_end);
+// 		content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ 
+// 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
+		
+// 		content +='<td>'+list[i].pc_cate+'</td>';
+// 		content += '<td>'
+// 			+ "<button class='btn btn-primary btn-sm' onclick=location.href='programDetail?pr_idx="+list[i].pr_idx+"'>상세보기/수정</button>"
+// 			+ "</td>";
+		
+// 		content +='</tr>';
+// 	}
+// 	$("#list").empty();
+// 	$("#list").append(content);
+// }
 
 function programWrite(){
 	console.log("프로그램 등록 버튼 누르셧죠?");

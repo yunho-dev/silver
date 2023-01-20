@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<!-- 이 XML 을 어떤 interface 를 통해서 연결 할 건가? -->
+<mapper namespace="com.silver.boardnext.NextDAO">
+	
+<!-- 	<select id="nextList" resultType="next"> -->
+<!-- 		select b.bd_idx,b.bd_title,m.mem_name,b.bd_date,bd_content,m.mem_id  from board b,member m where b.bc_idx =2 and  -->
+<!-- 			b.mem_id =m.mem_id order by b.bd_idx desc; -->
+<!-- 	</select> -->
+	
+	<!-- 인수인계 글 작성완료시 실행 -->
+	<insert id="writecomplete" parameterType="next">
+		insert into board(mem_id,bd_title,bd_content,bc_idx) values(#{mem_id},#{bd_title},#{bd_content},2);
+	</insert>
+	
+	<!-- 인수인계 상세보기 -->
+	<select id="nextDetail" resultType="next">
+		select b.bd_idx ,b.bd_title ,b.bd_date ,b.bd_content,m.mem_name from board b,member m  
+			where bd_idx=#{param1} and m.mem_id=b.mem_id;
+	</select>
+	
+	<!-- 인수인계 업데이트 이동 -->
+	<select id="nextUpdateForm" resultType="next">
+		select b.bd_idx,b.bd_title,m.mem_name,b.bd_date,b.bd_content 
+	from board b, member m where b.bc_idx ='2' and b.bd_idx=#{param1} and b.mem_id =m.mem_id;
+	</select>
+	<!-- 인수인계 업데이트 완료 -->
+	<update id="nextUpdate">
+		update board set bd_title=#{param2},bd_content=#{param3} where bd_idx=#{param1};
+	</update>
+	<!-- 인수인계 리스트 총갯수 -->
+	<select id="nextSizeTotal" resultType="int">
+		select count(b.bd_idx) from board b where b.bc_idx=2;
+	</select>
+	<!-- 인수인계 리스트 10개씩 -->
+	<select id="listCall" resultType="next">
+		select b.bd_idx,b.bd_title,m.mem_name,b.bd_date,bd_content,m.mem_id  from board b,member m where b.bc_idx =2 and 
+			b.mem_id =m.mem_id order by b.bd_idx desc limit 10 offset #{param1};
+	</select>
+
+	
+</mapper>
+
+
+
+
+

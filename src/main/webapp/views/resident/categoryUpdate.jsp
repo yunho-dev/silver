@@ -47,7 +47,8 @@
 										aria-describedby="basic-addon1" name="pc_cate" value="${list.pc_cate}" autofocus>
 								</div>
 							</div>
-							<button type="submit" class="btn btn-primary">수정하기</button>
+<!-- 							<button type="submit" class="btn btn-primary">수정하기</button> -->
+							<button type="button" class="btn btn-primary" onclick="save()">수정하기</button>
 							<button type="button" class="btn btn-secondary"
 								onclick="location.href='residentProgramGategory'">뒤로가기</button>
 							</form>
@@ -79,7 +80,14 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-
+function save(){
+	$("input[name='pc_cate']").val();
+	if($("input[name='pc_cate']").val().length < 1){
+		alert('글자를 입력해주세요');
+	}else{
+		$("form").submit();
+	}
+}
 
 </script>
 </html>

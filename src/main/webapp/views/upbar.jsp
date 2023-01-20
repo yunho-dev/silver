@@ -16,7 +16,7 @@
 <!--                 <a href="#" class="alaram" data-bs-toggle="dropdown" id="alarmShow"> -->
 					<button type="button" class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 	<img alt="" src="assets/images/logo/bell-fill.svg">
-                	<span id="bell_count" style="vertical-align:super"></span>
+                	<span id="bell_count" style="vertical-align:super;color: red;" ></span>
                 	</button>
                 	<ul class="dropdown-menu" style="width:400px;font-size: 11px;" id="allist">
             		</ul>
@@ -64,19 +64,18 @@ function AlarmCallAjax(){
 function AlarmlistCall(allist){
 	var count=0;
 	var content="";
-	for(var i=0;i<allist.length;i++){
+		console.log("222");
 		if(allist.length == 0){
 			content+='<li><a class="dropdown-item" href="#">'+"알림이 없습니다."+'</a></li>';
 		}
-		if(allist[i].ar_cnt == '안읽음'){
-		content +='<li id='+allist[i].ar_idx+' ><a class="dropdown-item" href="'+allist[i].ar_addr+'">'
-		content += allist[i].ar_content
-		var date = new Date(allist[i].ar_date);
-		content +='<span style="float:right">'+ date.toLocaleDateString("ko-KR") + " "
-		content +=date.toLocaleTimeString("en-US", {hour12 : false}) +'</span></a></li>'
-		count++;
+		for(var i=0;i<allist.length;i++){
+			content +='<li id='+allist[i].ar_idx+' ><a class="dropdown-item" href="'+allist[i].ar_addr+'">'
+			content += allist[i].ar_content
+			var date = new Date(allist[i].ar_date);
+			content +='<span style="float:right">'+ date.toLocaleDateString("ko-KR") + " "
+			content +=date.toLocaleTimeString("en-US", {hour12 : false}) +'</span></a></li>'
+			count++;
 		}
-	}
 	$("#allist").empty();
 	$("#allist").append(content);
 	$("#bell_count").text(count);

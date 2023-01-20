@@ -53,7 +53,6 @@
 					INSERT INTO carhistory(car_idx, chis_date, chis_driver, chis_place, chis_reason, chis_km)
 					VALUES(#{carIdx}, #{chisDate}, #{chisDriver}, #{chisPlace}, #{chisReason}, #{chisKm});
 				</if>
-				
 			</otherwise>
 		</choose>
 	</insert>
@@ -72,5 +71,39 @@
 			SET car_name=#{carName}, car_num=#{carNum}, car_state=#{carState}, car_part=#{carPart}, car_type=#{carType}, car_year=#{carYear}
 		where car_idx=#{carIdx}
 	</update>
-
+	
+	<select id="getDriveHistoryModifyInfo" parameterType="int" resultType="car">
+		SELECT * from carhistory WHERE chis_idx = #{chisIdx}
+	</select>
+	
+	<update id="carHistoryModify" parameterType="hashmap">
+		UPDATE carhistory
+		<set>
+			chis_date=#{chisDate}, chis_driver=#{chisDriver}, chis_place=#{chisPlace}, chis_reason=#{chisReason}, chis_km=#{chisKm}, 
+			<if test="!chisLiter.equals('')">chis_liter=#{chisLiter},</if>
+			<if test="!chisBigo.equals('')">chis_bigo=#{chisBigo},</if>
+		</set>
+			WHERE chis_idx = #{chisIdx}
+	</update>
+	
+	<insert id="carBookResist" parameterType="hashmap">
+		insert into book(car_idx, b_write, b_start, b_end, mem_id)
+			values(#{carIdx}, #{bookWriter}, #{bStart}, #{bEnd}, #{bMemId})
+	</insert>
+	
+	<select id="carBookCheck" resultType="int" parameterType="hashmap">
+		select COUNT(cb_idx) 
+		from book
+		where car_idx = #{carIdx}
+			and b_cancel = 1 
+			and b_start <![CDATA[<]]> #{bEnd}
+			and b_end <![CDATA[>]]> #{bStart}
+	</select>
+	
+	<select id="getCarBookDetail" resultType="car" parameterType="int">
+		SELECT b.cb_idx, b.car_idx, b.b_write, b.b_start, b.b_end, b.b_content, b.b_cancel, b.mem_id, m.mem_name from book b
+			INNER JOIN `member` m on b.mem_id = m.mem_id
+		WHERE cb_idx = #{cbIdx}
+	</select>
+	
 </mapper>

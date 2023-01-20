@@ -6,8 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- datePicker 라이브러리 -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- 은빛 우산 부트스트랩 -->
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -87,7 +85,7 @@
 								</select>
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">취득일자 : </span>
-								<input type="text" name="thDate" id="datepicker"> <!-- date picker -->
+								<input type="date" name="thDate" id="datepicker"> <!-- date picker -->
 							</p> <br>
 							<p class="writeAreaSpon" style="display: none;">
 								<span id="WriteName">후원자 : </span>
@@ -116,24 +114,6 @@
 	</div>
 </body>
 <script>
-/*
-	//이거 이상해 ㅠㅠ
-	$(function(){
-	    $('#datepicker').datepicker({
-	    	dateFormat: 'yy-mm-dd',
-	    	  prevText: '이전 달',
-	    	  nextText: '다음 달',
-	    	  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-	    	  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-	    	  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-	    	  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-	    	  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-	    	  showMonthAfterYear: true,
-	    	  yearSuffix: '년'
-	    });
-	    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-	})*/
-	
 	function closeWriteModal(){
 		$('#writeThing').modal('hide');
 		$('#writeForm')[0].reset();

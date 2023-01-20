@@ -1,6 +1,7 @@
 package com.silver.payment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -41,9 +42,6 @@ public interface PaymentDAO {
 
 	ArrayList<PaymentDTO> PmlineDto(int pm_idx);
 
-	// ArrayList<String> SignMember(int pm_idx);
-
-	// ArrayList<MemberDTO> paysign(ArrayList<String> signMember);
 
 	ArrayList<PaymentDTO> PayFile(int pm_idx);
 
@@ -51,10 +49,89 @@ public interface PaymentDAO {
 
 	String WhoFirst(int pm_idx);
 
-	String MySign(String mem_id);
-
 	ArrayList<String> referPmIdx(String mem_id);
 	
-	ArrayList<PaymentDTO> openPayment(String str);
+//	ArrayList<PaymentDTO> openPayment(String str);
+	
+	ArrayList<PaymentDTO> openPayment(int page, ArrayList<String> referPmIdx);
+
+	int OpensListCallTotal(ArrayList<String> referPmIdx);
+	
+	String SignImg(String mem_id);
+
+	String MySign(String mem_id);
+
+//	ArrayList<PaymentDTO> FirstWaitPayment(String mem_id);
+
+	ArrayList<String> pmSelfOne(String mem_id);
+
+	ArrayList<PaymentDTO> WaitPm();
+
+	void GoPayment(PaymentDTO payDto);
+
+	void PmChange(PaymentDTO payDto);
+
+	String isNext(PaymentDTO payDto);
+
+	int FinishPayment(PaymentDTO payDto);
+
+	ArrayList<String> FinishAlarmSearch(PaymentDTO payDto);
+
+	void PayFormUpCnt(PaymentDTO payDto);
+
+	String writePayMent(PaymentDTO payDto);
+
+	void PmBackChange(PaymentDTO payDto);
+
+	int FinishBackPayment(PaymentDTO payDto);
+
+	ArrayList<String> FinishBackAlarmSearch(PaymentDTO payDto);
+
+	String paymentdao(String mem_id);
+
+	ArrayList<String> pl_hp(int pm_idx);
+
+	ArrayList<PaymentDTO> AnotherSign(ArrayList<String> pl_hp);
+
+	String MyWriteSign(String mem_id);
+
+	String writePayMent_memId(PaymentDTO payDto);
+
+	ArrayList<PaymentDTO> goingpayment_ajax(String mem_id, int page);
+
+	int goingpaymentTotal_ajax(String mem_id);
+
+	int finishpaymentTotal_ajax(String mem_id);
+
+	ArrayList<PaymentDTO> finishpayment_ajax(String mem_id, int page);
+
+	int selfSearchTotal(String select, String seacontent, String seacontent2);
+
+	ArrayList<PaymentDTO> selfSearch(String select, String seacontent, String seacontent2, int page);
+
+	int goingSearchTotal(String mem_id, String select, String seacontent);
+
+	ArrayList<PaymentDTO> goingSearch(String mem_id, String select, String seacontent, int page);
+
+	int finishSearchTotal(String mem_id, String select, String seacontent);
+
+	ArrayList<PaymentDTO> finishSearch(String mem_id, String select, String seacontent, int page);
+
+	int waitpaymentTotal_ajax();
+
+	int openSearchPayment(String select, String seacontent, ArrayList<String> referPmIdx);
+
+	ArrayList<PaymentDTO> openpaymentSearch_ajax(String select, String seacontent, int page,
+			ArrayList<String> referPmIdx);
+
+	String getDownloadOrlName(String path);
+
+
+
+
+
+
+
+
 
 }

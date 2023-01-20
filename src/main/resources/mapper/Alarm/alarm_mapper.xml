@@ -16,7 +16,7 @@
 	</insert>
 	
 	<select id="AlarmCall" resultType="alarm">
-		select * from alread a  where a.mem_id =#{param1} order by ar_idx desc;
+		select * from alread a  where a.mem_id =#{param1} and a.ar_cnt ='안읽음' order by ar_idx desc;
 	</select>
 	
 	<update id="removeCount">

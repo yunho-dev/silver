@@ -138,19 +138,12 @@ display: block;
 								 						${PayDto.mem_name}[${PayDto.pm_dept}]
 								 					</th>
 								 					<c:forEach items="${PmlineDto}" var="line">
-								 					<th>${line.mem_name}[${line.dept_name}]</th>
+								 					<th class="${line.mem_id}">${line.mem_name}[${line.dept_name}]</th>
 								 					</c:forEach>
 								 				</tr>
 								 			</thead>
-								 			<tbody>
-								 				<tr style="width: 120px;height: 120px;" id="MySangSin">
-								 					<c:if test="${PayDto.pm_self eq 0}">
-								 						<td><button type="button"
-								 						class="btn btn-primary btn-sm" onclick="SangSin()">상신하기</button></td>
-								 					</c:if>
-								 					<c:if test="${PayDto.pm_self eq 1}">
-								 						<td></td>
-								 					</c:if>
+								 			<tbody >
+								 				<tr style="width: 120px;height: 120px;" id="DFList" >
 								 				</tr>
 								 			</tbody>
 								 		</table>
@@ -173,14 +166,22 @@ display: block;
 							<div class="mb-3">
 							  <ul class="list-group">
 							  <c:forEach items="${PayFile}" var="file">
-							  	<li class="list-group-item">${file.paf_oriFileName}</li>
+							  	<li class="list-group-item">${file.paf_oriFileName}
+							  	<input type="button" class="btn btn-sm btn-secondary" value="다운로드"
+							  	onclick="location.href='download.do?path=${file.paf_newFileName}'"></li>
 							  	</c:forEach>
 							  </ul>
 							</div>
 							<div class="input-group">
 							  <span class="input-group-text">의견란</span>
-							  <textarea style="resize: none;" class="form-control" name="bigoContent" readonly="readonly"  
+							  <c:if test="${PayDto.pm_state eq '진행' || PayDto.pm_state eq '등록'}">
+							  <textarea style="resize: none;" id="bigoContent" class="form-control" name="bigoContent"  
 							  aria-label="With textarea">${PayDto.pm_bigo}</textarea>
+							  </c:if>
+							  <c:if test="${PayDto.pm_state eq '반려' || PayDto.pm_state eq '완료'}">
+							  <textarea style="resize: none;" id="bigoContent" class="form-control" name="bigoContent"  
+							  aria-label="With textarea" readonly>${PayDto.pm_bigo}</textarea>
+							  </c:if>
 							</div>
 							<div style="text-align: center;margin-top: 30px;">
 								<button type="button" type="button" class="btn btn-secondary" onclick="history.back()">뒤로가기</button>
@@ -188,6 +189,10 @@ display: block;
 						</div>
 						
 					</div>
+					
+					
+					
+					
 		
 			
 			
@@ -251,21 +256,87 @@ display: block;
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
+var pm_bigo=$("#bigoContent").val();
+$("#bigoContent").on('keyup',function(){
+	pm_bigo=$(this).val();
+	console.log("aa"+pm_bigo);
+});
+
+DetailListCall();
+function DetailListCall(){
+	var Idx="${PayDto.pm_idx}";
+	var mem_id="${PayDto.mem_id}"
+	
+	$.ajax({
+		type:'get'
+		,url:'DetailPaymentListCall.ajax'
+		,data:{'pm_idx':Idx,'mem_id':mem_id}
+		,dataType:'json'
+		,success:function(data){
+			console.log(data);
+			DFListListCall(data);
+		},error:function(e){
+			console.log(e);
+		}
+	});
+}
+
+function DFListListCall(data){
+	var SessionID="${SessionID}"
+	console.log(SessionID);
+	var pm_self="${PayDto.pm_self}";
+	var SessionID="${SessionID}";
+	var mem_id="${PayDto.mem_id}";
+	var content = '';
+	if(pm_self == 0 && SessionID == mem_id){
+		content += '<td><button type="button" class="btn btn-primary btn-sm" onclick="SangSin()">상신하기</button></td>'
+	}else if(pm_self == 1){
+		content += '<td id="MySangSin" style="text-align: center">';
+		content += '<img style="width: 60px;height: 60px;" src="/sign/'+data.MySign+'"></td>';
+	}
+	if(!data.AnotherSign.length == 0){
+		for (var i = 0; i < data.AnotherSign.length; i++) {
+			console.log("asd"+data.line[i].pl_hp);
+			if (data.line[i].pl_ch == 0 && pm_self == 1 && data.line[i].pl_hp == SessionID) {
+				content += '<td class="'+data.line[i].mem_id+'"><button type="button"';
+				content += 'class="btn btn-primary btn-sm"  value="상신" onclick="PmSangSin(this)">상신하기</button>';
+				content += '<button type="button" class="btn btn-primary btn-sm"  value="반려" onclick="PmSangSin(this)">반려하기 </button> </td>';
+			}else if(data.line[i].pl_ch == 1 && pm_self == 1){
+				content += '<td id="MySangSin" style="text-align: center">';
+				content += '<img style="width: 60px;height: 60px;" src="/sign/'+data.AnotherSign[i].si_newFileName+'"></td>';
+			}else if(data.line[i].pl_ch == 2 && pm_self == 1){
+				content +='<td id="MySangSin" style="text-align: center">반려</td>';
+			}else{
+				content +='<td id="MySangSin" style="text-align: center"></td>';
+			}
+		}	
+	}
+	$("#DFList").empty();
+	$("#DFList").append(content);
+	
+}
+
+
+
+
 function SangSin(){
+console.log("성공1?");
 var Idx="${PayDto.pm_idx}";
 var mem_id="${PayDto.mem_id}"
 var mem_name="${PayDto.mem_name}";
+var pf_idx="${PayDto.pf_idx}";
 console.log(Idx);
 console.log(mem_id);
 	$.ajax({
 		type:'post'
 		,url:'MySangSin.ajax'
-		,data: JSON.stringify({'pm_idx':Idx,'mem_id':mem_id,'mem_name':mem_name})
+		,data: JSON.stringify({'pm_idx':Idx,'mem_id':mem_id,'mem_name':mem_name,'pf_idx':pf_idx,'pm_bigo':pm_bigo})
 		,dataType:'json'
 		,contentType: 'application/json; charset=utf-8'
 		,success:function(data){
-			console.log(data);
-			MySangSinListCall(data.MySign);
+			console.log("성공2?");
+			DetailListCall();
+			location.reload();
 		},error:function(e){
 			console.log(e);
 		}
@@ -273,12 +344,37 @@ console.log(mem_id);
 
 }
 
-function MySangSinListCall(list){
-	var content='';
-	content += '<td><img src="C:/sign/'+list+'"></td>'
-	$("#MySangSin").empty();
-	$("#MySangSin").append(content);
+function PmSangSin(e){
+	var pm_idx="${PayDto.pm_idx}";
+	var mem_id=$(e).parent()[0].classList[0];
+	var mem_name = $("."+mem_id)[0].innerText;
+	var StartIndex=mem_name.indexOf("[")
+	var Result = mem_name.substring(0, StartIndex);
+	var pm_state=$(e).val();
+	var pf_idx="${PayDto.pf_idx}";
+	console.log(pm_bigo);
+	
+	$.ajax({
+		type:'post'
+		,url:'PmSangSin.ajax'
+		,dataType:'json'
+		,contentType: 'application/json; charset=utf-8'
+		,data:JSON.stringify({'pm_idx':pm_idx,'mem_id':mem_id,'mem_name':Result,'pm_state':pm_state,'pm_bigo':pm_bigo,'pf_idx':pf_idx})
+		,success:function(data){
+			console.log(data);
+			DetailListCall();
+			location.reload();
+		},error:function(e){
+			console.log(e);
+		}
+	});
+	
+	
 }
+
+
+
+
 
 
 

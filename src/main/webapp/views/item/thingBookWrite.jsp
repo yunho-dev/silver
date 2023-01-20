@@ -82,11 +82,14 @@
 						<div class="writeRight">
 							<p class="writeArea">
 								<span id="WriteName">예약 시작 날짜 : </span> 
-								<input type="text" name="bStart"><br>
+								<input type="date" name="bStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p><br>
 							<p class="writeArea">
-								<span id="WriteName">얘약 끝날 날짜 : </span> 
-								<input type="text" name="bEnd"><br>
+								<span id="WriteName">예약 끝날 날짜 : </span> 
+								<input type="date" name="bEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+							</p>
+							<p class="writeArea">
+								<span id="dateCheck" style="color: #B1B1B1; font-size: medium;">예약 시작 날짜와 끝날 날짜를 선택해 주세요</span>
 							</p>
 						</div>
 		            </div>
@@ -107,6 +110,9 @@
 	</div>
 </body>
 <script>
+	/* 날짜 정규식 */
+	const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+
 	function closeWriteModal(){
 		$('#thingBookWrite').modal('hide');
 		$('#writeForm')[0].reset();
@@ -146,6 +152,12 @@
 			$('.writeLeft input[name=thName]').val(name)
 			$('.writeLeft input[name=thIdx]').val(idx)
 		}
+		var $bStart = $('#writeForm input[name=bStart]');
+		var $bEnd = $('#writeForm input[name=bEnd]');
+		$bStart.removeAttr("readonly")
+		$bEnd.removeAttr("readonly")
+		$bStart.removeAttr("placeholder")
+		$bEnd.removeAttr("placeholder")
 	}
 	
 	function popThing(){
@@ -153,6 +165,35 @@
         var name = "popThList";
 		var option = "width = 500, height = 500, top = 100, left = 200, location = no";
 		window.open(url, name, option);
+	}
+	
+	function dateCheck(){
+		var $thIdx = $('#writeForm input[name=thIdx]');
+		var $bStart = $('#writeForm input[name=bStart]');
+		var $bEnd = $('#writeForm input[name=bEnd]');
+		
+		var dateCheck = $('#writeForm #dateCheck');
+		
+		if($thIdx.val()!='' && $bStart.val().match(regex) != null && $bEnd.val().match(regex) != null){
+			$.ajax({
+				type:'GET',
+				url:'thingBookRealTimeCheck.do',
+				data:{thIdx:$thIdx.val(), bStart:$bStart.val(), bEnd:$bEnd.val()},
+				dataType:'JSON',
+				success:function(data){
+					if(data.check === 0){
+						dateCheck.text('중복된 예약 날짜가 없습니다.')
+						dateCheck.css('color', 'green')
+					}else{
+						dateCheck.text('중복된 예약 날짜가 '+data.check+'개 있습니다.')
+						dateCheck.css('color', 'red')
+					}
+				},
+				error:function(e){
+					console.log(data)
+				}
+			});
+		}
 	}
 	
 	$('#regist').click(function(){
@@ -165,8 +206,6 @@
 		
 		var $bStart = $('#writeForm input[name=bStart]');
 		var $bEnd = $('#writeForm input[name=bEnd]');
-		/* 날짜 정규식 */
-		var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
 		
 		if($thName.val()==''){
 			alert("품명을 선택해 주세요");

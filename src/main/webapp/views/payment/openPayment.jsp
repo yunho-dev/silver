@@ -55,9 +55,9 @@
 								<select id="select">
 									<option value="write">기안자</option>
 									<option value="title">제목</option>
-									<option value="payselect">결재양식</option>
+									<option value="form">결재양식</option>
 								</select> <input type="text" name="seacontent" id="seacontent">
-								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="">검색</button>
+								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="OpenSearch(page2)">검색</button>
 							</div>
 						</div>
 						<div class="card-body py-4 px-5" style="margin:0 auto;">
@@ -72,6 +72,39 @@
 					</div>
 				</section>
 			</div>
+			
+			<div class="modal fade" id="PayHistory" tabindex="-1" role="dialog" 
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			 <div class="modal-dialog modal-lg">
+			   <div class="modal-content">
+			   	 <div class="modal-header">
+			   	 	<h3>결재 로그</h3>
+			   	 </div>
+			   	  <div class="modal-body table-wrapper-scroll-y my-custom-scrollbar" style="margin: 0 auto">
+			   	  	<table class="table table-bordered table-hover" style="margin: 0 auto">
+			   	  		<thead>	
+			   	  			<tr>
+			   	  				<th>순번</th>
+			   	  				<th>기안자</th>
+			   	  				<th>IP</th>
+			   	  				<th>결재 상태</th>
+			   	  				<th>결재 라인</th>
+			   	  				<th>시간</th>
+			   	  			</tr>
+			   	  		</thead>	
+			   	  		<tbody id="PHLIST">
+			   	  		</tbody>
+			   	  	</table>
+     			 </div>
+     			 <div class="modal-footer">
+     			 	<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">닫기</button>
+     			 </div>
+			   </div>
+			</div>
+			</div>
+			
+			
+			
 			<footer>
 				<div class="footer clearfix mb-0 text-muted">
 					<div class="float-start">
@@ -96,6 +129,56 @@
 <script>
 var page=1
 paymentCall(page);
+
+var flag=true;
+var pageflag=true;
+var page2=1;
+var select_change=new Array();
+var chkPage=new Array();
+function OpenSearch(page2){
+	select_change.push($("#select").val());
+	if(flag){
+    var select=$("#select").val();
+    var seacontent=$("#seacontent").val();
+	flag=false;
+	if(seacontent == ""){
+		window.location.reload();
+	}
+	
+	$.ajax({
+		type:'get'
+		,url:'OpenSearch.ajax'
+		,dataType:'json'
+		,data:{'select':select,'seacontent':seacontent,'page':page2}
+		,success:function(data){
+			paymentListCall(data.openListSearch);
+			chkPage.push(data.page_idx);
+			if(chkPage.at(-2) != data.page_idx){
+				pageflag=true;
+			}
+			if(pageflag == true && $('.pagination').data("twbs-pagination")
+					|| select_change.at(-2) != $("#select").val()){
+                $('.pagination').twbsPagination('destroy');
+                pageflag=false;
+            }
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,initiateStartPageClick:false
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					OpenSearch(page);
+				}
+			});
+		}
+		,error:function(e){
+			console.log(e);
+		},complete:function(){
+			flag=true;
+		}
+	});
+	}
+}
 
 function paymentCall(page){
 	$.ajax({
@@ -129,11 +212,44 @@ function paymentListCall(list){
 		content +="<td>"+list[i].pf_cate+"</td>";
 		content +="<td>"+list[i].mem_name+"</td>";
 		content +="<td>"+list[i].pm_state+"</td>";
-		content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'></td>"
+		content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'";
+		content +="data-bs-toggle='modal' data-bs-target='#PayHistory' onclick='PayHistoryCall("+list[i].pm_idx+")'></td>";
 		content +="</tr>";
 	}
 	$("#myPayMentList").empty();
 	$("#myPayMentList").append(content);
+}
+
+function PayHistoryCall(pm_idx){
+	console.log("IDX 값 : "+pm_idx);
+	$.ajax({
+		type:'get'
+		,url:'PayHistory.ajax'
+		,data:{'pm_idx':pm_idx}
+		,dataType:'json'
+		,success:function(data){
+			console.log(data);
+			PayHistoryCallList(data.hisList);
+		},error:function(e){
+			console.log(e);
+		}
+	});
+}
+function PayHistoryCallList(PHlist){
+	var content ='';
+	for(var i=0;i<PHlist.length;i++){
+		content +='<tr>';
+		content +='<td>'+PHlist[i].rowNum+'</td>';
+		content +='<td>'+PHlist[i].ph_name+'</td>';
+		content +='<td>'+PHlist[i].ph_ip+'</td>';
+		content +='<td>'+PHlist[i].ph_state+'</td>';
+		content +='<td>'+PHlist[i].mem_name+'['+PHlist[i].dept_name+']</td>';
+		var date = new Date(PHlist[i].ph_date);
+        content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
+		content +='</tr>';
+	}
+	$("#PHLIST").empty();
+	$("#PHLIST").append(content);
 }
 	
 </script>

@@ -26,6 +26,19 @@
 <script type="text/javascript"
 	src='richtexteditor/plugins/all_plugins.js'></script>
 	
+<!-- datepicker -->
+<link rel="stylesheet" href="//mugifly.github.io/jquery-simple-datetimepicker/jquery.simple-dtpicker.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//mugifly.github.io/jquery-simple-datetimepicker/jquery.simple-dtpicker.js"></script>
+<!-- datepicker -->	
+
+
+<style>
+span{
+	width:130px;
+}
+</style>
+	
 </head>
 <body>
 	<div id="app">
@@ -42,6 +55,7 @@
 						<div class="card-body py-4 px-5">
 						<form action="programDetailUpdate" method="post">
 							<input type="hidden" name="pr_idx" value="${list.pr_idx}">
+							<!-- hidden으로 페이지에 idx를 보여주지 않지만 값은 있게끔 -->
 								<div class="d-flex align-items-center">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">프로그램명</span> 
@@ -56,13 +70,15 @@
 								</div>
 								<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">시작시간</span> 
-										<input type="text" class="form-control" aria-label="Username" 
-											aria-describedby="basic-addon1" name="pr_start" value="${list.pr_start}" autofocus>
+<!-- 										<input type="text" class="form-control" aria-label="Username"  -->
+<%-- 											aria-describedby="basic-addon1" name="pr_start" value="${list.pr_start}" autofocus> --%>
+											<input type="text" name="pr_start" id="text1" value="${list.pr_start}" class="datetimepicker" />
 								</div>
 								<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">끝시간</span> 
-										<input type="text" class="form-control" aria-label="Username" 
-											aria-describedby="basic-addon1" name="pr_end" value="${list.pr_end}" autofocus>
+<!-- 										<input type="text" class="form-control" aria-label="Username"  -->
+<%-- 											aria-describedby="basic-addon1" name="pr_end" value="${list.pr_end}" autofocus> --%>
+											<input type="text" name="pr_end" id="text1" value="${list.pr_end}" class="datetimepicker" />
 								</div>
 								<div class="input-group mb-3">
 										<span class="input-group-text" id="basic-addon1">내용</span> 
@@ -99,23 +115,30 @@
 
 								</div>
 								<div class="input-group mb-3">
-										<span class="input-group-text" id="basic-addon1">카테고리번호</span> 
+										<span class="input-group-text" id="basic-addon1">카테고리</span> 
 										
 									<select name="pc_idx">
-										<option
-										<c:if test="${list.pc_idx == 1}">selected</c:if>>
-										사고능력향상
-										</option>
-										<option
-										<c:if test="${list.pc_idx == 2}">selected</c:if>>
-										운동능력향상
-										</option>
-										<option
-										<c:if test="${list.pc_idx == 3}">selected</c:if>>
-										인지능력향상
-										</option>
+										<c:forEach items="${procategory}" var="pc">
+											<option value="${pc.pc_idx}" ${pc.pc_idx == list.pc_idx ? 'selected="selected"' : ''}>${pc.pc_cate}</option>	
+										</c:forEach>			
 									</select>
-									<input type="hidden" name="pc_idxTwo" value="${list.pc_idx}">
+									<!-- 삼항연산자로 value=pc.pc_idx 주고 pc.pc_idx == list.pc_idx 이라는 조건을 주고 참일 경우 selected 되고 해당 pc.pc_cate 출력-->
+
+
+<!-- 										<option -->
+<%-- 										<c:if test="${list.pc_idx == 1}">selected</c:if>> --%>
+<!-- 										사고능력향상 -->
+<!-- 										</option> -->
+<!-- 										<option -->
+<%-- 										<c:if test="${list.pc_idx == 2}">selected</c:if>> --%>
+<!-- 										운동능력향상 -->
+<!-- 										</option> -->
+<!-- 										<option -->
+<%-- 										<c:if test="${list.pc_idx == 3}">selected</c:if>> --%>
+<!-- 										인지능력향상 -->
+<!-- 										</option> -->
+<!-- 									</select> -->
+<%-- 									<input type="hidden" name="pc_idxTwo" value="${list.pc_idx}"> --%>
 									<!-- name이랑 value를 사용자에게 보여주지 않고 넘길때 hidden 사용 -->
 								</div>
 									
@@ -152,7 +175,10 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <script>
-
+//시분초
+$(function(){
+    $('.datetimepicker').appendDtpicker({'locale':'ko'},{format:'Y-m-d H:i'});
+});
 
 </script>
 </html>

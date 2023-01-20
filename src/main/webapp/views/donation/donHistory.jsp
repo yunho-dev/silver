@@ -17,12 +17,6 @@
 </head>
 
 <style>
-	.filter{
-		width: 10%;
-	}
-	.thingList{
-		cursor: pointer;
-	}
 </style>
 <body>
 	<div id="app">
@@ -30,31 +24,23 @@
 		<div id="main">
 			<jsp:include page="../upbar.jsp"></jsp:include>
 		
-			<div class="col-12 col-md-6 order-md-1 order-last">
+			<div class="page-heading">
 				<h3>후원금 사용내역 조회</h3>
 			</div>
-				<button onclick="location.href='donHisWriteForm'" class="btn btn-primary" >글작성</button>
+		    <div class="page-content">
 		    <!-- Hoverable rows start -->
-		    <section class="sectionThingList">
-		        <div class="row" id="table-hover-row">
-		            <div class="col-12">
-		                <div class="card" style="margin-bottom: 1%">
-		                    <div class="card-header" id="filterHead" style="background-color: #435EBE; font-weight: bold; font-size: large; color: white;">
-		                        카테고리 : <input type="text" name="th_name" class="filter"> &nbsp;&nbsp;
-		                        
-		                        후원날짜 : <input type="text" name="th_write" class="filter"> &nbsp;&nbsp;
-		                        ~&nbsp;&nbsp;&nbsp; <input type="text" name="th_dona" class="filter"> &nbsp;&nbsp;
-<!-- 		                        <button class="btn btn-secondary" onclick="search($(this))">검색</button> -->
-		                        <button class="btn btn-secondary" onclick="search(page2)">검색</button>
-		                    </div>
-		                   <!-- table hover -->
-		                   <div class="table-responsive">
-		                       <table class="table table-hover mb-0" style="text-align: center;">
+		    <section class="row">
+		        <div class="care" id="table">
+				<button onclick="location.href='donHisWriteForm'" class="btn btn-primary" >글작성</button>
+		            <div class="card-body py-4 px-5">
+		                <div class="d-flex align-items-center">
+		          			<table class="table table-bordered table-hover" style="text-align: center;">
 		                           <thead>
 		                               <tr>
 		                                   <th>순번</th>
 		                                   <th>사용날짜</th>
 		                                   <th>등록자</th>
+		                                   <th>카테고리</th>
 		                                   <th>금액</th>
 		                               </tr>
 		                           </thead>
@@ -62,15 +48,30 @@
 		                           	<!-- 리스트가 들어가는 공간 -->
 		                           </tbody>
 		                       </table>
+		                       </div>
+		                       </div>
+		                       <div class="card-body py-4 px-5" style="margin:0 auto;">
+								<div>
+								<select id="select">
+									<option value="title">카테고리</option>
+									<option value="write">등록자</option>
+								</select> <input type="text" name="seacontent" id="seacontent">
+								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="donationHisSearch(page2)">검색</button>
+								</div>
 		                   </div>
-							<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
-					</div>
-		                   
-		                </div>
-		            </div>
-						
+							<div class="card-body py-4 px-5" style="margin:0 auto;">
+							<div id="pagint">
+								<div class="container">
+									<nav aria-label="Page navigation" style="text-align: center;" style="margin" >
+										<ul class="pagination" id="pagination"></ul>
+									</nav>
+							 </div>
+						 </div>
+					  </div>
+		            </div>	
 		    </section>
-		    <footer>
+		   </div>
+		  <footer>
 	<div class="footer clearfix mb-0 text-muted">
 		<div class="float-start">
 			<p>2023 Final Project</p>
@@ -129,6 +130,57 @@ function donHistoryCall(page){
 	});
 	
 }
+
+var flag=true;
+var pageflag=true;
+var page2=1;
+var select_change=new Array();
+var chkPage=new Array();
+function donationHisSearch(page2){
+	select_change.push($("#select").val());
+	if(flag){
+    var select=$("#select").val();
+    var seacontent=$("#seacontent").val();
+	flag=false;
+	if(seacontent == ""){
+		window.location.reload();
+	}
+	
+	$.ajax({
+		type:'get'
+		,url:'searchHisdonation'
+		,dataType:'json'
+		,data:{'select':select,'seacontent':seacontent,'page':page2}
+		,success:function(data){
+			drawList(data.list);
+			chkPage.push(data.page_idx);
+			if(chkPage.at(-2) != data.page_idx){
+				pageflag=true;
+			}
+			if(pageflag == true && $('.pagination').data("twbs-pagination")
+					|| select_change.at(-2) != $("#select").val()){
+                $('.pagination').twbsPagination('destroy');
+                pageflag=false;
+            }
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,initiateStartPageClick:false
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					noticeSearch(page);
+				}
+			});
+		}
+		,error:function(e){
+			console.log(e);
+		},complete:function(){
+			flag=true;
+		}
+	});
+	}
+}
+
 function drawList(list){
 	var content = '';
 	
@@ -137,6 +189,7 @@ function drawList(list){
 		content +='<td>'+list[i].dh_idx+'</td>';
 		content +='<td>'+list[i].dh_date+'</td>';
 		content +='<td>'+list[i].dh_write+'</td>';
+		content +='<td>'+list[i].dh_cate+'</td>';
 		content +='<td>'+list[i].dh_money+'</td>';
 		content +='</tr>';
 	}

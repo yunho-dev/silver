@@ -35,7 +35,6 @@
     }
 </style>
 <body>
-	<!-- thingHistoryDetail -->
 	<!--large size Modal -->
 	<div class="modal fade text-left" id="thingBookDetail" tabindex="-1" role="dialog"
 	    aria-labelledby="myModalLabel17" aria-hidden="true">
@@ -49,7 +48,7 @@
 	                    &times;
 	                </button>
 	            </div>
-	            <div class="modal-body">
+	             <div class="modal-body">
 					<div class="left">
 						<p>
 							<input id="cbIdx" type="text" style="display: none;">
@@ -58,13 +57,13 @@
 						<p><span id="detailName">사용자 : </span><span class="b_name"></span></p>
 						<p><span id="detailName">등록자 : </span><span class="b_write"></span></p>
 					</div>
-					<div class="right">
+					<div class="right" style="margin-top: 20px">
 						<p><span id="detailName">이용 시작 날짜 : </span><span class="b_start"></span></p>
 						<p><span id="detailName">이용 끝날 날짜 : </span><span class="b_end"></span></p>
 						<p><span id="detailName">취소 여부 : </span><span class="b_cancel"></span></p>
 					</div>
-					<div id="hideComent" style="float: left; display: none;">
-					<p><span id="detailName">취소 사유 : </span><span class="b_coment"></span></p>
+					<div id="hideComent" style="float: left; width: 100%; display: none;">
+						<p><span id="detailName">취소 사유 : </span><span class="b_coment"></span></p>
 					</div>
 	            </div>
 	            <div class="modal-footer" >

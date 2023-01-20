@@ -63,9 +63,6 @@ String val = request.getParameter("page");
                                 <li class="submenu-item ">
                                     <a href="infestList?page=resident">• 감염병</a>
                                 </li>
-                                <li class="submenu-item ">
-                                    <a href="roomList?page=resident">• 생활실 현황판</a>
-                                </li>
                             </ul>
                         </li>
 
@@ -111,10 +108,7 @@ String val = request.getParameter("page");
                                 </li>   
                                 <li class="submenu-item ">
                                     <a href="finishPayment?page=payment">• 결재 완료 문서함</a>
-                                </li>   
-<!--                                 <li class="submenu-item "> -->
-<!--                                     <a href="backPayment?page=payment">• 결제 반려 문서함</a> -->
-<!--                                 </li>                               -->
+                                </li>
                             </ul>                             
                         </li>
 

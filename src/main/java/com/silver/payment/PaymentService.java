@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ public class PaymentService {
 	Logger logger=LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired AlarmService alservice;
+	@Autowired PaymentHistoryService phservice;
 	
 	private final PaymentDAO paymentdao;
 	
@@ -38,6 +40,7 @@ public class PaymentService {
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
 				
+	
 		return paymentdao.MyPayListCall(mem_id,page);
 	}
 
@@ -85,6 +88,8 @@ public class PaymentService {
 		int pm_idx=PayDto.getPm_idx();
 		if (row > 0) {
 			PmLineInsert(request.getParameter("OrgPmSelected"),pm_idx);
+			// 결재 등록 히스토리 삽입
+			phservice.WriteInsert(PayDto);
 			//if(PayDto.getPm_open() == 1) {
 				InsertPayRefer(request, pm_idx,request.getParameter("ReferinsertInput"),PayDto.getPm_open());
 			//}
@@ -204,19 +209,22 @@ public class PaymentService {
 		
 	}
 
-	public ModelAndView detailPayment_do(int pm_idx) {
+	public ModelAndView detailPayment_do(int pm_idx, HttpServletRequest request) {
 		ModelAndView mav=new ModelAndView("payment/detailPayment");
 		PaymentDTO PayDto=paymentdao.detailPayment_do(pm_idx);
 		ArrayList<PaymentDTO> ReferDto=paymentdao.ReferDto(pm_idx);
 		ArrayList<PaymentDTO> PmlineDto=paymentdao.PmlineDto(pm_idx);
 		ArrayList<PaymentDTO> PayFile=paymentdao.PayFile(pm_idx);
-		// ArrayList<String> SignMember=paymentdao.SignMember(pm_idx);
-		// ArrayList<MemberDTO> paysign=paymentdao.paysign(SignMember);
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		String SignImg=paymentdao.SignImg(mem_id);
 		mav.addObject("PayDto",PayDto);
 		mav.addObject("ReferDto",ReferDto);
 		mav.addObject("PayFile",PayFile);
 		mav.addObject("PmlineDto",PmlineDto);
-		// mav.addObject("paysign",paysign);
+		mav.addObject("SessionID",mem_id);
+		mav.addObject("SignImg",SignImg);
 		return mav;
 	}
 
@@ -224,10 +232,14 @@ public class PaymentService {
 		int row = paymentdao.MySangSin(payDto);
 		if(row > 0) {
 			String NextChk= FirstPmLineCall(payDto.getPm_idx());
-			alservice.notiAlarm(payDto.getMem_name(), payDto.getPm_idx(), "결재 문서", NextChk);
-			
+			if(NextChk.isEmpty()) {
+				row=2; // 결재자 미지정 후 결재 등록 했을 때
+			}else {
+				// 내가 상신 했을때
+				alservice.notiAlarm(payDto.getMem_name(), payDto.getPm_idx(), "결재 문서", NextChk);
+				phservice.WriteInsert_MySangSin(payDto);
+			}
 		}
-		
 		return row;
 	}
 
@@ -242,23 +254,227 @@ public class PaymentService {
 	}
 
 
-	public ArrayList<PaymentDTO> openpayment_ajax(HttpServletRequest request) {
+	// 열람 가능 문서함
+	public ArrayList<PaymentDTO> openpayment_ajax(int page, HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
 		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
 		ArrayList<PaymentDTO> openPayment=new ArrayList<PaymentDTO>();
-		for (String str : referPmIdx) {
-			logger.info("str : "+str);
-			openPayment.addAll(paymentdao.openPayment(str));
-		}
-		
-		for (PaymentDTO open : openPayment) {
-			logger.info("open : "+open.getPm_subject());
-		}
-		
+		logger.info("referPmIdx : "+referPmIdx.toString());
+
+		openPayment=paymentdao.openPayment(page,referPmIdx);
 		return openPayment;
 	}
+	
+	public int OpensListCallTotal(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
+		return paymentdao.OpensListCallTotal(referPmIdx);
+	}
+
+	public int OpensListCallSearchTotal(String select, String seacontent, HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
+		int openSearchTotal=paymentdao.openSearchPayment(select,seacontent,referPmIdx);
+		return openSearchTotal;
+	}
+
+	public ArrayList<PaymentDTO> openpaymentSearch_ajax(String select, String seacontent, int page,
+			HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
+		return paymentdao.openpaymentSearch_ajax(select,seacontent,page,referPmIdx);
+	}
+	
+	
+	
+
+	//결재 대기 문서함
+	public ArrayList<PaymentDTO> WaitPayment() {
+		ArrayList<PaymentDTO> WaitPmLine=paymentdao.WaitPm();
+		return WaitPmLine;
+	}
+	
+	public int waitpaymentTotal_ajax() {
+		return paymentdao.waitpaymentTotal_ajax();
+	}
+
+
+	public void PmSangSin(PaymentDTO payDto) {
+		String writePayMent=paymentdao.writePayMent(payDto);
+		String writePayMent_memId=paymentdao.writePayMent_memId(payDto);
+		if(payDto.getPm_state().equals("상신")) {
+			// 상신 하기
+			paymentdao.GoPayment(payDto); // 비고란 수정 
+			paymentdao.PmChange(payDto); // 결재라인 수정 
+			String isNext="";
+			isNext=paymentdao.isNext(payDto); // 최종결재자인지 확인
+			logger.info("최종 결재자 확인 + "+isNext);
+			logger.info("최종 결재자 확인1 + "+payDto.getPl_hp());
+			if(isNext == null) {
+				// 최종 결재자일 경우
+				logger.info("최종 결재자 입니다.");
+				int finish = paymentdao.FinishPayment(payDto);
+				if(finish > 0) {
+					logger.info("finish 완료");
+					ArrayList<String> FinishAlarmSearch=paymentdao.FinishAlarmSearch(payDto);
+					
+					// 최종 결재자인 사람이 상신할 경우 히스토리
+					phservice.WriteInsert_FialSangSin(payDto,writePayMent_memId);
+					
+					for (String str : FinishAlarmSearch) {
+						logger.info("최종 결재 알람 수신 멤버 : "+str);
+						// 최종 결재 알람 전송
+						alservice.notiAlarm(writePayMent, payDto.getPm_idx(), "결재 완료", str);
+					}
+					// 문서 양식 사용 수 증가
+					paymentdao.PayFormUpCnt(payDto);
+				}
+			}else {
+				// 다음 결재자가 있을때 알람 전송
+				alservice.notiAlarm(writePayMent, payDto.getPm_idx(), "결재 진행", isNext);
+				
+				// 최종 결재자가 아닌 사람이 상신할 경우 히스토리
+				phservice.WriteInsert_NotFinalSangSin(payDto,writePayMent_memId);
+			}
+		}else if(payDto.getPm_state().equals("반려")) {
+			paymentdao.GoPayment(payDto); // 비고란 수정 
+			paymentdao.PmBackChange(payDto); // 결재라인 수정
+				int finish = paymentdao.FinishBackPayment(payDto);
+				if(finish > 0) {
+					// 문서 반려 완료
+					ArrayList<String> FinishAlarmSearch=paymentdao.FinishBackAlarmSearch(payDto);
+					
+					// 문서 반려 시 히스토리 
+					phservice.WriteInsert_BackSangSin(payDto,writePayMent_memId);
+					
+					for (String str : FinishAlarmSearch) {
+						logger.info("최종 반려 알람 수신 멤버 : "+str);
+						// 최종 반려 알람 전송
+						alservice.notiAlarm(writePayMent, payDto.getPm_idx(), "결재 반려", str);
+					}
+
+				
+			}
+		}
+		
+	}
+
+	public String MyWriteSign(String mem_id) {
+		return paymentdao.MyWriteSign(mem_id);
+	}
+
+	public ArrayList<String> pl_hp(int pm_idx) {
+		return paymentdao.pl_hp(pm_idx);
+	}
+
+	public ArrayList<PaymentDTO> AnotherSign(ArrayList<String> pl_hp) {
+		return paymentdao.AnotherSign(pl_hp);
+	}
+
+	public ArrayList<PaymentDTO> PmlineDto(int pm_idx) {
+		ArrayList<PaymentDTO> PmlineDto=paymentdao.PmlineDto(pm_idx);
+		return PmlineDto;
+	}
+
+	public ArrayList<PaymentDTO> goingpayment_ajax(HttpServletRequest request, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+				
+	
+		return paymentdao.goingpayment_ajax(mem_id,page);
+	}
+
+	public int goingpaymentTotal_ajax(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		
+		return paymentdao.goingpaymentTotal_ajax(mem_id);
+	}
+
+	public int finishpaymentTotal_ajax(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishpaymentTotal_ajax(mem_id);
+	}
+
+	public ArrayList<PaymentDTO> finishpayment_ajax(HttpServletRequest request, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishpayment_ajax(mem_id,page);
+	}
+
+	public int selfSearchTotal(HttpServletRequest request, String select, String seacontent) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.selfSearchTotal(mem_id,select,seacontent);
+	}
+
+	public ArrayList<PaymentDTO> selfSearch(HttpServletRequest request, String select, String seacontent, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.selfSearch(mem_id,select,seacontent,page);
+	}
+
+	
+	
+	public int goingSearchTotal(HttpServletRequest request, String select, String seacontent) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.goingSearchTotal(mem_id,select,seacontent);
+	}
+
+	public ArrayList<PaymentDTO> goingSearch(HttpServletRequest request, String select, String seacontent, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.goingSearch(mem_id,select,seacontent,page);
+	}
+
+	
+	
+	public int finishSearchTotal(HttpServletRequest request, String select, String seacontent) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishSearchTotal(mem_id,select,seacontent);
+	}
+
+	public ArrayList<PaymentDTO> finishgoingSearch(HttpServletRequest request, String select, String seacontent,
+			int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishSearch(mem_id,select,seacontent,page);
+	}
+
+	public String getDownloadOrlName(String path) {
+		return paymentdao.getDownloadOrlName(path);
+	}
+
+
+
+	
+
+	
 	
 
 	

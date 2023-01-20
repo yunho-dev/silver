@@ -26,7 +26,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header bg-danger">
 	                <h5 class="modal-title white" id="myModalLabel120">
-	                    예약 취소
+	                    비품 예약 취소
 	                </h5>
 	                <button type="button" class="close" onclick="closeCancelModal()"
 	                    aria-label="Close" style="font-size: 22pt;">
@@ -73,7 +73,7 @@
 			if(confirm("정말로 예약을 취소하시겠습니까? \n취소 후에는 되돌리기가 불가능합니다.")){
 				$.ajax({
 					type:'POST',
-					url:'thingBookCancel.do',
+					url:'bookCancel.do',
 					data:{cbIdx:cbIdx, bContent:bContent},
 					dataType:'JSON',
 					success:function(data){
