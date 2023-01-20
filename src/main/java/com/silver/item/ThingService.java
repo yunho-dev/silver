@@ -591,6 +591,16 @@ public class ThingService {
 		return result;
 	}
 	
+	public HashMap<String, Object> thingBookRealTimeCheck(HashMap<String, String> params) {
+		logger.info("비품 예약 실시간 날짜 체크 접근");
+		logger.info("받아온 데이터 : {}", params);
+		int check = 0;
+		check = dao.thBookCheck(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("check", check);
+		return result;
+	}
+	
 	public HashMap<String, Object> getThingBookDetail(String cbIdx) {
 		ThingDTO dto = dao.getThingBookDetail(cbIdx);
 		HashMap<String, Object> result = new HashMap<String, Object>();

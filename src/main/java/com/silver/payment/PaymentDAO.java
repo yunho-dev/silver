@@ -87,6 +87,20 @@ public interface PaymentDAO {
 
 	ArrayList<String> FinishBackAlarmSearch(PaymentDTO payDto);
 
+	String paymentdao(String mem_id);
+
+	ArrayList<String> pl_hp(int pm_idx);
+
+	ArrayList<PaymentDTO> AnotherSign(ArrayList<String> pl_hp);
+
+	String MyWriteSign(String mem_id);
+
+	String writePayMent_memId(PaymentDTO payDto);
+
+	ArrayList<PaymentDTO> goingpayment_ajax(String mem_id, int page);
+
+	int goingpaymentTotal_ajax(String mem_id);
+
 
 
 

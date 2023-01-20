@@ -49,7 +49,6 @@ public class CarService {
 		if(totalPages==0) {
 			totalPages = 1;
 		}
-		logger.info("tpage : "+totalPages);
 		result.put("list", list);
 		result.put("total", totalPages);
 		return result;
@@ -137,6 +136,24 @@ public class CarService {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("finish", row);
 		result.put("check", check);
+		return result;
+	}
+	
+	public HashMap<String, Object> carBookRealTimeCheck(HashMap<String, String> params) {
+		logger.info("비품 예약 실시간 날짜 체크 접근");
+		logger.info("받아온 데이터 : {}", params);
+		int check = 0;
+		check = dao.carBookCheck(params);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("check", check);
+		return result;
+	}
+
+	public HashMap<String, Object> getCarBookDetail(int cbIdx) {
+		CarDTO dto = new CarDTO();
+		dto = dao.getCarBookDetail(cbIdx);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
 		return result;
 	}
 

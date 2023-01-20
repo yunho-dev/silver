@@ -25,6 +25,17 @@
 <script type="text/javascript" src="richtexteditor/rte.js"></script>
 <script type="text/javascript"
 	src='richtexteditor/plugins/all_plugins.js'></script>
+
+<!-- datepicker -->
+<link rel="stylesheet" href="//mugifly.github.io/jquery-simple-datetimepicker/jquery.simple-dtpicker.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//mugifly.github.io/jquery-simple-datetimepicker/jquery.simple-dtpicker.js"></script>
+<!-- datepicker -->
+<style>
+span{
+	width:130px;
+}
+</style>
 	
 </head>
 <body>
@@ -34,13 +45,14 @@
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->
 			<div class="page-heading">
-				<h3>카테고리명 등록</h3>
+				<h3>프로그램 등록</h3>
 			</div>
 			<div class="page-content">
 				<section class="row">
 					<div class="card">
 						<div class="card-body py-4 px-5">
 						<form action="ProgramWriteComplete" method="post">
+						
 							<div class="d-flex align-items-center">
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">프로그램명</span> 
@@ -55,13 +67,15 @@
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">시작시간</span> 
-									<input type="text" class="form-control" aria-label="Username" 
-										aria-describedby="basic-addon1" name="pr_start">
+<!-- 									<input type="text" class="form-control" aria-label="Username"  -->
+<!-- 										aria-describedby="basic-addon1" name="pr_start"> -->
+										<input type="text" name="pr_start" id="text1" value="" class="datetimepicker" />
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">끝시간</span> 
-									<input type="text" class="form-control" aria-label="Username" 
-										aria-describedby="basic-addon1" name="pr_end">
+<!-- 									<input type="text" class="form-control" aria-label="Username"  -->
+<!-- 										aria-describedby="basic-addon1" name="pr_end"> -->
+										<input type="text" name="pr_end" id="text1" value="" class="datetimepicker" />
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">내용</span> 
@@ -88,7 +102,7 @@
 									</select>	
 								</div>
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="basic-addon1">카테고리번호</span> 
+									<span class="input-group-text" id="basic-addon1">카테고리</span> 
 									<select name="pc_idx">
 										<option value="">선택해주세요.</option>
 										<c:forEach items="${procategory}" var="pc">
@@ -98,7 +112,8 @@
 								</div>
 							
 <!-- 		48번</div>지우고 이거풀어라					</div> -->
-							<button type="submit" class="btn btn-primary" onclick="location.href='programList'">등록하기</button>
+<!-- 							<button type="submit" class="btn btn-primary" onclick="location.href='programList'">등록하기</button> -->
+							<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 							<button type="button" class="btn btn-secondary"
 								onclick="location.href='programList'">뒤로가기</button>
 							</form>
@@ -128,8 +143,47 @@
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/js/pages/dashboard.js"></script>
 	<script src="assets/js/main.js"></script>
+
 </body>
 <script>
+function save(){
+	$("input[name='pr_name']").val();
+	$("input[name='pr_teacher']").val();
+	$("input[name='pr_start']").val();
+	$("input[name='pr_end']").val();
+	$("input[name='pr_content']").val();
+	$("input[name='pr_goal']").val();
+	$("input[name='pr_place']").val();
+	$("select[name='pr_state']").val();
+	$("select[name='pc_idx']").val();
+	
+	if($("input[name='pr_name']").val().length < 1){
+		alert('프로그램명을 입력해주세요');
+	}else if($("input[name='pr_teacher']").val().length < 1){
+		alert('강사명을 입력해주세요');
+	}else if($("input[name='pr_start']").val().length < 1){
+		alert('시작시간을 입력해주세요');
+	}else if($("input[name='pr_end']").val().length < 1){
+		alert('끝시간 입력해주세요');
+	}else if($("input[name='pr_content']").val().length < 1){
+		alert('내용을 입력해주세요');
+	}else if($("input[name='pr_goal']").val().length < 1){
+		alert('목표를 입력해주세요');
+	}else if($("input[name='pr_place']").val().length < 1){
+		alert('장소를 입력해주세요');
+	}else if($("select[name='pr_state']").val() == ""||null){
+		alert('상태를 선택해주세요');
+	}else if($("select[name='pc_idx']").val() == ""||null){
+		alert('카테고리를 선택해주세요');
+	}else{
+		$("form").submit();
+	}
+}
+
+//시분초
+$(function(){
+    $('.datetimepicker').appendDtpicker({'locale':'ko'},{format:'Y-m-d H:i'});
+});
 
 
 </script>

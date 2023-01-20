@@ -42,6 +42,29 @@ public class PaymentDTO {
 	private int dept_code;
 	private int pos_level;
 	private int dept_num;
+	private int si_idx;
+	private String si_oriFileName;
+	private String si_newFileName;
+	
+	
+	public int getSi_idx() {
+		return si_idx;
+	}
+	public void setSi_idx(int si_idx) {
+		this.si_idx = si_idx;
+	}
+	public String getSi_oriFileName() {
+		return si_oriFileName;
+	}
+	public void setSi_oriFileName(String si_oriFileName) {
+		this.si_oriFileName = si_oriFileName;
+	}
+	public String getSi_newFileName() {
+		return si_newFileName;
+	}
+	public void setSi_newFileName(String si_newFileName) {
+		this.si_newFileName = si_newFileName;
+	}
 	private ArrayList<String> resultList=new ArrayList<String>();
 	
 	

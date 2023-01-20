@@ -5,15 +5,15 @@
    
 <mapper namespace="com.silver.resident.ResidentProgramDAO">
 	
-	<select id="programlist" resultType="program">
-		select p.pr_idx,p.pr_name,p.pr_teacher,p.pr_start,p.pr_end,p2.pc_cate 
-		from program p inner join procategory p2 on p.pc_idx=p2.pc_idx order by p.pr_idx desc;
-	</select>
+<!-- 	<select id="programlist" resultType="program"> -->
+<!-- 		select p.pr_idx,p.pr_name,p.pr_teacher,p.pr_start,p.pr_end,p2.pc_cate  -->
+<!-- 		from program p inner join procategory p2 on p.pc_idx=p2.pc_idx order by p.pr_idx desc; -->
+<!-- 	</select> -->
 	
 	<insert id="ProgramWriteComplete" parameterType="program">
-		insert into program(pr_idx,pr_name,pr_teacher,pr_start,
+		insert into program(pr_name,pr_teacher,pr_start,
 		pr_end,pr_content,pr_goal,pr_place,pr_state,pc_idx) 
-		value(#{pr_idx},#{pr_name},#{pr_teacher},#{pr_start},
+		value(#{pr_name},#{pr_teacher},#{pr_start},
 		#{pr_end},#{pr_content},#{pr_goal},#{pr_place},#{pr_state},#{pc_idx});
 	</insert>
 	
@@ -31,6 +31,16 @@
 			pr_goal=#{param6},pr_content=#{param7}
 			,pr_place=#{param8},pr_state=#{param9},pc_idx=#{param10} where pr_idx=#{param1}
 	</update>
+	
+	<select id="listCall" resultType="program">
+		select p.pr_idx,p.pr_name,p.pr_teacher,p.pr_start,p.pr_end,p2.pc_cate 
+		from program p inner join procategory p2 on p.pc_idx=p2.pc_idx order by p.pr_idx 
+		desc limit 10 offset #{param1};
+	</select>
+	
+	<select id="residientprogramSizeTotal" resultType="int">
+		select count(p.pr_idx) from program p;
+	</select>
 	
 
 </mapper>

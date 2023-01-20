@@ -283,6 +283,12 @@ public class ThingController {
 		return service.thingBookWrite(params, request);
 	}
 	
+	/* 비품 예약 실시간 날짜 체크 */
+	@GetMapping(value = "/thingBookRealTimeCheck.do")
+	public HashMap<String, Object> thingBookRealTimeCheck(@RequestParam HashMap<String, String> params) {
+		return service.thingBookRealTimeCheck(params);
+	}
+	
 	/* 비품 예약 상세보기 */
 	@GetMapping(value = "/getThingBookDetail.do")
 	public HashMap<String, Object> getThingBookDetail(String cbIdx){
@@ -290,7 +296,7 @@ public class ThingController {
 		return service.getThingBookDetail(cbIdx);
 	}
 	
-	@PostMapping(value = "/thingBookCancel.do")
+	@PostMapping(value = "/bookCancel.do")
 	public HashMap<String, Object> thingBookCancel(int cbIdx, String bContent, HttpServletRequest request){
 		logger.info("비품 수정 접근");
 		return service.thingBookCancel(cbIdx, bContent, request);

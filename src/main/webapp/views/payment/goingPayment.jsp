@@ -139,12 +139,12 @@ paymentCall(page);
 function paymentCall(page){
 	$.ajax({
 		type:'get'
-		,url:'selfpayment.ajax'
+		,url:'goingpayment.ajax'
 		,dataType:'json'
 		,data:{'page':page}
 		,success:function(data){
 			console.log(data);
-			paymentListCall(data.paymentList);
+			goingpaymentListCall(data.goingpayment);
 			$("#pagination").twbsPagination({
 				startPage : 1 // 시작 페이지
 				,totalPages : data.page_idx // 총 페이지 수
@@ -159,7 +159,7 @@ function paymentCall(page){
 	});
 }
 
-function paymentListCall(list){
+function goingpaymentListCall(list){
 	var content ='';
 	for(var i=0;i<list.length;i++){
 		content +="<tr>";
