@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.modifyLeft {
@@ -74,14 +77,14 @@
 						</div>
 						<div class="modifyRight">
 							<p class="modifyArea"><span id="modifyName">대여 날짜 : </span>
-								<input type="text" name="hisRent"> <!-- date picker -->
+								<input type="text" name="hisRent" id="modiRentDate"> <!-- date picker -->
 							</p> <br>
 							<p class="modifyArea">
 								<span id="modifyName">반납 여부 : </span>
 								<input type="checkbox" id="returnCheck" class="form-check-input">
 								<br>
 								<span id="modifyName" class="returnDay">반납 날짜 : </span>
-								<input type="text" class="returnDay" name="hisReturn"> <!-- date picker -->
+								<input type="text" class="returnDay" name="hisReturn" id="modiReturnDate"> <!-- date picker -->
 							</p> <br>
 							<p class="modifyArea"> 
 								<span id="modifyName">상태 : </span>

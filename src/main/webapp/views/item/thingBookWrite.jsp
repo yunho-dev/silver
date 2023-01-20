@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -82,11 +85,11 @@
 						<div class="writeRight">
 							<p class="writeArea">
 								<span id="WriteName">예약 시작 날짜 : </span> 
-								<input type="text" name="bStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bStart" id="bookStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p><br>
 							<p class="writeArea">
 								<span id="WriteName">예약 끝날 날짜 : </span> 
-								<input type="text" name="bEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bEnd" id="bookEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p>
 							<p class="writeArea">
 								<span id="dateCheck" style="color: #B1B1B1; font-size: medium;">예약 시작 날짜와 끝날 날짜를 선택해 주세요</span>
@@ -119,10 +122,10 @@
 		$('#thingBookWrite').modal('hide');
 		$('#writeForm')[0].reset();
 		$('#writeForm input[name=user]').attr('onclick','alert("사용자 구분을 먼저 선택해 주세요")')
-		$bStart.attr('type', 'text')
-		$bEnd.attr('type', 'text')
 		$bStart.attr('readonly', true)
 		$bEnd.attr('readonly', true)
+		$('#bookStart').datepicker('option','disabled',true); //datepicker 끔
+		$('#bookEnd').datepicker('option','disabled',true); //datepicker 끔
 		$bStart.attr('placeholder', '품명을 먼저 선택해 주세요')
 		$bEnd.attr('placeholder', '품명을 먼저 선택해 주세요')
 	}
@@ -162,10 +165,12 @@
 		}
 		var $bStart = $('#writeForm input[name=bStart]');
 		var $bEnd = $('#writeForm input[name=bEnd]');
-		$bStart.attr('type', 'date')
-		$bEnd.attr('type', 'date')
 		$bStart.attr('readonly', false)
 		$bEnd.attr('readonly', false)
+		$('#bookStart').datepicker('option','disabled',false); //datepicker 켬
+		$('#bookEnd').datepicker('option','disabled',false); //datepicker 켬
+		$('#bookStart').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+		$('#bookEnd').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 		$bStart.removeAttr("placeholder")
 		$bEnd.removeAttr("placeholder")
 	}

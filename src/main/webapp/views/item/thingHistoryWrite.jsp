@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -75,7 +78,7 @@
 							</p> <br>
 							<p class="writeArea">
 								<span id="WriteName">대여 날짜 : </span> 
-								<input type="text" name="hisRent"><br>
+								<input type="text" name="hisRent" id="writeRentDate"><br>
 								<span style="color: gray; font-size: small;">반납 날짜는 수정에서 등록 가능합니다.</span>
 							</p>
 						</div>
@@ -103,6 +106,7 @@
 	function closeWriteModal(){
 		$('#thingHistoryWrite').modal('hide');
 		$('#writeForm')[0].reset();
+		$('#writeRentDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 	}
 	
 	$('#regist').click(function(){
