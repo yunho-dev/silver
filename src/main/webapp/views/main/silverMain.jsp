@@ -60,7 +60,8 @@ display: block;
                                         <h5 class="font-bold">직책:${memberList.pos_name}</h5>
                                         <h5 class="font-bold">부서:${memberList.dept_name}</h5>
 
-                                        <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>마이페이지이동</button>
+                                        <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
+                                        onclick="location.href='mypageList'">마이페이지이동</button>
                                     </div>
                                 </div>
                             </div>
