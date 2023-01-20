@@ -83,12 +83,7 @@
 					</div>
 				</section>
 			</div>
-			
-			
-			
-			
 
-			
 
 			<!--footer-->
 			<footer>
@@ -116,7 +111,11 @@
 
 <script>
 var page = 1;
+
+//프로그램 리스트뽑기
 AjaxCall(page);
+
+//프로그램 리스트를 불러오는 ajax함수
 function AjaxCall(page) {
 	$.ajax({
 		type : 'get',
@@ -145,6 +144,7 @@ function AjaxCall(page) {
 
 }
 
+//프로그램 리스트를 그리는 함수
 function drawList(list){
 	var content = '';
 	for(var i=0;i<list.length;i++){

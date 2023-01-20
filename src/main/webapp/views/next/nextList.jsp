@@ -113,7 +113,10 @@
 
 <script>
 var page = 1;
+//인수인계 리스트 뽑기
 AjaxCall(page);
+
+//인수인계 리스트를 불러오는 ajax함수
 function AjaxCall(page) {
 	$.ajax({
 		type : 'get',
@@ -141,7 +144,7 @@ function AjaxCall(page) {
 	});
 
 }
-
+//인수인계 리스트 그리는 함수
 function drawList(list){
 	var content = '';
 	for(var i=0;i<list.length;i++){
@@ -156,7 +159,7 @@ function drawList(list){
 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
 		
 		content += '<td>'
-			+ "<button class='btn btn-primary btn-sm' onclick=location.href='nextUpdateForm?bd_idx="+list[i].bd_idx+"'>수정</button>"
+			+ "<button class='btn btn-primary btn-sm' onclick=location.href='nextUpdateForm?bd_idx="+list[i].bd_idx+"'>수정하기</button>"
 			+ "</td>";
 		
 		content +='</tr>';
@@ -165,6 +168,11 @@ function drawList(list){
 	$("#list").append(content);
 }
 
+//인수인계 등록버튼시 페이지 이동
+function nextWrite(){
+	console.log("인수인계 등록 버튼 누르셧죠?");
+	location.href='nextWrite';
+}
 
 
 // listCall();
@@ -209,10 +217,7 @@ function drawList(list){
 // 	$("#list").append(content);
 // }
 
-function nextWrite(){
-	console.log("인수인계 등록 버튼 누르셧죠?");
-	location.href='nextWrite';
-}
+
 
 </script>
 

@@ -122,7 +122,9 @@ span{
 											<option value="${pc.pc_idx}" ${pc.pc_idx == list.pc_idx ? 'selected="selected"' : ''}>${pc.pc_cate}</option>	
 										</c:forEach>			
 									</select>
-									<!-- 삼항연산자로 value=pc_idx 주고 pc.pc_idx == list.pc_idx 이라는 조건을 주고 참일 경우 selected -->
+									<!-- 삼항연산자로 value=pc.pc_idx 주고 pc.pc_idx == list.pc_idx 이라는 조건을 주고 참일 경우 selected 되고 해당 pc.pc_cate 출력-->
+
+
 <!-- 										<option -->
 <%-- 										<c:if test="${list.pc_idx == 1}">selected</c:if>> --%>
 <!-- 										사고능력향상 -->
