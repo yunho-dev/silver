@@ -224,37 +224,37 @@
 			success:function(data){
 				var noData = '';
 				if(data.detail==null){
-					$('.modal-body .noData').css('display', 'block')
-					$(".modal-body .left #hisIdx").val(noData);
-					$(".modal-body .left .th_name").text(noData);
-					$(".modal-body .left .th_model").text(noData);
-					$(".modal-body .left .th_money").text(noData);
-					$(".modal-body .left .th_spon").text(noData);
-					$(".modal-body .left .his_name").text(noData);
-					$(".modal-body .left .his_goal").text(noData);
-					$(".modal-body .right .th_part").text(noData);
-					$(".modal-body .right .th_state").text(noData);
-					$(".modal-body .right .th_date").text(noData);
-					$(".modal-body .right .his_rent").text(noData);
-					$(".modal-body .right .his_return").text(noData);
-					$(".modal-body .right .his_write").text(noData);
-					$(".modal-body .his_bigo").text(noData);
+					$('#thingHistoryDetail .noData').css('display', 'block')
+					$("#thingHistoryDetail #hisIdx").val(noData);
+					$("#thingHistoryDetail .th_name").text(noData);
+					$("#thingHistoryDetail .th_model").text(noData);
+					$("#thingHistoryDetail .th_money").text(noData);
+					$("#thingHistoryDetail .th_spon").text(noData);
+					$("#thingHistoryDetail .his_name").text(noData);
+					$("#thingHistoryDetail .his_goal").text(noData);
+					$("#thingHistoryDetail .th_part").text(noData);
+					$("#thingHistoryDetail .th_state").text(noData);
+					$("#thingHistoryDetail .th_date").text(noData);
+					$("#thingHistoryDetail .his_rent").text(noData);
+					$("#thingHistoryDetail .his_return").text(noData);
+					$("#thingHistoryDetail .his_write").text(noData);
+					$("#thingHistoryDetail .his_bigo").text(noData);
 				}else{
-					$('.modal-body .noData').css('display', 'none')
-					$(".modal-body .left #hisIdx").val(data.detail.his_idx);
-					$(".modal-body .left .th_name").text(data.detail.th_name);
-					$(".modal-body .left .th_model").text(data.detail.th_model);
-					$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
-					$(".modal-body .left .th_spon").text(data.detail.th_spon);
-					$(".modal-body .left .his_name").text(data.detail.his_name);
-					$(".modal-body .left .his_goal").text(data.detail.his_goal);
-					$(".modal-body .right .th_part").text(data.detail.th_part);
-					$(".modal-body .right .th_state").text(data.detail.th_state);
-					$(".modal-body .right .th_date").text(data.detail.th_date);
-					$(".modal-body .right .his_rent").text(data.detail.his_rent);
-					$(".modal-body .right .his_return").text(data.detail.his_return);
-					$(".modal-body .right .his_write").text(data.detail.his_write);
-					$(".modal-body .his_bigo").text(data.detail.his_bigo);
+					$('#thingHistoryDetail .noData').css('display', 'none')
+					$("#thingHistoryDetail #hisIdx").val(data.detail.his_idx);
+					$("#thingHistoryDetail .th_name").text(data.detail.th_name);
+					$("#thingHistoryDetail .th_model").text(data.detail.th_model);
+					$("#thingHistoryDetail .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
+					$("#thingHistoryDetail .th_spon").text(data.detail.th_spon);
+					$("#thingHistoryDetail .his_name").text(data.detail.his_name);
+					$("#thingHistoryDetail .his_goal").text(data.detail.his_goal);
+					$("#thingHistoryDetail .th_part").text(data.detail.th_part);
+					$("#thingHistoryDetail .th_state").text(data.detail.th_state);
+					$("#thingHistoryDetail .th_date").text(data.detail.th_date);
+					$("#thingHistoryDetail .his_rent").text(data.detail.his_rent);
+					$("#thingHistoryDetail .his_return").text(data.detail.his_return);
+					$("#thingHistoryDetail .his_write").text(data.detail.his_write);
+					$("#thingHistoryDetail .his_bigo").text(data.detail.his_bigo);
 				}
 			},
 			error:function(e){

@@ -63,12 +63,12 @@
 						<p class='hiddenSpon' style="display: none;"><span id="detailName">후원자 : </span><span class="th_spon"></span></p> <br>
 					</div>
 					<div class="bottom" style="width: 100%; float: left;">
-						<img class="th_photo" style="width: 30%; display: none;"/>
+						<img class="th_photo" style="width: 25%; display: none;"/>
 					</div>
 	            </div>
 	            <div class="modal-footer" >
 	            	<div style="margin: auto;">
-	            		<button type="button" class="btn btn-primary ml-1"  id="modify" data-bs-target="#modifyThing" data-bs-toggle="modal"> <!-- data-bs-dismiss="modal" -->
+	            		<button type="button" class="btn btn-primary ml-1"  id="modify" data-bs-target="#modifyThing" data-bs-toggle="modal">
 		                    <i class="bx bx-check d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">수정하기</span>
 		                </button>

@@ -225,29 +225,29 @@
 			data:{thIdx:thIdx},
 			dataType:'JSON',
 			success:function(data){ //#으로 바꾸기 detailThing
-				$(".modal-body .left .th_name").text(data.detail.th_name);
-				$(".modal-body .left .th_model").text(data.detail.th_model);
-				$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
-				$(".modal-body .left .th_write").text(data.detail.th_write);
-				$(".modal-body .right .th_part").text(data.detail.th_part);
-				$(".modal-body .right .th_date").text(data.detail.th_date);
-				$(".modal-body .right .th_state").text(data.detail.th_state);
+				$("#detailThing .th_name").text(data.detail.th_name);
+				$("#detailThing .th_model").text(data.detail.th_model);
+				$("#detailThing .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
+				$("#detailThing .th_write").text(data.detail.th_write);
+				$("#detailThing .th_part").text(data.detail.th_part);
+				$("#detailThing .th_date").text(data.detail.th_date);
+				$("#detailThing .th_state").text(data.detail.th_state);
 				//후원자 체크
 				if((data.detail.th_part!=null || data.detail.th_part!='') && data.detail.th_spon != '직접구매'){
-					$(".modal-body .right .th_spon").text(data.detail.th_spon);
-					$(".modal-body .right .hiddenSpon").css('display', 'block');
+					$("#detailThing .th_spon").text(data.detail.th_spon);
+					$("#detailThing .hiddenSpon").css('display', 'block');
 				}else{
-					$(".modal-body .right .hiddenSpon").css('display', 'none');
+					$("#detailThing .hiddenSpon").css('display', 'none');
 				}
 				var newFileName = data.detailPhoto;
 				//사진 체크
 				if(newFileName != null || newFileName == ''){
-					$('.modal-body #nonPhoto').css('display', 'none');
-					$('.modal-body .th_photo').css('display', 'block');
-					$(".modal-body .th_photo").attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
+					$('#detailThing #nonPhoto').css('display', 'none');
+					$('#detailThing .th_photo').css('display', 'block');
+					$("#detailThing .th_photo").attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
 				}else{
-					$('.modal-body #nonPhoto').css('display', 'block');
-					$('.modal-body .th_photo').css('display', 'none');
+					$('#detailThing #nonPhoto').css('display', 'block');
+					$('#detailThing .th_photo').css('display', 'none');
 				}
 			},
 			error:function(e){
