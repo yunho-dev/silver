@@ -26,8 +26,8 @@ public class ResdientProgramController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired ResidentProgramService residientprogramservice;
-			   
-
+	
+	//프로그램 리스트 페이지 이동
 	@GetMapping(value="/programList")
 	public String residentProgramGategory(Model model,@RequestParam HashMap<String, String> params) {
 		logger.info("입소자 프로그램 조회");
@@ -54,7 +54,7 @@ public class ResdientProgramController {
 //		return map;
 //		
 //	}
-	
+	//프로그램 작성페이지 이동
 	@GetMapping(value="/programWrite")
 	public ModelAndView programWrite() {
 		
@@ -62,6 +62,7 @@ public class ResdientProgramController {
 		//return "resident/programWrite"; 
 	}
 	
+	//프로그램 작성
 	@PostMapping(value="/ProgramWriteComplete")
 	public ModelAndView ProgramWriteComplete(HttpServletRequest req,String pr_name, String pr_teacher,
 			String pr_start, String pr_end,String pr_goal, String pr_content, String pr_place, String pr_state,int pc_idx) {
@@ -80,6 +81,7 @@ public class ResdientProgramController {
 		return residientprogramservice.ProgramWriteComplete(req,pr_name,pr_teacher,pr_start,pr_end,pr_goal,pr_content,pr_place,pr_state,pc_idx);
 	}
 	
+	//프로그램 상세보기
 	@GetMapping(value="/programDetail")
 	public ModelAndView programDetai(@RequestParam String pr_idx) {
 		
@@ -87,6 +89,7 @@ public class ResdientProgramController {
 		return residientprogramservice.programDetail(pr_idx);
 	}
 	
+	//프로그램 수정
 	@PostMapping(value="/programDetailUpdate")
 	public ModelAndView programDetailUpdate(HttpServletRequest req) {
 		
@@ -107,6 +110,7 @@ public class ResdientProgramController {
 		
 	}
 	
+	//프로그램 리스트 가져오기(페이징)
 	@GetMapping(value="/ProgramListCall.ajax")
 	@ResponseBody
 	public HashMap<String, Object> ProgramListCall(HttpServletRequest request,@RequestParam int page) {

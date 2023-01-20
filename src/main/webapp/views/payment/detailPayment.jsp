@@ -166,7 +166,9 @@ display: block;
 							<div class="mb-3">
 							  <ul class="list-group">
 							  <c:forEach items="${PayFile}" var="file">
-							  	<li class="list-group-item">${file.paf_oriFileName}</li>
+							  	<li class="list-group-item">${file.paf_oriFileName}
+							  	<input type="button" class="btn btn-sm btn-secondary" value="다운로드"
+							  	onclick="location.href='download.do?path=${file.paf_newFileName}'"></li>
 							  	</c:forEach>
 							  </ul>
 							</div>
@@ -280,6 +282,8 @@ function DetailListCall(){
 }
 
 function DFListListCall(data){
+	var SessionID="${SessionID}"
+	console.log(SessionID);
 	var pm_self="${PayDto.pm_self}";
 	var SessionID="${SessionID}";
 	var mem_id="${PayDto.mem_id}";
@@ -292,12 +296,12 @@ function DFListListCall(data){
 	}
 	if(!data.AnotherSign.length == 0){
 		for (var i = 0; i < data.AnotherSign.length; i++) {
+			console.log("asd"+data.line[i].pl_hp);
 			if (data.line[i].pl_ch == 0 && pm_self == 1 && data.line[i].pl_hp == SessionID) {
 				content += '<td class="'+data.line[i].mem_id+'"><button type="button"';
 				content += 'class="btn btn-primary btn-sm"  value="상신" onclick="PmSangSin(this)">상신하기</button>';
 				content += '<button type="button" class="btn btn-primary btn-sm"  value="반려" onclick="PmSangSin(this)">반려하기 </button> </td>';
-			}
-			else if(data.line[i].pl_ch == 1 && pm_self == 1){
+			}else if(data.line[i].pl_ch == 1 && pm_self == 1){
 				content += '<td id="MySangSin" style="text-align: center">';
 				content += '<img style="width: 60px;height: 60px;" src="/sign/'+data.AnotherSign[i].si_newFileName+'"></td>';
 			}else if(data.line[i].pl_ch == 2 && pm_self == 1){
@@ -332,6 +336,7 @@ console.log(mem_id);
 		,success:function(data){
 			console.log("성공2?");
 			DetailListCall();
+			location.reload();
 		},error:function(e){
 			console.log(e);
 		}
@@ -358,6 +363,7 @@ function PmSangSin(e){
 		,success:function(data){
 			console.log(data);
 			DetailListCall();
+			location.reload();
 		},error:function(e){
 			console.log(e);
 		}

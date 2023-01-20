@@ -543,13 +543,34 @@ function save() {
 	if($("input[name='wp_content']").val().length < 11){
 		alert('최소 10글자 입력 해주세요.');
 	}else{
-			console.log("ㅁㅁㅁ"+$("#NotEmptyButton").html());
 		if($("input[name='chk_info']").val() == null){
 			alert('결재 양식을 선택해주세요');
 			return;
 		}
-		console.log("숫자"+$("#pmsignName th").length);
-		$("input[name='PMlineIndex']").val($("#pmsignName"))
+		$("input[name='PMlineIndex']").val($("#pmsignName"));
+		if($("input[name='OrgPmSelected']").val() == ""){
+			alert('결재 라인 선택해주세요');
+			return;
+		}
+		if($("input[name='PaymentSubject']").val() == ''){
+			alert('제목이 없습니다.');
+			return;
+		}
+		if($("#payFormDropDown").val() == '휴가'){
+			if($("#vacationDrop").val() == '연차' || $("#vacationDrop").val() == '병가' || $("#vacationDrop").val() == '공가'){
+				console.log($("input[name='FirstVacationDate']").val()+" 입니다.");
+				console.log($("input[name='SecondVacationDate']").val()+" 입니다.");
+				if($("input[name='FirstVacationDate']").val() == "" || $("input[name='SecondVacationDate']").val() == ""){
+					alert('휴가 날짜 선택해주세요');
+					return;
+				}
+			}else if($("#vacationDrop").val() == '오후 반차' || $("#vacationDrop").val() == '오전 반차'){
+				if($("input[name='FirstVacationDate']").val() == ""){
+					alert('휴가 날짜 선택해주세요');
+					return;
+				}
+			}
+		}
 		$("form").submit();
 	}
 }

@@ -17,12 +17,14 @@ public class ResidentProgramGategoryService {
 	
 	@Autowired ResidentProgramGategoryDAO residentprogramgategorydao;
 
+	//프로그램카테고리 리스트
 	public ArrayList<ResidentProgramGategoryDTO> list() {
 		
 		logger.info("서비스 start");
 		return residentprogramgategorydao.list();
 	}
 
+	//프로그램카테고리 상세보기 페이지이동
 	public ModelAndView CategoryUpdateDetail(String pc_idx) {
 		
 		ModelAndView mav =new ModelAndView("resident/categoryUpdate");
@@ -32,7 +34,7 @@ public class ResidentProgramGategoryService {
 		
 		return mav;
 	}
-
+	//프로그램카테고리 수정
 	public ModelAndView CategoryUpdateComplete(HttpServletRequest req) {
 		
 		String pc_idx=req.getParameter("pc_idx");
@@ -46,7 +48,7 @@ public class ResidentProgramGategoryService {
 		
 		return mav;
 	}
-
+	//프로그램카테고리 작성
 	public ModelAndView CategoryWriteComplete(HttpServletRequest req, int pc_idx, String pc_cate) {
 		logger.info("서비스 시작");
 		ResidentProgramGategoryDTO dto=new ResidentProgramGategoryDTO();

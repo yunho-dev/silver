@@ -20,7 +20,12 @@ public class InfestController {
 	@Autowired InfestService infestservice;
 	
 	@GetMapping(value="/infestList")
-	public String infestList() {
+	public String infestList(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("직원 리스트 조회");
+		
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		return "resident/infestList";
 	}
 	
@@ -33,7 +38,11 @@ public class InfestController {
 	
 	
 	@GetMapping(value="/infestListHistory")
-	public String infestListHistory() {
+	public String infestListHistory(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("직원 리스트 조회");
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		logger.info("히스토리 이동");
 		return "resident/infestListHistory";
 	}

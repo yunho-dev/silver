@@ -1,5 +1,6 @@
 package com.silver.donation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -51,6 +52,17 @@ public class DonationService {
 		logger.info("params:{}",params);
 		int row = dao.donationUpdate(params);
 		
+	}
+
+	public int searchdonationTotal(String select, String seacontent) {
+		
+		return dao.searchdonationTotal(select,seacontent);
+				
+	}
+
+	public Object searchdonation(String select, String seacontent, int page) {
+		ArrayList<DonationDTO> list = dao.searchdonation(select,seacontent,page);
+		return list;
 	}
 
 

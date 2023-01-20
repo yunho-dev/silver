@@ -29,8 +29,8 @@
   <section class="row">
   	<div class="card">
   		<div class="card-body py-4 px-5">
-  <form action="donWrite" method="post">
-  <button  class="btn btn-primary">등록</button>     
+  <form action="donWrite" method="post" enctype="multipart/form-data">
+  <button  class="btn btn-primary" style="float: right;">등록</button>     
   <table class="table">
   <thead>
     <tr>  
@@ -72,12 +72,11 @@
     <tr>  
       <th scope="col" style="width:20%;">첨부파일</th>
       <td>
-      	<input name="dh_Photo" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">	
+      	<input name="dh_Photo" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)" multiple="multiple">	
       </td>
     </tr>
   </thead>
 </table>
-<input type="hidden" name="dh_idx" value="${dh_idx}">
 </form>
 </div>
 </div>
@@ -97,7 +96,10 @@
 </footer>
 </div>
 </div>
-
+<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
 <script>
 function fileCheck(obj) {
 	console.log(obj.value)

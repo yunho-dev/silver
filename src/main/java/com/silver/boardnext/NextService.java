@@ -26,6 +26,7 @@ public class NextService {
 //		return nextdao.nextList();
 //	}
 
+	//인수인계 글 작성완료시 실행
 	public ModelAndView writecomplete(HttpServletRequest request, String bd_title, String bd_content) {
 
 		ModelAndView mav = new ModelAndView("next/nextList");
@@ -42,7 +43,8 @@ public class NextService {
 
 		return mav;
 	}
-
+	
+	//인수인계 상세보기
 	public ModelAndView nextDetail(String bd_idx) {
 		
 		logger.info("인수인계상세보기 서비스");
@@ -53,7 +55,7 @@ public class NextService {
 		return mav;
 	}
 
-
+	//인수인계 업데이트 이동
 	public ModelAndView nextUpdateForm(String bd_idx) {
 		ModelAndView mav = new ModelAndView("next/nextUpdateForm");
 		NextDTO dto = nextdao.nextUpdateForm(bd_idx);
@@ -63,6 +65,7 @@ public class NextService {
 		return mav;
 	}
 	
+	//인수인계 업데이트 완료
 	public ModelAndView nextUpdate(HttpServletRequest req) {
 		
 		String bd_idx =req.getParameter("bd_idx");
@@ -79,12 +82,12 @@ public class NextService {
 		
 		return mav;
 	}
-
+	//인수인계 리스트 총갯수
 	public int nextSizeTotal() {
 		
 		return nextdao.nextSizeTotal();
 	}
-
+	//인수인계 리스트 10개씩
 	public ArrayList<NextDTO> listCall(int page) {
 		
 		return nextdao.listCall(page);

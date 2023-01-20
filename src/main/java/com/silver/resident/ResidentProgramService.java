@@ -29,21 +29,25 @@ public class ResidentProgramService {
 //		return residentprogramdao.programlist();
 //	}
 
+	//프로그램 작성페이지 이동
+	public ModelAndView programWrite() {
+		
+		ModelAndView mav = new ModelAndView("resident/programWrite");
+		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();
+		mav.addObject("procategory",procategoryList);
+		return mav;
+	}
+	
+	//프로그램 작성
 	public ModelAndView ProgramWriteComplete(HttpServletRequest req, String pr_name, String pr_teacher,
 			String pr_start, String pr_end,String pr_goal, String pr_content, String pr_place, String pr_state,int pc_idx) {
-		logger.info("2");
+
 		ResidentProgramDTO dto = new ResidentProgramDTO();
-		logger.info("3");
+
 		logger.info(pr_start);
 		logger.info(pr_end);
 		
-		
-		//SimpleDateFormat sdf = new SimpleDateFormat("");
-		//Timestamp prStart = Timestamp.valueOf(pr_start);
-		//Timestamp prEnd = Timestamp.valueOf(pr_end);
-	    
-		
-	    logger.info("4");
+
 //		dto.setPr_idx(pr_idx);
 		dto.setPr_name(pr_name);
 		dto.setPr_teacher(pr_teacher);
@@ -65,21 +69,14 @@ public class ResidentProgramService {
 		return mav;
 	}
 
-	public ModelAndView programWrite() {
-		
-		ModelAndView mav = new ModelAndView("resident/programWrite");
-		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();
-		mav.addObject("procategory",procategoryList);
-		return mav;
-	}
-
+	//프로그램 상세보기 이동
 	public ModelAndView programDetail(String pr_idx) {
 		
 		logger.info("프로그램디테일서비스");
 		ModelAndView mav = new ModelAndView("resident/programDetail");
-		ResidentProgramDTO dto = residentprogramdao.programDetail(pr_idx);
+		ResidentProgramDTO dto = residentprogramdao.programDetail(pr_idx);//프로그램 해당 idx의 상세보기
 		
-		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();
+		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();//프로그램 카테고리 리스트
 		mav.addObject("procategory",procategoryList);
 		
 		logger.info("프로그램idx확인:"+pr_idx);
@@ -90,6 +87,7 @@ public class ResidentProgramService {
 		return mav;
 	}
 
+	//프로그램 수정
 	public ModelAndView programDetailUpdate(HttpServletRequest req) {
 		
 		String pr_idx=req.getParameter("pr_idx");
@@ -112,12 +110,12 @@ public class ResidentProgramService {
 
 		return mav;
 	}
-
+	//프로그램 리스트 총갯수
 	public int residientprogramSizeTotal() {
 		
 		return residentprogramdao.residientprogramSizeTotal();
 	}
-
+	//프로그램 리스트 10개씩
 	public ArrayList<ResidentProgramDTO> listCall(int page) {
 		
 		return residentprogramdao.listCall(page);

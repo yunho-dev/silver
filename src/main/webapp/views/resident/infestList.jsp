@@ -41,21 +41,21 @@
   <tbody id="infestList">
   </tbody>
   
-  	<tr>
-		<td colspan="5" id="paging">
-			<div>
-				
-					<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
-				
-			</div>
-		</td>
-	</tr>
- 
+  	
 </table>
-
+	<div id="paging">
+		<div>
+			<ul class="pagination" id="pagination" style="padding-left:35%; margin-top: 10px; margin-bottom: 30px; text-align: center;"></ul>
+		</div>
+	</div>
 </div>
 </div>
 </div>
+	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	 <script src="assets/js/bootstrap.bundle.min.js"></script>
+	 <script src="assets/js/pages/dashboard.js"></script>
+	 <script src="assets/js/main.js"></script>
+</body>
 <script>
 
 var showPage = 1;
@@ -140,10 +140,8 @@ function drawList(list){
 	var content = '';
 	
 	for (var i = 0; i < list.length; i++) {
-		content +='<tr>';
-		content +='<td>'
-		content +="<a href='infestListHistory?re_idx="+list[i].re_idx+"'>"+list[i].re_name+"</a>";
-		content +='</td>';
+		content +='<tr onclick=location.href="infestListHistory?re_idx='+list[i].re_idx+'">';
+		content +='<td>'+list[i].re_name+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
 		content +='<td>'+list[i].re_jumin+'</td>';
 		content +='<td>'+list[i].ro_name+'</td>';

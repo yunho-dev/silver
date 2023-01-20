@@ -37,6 +37,11 @@
    </div>  
 </div>
 </div>
+<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	 <script src="assets/js/bootstrap.bundle.min.js"></script>
+	 <script src="assets/js/pages/dashboard.js"></script>
+	 <script src="assets/js/main.js"></script>
+</body>
 <script>
 
  $.ajax({
@@ -67,9 +72,13 @@ function drawChart(list){
 			obj.stackChildren = true;
 		}
 		obj.text = {};
-		obj.text.name = item.mem_name;
-		obj.text.phone =item.mem_pnum;
+		var pnum=item.mem_pnum.replace(/(^02|^0504|^0505|^0\d{2})(\d+)?(\d{4})$/, '$1-$2-$3');
+		console.log(pnum);
+		pnum.replace
 		obj.text.dept = item.dept_name;
+		obj.text.pos = item.pos_name;
+		obj.text.name = item.mem_name;
+		obj.text.phone =pnum;
 		//console.log(item.pos_level);
 		if(item.pos_level > 1){//부모가 있을 경우
 			if(item.pos_level == 2){

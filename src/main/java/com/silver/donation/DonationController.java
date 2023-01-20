@@ -21,7 +21,12 @@ public class DonationController {
 	@Autowired DonationService service;
 	
 	@GetMapping(value = "/donation")
-	public ModelAndView donation() {
+	public ModelAndView donation(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("직원 리스트 조회");
+		
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		ModelAndView mav = new ModelAndView("donation/donation");
 		return mav;
 	}
@@ -31,6 +36,24 @@ public class DonationController {
 	public HashMap<String, Object> donationListCall(@RequestParam int page) {
 		logger.info("후원금 리스트 호출");
 		return service.donationListCall(page);
+	}
+	
+	@GetMapping(value = "/searchdonation")
+	@ResponseBody
+	public HashMap<String, Object>searchdonation(@RequestParam String select, @RequestParam String seacontent,
+			@RequestParam int page){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int total = service.searchdonationTotal(select,seacontent);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		logger.info("total 값 : "+total);
+		logger.info("page_idx 값 : "+page_idx);
+		logger.info("select 값 : "+select);
+		logger.info("page 값은 : "+page);
+		map.put("page_idx", page_idx);
+		map.put("list", service.searchdonation(select, seacontent,page));
+		return map;
+		
 	}
 	
 	@GetMapping(value = "/donationWriteForm")
