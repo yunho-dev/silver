@@ -141,40 +141,51 @@ public class ThingService {
 	@Transactional
 	public HashMap<String, Object> thingWrite(MultipartFile thPhoto, HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("받아온 요소 : {}", params);
-		ThingDTO dto = new ThingDTO();
-		Date thDate = Date.valueOf(params.get("thDate"));
-		dto.setIt_idx(Integer.parseInt(params.get("thCateReal")));
-		dto.setTh_name(params.get("thName"));
-		dto.setTh_part(params.get("thPart"));
-		dto.setTh_date(thDate);
-		dto.setTh_model(params.get("thModel"));
-		dto.setTh_money(Integer.parseInt(params.get("thMoney")));
-		dto.setTh_spon(params.get("thSpon"));
+		logger.info("중복 검사를 할 품목 이름 : "+params.get("thName"));
+		int check = 0;
+		boolean nameCheck = thingCheck(params.get("thName"));
+		logger.info("이름 중복검사 결과(false면 중복없음) : "+nameCheck);
 		
-		String thWrite = writer(request);
-		dto.setTh_write(thWrite);
-		logger.info("db에 작성될 등록자 이름 : "+dto.getTh_write());
+		if(nameCheck == false) {
+			check = 1;
+			logger.info("중복된 비품이 없으므로 비품 등록 기능을 실행합니다");
+			ThingDTO dto = new ThingDTO();
+			Date thDate = Date.valueOf(params.get("thDate"));
+			dto.setIt_idx(Integer.parseInt(params.get("thCateReal")));
+			dto.setTh_name(params.get("thName"));
+			dto.setTh_part(params.get("thPart"));
+			dto.setTh_date(thDate);
+			dto.setTh_model(params.get("thModel"));
+			dto.setTh_money(Integer.parseInt(params.get("thMoney")));
+			dto.setTh_spon(params.get("thSpon"));
+			
+			String thWrite = writer(request);
+			dto.setTh_write(thWrite);
+			logger.info("db에 작성될 등록자 이름 : "+dto.getTh_write());
 
-		int row = dao.thingWrite(dto);
-		int thIdx = dto.getTh_idx();
-		logger.info("db table 영향받은 행의 개수 : "+row);
-		logger.info("insert한 thIdx : "+thIdx);
-		
-		if(thPhoto != null){
-			String oriFileName = thPhoto.getOriginalFilename();
-			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
-			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
-				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
-				String newFileName = fileSave(thPhoto,ext);
-				logger.info("서버에 저장될 파일 이름 : "+newFileName);
-				if(!newFileName.equals("")) {
-					dao.photoInsert(oriFileName, newFileName, thIdx);
+			int row = dao.thingWrite(dto);
+			int thIdx = dto.getTh_idx();
+			logger.info("db table 영향받은 행의 개수 : "+row);
+			logger.info("insert한 thIdx : "+thIdx);
+			
+			if(thPhoto != null){
+				String oriFileName = thPhoto.getOriginalFilename();
+				logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
+				if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+					String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+					String newFileName = fileSave(thPhoto,ext);
+					logger.info("서버에 저장될 파일 이름 : "+newFileName);
+					if(!newFileName.equals("")) {
+						dao.photoInsert(oriFileName, newFileName, thIdx);
+					}
 				}
 			}
+		}else {
+			logger.info("중복된 비품이 있으므로 비품 등록 기능을 실행하지 않았습니다.");
 		}
 		
 		HashMap<String, Object> result=new HashMap<String, Object>();
-		result.put("thIdx", thIdx);
+		result.put("check", check);
 		return result;
 	}
 	

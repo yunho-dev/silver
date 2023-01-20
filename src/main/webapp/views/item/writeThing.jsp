@@ -231,8 +231,11 @@
 					contentType:false, // 컨텐트 타입을 객체로 함
 					data: formData,
 					success:function(data){
-						if(data.thIdx>0){
+						if(data.check==1){
+							alert('등록 완료')
 							location.reload();
+						}else{
+							alert('등록을 시도했으나 실패했습니다.\n중복된 ID이거나 서버 문제일 수 있습니다. \n이름을 바꿔 다시 시도해 주세요')
 						}
 					},
 					error:function(e){

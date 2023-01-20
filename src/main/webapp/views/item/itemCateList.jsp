@@ -102,7 +102,6 @@
 	}
 	
 	function cateModify(modifyBtn){
-		var itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
 		modifyBtn.closest('tr').find('#cateClick1').attr('onclick', '');
 		modifyBtn.closest('tr').find('#cateClick1').css('cursor', '');
 		modifyBtn.closest('tr').find('#cateClick2').attr('onclick', '');
@@ -111,10 +110,11 @@
 		modifyBtn.closest('tr').find('td input[name=cateNameUp]').attr('type', 'text')
 		modifyBtn.text('저장');
 		modifyBtn.siblings('#cancelBtn').css('display', 'inline-block');
-		modifyBtn.attr('onclick','cateUpdate($(this), itIdx)');
+		modifyBtn.attr('onclick','cateUpdate($(this))');
 	}
 	
-	function cateUpdate(modifyBtn, itIdx){
+	function cateUpdate(modifyBtn){
+		var itIdx = modifyBtn.closest('tr').find('.cateIdx').text()
 		var $cateName = modifyBtn.closest('tr').find('td input[name=cateNameUp]')
 		if($cateName.val() == ''){
 			alert("카테고리 이름을 입력해 주세요")
