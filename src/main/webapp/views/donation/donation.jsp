@@ -53,10 +53,10 @@
 		                       <div class="card-body py-4 px-5" style="margin:0 auto;">
 								<div>
 								<select id="select">
-									<option value="title">제목</option>
-									<option value="write">작성자</option>
+									<option value="title">후원자</option>
+									<option value="write">등록자</option>
 								</select> <input type="text" name="seacontent" id="seacontent">
-								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="noticeSearch(page2)">검색</button>
+								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="donationSearch(page2)">검색</button>
 								</div>
 		                   </div>
 							<div class="card-body py-4 px-5" style="margin:0 auto;">
@@ -130,6 +130,58 @@ function donationListCall(page){
 	});
 	
 }
+
+var flag=true;
+var pageflag=true;
+var page2=1;
+var select_change=new Array();
+var chkPage=new Array();
+function donationSearch(page2){
+	select_change.push($("#select").val());
+	if(flag){
+    var select=$("#select").val();
+    var seacontent=$("#seacontent").val();
+	flag=false;
+	if(seacontent == ""){
+		window.location.reload();
+	}
+	
+	$.ajax({
+		type:'get'
+		,url:'searchdonation'
+		,dataType:'json'
+		,data:{'select':select,'seacontent':seacontent,'page':page2}
+		,success:function(data){
+			drawList(data.list);
+			chkPage.push(data.page_idx);
+			if(chkPage.at(-2) != data.page_idx){
+				pageflag=true;
+			}
+			if(pageflag == true && $('.pagination').data("twbs-pagination")
+					|| select_change.at(-2) != $("#select").val()){
+                $('.pagination').twbsPagination('destroy');
+                pageflag=false;
+            }
+			$("#pagination").twbsPagination({
+				startPage : 1 // 시작 페이지
+				,totalPages : data.page_idx // 총 페이지 수
+				,visiblePages : 4 // 기본으로 보여줄 페이지 수
+				,initiateStartPageClick:false
+				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
+					noticeSearch(page);
+				}
+			});
+		}
+		,error:function(e){
+			console.log(e);
+		},complete:function(){
+			flag=true;
+		}
+	});
+	}
+}
+
+
 function drawList(list){
 	var content = '';
 	

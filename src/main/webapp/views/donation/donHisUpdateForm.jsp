@@ -29,7 +29,7 @@
   <section class="row">
   	<div class="card">
   		<div class="card-body py-4 px-5">
-  <form action="donHisUpdate" method="post">
+  <form action="donHisUpdate" method="post" enctype="multipart/form-data">
   <button  class="btn btn-primary">수정</button>     
   <table class="table">
   <thead>
@@ -103,7 +103,7 @@
       <th scope="col" style="width:20%;">첨부파일</th>
       <td>
       	<input name="dh_Photo" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">	
-      	<span>기존 사진 : </span><img src="/filephoto/${photoinfo.fp_newFileName}" alt="사진" style="width:110px;height:140px"><br/><br/>
+      	<span>기존 사진 : </span><img src="/filephoto/${photoinfo}" alt="사진" style="width:110px;height:140px"><br/><br/>
       </td>
     </tr>
   </thead>

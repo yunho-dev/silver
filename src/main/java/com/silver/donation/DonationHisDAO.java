@@ -11,6 +11,8 @@ import com.silver.member.MemberDTO;
 @Mapper
 public interface DonationHisDAO {
 
+	int searchdonationHisTotal = 0;
+
 	int totalCount();
 
 	ArrayList<HashMap<String, Object>> donHistoryCall(int offset);
@@ -26,6 +28,12 @@ public interface DonationHisDAO {
 	DonationHisDTO findphoto(int dh_idx);
 
 	void photoUpdate(String oriFileName, String newFileName, int dhidx);
+
+	String donHisUpdateForm_File(int dh_idx);
+
+	int searchdonationHisTotal(String select, String seacontent);
+
+	ArrayList<DonationHisDTO> searchHisdonation(String select, String seacontent, int page);
 
 	
 

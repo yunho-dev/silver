@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,11 @@ public class DonationHisController {
 	
 	
 	@GetMapping(value ="/donHistory")
-	public ModelAndView donationHistory() {
+	public ModelAndView donationHistory(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("직원 리스트 조회");
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		ModelAndView mav = new ModelAndView("donation/donHistory");
 		return mav;
 		
@@ -34,8 +39,32 @@ public class DonationHisController {
 		return service.donHistoryCall(page);
 	}
 	
+	@GetMapping(value = "/searchHisdonation")
+	@ResponseBody
+	public HashMap<String, Object>searchHisdonation(@RequestParam String select, @RequestParam String seacontent,
+			@RequestParam int page){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int total = service.searchdonationHisTotal(select,seacontent);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		logger.info("total 값 : "+total);
+		logger.info("page_idx 값 : "+page_idx);
+		logger.info("select 값 : "+select);
+		logger.info("page 값은 : "+page);
+		map.put("page_idx", page_idx);
+		map.put("list", service.searchHisdonation(select, seacontent,page));
+		return map;
+		
+	}
+	
+	
 	@RequestMapping(value = "/donHisWriteForm")
-	public ModelAndView donHisWriteForm() {
+	public ModelAndView donHisWriteForm(Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("직원 리스트 조회");
+		
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		ModelAndView mav = new ModelAndView("donation/donHisWriteForm");
 		logger.info("글쓰기폼 이동");
 		return mav;
@@ -53,9 +82,14 @@ public class DonationHisController {
 	}
 	
 	@RequestMapping(value = "/donHisUpdateForm")
-	public ModelAndView donHisUpdateForm(int dh_idx) {
+	public ModelAndView donHisUpdateForm(int dh_idx,Model model,@RequestParam HashMap<String, String> params) {
+		logger.info("직원 리스트 조회");
+		
+		logger.info("세션 값 조회");
+		logger.info("params:{}",params);
+		model.addAttribute("page", params);
 		logger.info("수정/상세보기폼 이동");
-		return service.donHisUpdateForm(dh_idx);
+		return service.donHisUpdateForm(dh_idx,params);
 	}
 	@RequestMapping(value = "/donHisUpdate")
 	public String donHisUpdate (MultipartFile dh_Photo,

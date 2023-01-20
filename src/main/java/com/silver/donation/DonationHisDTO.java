@@ -11,13 +11,6 @@ public class DonationHisDTO {
 	private String dh_write;
 	private String dh_cate;
 	private int dh_money;
-	
-	public int getDh_money() {
-		return dh_money;
-	}
-	public void setDh_money(int dh_money) {
-		this.dh_money = dh_money;
-	}
 	private String dh_goal;
 	//photo
 	private int fp_idx;
@@ -26,6 +19,12 @@ public class DonationHisDTO {
 	private Date fp_date;
 	private int fpc_idx;
 	
+	public int getDh_money() {
+		return dh_money;
+	}
+	public void setDh_money(int dh_money) {
+		this.dh_money = dh_money;
+	}
 	public int getFpc_idx() {
 		return fpc_idx;
 	}
@@ -88,7 +87,7 @@ public class DonationHisDTO {
 		this.dh_goal = dh_goal;
 	}
 	public void setDh_money(String string) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

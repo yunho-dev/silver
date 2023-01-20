@@ -5,13 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,7 +42,19 @@ public class DonationHisService {
 		
 		return result;
 	}
-
+	
+	public int searchdonationHisTotal(String select, String seacontent) {
+		return dao.searchdonationHisTotal(select,seacontent);
+	}
+	
+	
+	
+	public Object searchHisdonation(String select, String seacontent, int page) {
+		ArrayList<DonationHisDTO> list = dao.searchHisdonation(select,seacontent,page);
+		return list;
+	}
+	
+	
 	public HashMap<String, Object> donWrite(MultipartFile dh_Photo, HashMap<String, String> params) {
 		DonationHisDTO dto = new DonationHisDTO();
 		Date dhdate = Date.valueOf(params.get("dh_date"));
@@ -102,11 +117,13 @@ public class DonationHisService {
 		return newFileName;
 	}
 
-	public ModelAndView donHisUpdateForm(int dh_idx) {
+	public ModelAndView donHisUpdateForm(int dh_idx, HashMap<String, String> params) {
 		logger.info("이동확인");
 		DonationHisDTO dto = dao.donHisUpdateForm(dh_idx);
+		String donHisUpdateForm_File=dao.donHisUpdateForm_File(dh_idx);
 		ModelAndView mav = new ModelAndView("donation/donHisUpdateForm");
 		mav.addObject("donhistory",dto);
+		mav.addObject("photoinfo",donHisUpdateForm_File);
 		return mav;
 	}
 
@@ -134,8 +151,17 @@ public class DonationHisService {
 		int row = dao.donHisUpdate(dto);
 		logger.info("영향받은 행:"+row);
 		int dhidx = dto.getDh_idx();
-		
+		logger.info("dhidx 값 :"+dhidx);
+		logger.info("dh_photo : "+dh_Photo);
+		logger.info("dh_photo : "+dh_Photo.getOriginalFilename());
+		logger.info("dh_photo : "+dh_Photo.getOriginalFilename().getClass());
+		if (!dh_Photo.isEmpty()) {
+			logger.info("dh_Photo 빈값 아님");
+		}else {
+			logger.info("dh_Photo 빈값");
+		}
 		if(dh_Photo != null){
+			logger.info("IF 문 들어옴");
 			DonationHisDTO photofind = dao.findphoto(dhidx);
 			String oriFileName = dh_Photo.getOriginalFilename();
 			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
@@ -152,10 +178,13 @@ public class DonationHisService {
 		}
 		
 		HashMap<String, Object> result=new HashMap<String, Object>();
-		result.put("dhidx", dhidx);
+		result.put("dh_idx", dhidx);
 		return result;
 		
 	}
+
+
+
 	
 
 }
