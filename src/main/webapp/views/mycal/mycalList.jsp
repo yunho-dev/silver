@@ -24,6 +24,8 @@
 		margin-top:5px;
 		cursor:move; 
 	}
+
+
 </style>	
 </head>
 <body>
@@ -32,33 +34,34 @@
         <div id="main">
        	 <jsp:include page="../upbar.jsp"></jsp:include>
        	   <h1>내 캘린더</h1>
-			  
-       	   
+			<input type="hidden" id="calcal" name='memId' value="${info.mem_id}">  
+       	   	<input type="hidden" id="calIdx" name='calIdx' value="">  
 				<div id='external-events' style="float:left; width:20%; padding-right:30px; padding-left:20px; margin-top:80px;">
 				    <p>
 				      <strong>스케줄을 배정하세요</strong>
 				    </p>
 				
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				      <div class='fc-event-main'>휴가</div>
+				      <div class='fc-event-main' style="background-color:blue;">휴가</div>
 				    </div>
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				      <div class='fc-event-main'>반차</div>
+				      <div class='fc-event-main' style="background-color:orange;">반차</div>
 				    </div>
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				      <div class='fc-event-main'>A조</div>
+				      <div class='fc-event-main' style="background-color:green;">A조</div>
 				    </div>
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				      <div class='fc-event-main'>B조</div>
+				      <div class='fc-event-main' style="background-color:pink;">B조</div>
 				    </div>
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				      <div class='fc-event-main'>기타</div>
+				      <div class='fc-event-main' style="background-color:purple;">출장</div>
 				    </div>
-				
-				    <p>
-				      <input type='checkbox' id='drop-remove' />
-				      <label for='drop-remove'>드래그 앤 드롭후 제거</label>
-				    </p>
+			 <div style="display:none;">
+				<p>
+					<input type="checkbox" id='drop-remove'/>
+					<label for='drop-remove'>드래그앤 드랍후 제거</label>
+				</p>
+				</div>
   				</div>
 			
 			  		<div style="width:40%; float:right; padding-bottom:30px; text-align:right">
@@ -80,6 +83,9 @@
     <script src="assets/js/main.js"></script>       	 
 </body>
 <script>
+
+var calendar=null;
+loadingEvents();
  $(document).ready(function(){
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -102,8 +108,11 @@
 
    // initialize the external events
    // -----------------------------------------------------------------
-
-   new Draggable(containerEl, {
+	var all_events=null;
+	all_events=loadingEvents();
+   	console.log(all_events);
+   
+   	new Draggable(containerEl, {
      itemSelector: '.fc-event',
      eventData: function(eventEl) {
        return {
@@ -115,14 +124,34 @@
    // initialize the calendar
    // -----------------------------------------------------------------
 
-   var calendar = new Calendar(calendarEl, {
+   calendar = new Calendar(calendarEl, {
      headerToolbar: {
        left: 'prev,next today',
        center: 'title',
        right: 'dayGridMonth,timeGridWeek,timeGridDay'
      },
      editable: true,
+     dayMaxEvents: true,
      droppable: true, // this allows things to be dropped onto the calendar
+     events:all_events,
+/*       events:[
+    	 {
+    		 if(title='휴가'){
+    			 backgroundColor:blue;
+    				 
+    		 },if(title='반차'){
+    			 backgroundColor:orange;
+    		 },if(title='A조'){
+    			 backgroundColor:green;
+    		 },if(title='B조'){
+    			 backgroundColor:pink;
+    		 },if(title='출장'){
+    			 backgroundColor:purple;
+    		 }
+    		 
+    	 }
+    	 
+     ],  */
      drop: function(info) {
        // is the "remove after drop" checkbox checked?
        if (checkbox.checked) {
@@ -130,11 +159,150 @@
          info.draggedEl.parentNode.removeChild(info.draggedEl);
        }
      },
+     eventClick:function(info){
+    	 if(confirm("일정'"+info.event.title+"'을 삭제하시겠습니까?")){
+    		 info.event.remove();
+    	 }
+     },
      locale:'ko'
    });
 
    calendar.render();
  }); 
  
+ 
+ function allSave(){
+	var allEvent= calendar.getEvents();
+	console.log(allEvent);
+	
+	var events = new Array();
+	for(var i=0; i<allEvent.length; i++){
+		
+		var obj= new Object();
+		
+		obj.title=allEvent[i]._def.title // 이벤트 명칭
+		obj.allDay=allEvent[i]._def.allDay; // 하루 종일의 이벤트인지 알려주는 boolean 값(ture/false)
+		//obj.start=new Date(allEvent[i]._instance.range.start); // 시작 날짜 및 시간
+		//obj.end=new Date(allEvent[i]._instance.range.end); // 마감 날짜 및 시간
+		
+		
+		var date = new Date(allEvent[i]._instance.range.start);
+		obj.start=	date.toLocaleDateString("ko-KR",{year:'numeric',month: '2-digit',day: '2-digit'}).replace(/\./g, '').replace(/\s/g, '-') + " "+ date.toLocaleTimeString("en-US",{hour12 : false});
+		
+		
+		var date1 = new Date(allEvent[i]._instance.range.end);
+      	obj.end	=date1.toLocaleDateString("ko-KR",{year:'numeric',month: '2-digit',day: '2-digit'}).replace(/\./g, '').replace(/\s/g, '-') + " "+ date1.toLocaleTimeString("en-US",{hour12 : false});
+
+		console.log(obj.start);	
+		console.log(obj.end);
+		events.push(obj);
+		
+	}
+	console.log(events);
+	var jsondata= JSON.stringify(events);
+	console.log(jsondata);
+	
+	savedata(jsondata);
+	
+ }
+
+ function savedata(jsondata) {
+	 memId = $('input[name=memId]').val();
+	    $.ajax({
+	    	type:'POST',
+			url:'SaveMycalList.do',
+			data:{'data':jsondata,memId:memId},
+			dataType:'JSON',
+			success:function(data){
+			location.reload();
+			},
+			error:function(e){
+				console.log(e);
+			}
+	    });
+	 
+ }
+ 
+ 
+ function loadingEvents() {
+	 memId = $('input[name=memId]').val();
+	 
+ 	 var return_value;
+	 var add=[]; 
+				 
+	 console.log(memId);
+	    $.ajax({
+	    	type:'GET',
+			url:'GETMycalList.do',
+			async: false, 
+			data:{'memId':memId},
+			dataType:'JSON',
+			success:function(data){
+				
+			//	return_value=data.list;
+			//	console.log(return_value);
+/* 				$("input[name=calIdx]").attr('value',data.list.cal_idx); */
+				
+/*  				console.log(data);
+				console.log(data.list.length);
+				console.log(data.list);
+				
+				return_value=(data.list);
+				console.log(return_value);  */
+				console.log(data.list.length);
+		for(var i=0; i<data.list.length;i++){
+				title=data.list[i].title;
+				console.log(title);
+	    		 if(title=='휴가'){
+	    			 delete data.list[i].backgroundColor;
+	    			 data.list[i].backgroundColor="blue";	
+	    			 console.log(data.list[i].backgroundColor);
+	    		 }else if(title=='반차'){
+	    			 delete data.list[i].backgroundColor;
+	    			 data.list[i].backgroundColor="orange";
+	    			 console.log(data.list[i].backgroundColor);
+			//	data.list[i].add({backgroundColor:"orange"});
+	    		 }else if(title=='A조'){
+	    			 delete data.list[i].backgroundColor;
+	    			 data.list[i].backgroundColor="green";
+	    			 console.log(data.list[i].backgroundColor);
+			//	data.list[i].add({backgroundColor:"green"});
+	    		 }else if(title=='B조'){
+	    			 delete data.list[i].backgroundColor;
+	    			 data.list[i].backgroundColor="pink";
+	    			 console.log(data.list[i].backgroundColor);
+			//	data.list[i].add({backgroundColor:"pink"});
+	    		 }else{
+	    			 delete data.list[i].backgroundColor;
+	    			 data.list[i].backgroundColor="purple";
+	    			 console.log(data.list[i].backgroundColor);
+			//	data.list[i].add({backgroundColor:"purple"});
+	    		 } 
+
+		}	
+/* 			console.log(adtitle);
+				console.log(adstart);
+				console.log(adend);
+				console.log(adallDay); */ 
+				return_value=data.list;
+				console.log(return_value);
+			/* 	add.push({
+					title:adtitle,
+					start:adstart,
+					end:adend,
+					allDay:adallDay
+				}); */
+			
+
+
+			},
+			error:function(e){
+				console.log(e);
+			}
+	    });
+	    return return_value;
+
+}
+
 </script>
 </html>

@@ -4,9 +4,24 @@
 >
 
 <mapper namespace="com.silver.mycal.MycalDAO">
+	
+	<!-- 세션아이디 저장 -->
+	<select id="myfind" resultType="mycal">
+		SELECT mem_id from member where mem_id=#{mem_id}
+	</select>
 
-
-
-
-
+	<!-- 내캘린더 등록목록 가져오기 -->
+	<select id="MycalListCall" resultType="mycal">
+	    SELECT cal_idx,cal_cate as title,cal_start as start,cal_end as end,cal_allday as allDay FROM mycal where mem_id=#{memId}
+	</select>
+	
+	<insert id="SaveMycalList" useGeneratedKeys="true" keyColumn="cal_idx" keyProperty="cal_idx" parameterType="mycal">
+		INSERT into mycal (mem_id,cal_cate,cal_start,cal_end,cal_allday) 
+			VALUES(#{mem_id},#{cal_cate},#{cal_start},#{cal_end},#{cal_allday})
+	</insert>
+	
+	<delete id="deleteAllevent" parameterType="mycal">
+		delete from mycal where mem_id=#{mem_id}
+	</delete>
+	
 </mapper>
