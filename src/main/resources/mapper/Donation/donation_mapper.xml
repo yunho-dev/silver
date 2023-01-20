@@ -34,6 +34,27 @@
  		do_money=#{do_money}
  		where do_idx=#{do_idx}
  	</update>
+ 	
+ 	<select id="searchdonationTotal" resultType="int">
+		select count(do_idx) from donation d
+		<if test="param1.equals('title')">
+			WHERE do_name LIKE CONCAT('%',#{param2},'%');
+		</if>
+		<if test="param1.equals('write')">
+			WHERE do_write LIKE CONCAT('%',#{param2},'%');
+		</if>
+	</select>
+	
+	<select id="searchdonation" resultType="donation">
+		SELECT do_idx,do_name,do_date,do_write,do_money from donation d 	
+		<if test="param1.equals('title')">
+			WHERE do_name=#{param2}
+		</if>
+		<if test="param1.equals('write')">
+			WHERE do_write=#{param2}
+		</if>
+		order by do_idx desc limit 10 offset #{param3}	
+	</select>
 </mapper>
 
 

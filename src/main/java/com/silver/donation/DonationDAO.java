@@ -18,4 +18,8 @@ public interface DonationDAO {
 
 	int donationUpdate(HashMap<String, String> params);
 
+	int searchdonationTotal(String select, String seacontent);
+
+	ArrayList<DonationDTO> searchdonation(String select, String seacontent, int page);
+
 }

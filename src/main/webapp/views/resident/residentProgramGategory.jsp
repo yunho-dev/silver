@@ -91,8 +91,10 @@
 </body>
 
 <script>
+//프로그램카테고리 리스트 뽑기
 listCall();
 
+//프로그램카테고리 리스트 불러오는 ajax함수
 function listCall(){
 	$.ajax({
 		type:'GET',
@@ -111,7 +113,7 @@ function listCall(){
 	
 }
 
-
+//프로그램카테고리 그리는 함수
 function drawList(list){
 	var content = '';
 	for(var i=0;i<list.length;i++){
@@ -126,7 +128,7 @@ function drawList(list){
 	$("#list").empty();
 	$("#list").append(content);
 }
-
+//글쓰기버튼 클릭시 페이지 이동
 function categoryWrite(){
 	console.log('글쓰기 버튼 누르셧죠?');
 	location.href='categoryWrite';

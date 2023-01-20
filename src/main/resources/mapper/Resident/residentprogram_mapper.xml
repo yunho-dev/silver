@@ -10,6 +10,7 @@
 <!-- 		from program p inner join procategory p2 on p.pc_idx=p2.pc_idx order by p.pr_idx desc; -->
 <!-- 	</select> -->
 	
+	<!-- 프로그램 작성 -->
 	<insert id="ProgramWriteComplete" parameterType="program">
 		insert into program(pr_name,pr_teacher,pr_start,
 		pr_end,pr_content,pr_goal,pr_place,pr_state,pc_idx) 
@@ -17,14 +18,17 @@
 		#{pr_end},#{pr_content},#{pr_goal},#{pr_place},#{pr_state},#{pc_idx});
 	</insert>
 	
-	<select id="procategoryList" resultType="program">
-		select pc_idx,pc_cate from procategory;
-	</select>
-	
+	<!-- 프로그램 해당 idx의 상세보기 -->
 	<select id="programDetail" resultType="program">
 		select *from program where pr_idx=#{param1};
 	</select>
 	
+	<!-- 프로그램 카테고리 리스트 -->
+	<select id="procategoryList" resultType="program">
+		select pc_idx,pc_cate from procategory;
+	</select>
+	
+	<!-- 프로그램 수정 -->
 	<update id="programDetailUpdate">
 		update program set pr_name=#{param2},pr_teacher=#{param3}
 			,pr_start=#{param4},pr_end=#{param5},
@@ -32,14 +36,16 @@
 			,pr_place=#{param8},pr_state=#{param9},pc_idx=#{param10} where pr_idx=#{param1}
 	</update>
 	
+	<!-- 프로그램 리스트 총갯수 -->
+	<select id="residientprogramSizeTotal" resultType="int">
+		select count(p.pr_idx) from program p;
+	</select>
+	
+	<!-- 프로그램 리스트 10개씩 -->
 	<select id="listCall" resultType="program">
 		select p.pr_idx,p.pr_name,p.pr_teacher,p.pr_start,p.pr_end,p2.pc_cate 
 		from program p inner join procategory p2 on p.pc_idx=p2.pc_idx order by p.pr_idx 
 		desc limit 10 offset #{param1};
-	</select>
-	
-	<select id="residientprogramSizeTotal" resultType="int">
-		select count(p.pr_idx) from program p;
 	</select>
 	
 

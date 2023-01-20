@@ -63,11 +63,12 @@
 </div>
 </div>
 </div>
+<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/pages/dashboard.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
 <script>
-var str=$(".timeSub").text();
-var result=str.substr(0,11);
-$(".timeSub").text(result);
-
 var url=window.location.search.split('?re_idx=')[1];
 console.log("idx 값 : "+url);
 var uri=window.location.search.split('?if_idx=')[2];
@@ -113,12 +114,14 @@ function drawList(list){
 	var content = '';
 	
 	for (var i = 0; i < list.length; i++) {
-		content +='<tr>';
-		content +='<td class="timeSub">'+list[i].if_date+'</td>';
+		content +='<tr onclick=location.href="infestHistoryWriteUpdateForm?re_idx='+list[i].if_idx+'">';
+		var date = new Date(list[i].if_date);
+		var year = date.getFullYear();
+		var month = date.getMonth()+1;
+		var day = date.getDate();
+		content +='<td >'+year+"-"+(("00"+month.toString()).slice(-2))+"-"+(("00"+day.toString()).slice(-2))+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
-		content +='<td>'
-		content +="<a href='infestHistoryWriteUpdateForm?re_idx="+list[i].if_idx+"'>"+list[i].if_jusa+"</a>";
-		content +='</td>';
+		content +='<td>'+list[i].if_jusa+'</td>';
 		content +='<td>'+list[i].if_name+'</td>';
 		content +='<td>'+list[i].if_comment+'</td>';
 		content +='<td>'+list[i].if_write+'</td>';
