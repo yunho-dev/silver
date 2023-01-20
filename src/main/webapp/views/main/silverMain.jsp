@@ -131,7 +131,8 @@ display: block;
                                 </div>
                             </div>
                             <div class="card-body">
-                                <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>입소자 정보로 이동</button>
+                                <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
+                                onclick="location.href='resident?page=resident'">입소자 정보로 이동</button>
                             </div>
                         </div>
                     

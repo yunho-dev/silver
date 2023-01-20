@@ -254,43 +254,62 @@ public class PaymentService {
 	}
 
 
-	public ArrayList<PaymentDTO> openpayment_ajax(HttpServletRequest request) {
+	// 열람 가능 문서함
+	public ArrayList<PaymentDTO> openpayment_ajax(int page, HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
 		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
 		Collections.reverse(referPmIdx);
 		ArrayList<PaymentDTO> openPayment=new ArrayList<PaymentDTO>();
+		logger.info("referPmIdx : "+referPmIdx.toString());
 
-		for (String str : referPmIdx) {
-			logger.info("str : "+str);
-			openPayment.addAll(paymentdao.openPayment(str));
-		}
-		
-		
-		for (PaymentDTO open : openPayment) {
-			logger.info("open : "+open.getPm_subject());
-		}
-		
+		openPayment=paymentdao.openPayment(page,referPmIdx);
 		return openPayment;
 	}
-
-//	public ArrayList<PaymentDTO> FirstWaitPayment(HttpServletRequest request) {
-//		HttpSession session=request.getSession();
-//		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
-//		String mem_id=memberDTO.getMem_id();
-//		return paymentdao.FirstWaitPayment(mem_id);
-//	}
-
-	public ArrayList<PaymentDTO> SecondWaitPayment(HttpServletRequest request) {
+	
+	public int OpensListCallTotal(HttpServletRequest request) {
 		HttpSession session=request.getSession();
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_id=memberDTO.getMem_id();
-		int mem_posLevel=memberDTO.getPos_level()+1;
-		ArrayList<PaymentDTO> WaitPmLine=paymentdao.WaitPm(mem_id,mem_posLevel);
-		
+		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
+		return paymentdao.OpensListCallTotal(referPmIdx);
+	}
+
+	public int OpensListCallSearchTotal(String select, String seacontent, HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
+		int openSearchTotal=paymentdao.openSearchPayment(select,seacontent,referPmIdx);
+		return openSearchTotal;
+	}
+
+	public ArrayList<PaymentDTO> openpaymentSearch_ajax(String select, String seacontent, int page,
+			HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		ArrayList<String> referPmIdx=paymentdao.referPmIdx(mem_id);
+		Collections.reverse(referPmIdx);
+		return paymentdao.openpaymentSearch_ajax(select,seacontent,page,referPmIdx);
+	}
+	
+	
+	
+
+	//결재 대기 문서함
+	public ArrayList<PaymentDTO> WaitPayment() {
+		ArrayList<PaymentDTO> WaitPmLine=paymentdao.WaitPm();
 		return WaitPmLine;
 	}
+	
+	public int waitpaymentTotal_ajax() {
+		return paymentdao.waitpaymentTotal_ajax();
+	}
+
 
 	public void PmSangSin(PaymentDTO payDto) {
 		String writePayMent=paymentdao.writePayMent(payDto);
@@ -385,6 +404,77 @@ public class PaymentService {
 		
 		return paymentdao.goingpaymentTotal_ajax(mem_id);
 	}
+
+	public int finishpaymentTotal_ajax(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishpaymentTotal_ajax(mem_id);
+	}
+
+	public ArrayList<PaymentDTO> finishpayment_ajax(HttpServletRequest request, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishpayment_ajax(mem_id,page);
+	}
+
+	public int selfSearchTotal(HttpServletRequest request, String select, String seacontent) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.selfSearchTotal(mem_id,select,seacontent);
+	}
+
+	public ArrayList<PaymentDTO> selfSearch(HttpServletRequest request, String select, String seacontent, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.selfSearch(mem_id,select,seacontent,page);
+	}
+
+	
+	
+	public int goingSearchTotal(HttpServletRequest request, String select, String seacontent) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.goingSearchTotal(mem_id,select,seacontent);
+	}
+
+	public ArrayList<PaymentDTO> goingSearch(HttpServletRequest request, String select, String seacontent, int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.goingSearch(mem_id,select,seacontent,page);
+	}
+
+	
+	
+	public int finishSearchTotal(HttpServletRequest request, String select, String seacontent) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishSearchTotal(mem_id,select,seacontent);
+	}
+
+	public ArrayList<PaymentDTO> finishgoingSearch(HttpServletRequest request, String select, String seacontent,
+			int page) {
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		return paymentdao.finishSearch(mem_id,select,seacontent,page);
+	}
+
+	public String getDownloadOrlName(String path) {
+		return paymentdao.getDownloadOrlName(path);
+	}
+
+
+
+	
+
+	
 	
 
 	

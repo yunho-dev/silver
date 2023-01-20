@@ -1,5 +1,7 @@
 package com.silver.payment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,6 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -119,6 +126,34 @@ public class PaymentController {
 		return paymentservice.detailPayment_do(pm_idx,request);
 	}
 	
+	@GetMapping(value="/download.do")
+	public ResponseEntity<Resource> download(@RequestParam String path){
+		logger.info("photo name : "+path);
+		String filePath="C:/pfile/"+path;
+		String oriFileName=paymentservice.getDownloadOrlName(path);
+		
+		Resource resource=new FileSystemResource(filePath);
+		HttpHeaders header = new HttpHeaders();
+		
+		// 한글 파일며은 다운로드시 이름이 깨져서 표현된다.
+		// 한글깨짐 방지가 필요 하다.
+		String encodeName;
+		try {
+			encodeName = URLEncoder.encode(oriFileName,"utf-8");
+			logger.info("encoded : "+encodeName);
+			// image/... 은 이미지, text/... 은 문자열, application.octet-stream 은 바이너리
+			header.add("Content-type", "application/octet-stream");
+			// content-Disposition 은 내려보낼때 문자열(inline)인지 다운로드 받을 파일(attachment)인지 데이터 종류를 의미
+			// fileName="과제.gif" 형태로 이름을 저장하지 않으면 다운로드가 되지 않는다.
+			header.add("content-Disposition", "attachment;fileName=\""+encodeName+"\"");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(resource,header,HttpStatus.OK);
+	}
+	
+	
+	
 	@ResponseBody
 	@PostMapping(value="/MySangSin.ajax")
 	public HashMap<String, Object> MySangSin_ajax(@RequestBody PaymentDTO payDto){
@@ -143,31 +178,51 @@ public class PaymentController {
 		return "payment/openPayment";
 	}
 	
+	// 열람 가능 문서 함
 	@ResponseBody
 	@GetMapping(value="/openpayment.ajax")
 	public HashMap<String, Object> openpayment_ajax(@RequestParam int page,HttpServletRequest request){
 		HashMap<String, Object> map=new HashMap<String, Object>();
-		ArrayList<PaymentDTO> openList=paymentservice.openpayment_ajax(request);
+		int total=paymentservice.OpensListCallTotal(request);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> openList=paymentservice.openpayment_ajax(page,request);
 		map.put("openList", openList);
+		map.put("page_idx", page_idx);
 		return map;
 	}
+	
+	@ResponseBody
+	@GetMapping(value="/OpenSearch.ajax")
+	public HashMap<String, Object> OpenSearch_ajax(@RequestParam String select, @RequestParam String seacontent
+			,@RequestParam int page,HttpServletRequest request){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int total=paymentservice.OpensListCallSearchTotal(select,seacontent,request);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> openListSearch=paymentservice.openpaymentSearch_ajax(select,seacontent,page,request);
+		map.put("openListSearch", openListSearch);
+		map.put("page_idx", page_idx);
+		return map;
+	}
+	
 	
 	@GetMapping(value="/waitPayment")
 	public String waitPayment_go() {
 		return "/payment/waitPayment";
 	}
 	
+	// 결재 대기 문서함
 	@ResponseBody
 	@GetMapping(value="/waitpayment.ajax")
-	public HashMap<String, Object> waitpayment_ajax(@RequestParam int page,HttpServletRequest request){
+	public HashMap<String, Object> waitpayment_ajax(HttpServletRequest request){
 		HashMap<String, Object> map=new HashMap<String, Object>();
-		// ArrayList<PaymentDTO> FirstWaitPayment= paymentservice.FirstWaitPayment(request);
-//		for (PaymentDTO paymentDTO : FirstWaitPayment) {
-//			logger.info("paymentDTO"+paymentDTO.getPm_idx());
-//		}
-		ArrayList<PaymentDTO> SecondWaitPayment = paymentservice.SecondWaitPayment(request);
-//		map.put("first", FirstWaitPayment);
-		map.put("sec", SecondWaitPayment);
+		ArrayList<PaymentDTO> WaitPayment = paymentservice.WaitPayment();
+		HttpSession session=request.getSession();
+		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
+		String mem_id=memberDTO.getMem_id();
+		map.put("wait", WaitPayment);
+		map.put("mem_id", mem_id);
 		return map;
 	}
 	
@@ -192,7 +247,8 @@ public class PaymentController {
 	
 	@ResponseBody
 	@GetMapping(value="/DetailPaymentListCall.ajax")
-	public HashMap<String, Object> DetailPaymentListCall_ajax(@RequestParam int pm_idx,@RequestParam String mem_id){
+	public HashMap<String, Object> DetailPaymentListCall_ajax(@RequestParam int pm_idx
+			,@RequestParam String mem_id){
 		HashMap<String, Object> map=new HashMap<String, Object>();
 		logger.info("DetailPayment pm_idx : "+pm_idx);
 		logger.info("DetailPayment mem_id : "+mem_id);
@@ -234,6 +290,73 @@ public class PaymentController {
 		return map;
 	}
 	
+	@GetMapping(value="/finishPayment")
+	public String finishPayment_go(){
+		
+		return "payment/finishPayment";
+	}
+	
+	// 완료 및 반려 결재 리스트 
+	@ResponseBody
+	@GetMapping(value="/finishpayment.ajax")
+	public HashMap<String, Object> finishpayment(HttpServletRequest request,@RequestParam int page){
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		int total=paymentservice.finishpaymentTotal_ajax(request);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> finishpayment=paymentservice.finishpayment_ajax(request,page);
+		map.put("finishpayment", finishpayment);
+		map.put("page_idx", page_idx);
+		return map;
+	}
+	
+	// 개인 결재함 검색
+	@ResponseBody
+	@GetMapping(value="/selfSearch.ajax")
+	public HashMap<String, Object> selfSearch_ajax(HttpServletRequest request
+			,@RequestParam String select, @RequestParam String seacontent
+			,@RequestParam int page){
+		HashMap<String,Object> map=new HashMap<String, Object>();
+		int total=paymentservice.selfSearchTotal(request,select,seacontent);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> selfSearch=paymentservice.selfSearch(request,select,seacontent,page);
+		map.put("page_idx", page_idx);
+		map.put("list", selfSearch);
+		return map;
+	}
+	
+	// 진행 결재함 검색 
+	@ResponseBody
+	@GetMapping(value="/goingSearch.ajax")
+	public HashMap<String, Object> goingSearch_ajax(HttpServletRequest request
+			,@RequestParam String select, @RequestParam String seacontent
+			,@RequestParam int page){
+		HashMap<String,Object> map=new HashMap<String, Object>();
+		int total=paymentservice.goingSearchTotal(request,select,seacontent);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> goingSearch=paymentservice.goingSearch(request,select,seacontent,page);
+		map.put("page_idx", page_idx);
+		map.put("list", goingSearch);
+		return map;
+	}
+	
+	// 완료 결재함 검색
+	@ResponseBody
+	@GetMapping(value="/finishSearch.ajax")
+	public HashMap<String, Object> finishSearch_ajax(HttpServletRequest request
+			,@RequestParam String select, @RequestParam String seacontent
+			,@RequestParam int page){
+		HashMap<String,Object> map=new HashMap<String, Object>();
+		int total=paymentservice.finishSearchTotal(request,select,seacontent);
+		int page_idx=total/10 > 0 ? total%10 == 0? (total/10) : (total/10)+1 : 1;
+		page=(page-1)*10;
+		ArrayList<PaymentDTO> finishSearch=paymentservice.finishgoingSearch(request,select,seacontent,page);
+		map.put("page_idx", page_idx);
+		map.put("list", finishSearch);
+		return map;
+	}
 	
 	
 	

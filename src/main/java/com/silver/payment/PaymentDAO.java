@@ -42,9 +42,6 @@ public interface PaymentDAO {
 
 	ArrayList<PaymentDTO> PmlineDto(int pm_idx);
 
-	// ArrayList<String> SignMember(int pm_idx);
-
-//	 ArrayList<MemberDTO> paysign(ArrayList<String> signMember);
 
 	ArrayList<PaymentDTO> PayFile(int pm_idx);
 
@@ -52,11 +49,14 @@ public interface PaymentDAO {
 
 	String WhoFirst(int pm_idx);
 
-
 	ArrayList<String> referPmIdx(String mem_id);
 	
-	ArrayList<PaymentDTO> openPayment(String str);
+//	ArrayList<PaymentDTO> openPayment(String str);
+	
+	ArrayList<PaymentDTO> openPayment(int page, ArrayList<String> referPmIdx);
 
+	int OpensListCallTotal(ArrayList<String> referPmIdx);
+	
 	String SignImg(String mem_id);
 
 	String MySign(String mem_id);
@@ -65,7 +65,7 @@ public interface PaymentDAO {
 
 	ArrayList<String> pmSelfOne(String mem_id);
 
-	ArrayList<PaymentDTO> WaitPm(String mem_id, int mem_posLevel);
+	ArrayList<PaymentDTO> WaitPm();
 
 	void GoPayment(PaymentDTO payDto);
 
@@ -100,6 +100,36 @@ public interface PaymentDAO {
 	ArrayList<PaymentDTO> goingpayment_ajax(String mem_id, int page);
 
 	int goingpaymentTotal_ajax(String mem_id);
+
+	int finishpaymentTotal_ajax(String mem_id);
+
+	ArrayList<PaymentDTO> finishpayment_ajax(String mem_id, int page);
+
+	int selfSearchTotal(String select, String seacontent, String seacontent2);
+
+	ArrayList<PaymentDTO> selfSearch(String select, String seacontent, String seacontent2, int page);
+
+	int goingSearchTotal(String mem_id, String select, String seacontent);
+
+	ArrayList<PaymentDTO> goingSearch(String mem_id, String select, String seacontent, int page);
+
+	int finishSearchTotal(String mem_id, String select, String seacontent);
+
+	ArrayList<PaymentDTO> finishSearch(String mem_id, String select, String seacontent, int page);
+
+	int waitpaymentTotal_ajax();
+
+	int openSearchPayment(String select, String seacontent, ArrayList<String> referPmIdx);
+
+	ArrayList<PaymentDTO> openpaymentSearch_ajax(String select, String seacontent, int page,
+			ArrayList<String> referPmIdx);
+
+	String getDownloadOrlName(String path);
+
+
+
+
+
 
 
 

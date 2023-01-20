@@ -30,7 +30,8 @@ public class NoticeController {
 	}
 	
 	@GetMapping(value="/noticeList")
-	public String noticeList() {
+	public String noticeList(Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page", params);
 		return "notice/noticeList";
 	}
 	
@@ -80,8 +81,8 @@ public class NoticeController {
 	}
 	
 	@GetMapping(value="/noticeWrite.do")
-	public String noticeWrite() {
-		
+	public String noticeWrite(Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page", params);
 		return "notice/noticeWrite";
 	}
 	

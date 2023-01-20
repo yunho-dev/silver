@@ -144,9 +144,64 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
 			from member m 
 				inner join payment p on m.mem_id =p.mem_id 
-				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx = #{param1}
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx in
+				<foreach collection="referPmIdx" item="refer" separator="," open="(" close=")">
+				#{refer}
+				</foreach>
 
+				order by p.pm_idx desc limit 10 offset #{param1};
 		</select>
+
+		
+		<select id="OpensListCallTotal" resultType="int">
+			select count(p.pm_idx)
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx in
+				<foreach collection="referPmIdx" item="refer" separator="," open="(" close=")">
+				#{refer}
+				</foreach>
+		</select>
+		
+		<select id="openSearchPayment" resultType="int">
+			select count(p.pm_idx)
+				from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx in
+				<foreach collection="referPmIdx" item="refer" separator="," open="(" close=")">
+				#{refer}
+				</foreach>
+				<if test="param1.equals('title')">
+				and p.pm_subject like CONCAT('%',#{param2},'%')
+				</if>
+				<if test="param1.equals('write')">
+				and m.mem_name=#{param2}
+				</if>
+				<if test="param1.equals('form')">
+				and p2.pf_cate  like CONCAT('%',#{param2},'%')
+				</if>
+		</select>
+		
+		<select id="openpaymentSearch_ajax" resultType="payment">
+				select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
+				from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where p.pm_idx in
+				<foreach collection="referPmIdx" item="refer" separator="," open="(" close=")">
+				#{refer}
+				</foreach>
+				<if test="param1.equals('title')">
+				and p.pm_subject like CONCAT('%',#{param2},'%')
+				</if>
+				<if test="param1.equals('write')">
+				and m.mem_name=#{param2}
+				</if>
+				<if test="param1.equals('form')">
+				and p2.pf_cate  like CONCAT('%',#{param2},'%')
+				</if>
+				order by p.pm_idx desc limit 10 offset #{param3};
+		</select>
+		
 		
 		
 		<select id="pmSelfOne" resultType="string">
@@ -154,19 +209,17 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 		</select>
 		
 
-		
 		<select id="WaitPm" resultType="payment">
-			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state,p3.pl_hp ,p3.pl_level 
+			select p3.pl_idx ,p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state,p3.pl_hp ,p3.pl_level,p3.pl_ch
 					from member m 
 					inner join payment p on m.mem_id =p.mem_id 
 					inner join payform p2 on p2.pf_idx  =p.pf_idx 
 					inner join payline p3 on p.pm_idx =p3.pm_idx 
-					where p.pm_state not in('등록','완료','반려') 
-					and p3.pl_hp =#{param1} and p3.pl_ch =0 and p3.pl_level not in(#{param2}) ;
+					where p.pm_state not in('등록','완료','반려') and p3.pl_ch =0
+					order by p.pm_idx desc
 		</select>
+		
 	
-		
-		
 		<update id="PmChange" parameterType="payment">
 			update payline set pl_ch=1 where pm_idx = #{pm_idx} and pl_hp=#{mem_id}
 		</update>
@@ -246,6 +299,106 @@ inner join `position` p ON m.pos_num =p.pos_num where m.mem_state='재직중' or
 			inner join payline p2 on p.pm_idx =p2.pm_idx 
 			inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state ='진행' and p2.pl_hp =#{param1}
 		
+		</select>
+		
+		<select id="goingSearchTotal" resultType="int">
+			select count(p.pm_idx) from payment p
+			inner join payline p2 on p.pm_idx =p2.pm_idx 
+			inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state ='진행' and p2.pl_hp =#{param1}
+			<if test="param2.equals('title')">
+				and p.pm_subject like CONCAT('%',#{param3},'%')
+			</if>
+			<if test="param2.equals('form')">
+				and p3.pf_cate  like CONCAT('%',#{param3},'%')
+			</if>
+		</select>
+		
+		<select id="goingSearch" resultType="payment">
+			select (select m.mem_name  from member m where m.mem_id=p.mem_id) as mem_name,
+			p.pm_idx ,p.pm_subject ,p.pm_state,p2.pl_hp,p3.pf_cate,p.mem_id  from payment p
+				inner join payline p2 on p.pm_idx =p2.pm_idx 
+				inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state ='진행' and p2.pl_hp =#{param1}
+				<if test="param2.equals('title')">
+				and p.pm_subject like CONCAT('%',#{param3},'%')
+			</if>
+			<if test="param2.equals('form')">
+				and p3.pf_cate  like CONCAT('%',#{param3},'%')
+			</if>	
+					order by p.pm_idx desc limit 10 offset #{param4};
+		</select>
+		
+		
+		
+		<select id="finishpaymentTotal_ajax" resultType="int">
+			select count(p.pm_idx)  from payment p
+	inner join payline p2 on p.pm_idx =p2.pm_idx 
+	inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state in('완료','반려') and p2.pl_hp = #{param1}
+		</select>
+		
+		<select id="finishpayment_ajax" resultType="payment">
+			select (select m.mem_name  from member m where m.mem_id=p.mem_id) as mem_name,
+p.pm_idx ,p.pm_subject ,p.pm_state,p2.pl_hp,p3.pf_cate,p.mem_id  from payment p
+	inner join payline p2 on p.pm_idx =p2.pm_idx 
+	inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state in('완료','반려') and p2.pl_hp = #{param1}
+		order by p.pm_idx desc limit 10 offset #{param2};
+		</select>
+		
+		<select id="finishSearchTotal" resultType="int">
+			select count(p.pm_idx)  from payment p
+			inner join payline p2 on p.pm_idx =p2.pm_idx 
+			inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state in('완료','반려') and p2.pl_hp = #{param1}
+			<if test="param2.equals('title')">
+				and p.pm_subject like CONCAT('%',#{param3},'%')
+			</if>
+			<if test="param2.equals('form')">
+				and p3.pf_cate  like CONCAT('%',#{param3},'%')
+			</if>	
+		</select>
+		
+		<select id="finishSearch" resultType="payment">
+			select (select m.mem_name  from member m where m.mem_id=p.mem_id) as mem_name,
+		p.pm_idx ,p.pm_subject ,p.pm_state,p2.pl_hp,p3.pf_cate,p.mem_id  from payment p
+			inner join payline p2 on p.pm_idx =p2.pm_idx 
+			inner join payform p3 on p.pf_idx =p3.pf_idx where p.pm_state in('완료','반려') and p2.pl_hp = #{param1}
+		<if test="param2.equals('title')">
+				and p.pm_subject like CONCAT('%',#{param3},'%')
+			</if>
+			<if test="param2.equals('form')">
+				and p3.pf_cate  like CONCAT('%',#{param3},'%')
+			</if>
+		order by p.pm_idx desc limit 10 offset #{param4};
+		
+		</select>
+		
+		<select id="selfSearchTotal" resultType="int">
+			select count(p.pm_idx)
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where m.mem_id =#{param1}
+				<if test="param2.equals('title')">
+					and p.pm_subject like CONCAT('%',#{param3},'%')
+				</if>
+				<if test="param2.equals('form')">
+					and p2.pf_cate  like CONCAT('%',#{param3},'%')
+				</if>
+		</select>
+		
+		<select id="selfSearch" resultType="payment">
+			select p.pm_idx,p.pm_subject,p2.pf_cate,m.mem_name,p.pm_state 
+			from member m 
+				inner join payment p on m.mem_id =p.mem_id 
+				inner join payform p2 on p2.pf_idx  =p.pf_idx where m.mem_id =#{param1}
+				<if test="param2.equals('title')">
+					and p.pm_subject like CONCAT('%',#{param3},'%')
+				</if>
+				<if test="param2.equals('form')">
+					and p2.pf_cate  like CONCAT('%',#{param3},'%')	
+				</if>
+					order by p.pm_idx desc limit 10 offset #{param4}
+		</select>
+		
+		<select id="getDownloadOrlName" resultType="string">
+			select paf_oriFileName  from pfile p where paf_newFileName =#{param1}
 		</select>
 		
 

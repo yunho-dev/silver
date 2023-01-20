@@ -24,7 +24,7 @@
 	
 	<select id="noticelistCall" resultType="mainCall">
 		select b.bd_idx ,b.bd_title ,m.mem_name ,b.bd_date  from board b,member m  
-			where bc_idx =1 and b.mem_id =m.mem_id order by b.bd_idx desc;
+			where bc_idx =1 and b.mem_id =m.mem_id order by b.bd_idx desc limit 5
 	</select>
 	<select id="resilistCall" resultType="mainCall">
 		select r.re_name,r.re_jumin ,r.re_gender,r.re_grade,r.ro_name ,r.re_state 
