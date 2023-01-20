@@ -191,7 +191,7 @@ function drawList(list){
 		content +='<td>'+list[i].do_date+'</td>';
 		content +='<td>'+list[i].do_name+'</td>';
 		content +='<td>'+list[i].do_write+'</td>';
-		content +='<td>'+list[i].do_money+'</td>';
+		content +='<td>'+list[i].do_money.toLocaleString('ko-KR')+'</td>';
 		content +='</tr>';
 	}
 	
