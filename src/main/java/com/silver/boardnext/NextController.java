@@ -28,7 +28,7 @@ public class NextController {
 	
 	@Autowired NextService nextservice;
 	
-	//인수인계 컨트롤러
+	//인수인계 리스트 페이지 이동
 	@GetMapping(value="/nextList")
 	public String nextList(Model model,@RequestParam HashMap<String, String> params) {
 		logger.info("인수인계 컨트롤러");
@@ -53,13 +53,14 @@ public class NextController {
 //	return map;
 //	}
 	
-	//
+	//인수인계 글 작성페이지 이동
 	@GetMapping(value="/nextWrite")
 	public String nextWrite() {
 		
 		 return "next/nextWrite";
 	}
 	
+	//인수인계 글 작성완료시 실행
 	@PostMapping(value="/writecomplete")
 	public ModelAndView write_do(HttpServletRequest request,NextDTO dto) {
 		logger.info("제목 : "+dto.getBd_title());
@@ -67,6 +68,7 @@ public class NextController {
 		return nextservice.writecomplete(request, dto.getBd_title(),dto.getBd_content());
 	}
 	
+	//인수인계 상세보기
 	@GetMapping(value="/nextDetail")
 	public ModelAndView nextDetail(@RequestParam String bd_idx){
 		logger.info("idx 값은:"+bd_idx);
@@ -74,6 +76,7 @@ public class NextController {
 		return nextservice.nextDetail(bd_idx);		
 	}
 	
+	//인수인계 업데이트 이동
 	@GetMapping(value="/nextUpdateForm")
 	public ModelAndView nextUpdateForm(@RequestParam String bd_idx) {
 		
@@ -81,7 +84,7 @@ public class NextController {
 		return nextservice.nextUpdateForm(bd_idx);
 	}
 
-	
+	//인수인계 업데이트 완료
 	@PostMapping(value="/nextUpdate")
 	public ModelAndView nextUpdate(HttpServletRequest req) {
 
@@ -91,7 +94,7 @@ public class NextController {
 		return nextservice.nextUpdate(req);
 	}
 	
-	
+	//인수인계 리스트 가져오기(페이징)
 	@GetMapping(value="/nextListCall.ajax")
 	@ResponseBody
 	public HashMap<String, Object> nextListCall(HttpServletRequest request,@RequestParam int page) {
