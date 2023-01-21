@@ -56,7 +56,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 사용 내역 등록</h4>
-	                <button type="button" class="close" onclick="closeWriteModal()"
+	                <button type="button" class="close" onclick="closeModal(1)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -92,7 +92,7 @@
 			                    <span class="d-none d-sm-block">등록하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-			                    onclick="closeWriteModal()">
+			                    onclick="closeModal(1)">
 			                    <span class="d-none d-sm-block">닫기</span>
 			                </button>
 		                </div>
@@ -103,12 +103,6 @@
 	</div>
 </body>
 <script>
-	function closeWriteModal(){
-		$('#thingHistoryWrite').modal('hide');
-		$('#writeForm')[0].reset();
-		$('#writeRentDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-	}
-	
 	$('#regist').click(function(){
 		/* 요소 */
 		/* Left */

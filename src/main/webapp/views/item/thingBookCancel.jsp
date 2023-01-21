@@ -31,7 +31,7 @@
 	                <h5 class="modal-title white" id="myModalLabel120">
 	                    비품 예약 취소
 	                </h5>
-	                <button type="button" class="close" onclick="closeCancelModal()"
+	                <button type="button" class="close" onclick="closeModal(2)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -50,7 +50,7 @@
 			                    <span class="d-none d-sm-block">저장</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-		                    onclick="closeCancelModal()" >
+		                    onclick="closeModal(2)" >
 		                    <i class="bx bx-x d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">닫기</span>
 		                </button>
@@ -61,11 +61,6 @@
 	</div>
 </body>
 <script>
-	function closeCancelModal(){
-		$('#thingBookCancel').modal('hide');
-		$('#cancleForm')[0].reset();
-	}
-	
 	$('#update').click(function(){
 		var cbIdx = $('#cancleForm .canceIdx').val();
 		var bContent = $('#cancleForm  #b_content').val();
@@ -80,7 +75,6 @@
 					data:{cbIdx:cbIdx, bContent:bContent},
 					dataType:'JSON',
 					success:function(data){
-						console.log(data);
 						if(data.update==1){
 							alert('예약이 취소되었습니다.')
 							location.reload();

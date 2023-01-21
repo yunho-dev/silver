@@ -104,7 +104,29 @@
 	var showPage=1;
 	
 	ListCall(showPage);
-	//writeRentDate
+	
+	/** 
+	 * 모달을 닫아주는 함수
+	 * num 설명
+	 * 1 : 비품 사용 내역 등록 모달
+	 * 2 : 비품 사용 내역 수정 모달
+	 */
+	function closeModal(num){
+		 switch (num) {
+		case 1: // 비품 사용 내역 등록 모달
+			$('#thingHistoryWrite').modal('hide');
+			$('#writeForm')[0].reset();
+			$('#writeRentDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+			break;
+		case 2: // 비품 사용 내역 수정 모달
+			$('#thingHistoryModify').modal('hide');
+			$('#updateForm')[0].reset();
+			break;
+		default:
+			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
+		}
+	}
+	
 	$(function() {
 		$("#writeRentDate").datepicker({
 		    dateFormat: 'yy-mm-dd' //달력 날짜 형태
@@ -205,7 +227,7 @@
 			}else{
 				content +='<td>'+rentDate.toLocaleDateString('ko-KR')+'</td>';
 			}
-			if(historyList[i].his_return == null){
+			if(historyList[i].his_return == null || historyList[i].his_return == '1900-01-01'){
 				content +='<td>없음</td>';
 			}else{
 				content +='<td>'+returnDate.toLocaleDateString('ko-KR')+'</td>';
@@ -305,7 +327,11 @@
 					$("#thingHistoryDetail .th_state").text(data.detail.th_state);
 					$("#thingHistoryDetail .th_date").text(data.detail.th_date);
 					$("#thingHistoryDetail .his_rent").text(data.detail.his_rent);
-					$("#thingHistoryDetail .his_return").text(data.detail.his_return);
+					if(data.detail.his_return == '1900-01-01'){
+						$("#thingHistoryDetail .his_return").text('없음');
+					}else{
+						$("#thingHistoryDetail .his_return").text(data.detail.his_return);
+					}
 					$("#thingHistoryDetail .his_write").text(data.detail.his_write);
 					$("#thingHistoryDetail .his_bigo").text(data.detail.his_bigo);
 				}

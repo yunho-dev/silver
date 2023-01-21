@@ -53,7 +53,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 수정</h4>
-	                <button type="button" class="close" onclick="closeModal()"
+	                <button type="button" class="close" onclick="closeModal(2)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -69,7 +69,7 @@
 								<input type="text" name="thModel">
 							</p> <br>
 							<p class="modifyArea"><span id="modifyName">금액 : </span> 
-								<input type="text" name="thMoney">
+								<input type="text" name="thMoney" onkeyup="inputNumberFormat(this)">&#8361;
 							</p> <br>
 							<p class="modifyArea" style="margin-bottom: 0px;"><span id="modifyName" style="text-align: left;">사진 : </span></p>
 						</div>
@@ -107,7 +107,7 @@
 			                    <span class="d-none d-sm-block">저장</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-		                    onclick="closeModal()" >
+		                    onclick="closeModal(2)" >
 		                    <i class="bx bx-x d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">닫기</span>
 		                </button>
@@ -183,12 +183,12 @@
 				contentType:false, // 컨텐트 타입을 객체로 함
 				data: formData,
 				success:function(data){
-					closeModal();
+					closeModal(2);
 					$('#updateForm')[0].reset();
 					//left
 					$('#detailThing .left .th_name').text(data.detail.th_name)
 					$('#detailThing .left .th_model').text(data.detail.th_model)
-					$('#detailThing .left .th_money').text(data.detail.th_money)
+					$('#detailThing .left .th_money').text(comma(uncomma(data.detail.th_money)))
 					$('#detailThing .left .th_write').text(data.detail.th_write)
 					//right
 					$('#detailThing .right .th_part').text(data.detail.th_part)
@@ -206,10 +206,5 @@
 		}// end of if
 	});
 
-	function closeModal(){
-		$('#modifyThing').modal('hide');
-		$('#updateForm')[0].reset();
-	}
-		
 </script>
 </html>

@@ -156,7 +156,7 @@ public class ThingService {
 			dto.setTh_part(params.get("thPart"));
 			dto.setTh_date(thDate);
 			dto.setTh_model(params.get("thModel"));
-			dto.setTh_money(Integer.parseInt(params.get("thMoney")));
+			dto.setTh_money(Integer.parseInt(params.get("thMoney").replaceAll("\\,","")));
 			dto.setTh_spon(params.get("thSpon"));
 			
 			String thWrite = writer(request);
@@ -202,7 +202,7 @@ public class ThingService {
 		String thWrite = writer(request);
 		params.put("thWrite", thWrite);
 		logger.info("db에 작성될 등록자 이름 : "+params.get("thWrite"));
-		
+		params.put("thMoney", params.get("thMoney").replaceAll("\\,","")); // 야매 방법ㅋ 제발 되길 바랍니다요
 		dao.thingUpdate(params);
 		
 		if(thPhoto != null){

@@ -53,7 +53,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 등록</h4>
-	                <button type="button" class="close" onclick="closeWriteModal()"
+	                <button type="button" class="close" onclick="closeModal(1)"
 	                    aria-label="Close" style="font-size: 22pt;" >
 	                    &times;
 	                </button>
@@ -68,7 +68,7 @@
 								<input type="text" name="thModel">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">금액 : </span> 
-								<input type="text" name="thMoney">
+								<input type="text" name="thMoney" onkeyup="inputNumberFormat(this)"> &#8361;
 							</p> <br>
 							<p class="writeArea" style="margin-bottom: 0px;"><span id="WriteName" style="text-align: left;">사진 : </span></p>
 						</div>
@@ -105,7 +105,7 @@
 			                    <span class="d-none d-sm-block">등록하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-			                    onclick="closeWriteModal()">
+			                    onclick="closeModal(1)">
 			                    <span class="d-none d-sm-block">닫기</span>
 			                </button>
 		                </div>
@@ -116,11 +116,6 @@
 	</div>
 </body>
 <script>
-	function closeWriteModal(){
-		$('#writeThing').modal('hide');
-		$('#writeForm')[0].reset();
-	}
-
 	var thingCheck = false;
 	
 	/* 품명 중복검사 */
@@ -158,19 +153,6 @@
 			$('.writeAreaSpon').css('display', 'none')
 			$('.writeAreaSpon input[name=thSpon]').val(null)
 		}
-	}
-	
-	function fileCheck(obj) {
-		var pathpoint = obj.val().lastIndexOf('.');
-		var filepoint = obj.val().substring(pathpoint+1, obj.val().length);
-		var filetype = filepoint.toLowerCase();
-		var maxSize = 1024 * 1024;
-		var fileSize = obj[0].files[0].size;
-	    if((filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg') || fileSize > maxSize) {
-	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
-	        obj.val(null);
-	        return false;
-	    }
 	}
 	
 	/* 등록하기 버튼 */

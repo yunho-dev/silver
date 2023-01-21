@@ -141,6 +141,54 @@
 		
 	});
 	
+	/* input 콤마 */
+	function inputNumberFormat(obj) {
+		obj.value = comma(uncomma(obj.value));
+	}
+	function comma(str) {
+		str = String(str);
+		return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
+	function uncomma(str) {
+		str = String(str);
+		return str.replace(/[^\d]+/g, '');
+	}
+	
+	/** 
+	 * 모달을 닫아주는 함수
+	 * num 설명
+	 * 1 : 비품 등록 모달
+	 * 2 : 비품 수정 모달
+	 */
+	function closeModal(num){
+		 switch (num) {
+		case 1: // 비품 등록 모달
+			$('#writeThing').modal('hide');
+			$('#writeForm')[0].reset();
+			break;
+		case 2: // 비품 수정 모달
+			$('#modifyThing').modal('hide');
+			$('#updateForm')[0].reset();
+			break;
+		default:
+			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
+		}
+	}
+	
+	/* 파일 체크 */
+	function fileCheck(obj) {
+		var pathpoint = obj.val().lastIndexOf('.');
+		var filepoint = obj.val().substring(pathpoint+1, obj.val().length);
+		var filetype = filepoint.toLowerCase();
+		var maxSize = 1024 * 1024;
+		var fileSize = obj[0].files[0].size;
+	    if((filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg' && filetype!='jfif') || fileSize > maxSize) {
+	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
+	        obj.val(null);
+	        return false;
+	    }
+	}
+	
 	/* 카테고리 팝업 오픈 */
 	function clickCate(clickCateId){
 		cateId = clickCateId;
@@ -266,7 +314,7 @@
 			success:function(data){
 				$("#detailThing .th_name").text(data.detail.th_name);
 				$("#detailThing .th_model").text(data.detail.th_model);
-				$("#detailThing .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
+				$("#detailThing .th_money").text(data.detail.th_money.toLocaleString('ko-KR'));
 				$("#detailThing .th_write").text(data.detail.th_write);
 				$("#detailThing .th_part").text(data.detail.th_part);
 				$("#detailThing .th_date").text(data.detail.th_date);

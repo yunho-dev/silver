@@ -54,7 +54,7 @@
 						<p id="thIdx" style="display: none;"></p>
 						<span id="detailName">품명 : </span><span class="th_name"></span> <br>
 						<span id="detailName">모델 : </span><span class="th_model"></span> <br>
-						<span id="detailName">금액 : </span><span class="th_money"></span> <br>
+						<span id="detailName">금액 : </span><span class="th_money"></span>&#8361; <br>
 						<span id="detailName">등록자 : </span><span class="th_write"></span> <br>
 						<span id="detailName">사진 : </span> <br>
 						<span id="nonPhoto" style="display: none; font-weight: bold; color: red;">사진이 없습니다.</span>
@@ -102,7 +102,7 @@
 				$(".modifyLeft input[name=thIdx]").val(data.detail.th_idx)
 				$(".modifyLeft span[id=thName]").text(data.detail.th_name)
 				$(".modifyLeft input[name=thModel]").val(data.detail.th_model)
-				$(".modifyLeft input[name=thMoney]").val(data.detail.th_money)
+				$(".modifyLeft input[name=thMoney]").val(comma(uncomma(data.detail.th_money)))
 				$(".modifyRight input[name=thCateFake]").val(data.detail.it_name)
 				$(".modifyRight input[name=thCateReal]").val(data.detail.it_idx)
 				$(".modifyRight select[name=thPart]").val(data.detail.th_part)

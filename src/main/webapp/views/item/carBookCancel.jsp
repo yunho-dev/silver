@@ -18,6 +18,9 @@
 <!-- datePicker -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<!-- dateTimePicker -->
+<link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css" />
+<script src="assets/js/jquery.datetimepicker.full.min.js"></script>
 </head>
 <body>
 	<!--Danger theme Modal -->

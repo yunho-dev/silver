@@ -55,8 +55,8 @@
 	        role="document">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <h4 class="modal-title" id="myModalLabel17">비품 수정</h4>
-	                <button type="button" class="close" onclick="closeModal()"
+	                <h4 class="modal-title" id="myModalLabel17">비품 사용내역 수정</h4>
+	                <button type="button" class="close" onclick="closeModal(2)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -81,14 +81,14 @@
 							</p> <br>
 							<p class="modifyArea">
 								<span id="modifyName">반납 여부 : </span>
-								<input type="checkbox" id="returnCheck" class="form-check-input">
+								<input type="checkbox" id="returnCheck" class="form-check-input" onchange="checkReturn($(this))">
 								<br>
 								<span id="modifyName" class="returnDay">반납 날짜 : </span>
 								<input type="text" class="returnDay" name="hisReturn" id="modiReturnDate"> <!-- date picker -->
 							</p> <br>
 							<p class="modifyArea"> 
 								<span id="modifyName">상태 : </span>
-								<select name="thState" onchange="changeStateUp($(this))">
+								<select name="thState">
 									<option value="사용중">사용중</option>
 									<option value="비사용중">비사용중</option>
 									<option value="고장">고장</option>
@@ -107,7 +107,7 @@
 			                    <span class="d-none d-sm-block">저장</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-		                    onclick="closeModal()" >
+		                    onclick="closeModal(2)" >
 		                    <i class="bx bx-x d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">닫기</span>
 		                </button>
@@ -119,11 +119,6 @@
 	</div>
 </body>
 <script>
-	function closeModal(){
-		$('#thingHistoryModify').modal('hide');
-		$('#updateForm')[0].reset();
-	}
-	
 	function checkReturn(checkBox){
 		if(checkBox.is(":checked")){
 			$('.returnDay').css('display', 'inline-block')
@@ -134,6 +129,13 @@
 	
 	/* 수정하기 */
 	$('#update').click(function(){
+		var check = 0;
+		
+		if($('#thingHistoryModify #returnCheck').is(":checked")){
+			check = 1;
+		}else{
+			check = 0;
+		}
 		/* 요소 */
 		/* Left */
 		var $hisIdx = $('#updateForm input[name=hisIdx]');
@@ -158,18 +160,22 @@
 		}else if($hisRent.val().match(regex) == null){
 			alert("대여 날짜를 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
 			$hisRent.focus();
-		}else if($('#returnCheck').is(":checked") && $hisReturn.val() == ''){
+		}else if(check == 1 && $hisReturn.val() == ''){
 			alert("반납 날짜를 입력/선택해 주세요");
 			$hisReturn.focus();
-		}else if($('#returnCheck').is(":checked") && $hisReturn.val() == '' || $hisReturn.val().match(regex) == null){
+		}else if(check == 1 && $hisReturn.val() == '' || $hisReturn.val().match(regex) == null){
 			alert("반납 날짜를 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
 			$hisReturn.focus();
+		}else if(check == 1 && $thState.val() == '사용중'){
+			alert("반납 여부를 체크한 경우, 상태를 '사용중'으로 할 수 없습니다.")
+		}else if(check == 0 && $thState.val() != '사용중'){
+			alert("반납 여부를 체크하지 않은 경우, 상태를 '사용중'으로 해주세요")
 		}
 		else{
 			$.ajax({
 				type:'POST',
 				url:'updateThingHistory.do',
-				data:{hisIdx:$hisIdx.val(), hisName:$hisName.val(), hisGoal:$hisGoal.val(), hisRent:$hisRent.val(), hisReturn:$hisReturn.val(), thState:$thState.val(), hisBigo:$hisBigo.val()},
+				data:{check:check, hisIdx:$hisIdx.val(), hisName:$hisName.val(), hisGoal:$hisGoal.val(), hisRent:$hisRent.val(), hisReturn:$hisReturn.val(), thState:$thState.val(), hisBigo:$hisBigo.val()},
 				dataType:'JSON',
 				success:function(data){
 					//left
@@ -178,9 +184,10 @@
 					//right
 					$('#thingHistoryDetail .right .his_rent').text(data.detail.his_rent)
 					$('#thingHistoryDetail .right .his_return').text(data.detail.his_return)
+					$('#thingHistoryDetail .th_state').text(data.detail.th_state)
 					//bottom
 					$('#thingHistoryDetail .his_bigo').text(data.detail.his_bigo)
-					closeModal();
+					closeModal(2);
 					$('#updateForm')[0].reset();
 				},
 				error:function(e){

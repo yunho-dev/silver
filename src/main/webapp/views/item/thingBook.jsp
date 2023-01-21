@@ -116,7 +116,7 @@
 		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
 		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
 		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
-		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,minDate: "today" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
 		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 		});
 		
@@ -131,13 +131,43 @@
 		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
 		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
 		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
-		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,minDate: "today" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
 		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 		});
 		 $('#bookStart').datepicker('option','disabled',true); //datepicker 끔
 		 $('#bookEnd').datepicker('option','disabled',true); //datepicker 끔
 		
 	});
+	
+	/** 
+	 * 모달을 닫아주는 함수
+	 * num 설명
+	 * 1 : 비품 예약 등록 모달
+	 * 2 : 비품 예약 취소 모달
+	 */
+	function closeModal(num){
+		 switch (num) {
+		case 1: // 차량 정보 등록 모달
+			var $bStart = $('#writeForm input[name=bStart]');
+			var $bEnd = $('#writeForm input[name=bEnd]');
+			$('#thingBookWrite').modal('hide');
+			$('#writeForm')[0].reset();
+			$('#writeForm input[name=user]').attr('onclick','alert("사용자 구분을 먼저 선택해 주세요")')
+			$bStart.attr('readonly', true)
+			$bEnd.attr('readonly', true)
+			$('#bookStart').datepicker('option','disabled',true); //datepicker 끔
+			$('#bookEnd').datepicker('option','disabled',true); //datepicker 끔
+			$bStart.attr('placeholder', '품명을 먼저 선택해 주세요')
+			$bEnd.attr('placeholder', '품명을 먼저 선택해 주세요')
+			break;
+		case 2: // 비품 예약 취소 모달
+			$('#thingBookCancel').modal('hide');
+			$('#cancleForm')[0].reset();
+			break;
+		default:
+			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
+		}
+	}
 	
 	function ListCall(page){
 		$.ajax({
