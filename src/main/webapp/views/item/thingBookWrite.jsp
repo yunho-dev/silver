@@ -142,22 +142,25 @@
 	}
 	
 	function choiceRow(idx, name, judge){
+		var $bStart = $('#writeForm input[name=bStart]');
+		var $bEnd = $('#writeForm input[name=bEnd]');
+		
 		if(judge == 0){
 			$('.writeLeft input[name=user]').val(name)
 			$('.writeLeft input[name=userid]').val(idx)
 		}else{
 			$('.writeLeft input[name=thName]').val(name)
 			$('.writeLeft input[name=thIdx]').val(idx)
+			
+			$bStart.attr('readonly', false)
+			$bEnd.attr('readonly', false)
+			$('#bookStart').datepicker('option','disabled',false); //datepicker 켬
+			$('#bookEnd').datepicker('option','disabled',false); //datepicker 켬
+			$('#bookStart').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+			$bStart.removeAttr("placeholder")
+			$bEnd.removeAttr("placeholder")
 		}
-		var $bStart = $('#writeForm input[name=bStart]');
-		var $bEnd = $('#writeForm input[name=bEnd]');
-		$bStart.attr('readonly', false)
-		$bEnd.attr('readonly', false)
-		$('#bookStart').datepicker('option','disabled',false); //datepicker 켬
-		$('#bookEnd').datepicker('option','disabled',false); //datepicker 켬
-		$('#bookStart').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-		$bStart.removeAttr("placeholder")
-		$bEnd.removeAttr("placeholder")
+		
 	}
 	
 	function popThing(){

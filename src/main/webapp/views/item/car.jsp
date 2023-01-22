@@ -759,10 +759,14 @@
 				if(data.detail.b_cancel == 1){
 					$("#carBookDetail #hideComent").css('display', 'none');
 					$("#carBookDetail .b_cancel").text('취소 안 함').css('color', 'blue');
+					$('#bookCancel').css('display', 'inline-block')
+					$('#bookCancel').remove('onclick')
 				}else{
 					$("#carBookDetail .b_cancel").text('취소').css('color', 'red');
 					$("#carBookDetail #hideComent").css('display', 'block');
 					$("#carBookDetail .b_coment").text(data.detail.b_content);
+					$('#bookCancel').css('display', 'none')
+					$('#bookCancel').attr('onclick', "alert('취소된 예약은 예약 취소를 할 수 없습니다.'); location.reload();")
 				}
 			},
 			error:function(e){
