@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.modifyLeft {
@@ -50,7 +53,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 수정</h4>
-	                <button type="button" class="close" onclick="closeModal()"
+	                <button type="button" class="close" onclick="closeModal(2)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -66,7 +69,7 @@
 								<input type="text" name="thModel">
 							</p> <br>
 							<p class="modifyArea"><span id="modifyName">금액 : </span> 
-								<input type="text" name="thMoney">
+								<input type="text" name="thMoney" onkeyup="inputNumberFormat(this)">&#8361;
 							</p> <br>
 							<p class="modifyArea" style="margin-bottom: 0px;"><span id="modifyName" style="text-align: left;">사진 : </span></p>
 						</div>
@@ -85,7 +88,7 @@
 								</select>
 							</p> <br>
 							<p class="modifyArea"><span id="modifyName">취득일자 : </span>
-								<input type="text" name="thDate"> <!-- date picker -->
+								<input type="text" name="thDate" id="modiDate"> <!-- date picker -->
 							</p> <br>
 							<p class="modifyAreaSpon" style="display: none;">
 								<span id="modifyName">후원자 : </span>
@@ -104,7 +107,7 @@
 			                    <span class="d-none d-sm-block">저장</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-		                    onclick="closeModal()" >
+		                    onclick="closeModal(2)" >
 		                    <i class="bx bx-x d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">닫기</span>
 		                </button>
@@ -180,12 +183,12 @@
 				contentType:false, // 컨텐트 타입을 객체로 함
 				data: formData,
 				success:function(data){
-					closeModal();
+					closeModal(2);
 					$('#updateForm')[0].reset();
 					//left
 					$('#detailThing .left .th_name').text(data.detail.th_name)
 					$('#detailThing .left .th_model').text(data.detail.th_model)
-					$('#detailThing .left .th_money').text(data.detail.th_money)
+					$('#detailThing .left .th_money').text(comma(uncomma(data.detail.th_money)))
 					$('#detailThing .left .th_write').text(data.detail.th_write)
 					//right
 					$('#detailThing .right .th_part').text(data.detail.th_part)
@@ -193,7 +196,14 @@
 					$('#detailThing .right .th_state').text(data.detail.th_state)
 					$('#detailThing .right .th_spon').text(data.detail.th_spon)
 					//photo
-					$('#detailThing .th_photo').attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
+					if(data.detailPhoto != null){
+						$('#detailThing #nonPhoto').css('display', 'none');
+						$('#detailThing .th_photo').css('display', 'block');
+						$('#detailThing .th_photo').attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
+					}else{
+						$('#detailThing #nonPhoto').css('display', 'block');
+						$('#detailThing .th_photo').css('display', 'none');
+					}
 				},
 				error:function(e){
 					console.log(e)
@@ -203,10 +213,5 @@
 		}// end of if
 	});
 
-	function closeModal(){
-		$('#modifyThing').modal('hide');
-		$('#updateForm')[0].reset();
-	}
-		
 </script>
 </html>

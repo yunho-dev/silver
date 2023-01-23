@@ -261,19 +261,29 @@
 		UPDATE thinghistory th
 			INNER JOIN thing t on th.th_idx = t.th_idx
 			<choose>
-				<when test="hisReturn==null and hisReturn.equals('')">
-					SET th.his_name=#{hisName}, th.his_write=#{hisWrite}, th.his_goal=#{hisGoal}, 
-						th.his_rent=#{hisRent}, t.th_state = #{thState},
-						<if test="hisBigo!=null and !hisBigo.equals('')">
+				<when test="check==1">
+					<set>
+						th.his_name=#{hisName}, th.his_write=#{hisWrite}, th.his_goal=#{hisGoal}, 
+						t.th_state = #{thState}, th.his_rent=#{hisRent}, th.his_return=#{hisReturn},
+						<if test="!hisBigo.equals('')">
 							th.his_bigo=#{hisBigo}
 						</if>
+						<if test="hisBigo.equals('')">
+							th.his_bigo='없음'
+						</if>
+					</set>
 				</when>
 				<otherwise>
-					SET th.his_name=#{hisName}, th.his_write=#{hisWrite}, th.his_goal=#{hisGoal}, 
-						th.his_rent=#{hisRent}, th.his_return=#{hisReturn}, t.th_state = #{thState}
-						<if test="hisBigo!=null and !hisBigo.equals('')">
+					<set>
+						th.his_name=#{hisName}, th.his_write=#{hisWrite}, th.his_goal=#{hisGoal}, 
+						th.his_rent=#{hisRent}, th.his_return='1900-01-01', t.th_state = #{thState},
+						<if test="!hisBigo.equals('')">
 							th.his_bigo=#{hisBigo}
 						</if>
+						<if test="hisBigo.equals('')">
+							th.his_bigo='없음'
+						</if>
+					</set>
 				</otherwise>
 			</choose>
 			<where>

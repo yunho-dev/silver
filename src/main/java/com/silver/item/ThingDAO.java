@@ -97,5 +97,7 @@ public interface ThingDAO {
 	ThingDTO getThingBookDetail(String cbIdx);
 
 	int thingBookCancel(int cbIdx, String bContent, String bookWriter);
-	
+
+	String thNameChcek(String thName);
+
 }

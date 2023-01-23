@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -53,7 +56,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 사용 내역 등록</h4>
-	                <button type="button" class="close" onclick="closeWriteModal()"
+	                <button type="button" class="close" onclick="closeModal(1)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -75,7 +78,7 @@
 							</p> <br>
 							<p class="writeArea">
 								<span id="WriteName">대여 날짜 : </span> 
-								<input type="text" name="hisRent"><br>
+								<input type="text" name="hisRent" id="writeRentDate"><br>
 								<span style="color: gray; font-size: small;">반납 날짜는 수정에서 등록 가능합니다.</span>
 							</p>
 						</div>
@@ -89,7 +92,7 @@
 			                    <span class="d-none d-sm-block">등록하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-			                    onclick="closeWriteModal()">
+			                    onclick="closeModal(1)">
 			                    <span class="d-none d-sm-block">닫기</span>
 			                </button>
 		                </div>
@@ -100,11 +103,6 @@
 	</div>
 </body>
 <script>
-	function closeWriteModal(){
-		$('#thingHistoryWrite').modal('hide');
-		$('#writeForm')[0].reset();
-	}
-	
 	$('#regist').click(function(){
 		/* 요소 */
 		/* Left */

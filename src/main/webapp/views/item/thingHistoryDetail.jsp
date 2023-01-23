@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.left {
@@ -63,7 +66,6 @@
 						<p><span id="detailName" class='hiddenSpon'>후원자 : </span><span class="th_spon"></span></p>
 						<p><span id="detailName">사용자 : </span><span class="his_name"></span></p>
 						<p><span id="detailName">사용 목적 : </span><span class="his_goal"></span></p>
-						<p><span id="detailName">비고 : </span><span class="his_bigo"></span></p>
 					</div>
 					<div class="right">
 						<p><span id="detailName">구분 : </span><span class="th_part"></span></p>
@@ -72,6 +74,9 @@
 						<p><span id="detailName">대여 날짜 : </span><span class="his_rent"></span></p>
 						<p><span id="detailName">반납 날짜 : </span><span class="his_return"></span></p>
 						<p><span id="detailName">등록자 : </span><span class="his_write"></span></p>
+					</div>
+					<div style="width: 100%; float: left;">
+						<p><span id="detailName">비고 : </span><span class="his_bigo"></span></p>
 					</div>
 	            </div>
 	            <div class="modal-footer" >

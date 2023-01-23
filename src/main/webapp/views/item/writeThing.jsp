@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -50,7 +53,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 등록</h4>
-	                <button type="button" class="close" onclick="closeWriteModal()"
+	                <button type="button" class="close" onclick="closeModal(1)"
 	                    aria-label="Close" style="font-size: 22pt;" >
 	                    &times;
 	                </button>
@@ -58,7 +61,6 @@
 	            <form id="writeForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
-<!-- 							<p id="thIdx" style="display: none;"></p> -->
 							<p class="writeArea"><span id="WriteName">품명 : </span> 
 								<input type="text" name="thName">&nbsp;<a class="btn btn-primary" id="thingCheck">중복검사</a>
 							</p> <br>
@@ -66,7 +68,7 @@
 								<input type="text" name="thModel">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">금액 : </span> 
-								<input type="text" name="thMoney">
+								<input type="text" name="thMoney" onkeyup="inputNumberFormat(this)"> &#8361;
 							</p> <br>
 							<p class="writeArea" style="margin-bottom: 0px;"><span id="WriteName" style="text-align: left;">사진 : </span></p>
 						</div>
@@ -85,7 +87,7 @@
 								</select>
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">취득일자 : </span>
-								<input type="date" name="thDate" id="datepicker"> <!-- date picker -->
+								<input type="text" name="thDate" id="getDate">
 							</p> <br>
 							<p class="writeAreaSpon" style="display: none;">
 								<span id="WriteName">후원자 : </span>
@@ -103,7 +105,7 @@
 			                    <span class="d-none d-sm-block">등록하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-			                    onclick="closeWriteModal()">
+			                    onclick="closeModal(1)">
 			                    <span class="d-none d-sm-block">닫기</span>
 			                </button>
 		                </div>
@@ -114,11 +116,6 @@
 	</div>
 </body>
 <script>
-	function closeWriteModal(){
-		$('#writeThing').modal('hide');
-		$('#writeForm')[0].reset();
-	}
-
 	var thingCheck = false;
 	
 	/* 품명 중복검사 */
@@ -156,19 +153,6 @@
 			$('.writeAreaSpon').css('display', 'none')
 			$('.writeAreaSpon input[name=thSpon]').val(null)
 		}
-	}
-	
-	function fileCheck(obj) {
-		var pathpoint = obj.val().lastIndexOf('.');
-		var filepoint = obj.val().substring(pathpoint+1, obj.val().length);
-		var filetype = filepoint.toLowerCase();
-		var maxSize = 1024 * 1024;
-		var fileSize = obj[0].files[0].size;
-	    if((filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg') || fileSize > maxSize) {
-	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
-	        obj.val(null);
-	        return false;
-	    }
 	}
 	
 	/* 등록하기 버튼 */
@@ -232,8 +216,11 @@
 					contentType:false, // 컨텐트 타입을 객체로 함
 					data: formData,
 					success:function(data){
-						if(data.thIdx>0){
+						if(data.check==1){
+							alert('등록 완료')
 							location.reload();
+						}else{
+							alert('등록을 시도했으나 실패했습니다.\n중복된 ID이거나 서버 문제일 수 있습니다. \n이름을 바꿔 다시 시도해 주세요')
 						}
 					},
 					error:function(e){

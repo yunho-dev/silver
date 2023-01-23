@@ -28,7 +28,7 @@
    <div class="page-heading">
        <h3>감염병 리스트</h3>
    </div>     
-  <div class="card" style="margin-top:50px; ">
+  <div class="card" style="margin-top:70px; padding-top:50px; ">
   <table class="table">
   <thead>
     <tr>
@@ -41,18 +41,13 @@
   <tbody id="infestList">
   </tbody>
   
-  	<tr>
-		<td colspan="5" id="paging">
-			<div>
-				
-					<ul class="pagination" id="pagination" style="margin-left: auto; margin-right: auto; margin-top: 10px; margin-bottom: 10px;"></ul>
-				
-			</div>
-		</td>
-	</tr>
- 
+  	
 </table>
-
+	<div id="paging">
+		<div>
+			<ul class="pagination" id="pagination" style="padding-left:35%; margin-top: 10px; margin-bottom: 30px; text-align: center;"></ul>
+		</div>
+	</div>
 </div>
 </div>
 </div>

@@ -14,6 +14,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.left {
@@ -25,7 +28,6 @@
         width: 50%;
         float: right;
         box-sizing: border-box;
-        margin-top: 0;
     }
     #detailName {
     	font-weight: bolder;
@@ -52,7 +54,7 @@
 						<p id="thIdx" style="display: none;"></p>
 						<span id="detailName">품명 : </span><span class="th_name"></span> <br>
 						<span id="detailName">모델 : </span><span class="th_model"></span> <br>
-						<span id="detailName">금액 : </span><span class="th_money"></span> <br>
+						<span id="detailName">금액 : </span><span class="th_money"></span>&#8361; <br>
 						<span id="detailName">등록자 : </span><span class="th_write"></span> <br>
 						<span id="detailName">사진 : </span> <br>
 						<span id="nonPhoto" style="display: none; font-weight: bold; color: red;">사진이 없습니다.</span>
@@ -63,11 +65,13 @@
 						<span id="detailName">상태 : </span><span class="th_state"></span> <br>
 						<p class='hiddenSpon' style="display: none;"><span id="detailName">후원자 : </span><span class="th_spon"></span></p> <br>
 					</div>
-					<img class="th_photo" style="width: 30%; display: none;"/>
+					<div class="bottom" style="width: 100%; float: left;">
+						<img class="th_photo" style="width: 25%; display: none;"/>
+					</div>
 	            </div>
 	            <div class="modal-footer" >
 	            	<div style="margin: auto;">
-	            		<button type="button" class="btn btn-primary ml-1"  id="modify" data-bs-target="#modifyThing" data-bs-toggle="modal"> <!-- data-bs-dismiss="modal" -->
+	            		<button type="button" class="btn btn-primary ml-1"  id="modify" data-bs-target="#modifyThing" data-bs-toggle="modal">
 		                    <i class="bx bx-check d-block d-sm-none"></i>
 		                    <span class="d-none d-sm-block">수정하기</span>
 		                </button>
@@ -98,7 +102,7 @@
 				$(".modifyLeft input[name=thIdx]").val(data.detail.th_idx)
 				$(".modifyLeft span[id=thName]").text(data.detail.th_name)
 				$(".modifyLeft input[name=thModel]").val(data.detail.th_model)
-				$(".modifyLeft input[name=thMoney]").val(data.detail.th_money)
+				$(".modifyLeft input[name=thMoney]").val(comma(uncomma(data.detail.th_money)))
 				$(".modifyRight input[name=thCateFake]").val(data.detail.it_name)
 				$(".modifyRight input[name=thCateReal]").val(data.detail.it_idx)
 				$(".modifyRight select[name=thPart]").val(data.detail.th_part)

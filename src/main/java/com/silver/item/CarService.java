@@ -140,7 +140,7 @@ public class CarService {
 	}
 	
 	public HashMap<String, Object> carBookRealTimeCheck(HashMap<String, String> params) {
-		logger.info("비품 예약 실시간 날짜 체크 접근");
+		logger.info("차량 예약 실시간 날짜 체크 접근");
 		logger.info("받아온 데이터 : {}", params);
 		int check = 0;
 		check = dao.carBookCheck(params);
