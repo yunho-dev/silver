@@ -71,11 +71,11 @@
 							</p> <br> -->
 																									
 							<p class="writeArea"><span id="WriteName">새 비밀번호: </span> 
-								<input type="text" name="memNpw" style="width:200px;height:30px;font-size:12px;" value="" placeholder="비밀번호를 확인해 주세요">
+								<input type="text" id="memNpw" name="memNpw" style="width:200px;height:30px;font-size:12px;" value="" placeholder="비밀번호를 확인해 주세요">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">새 비밀번호 확인: </span> 
-								<input type="text" name="memNApw" style="width:200px;height:30px;font-size:12px;" onkeyup="checkPwd()" value="" placeholder="새로운 비밀번호를 입력해 주세요">
-								<div id="checkPwd"></div>
+								<input type="text" id="memNApw" name="memNApw" style="width:200px;height:30px;font-size:12px;" onkeyup="checkPwd()" value="" placeholder="새로운 비밀번호를 입력해 주세요">
+								<span id="checkPwd"></span>
 							</p> <br>
 						</div>
 						<div class="writeRight">

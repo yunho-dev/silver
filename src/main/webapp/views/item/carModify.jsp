@@ -139,10 +139,10 @@
 				contentType:false, // 컨텐트 타입을 객체로 함
 				data: formData,
 				success:function(data){
-					console.log(data)
 					if(data.finish == 1){
 						alert('수정 완료')
-						location.reload();
+						carListCall();
+						closeModal(2);
 					}else{
 						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
 					}
