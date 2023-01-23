@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.silver.member.MemberDTO;
 
 
 @Service
@@ -24,17 +20,6 @@ public class CarService {
 	}
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	/*
-	public ModelAndView carList(HashMap<String, String> params) {
-		ModelAndView mav = new ModelAndView("item/car");
-		ArrayList<CarDTO> list = dao.carList();
-		logger.info("가져온 차량 수 : "+list.size());
-		logger.info("이동 params:{}",params);
-		mav.addObject("page", params);
-		mav.addObject("list", list);
-		return mav;
-	}
-	*/
 	
 	public HashMap<String, Object> getCarList() {
 		HashMap<String, Object> result = new HashMap<String, Object>();
