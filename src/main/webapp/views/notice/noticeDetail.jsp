@@ -69,7 +69,7 @@
 									${list.bd_content}
 								</div>
 							</div>
-							<button type="button" class="btn btn-secondary" onclick="location.href='noticeList'">뒤로가기</button>
+							<button type="button" class="btn btn-secondary" onclick="location.href='noticeList?page=board2'">뒤로가기</button>
 						</div>
 					</div>
 

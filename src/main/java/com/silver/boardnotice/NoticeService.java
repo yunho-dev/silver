@@ -53,7 +53,7 @@ public class NoticeService {
 	}
 
 	public ModelAndView writeBoard(HttpServletRequest request,String bd_title, String bd_content) {
-		ModelAndView mav=new ModelAndView("notice/noticeList");
+		ModelAndView mav=new ModelAndView();
 		HttpSession session=request.getSession();
 		MemberDTO sessionDTO=(MemberDTO) session.getAttribute("loginId");
 		int pos=sessionDTO.getPos_level();
@@ -72,14 +72,16 @@ public class NoticeService {
 			logger.info("키 제너레이션 키 :"+result);
 			String mem_name=sessionDTO.getMem_name();
 			alservice.notiAlarm(mem_name,result,"공지사항",mem_id);
+			mav.setViewName("redirect:/noticeDetail.do?page=board2&bd_idx="+result);
 		}
 		return mav;
 	}
 
-	public ModelAndView noticeUpdateDetail(String bd_idx) {
+	public ModelAndView noticeUpdateDetail(String bd_idx, HashMap<String, String> params) {
 		ModelAndView mav=new ModelAndView("notice/noticeUpdate");
 		NoticeDTO dto=notidao.detailCall(bd_idx);
 		mav.addObject("list",dto);
+		mav.addObject("page",params);
 		return mav;
 	}
 
@@ -91,7 +93,7 @@ public class NoticeService {
 		String bd_content=request.getParameter("bd_content");
 		String mem_id=sessionDTO.getMem_id();
 		notidao.notiUpdate(bd_idx,mem_id,bd_title,bd_content);
-		ModelAndView mav=new ModelAndView("redirect:/noticeDetail.do?bd_idx="+bd_idx);
+		ModelAndView mav=new ModelAndView("redirect:/noticeDetail.do?page=board2&bd_idx="+bd_idx);
 		return mav;
 	}
 

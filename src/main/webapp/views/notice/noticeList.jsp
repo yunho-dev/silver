@@ -100,7 +100,7 @@
 var session='';
 function writeNotice(){
 	console.log('글쓰기 테스트');
-	location.href='noticeWrite.do';
+	location.href='noticeWrite.do?page=board2';
 }
 
 var page = 1;
@@ -189,13 +189,13 @@ function AjaxCall(page) {
 		for (var i = 0; i < list.length; i++) {
 			content += "<tr>";
 			content += "<td>" + list[i].bd_idx + "</td>";
-			content += "<td id='detail'><a href='noticeDetail.do?bd_idx="+list[i].bd_idx+"'>" + list[i].bd_title + "</td>";
+			content += "<td id='detail'><a href='noticeDetail.do?page=board2&bd_idx="+list[i].bd_idx+"'>" + list[i].bd_title + "</td>";
 			content += "<td>" + list[i].mem_name + "</td>";
 			var date = new Date(list[i].bd_date);
 			content += "<td>" + date.toLocaleDateString("ko-KR") + " "+ date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
 			content += "<td>"
 			if(list[i].mem_id == session){
-			content	+= "<button class='btn btn-primary btn-sm' onclick=location.href='noticeUpdate.do?bd_idx="+list[i].bd_idx+"'>수정하기</button>"
+			content	+= "<button class='btn btn-primary btn-sm' onclick=location.href='noticeUpdate.do?page=board2&bd_idx="+list[i].bd_idx+"'>수정하기</button>"
 			}
 			content	+= "</td>";
 			content += "</tr>";

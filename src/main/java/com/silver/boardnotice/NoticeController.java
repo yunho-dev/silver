@@ -56,10 +56,13 @@ public class NoticeController {
 	}
 	
 	@GetMapping(value="/noticeDetail.do")
-	public String noticeDetail(Model model,@RequestParam String bd_idx){
+	public String noticeDetail(Model model,@RequestParam String bd_idx
+			,@RequestParam HashMap<String, String> params){
 		logger.info("idx 값은 : "+bd_idx);
 		NoticeDTO detailDTO=notiservice.detailCall(bd_idx);
 		model.addAttribute("list",detailDTO);
+		logger.info("params {}",params);
+		model.addAttribute("page",params);
 		return "notice/noticeDetail";
 	}
 	
@@ -94,9 +97,8 @@ public class NoticeController {
 	}
 	
 	@GetMapping(value="/noticeUpdate.do")
-	public ModelAndView noticeUpdate_do(@RequestParam String bd_idx) {
-		
-		return notiservice.noticeUpdateDetail(bd_idx);
+	public ModelAndView noticeUpdate_do(@RequestParam String bd_idx,@RequestParam HashMap<String, String> params) {
+		return notiservice.noticeUpdateDetail(bd_idx,params);
 	}
 	
 	@PostMapping(value="/update.do")

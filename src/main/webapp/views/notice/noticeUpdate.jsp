@@ -53,7 +53,7 @@
 							</div>
 							<button type="button" class="btn btn-primary" onclick="save()">수정하기</button>
 							<button type="button" class="btn btn-secondary"
-								onclick="location.href='noticeList'">뒤로가기</button>
+								onclick="location.href='noticeList?page=board2'">뒤로가기</button>
 							</form>
 						</div>
 					</div>
