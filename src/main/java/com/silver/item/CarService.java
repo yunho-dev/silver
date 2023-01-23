@@ -24,7 +24,7 @@ public class CarService {
 	}
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
+	/*
 	public ModelAndView carList(HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/car");
 		ArrayList<CarDTO> list = dao.carList();
@@ -33,6 +33,16 @@ public class CarService {
 		mav.addObject("page", params);
 		mav.addObject("list", list);
 		return mav;
+	}
+	*/
+	
+	public HashMap<String, Object> getCarList() {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		logger.info("리스트를 조회를 시도합니다");
+		ArrayList<CarDTO> list = dao.carList();
+		logger.info("리스트를 조회했습니다.");
+		result.put("list", list);
+		return result;
 	}
 
 	public HashMap<String, Object> getDriveHistory(int carIdx, int page) {

@@ -152,7 +152,8 @@
 				success:function(data){
 					if(data.finish == 1){
 						alert('등록 완료')
-						location.reload();
+						carListCall();
+						closeModal(1);
 					}else{
 						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
 					}

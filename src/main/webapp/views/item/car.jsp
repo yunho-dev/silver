@@ -98,19 +98,8 @@ System.out.println(hope);
                                                         <th>처리</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody> <!-- 여기 아작스로 나중에 변경하자 -->
-                                                	<c:forEach items="${list}" var="car">
-														<tr style="cursor: pointer;" onclick="showStory($(this))">
-															<td class="carIdx" style="display:none;">${car.car_idx}</td>
-															<td>${car.car_state}</td>
-															<td>${car.car_name}</td>
-															<td class="carNum">${car.car_num}</td>
-															<td>${car.car_type}</td>
-															<td>${car.car_year}</td>
-															<td>${car.car_part}</td>
-															<td><a class="btn btn-sm btn-primary" onclick="carModifyInfo($(this))" data-bs-toggle="modal" data-bs-target="#carModify">수정</a></td>
-														</tr>
-													</c:forEach>
+                                                <tbody id="carList"> 
+                                                <!-- 리스트 들어갈 공간 -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -267,6 +256,40 @@ System.out.println(hope);
 	const dateTimeRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/; // 날짜+시간+분
 	const numRegex = /^[0-9]+$/; //숫자만
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
+	carListCall();
+	
+	function carListCall(){
+		$.ajax({
+			type:'GET',
+			url:'getCarList.do',
+			dataType:'JSON',
+			success:function(data){
+				carDrawList(data.list);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function carDrawList(carList){
+		var content='';
+		for(var i=0; i<carList.length;i++){
+			content +='<tr style="cursor: pointer;" onclick="showStory($(this))">';
+			content +='<td class="carIdx" style="display:none;">'+carList[i].car_idx+'</td>';
+			content +='<td>'+carList[i].car_state+'</td>';
+			content +='<td>'+carList[i].car_name+'</td>';
+			content +='<td class="carNum">'+carList[i].car_num+'</td>';
+			content +='<td>'+carList[i].car_type+'</td>';
+			content +='<td>'+carList[i].car_year+'</td>';
+			content +='<td>'+carList[i].car_part+'</td>';
+			content +='<td><a class="btn btn-sm btn-primary" onclick="carModifyInfo($(this))" data-bs-toggle="modal" data-bs-target="#carModify">수정</a></td>';
+			content +='</tr>';
+		}
+		$('#carList').empty();
+		$('#carList').append(content);
+	}
+	
 	jQuery.datetimepicker.setLocale('kr');
 	$(function() {
 	       //input을 datepicker로 선언
