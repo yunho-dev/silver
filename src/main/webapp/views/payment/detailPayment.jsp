@@ -298,15 +298,9 @@ function DFListListCall(data){
 		for (var i = 0; i < data.AnotherSign.length; i++) {
 			if (data.line[i].pl_ch == 0 && pm_self == 1 && data.line[i].pl_hp == SessionID) {
 				if(pm_idx == data.line[i].pm_idx){
-					var a=i-1;
-					var b=i-2;
-					if(data.line[a].pm_idx == pm_idx || data.line[b].pm_idx == pm_idx){
-// 						if(data.line[a].pl_ch == 1 || data.line[b].pl_ch == 1){
 							content += '<td class="'+data.line[i].mem_id+'"><button type="button"';
 							content += 'class="btn btn-primary btn-sm"  value="상신" onclick="PmSangSin(this)">상신하기</button>';
 							content += '<button type="button" class="btn btn-primary btn-sm"  value="반려" onclick="PmSangSin(this)">반려하기 </button> </td>';
-// 						}
-					}
 				}
 				
 			}else if(data.line[i].pl_ch == 1 && pm_self == 1){

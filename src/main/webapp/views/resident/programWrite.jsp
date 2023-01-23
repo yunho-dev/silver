@@ -69,13 +69,13 @@ span{
 									<span class="input-group-text" id="basic-addon1">시작시간</span> 
 <!-- 									<input type="text" class="form-control" aria-label="Username"  -->
 <!-- 										aria-describedby="basic-addon1" name="pr_start"> -->
-										<input type="text" name="pr_start" id="text1" value="" class="datetimepicker" />
+										<input type="text" name="pr_start" id="text1" value="" class="datetimepicker"/>
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">끝시간</span> 
 <!-- 									<input type="text" class="form-control" aria-label="Username"  -->
 <!-- 										aria-describedby="basic-addon1" name="pr_end"> -->
-										<input type="text" name="pr_end" id="text1" value="" class="datetimepicker" />
+										<input type="text" name="pr_end" id="text1" value="" class="datetimepicker"/>
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" id="basic-addon1">내용</span> 
