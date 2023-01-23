@@ -83,9 +83,6 @@ System.out.println(hope);
 								</div>
 							</div>
 						</div>
-						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input id="paymentwrite" type="button" class="btn btn-primary" value="결재 문서 등록">
-						</div>
 					</div>
 				</section>
 			</div>

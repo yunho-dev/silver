@@ -57,7 +57,7 @@ public class AlarmService {
 	public String LinkAddr(int idx,String alarmCate) {
 		String page="";
 		if(alarmCate.equals("공지사항")) {
-			page="noticeDetail.do?bd_idx="+idx;
+			page="noticeDetail.do?page=board2&bd_idx="+idx;
 		}else if(alarmCate.equals("결재 문서")) {
 			page="detailPayment.do?pm_idx="+idx;
 		}else if(alarmCate.equals("결재 진행")) {

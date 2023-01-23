@@ -51,9 +51,9 @@ System.out.println(hope);
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
 						<input id="writebutton" type="button" class="btn btn-sm btn-secondary" value="내가 작성한 양식" style="margin-bottom:10px;"
-						onclick='location.href="myPayForm"'>
+						onclick='location.href="myPayForm?page=payment"'>
 						<input id="writebutton" type="button" class="btn btn-sm btn-primary" value="모든 양식" style="margin-bottom:10px;"
-						onclick='location.href="allPayForm"'>
+						onclick='location.href="allPayForm?page=payment"'>
 							<div class="d-flex align-items-center">
 							 <table class="table table-bordered table-hover" style="text-align: center;">
 							 	<thead>
@@ -146,7 +146,7 @@ function AllformCall(list) {
 		content += "<tr>";
 		content += "<td>" + list[i].pf_cate + "</td>";
 		content += "<td>"+list[i].mem_name+"</td>";
-		content += "<td><a href=payfromdetail?pf_idx="+list[i].pf_idx+">" + list[i].pf_subject + "</a></td>";
+		content += "<td><a href=payfromdetail?page=payment&pf_idx="+list[i].pf_idx+">" + list[i].pf_subject + "</a></td>";
 		content += "<td>"+list[i].pf_count+"</td>";
 		content += "</tr>";
 		}

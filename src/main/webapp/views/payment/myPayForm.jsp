@@ -50,9 +50,9 @@ System.out.println(hope);
 					<div class="card" id="table">
 						<div class="card-body py-4 px-5">
 						<input id="Mywritebutton" type="button" class="btn btn-sm btn-primary" value="내가 작성한 양식" style="margin-bottom:10px;"
-						onclick='location.href="myPayForm'>
+						onclick='location.href="myPayForm?page=payment"'>
 						<input id="writebutton" type="button" class="btn btn-sm btn-secondary" value="모든 양식" style="margin-bottom:10px;"
-						onclick='location.href="allPayForm"'>
+						onclick='location.href="allPayForm?page=payment"'>
 							<div class="d-flex align-items-center">
 							 <table class="table table-bordered table-hover" style="text-align: center;">
 							 	<thead>
@@ -106,7 +106,7 @@ System.out.println(hope);
 </body>
 <script>
 $(document).on('click','#payformwrite',function(){
-	location.href='writepayform.go';
+	location.href='writepayform.go?page=payment';
 });
 
 
@@ -148,7 +148,7 @@ function myformCall(list) {
 		content += "<tr>";
 		content += "<td>" + list[i].pf_cate + "</td>";
 		content += "<td>"+list[i].mem_name+"</td>";
-		content += "<td><a href=payfromdetail?pf_idx="+list[i].pf_idx+">" + list[i].pf_subject + "</a></td>";
+		content += "<td><a href=payfromdetail?page=payment&pf_idx="+list[i].pf_idx+">" + list[i].pf_subject + "</a></td>";
 		content += "<td>"+list[i].pf_count+"</td>";
 		content += "<td><button class='btn btn-sm btn-primary' onclick='payformupdate("+list[i].pf_idx+")' style='margin-right:15px;'>수정</button>"
 		content += "<button class='btn btn-sm btn-secondary' onclick='payformdel("+list[i].pf_idx+")'>삭제</button></td>";
@@ -161,7 +161,7 @@ function myformCall(list) {
 
 function payformupdate(idx){
 	console.log('payformupdate.go?pf_idx='+idx);
-	location.href="payformupdate.go?pf_idx="+idx;
+	location.href="payformupdate.go?page=payment&pf_idx="+idx;
 }
 
 
