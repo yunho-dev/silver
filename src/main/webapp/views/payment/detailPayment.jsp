@@ -283,10 +283,10 @@ function DetailListCall(){
 
 function DFListListCall(data){
 	var SessionID="${SessionID}"
-	console.log(SessionID);
 	var pm_self="${PayDto.pm_self}";
 	var SessionID="${SessionID}";
 	var mem_id="${PayDto.mem_id}";
+	var pm_idx="${PayDto.pm_idx}";
 	var content = '';
 	if(pm_self == 0 && SessionID == mem_id){
 		content += '<td><button type="button" class="btn btn-primary btn-sm" onclick="SangSin()">상신하기</button></td>'
@@ -296,11 +296,19 @@ function DFListListCall(data){
 	}
 	if(!data.AnotherSign.length == 0){
 		for (var i = 0; i < data.AnotherSign.length; i++) {
-			console.log("asd"+data.line[i].pl_hp);
 			if (data.line[i].pl_ch == 0 && pm_self == 1 && data.line[i].pl_hp == SessionID) {
-				content += '<td class="'+data.line[i].mem_id+'"><button type="button"';
-				content += 'class="btn btn-primary btn-sm"  value="상신" onclick="PmSangSin(this)">상신하기</button>';
-				content += '<button type="button" class="btn btn-primary btn-sm"  value="반려" onclick="PmSangSin(this)">반려하기 </button> </td>';
+				if(pm_idx == data.line[i].pm_idx){
+					var a=i-1;
+					var b=i-2;
+					if(data.line[a].pm_idx == pm_idx || data.line[b].pm_idx == pm_idx){
+// 						if(data.line[a].pl_ch == 1 || data.line[b].pl_ch == 1){
+							content += '<td class="'+data.line[i].mem_id+'"><button type="button"';
+							content += 'class="btn btn-primary btn-sm"  value="상신" onclick="PmSangSin(this)">상신하기</button>';
+							content += '<button type="button" class="btn btn-primary btn-sm"  value="반려" onclick="PmSangSin(this)">반려하기 </button> </td>';
+// 						}
+					}
+				}
+				
 			}else if(data.line[i].pl_ch == 1 && pm_self == 1){
 				content += '<td id="MySangSin" style="text-align: center">';
 				content += '<img style="width: 60px;height: 60px;" src="/sign/'+data.AnotherSign[i].si_newFileName+'"></td>';
