@@ -41,6 +41,7 @@ System.out.println(hope);
    <div class="page-heading">
        <h3>감염병 관리 히스토리 작성</h3>
    </div>
+   <div class="page-content">
   <section class="row">
   	<div class="card">
   		<div class="card-body py-4 px-5">
@@ -84,6 +85,7 @@ System.out.println(hope);
 </div>
 </div>
 </section>
+</div>
 <footer>
 	<div class="footer clearfix mb-0 text-muted">
 		<div class="float-start">

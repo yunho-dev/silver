@@ -21,7 +21,7 @@ public class InfestController {
 	
 	@GetMapping(value="/infestList")
 	public String infestList(Model model,@RequestParam HashMap<String, String> params) {
-		logger.info("직원 리스트 조회");
+		logger.info("감염병 리스트 조회");
 		
 		logger.info("세션 값 조회");
 		logger.info("params:{}",params);
@@ -39,13 +39,19 @@ public class InfestController {
 	
 	@GetMapping(value="/infestListHistory")
 	public String infestListHistory(Model model,@RequestParam HashMap<String, String> params) {
-		logger.info("직원 리스트 조회");
+		logger.info("감염병 히스토리  조회");
 		logger.info("세션 값 조회");
 		logger.info("params:{}",params);
-		model.addAttribute("page", params);
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		logger.info("히스토리 이동");
 		return "resident/infestListHistory";
 	}
+	
 	@RequestMapping(value = "/infestListHistoryCall")
 	@ResponseBody
 	public HashMap<String, Object> infestListHistoryCall(@RequestParam int page,@RequestParam int re_idx) {
@@ -58,6 +64,11 @@ public class InfestController {
 	@RequestMapping(value ="/infestHistoryWriteForm")
 	public String infestHistoryWriteForm (Model model,@RequestParam int re_idx) {
 		logger.info("글쓰기폼 이동");
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		model.addAttribute("re_idx",re_idx);
 		
 		return "resident/infestHistoryWriteForm";
@@ -72,8 +83,13 @@ public class InfestController {
 		return "redirect:/infestListHistory?re_idx="+re_idx;
 	}
 	@RequestMapping(value ="/infestHistoryWriteUpdateForm") 
-	public ModelAndView infestHistoryWriteUpdateForm (int re_idx) {
+	public ModelAndView infestHistoryWriteUpdateForm (Model model, int re_idx) {
 		logger.info("수정폼 이동");
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		logger.info("if_idx",re_idx);
 		
 		return infestservice.infestHistoryWriteUpdateForm(re_idx); 
