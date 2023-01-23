@@ -32,6 +32,8 @@ public class MemberController {
 		logger.info("params:{}",params);
 		model.addAttribute("page", params);
 		
+		
+		
 		return "/member/memberList";
 	}
 	
@@ -90,5 +92,53 @@ public class MemberController {
 			logger.info(memId+"사원번호에 대한 직원정보 수정 요청");
 			return service.getMemberUpdateForm(memId);
 		}
+		
+		// 직원 직책 변경 이동 컨트롤러
+		@GetMapping(value="/memberGradeChange")
+		public String memberGradeChange(Model model,@RequestParam HashMap<String, String> params) {
+			logger.info("직원 직책 변경 이동");
 			
+			logger.info("세션 값 조회");
+			logger.info("params:{}",params);
+			model.addAttribute("page", params);
+			
+			return "/member/MemberGradeChange";
+		}
+
+		// 직원 직책 변경 폼에 대한 정보 컨트롤러
+		@GetMapping(value = "/GrandChangeForm.go")
+		@ResponseBody
+		public HashMap<String, Object> GrandChangeForm(@RequestParam String memId){
+			
+			logger.info(memId+" 직원에 대한 직책 변경 폼 이동 요청");
+			return service.GrandChangeForm(memId);
+		}		
+		
+		
+		
+		// 직원 직책 변경 컨트롤러
+		@PostMapping(value = "/GradeUpdateDay.do")
+		@ResponseBody
+		public HashMap<String, Object> GradeUpdateDay(@RequestParam HashMap<String, String> params){
+
+			logger.info("직원 직책 변경 컨트롤러");
+			logger.info("params:{}",params);
+			return service.GradeUpdateDay(params);
+		}
+		
+		
+	    // 관리자 직원 리스트 이동 페이지	
+		@GetMapping(value="/adminmemberList")
+		public String adminmemberList(Model model,@RequestParam HashMap<String, String> params) {
+			logger.info("직원 리스트 조회");
+			
+			logger.info("세션 값 조회");
+			logger.info("params:{}",params);
+			model.addAttribute("page", params);
+			
+			
+			
+			return "/member/adminMemberList";
+		}
+		
 }

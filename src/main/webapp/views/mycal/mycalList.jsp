@@ -29,8 +29,23 @@
 </style>	
 </head>
 <body>
-	<div id="app">
+<%
+int hope = (int)session.getAttribute("hope");
+System.out.println(hope);
+%>
+    <div id="app">
+	<c:set var = "power" scope = "session" value = "${hope}"/>
+		<c:choose>
+		<c:when test="${power == 1}">
+			<jsp:include page="../adminsidebar.jsp"></jsp:include>
+		</c:when>
+		<c:when test="${power == 2}">
+			<jsp:include page="../adminsidebar.jsp"></jsp:include>
+		</c:when>
+		<c:otherwise>
 		<jsp:include page="../sidebar.jsp"></jsp:include>
+		</c:otherwise>
+		</c:choose>
         <div id="main">
        	 <jsp:include page="../upbar.jsp"></jsp:include>
        	   <h1>내 캘린더</h1>
@@ -116,8 +131,19 @@ loadingEvents();
      itemSelector: '.fc-event',
      eventData: function(eventEl) {
        return {
-         title: eventEl.innerText
+         title:eventEl.innerText
        };
+/*   	 if(title=="휴가"){
+       	backgroundColor:"blue";
+       }else if(title=="반차"){
+       	backgroundColor:"orange";
+       }else if(title=="A조"){
+       	backgroundColor:"green";
+       }else if(title=="B조"){
+       	backgroundColor:"pink";
+       }else{
+       	backgroundColor:"purple";
+       } */
      }
    });
 
@@ -128,7 +154,8 @@ loadingEvents();
      headerToolbar: {
        left: 'prev,next today',
        center: 'title',
-       right: 'dayGridMonth,timeGridWeek,timeGridDay'
+		right:''
+    	   //right: 'dayGridMonth,timeGridWeek,timeGridDay'
      },
      editable: true,
      dayMaxEvents: true,
@@ -185,14 +212,17 @@ loadingEvents();
 		//obj.start=new Date(allEvent[i]._instance.range.start); // 시작 날짜 및 시간
 		//obj.end=new Date(allEvent[i]._instance.range.end); // 마감 날짜 및 시간
 		
-		
-		var date = new Date(allEvent[i]._instance.range.start);
-		obj.start=	date.toLocaleDateString("ko-KR",{year:'numeric',month: '2-digit',day: '2-digit'}).replace(/\./g, '').replace(/\s/g, '-') + " "+ date.toLocaleTimeString("en-US",{hour12 : false});
-		
-		
-		var date1 = new Date(allEvent[i]._instance.range.end);
-      	obj.end	=date1.toLocaleDateString("ko-KR",{year:'numeric',month: '2-digit',day: '2-digit'}).replace(/\./g, '').replace(/\s/g, '-') + " "+ date1.toLocaleTimeString("en-US",{hour12 : false});
 
+		var date = new Date(allEvent[i]._instance.range.start -9 * 3600 * 1000);
+ 		console.log(date.getHours());		
+		obj.start=date.toLocaleDateString("ko-KR",{year:'numeric',month: '2-digit',day: '2-digit'}).replace(/\./g, '').replace(/\s/g, '-') + " "+ date.toLocaleTimeString("en-GB",{hour12 : false});
+
+		
+		
+		var date1 = new Date(allEvent[i]._instance.range.end -9 * 3600 * 1000);
+      	obj.end	=date1.toLocaleDateString("ko-KR",{year:'numeric',month: '2-digit',day: '2-digit'}).replace(/\./g, '').replace(/\s/g, '-') + " "+ date1.toLocaleTimeString("en-GB",{hour12 : false}); 
+
+      	
 		console.log(obj.start);	
 		console.log(obj.end);
 		events.push(obj);
@@ -214,7 +244,12 @@ loadingEvents();
 			data:{'data':jsondata,memId:memId},
 			dataType:'JSON',
 			success:function(data){
-			location.reload();
+				
+			alert("저장에 성공하였습니다.");	
+			if(data.memId != null){
+				location.reload();
+			}
+			
 			},
 			error:function(e){
 				console.log(e);
@@ -239,44 +274,34 @@ loadingEvents();
 			dataType:'JSON',
 			success:function(data){
 				
-			//	return_value=data.list;
-			//	console.log(return_value);
-/* 				$("input[name=calIdx]").attr('value',data.list.cal_idx); */
-				
-/*  				console.log(data);
-				console.log(data.list.length);
-				console.log(data.list);
-				
-				return_value=(data.list);
-				console.log(return_value);  */
 				console.log(data.list.length);
 		for(var i=0; i<data.list.length;i++){
 				title=data.list[i].title;
+				allDay=data.list[i].allDay;
 				console.log(title);
-	    		 if(title=='휴가'){
+	    		 if(title=='휴가'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
 	    			 data.list[i].backgroundColor="blue";	
 	    			 console.log(data.list[i].backgroundColor);
-	    		 }else if(title=='반차'){
+	    		 }else if(title=='반차'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
 	    			 data.list[i].backgroundColor="orange";
-	    			 console.log(data.list[i].backgroundColor);
-			//	data.list[i].add({backgroundColor:"orange"});
-	    		 }else if(title=='A조'){
+	    			 console.log(data.list[i].backgroundColor);			
+	    		 }else if(title=='A조'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
 	    			 data.list[i].backgroundColor="green";
 	    			 console.log(data.list[i].backgroundColor);
-			//	data.list[i].add({backgroundColor:"green"});
-	    		 }else if(title=='B조'){
+			
+	    		 }else if(title=='B조'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
 	    			 data.list[i].backgroundColor="pink";
 	    			 console.log(data.list[i].backgroundColor);
-			//	data.list[i].add({backgroundColor:"pink"});
-	    		 }else{
+	    		 }else if(title=='출장'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
 	    			 data.list[i].backgroundColor="purple";
 	    			 console.log(data.list[i].backgroundColor);
-			//	data.list[i].add({backgroundColor:"purple"});
+	    		 }else{
+	    			 console.log(allDay);
 	    		 } 
 
 		}	
@@ -292,8 +317,6 @@ loadingEvents();
 					end:adend,
 					allDay:adallDay
 				}); */
-			
-
 
 			},
 			error:function(e){

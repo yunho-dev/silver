@@ -22,8 +22,23 @@
 <script src="assets/js/jquery.twbsPagination.js"></script>
 </head>
 <body>
-	<div id="app">
+<%
+int hope = (int)session.getAttribute("hope");
+System.out.println(hope);
+%>
+    <div id="app">
+	<c:set var = "power" scope = "session" value = "${hope}"/>
+		<c:choose>
+		<c:when test="${power == 1}">
+			<jsp:include page="../adminsidebar.jsp"></jsp:include>
+		</c:when>
+		<c:when test="${power == 2}">
+			<jsp:include page="../adminsidebar.jsp"></jsp:include>
+		</c:when>
+		<c:otherwise>
 		<jsp:include page="../sidebar.jsp"></jsp:include>
+		</c:otherwise>
+		</c:choose>
 		<div id="main">
 			<jsp:include page="../upbar.jsp"></jsp:include>
 			<!-- 여기 안에서 개발  -->

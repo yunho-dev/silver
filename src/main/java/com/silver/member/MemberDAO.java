@@ -57,6 +57,12 @@ public interface MemberDAO {
 	
 	// 직원 사진 업데이트시 사진 유무 판별
 	MemberDTO findphoto(String memId);
+	
+	// 직원 직책 변경 
+	int GradeUpdateDay(MemberDTO dto);
+	
+	// 직원 직책 변경 폼 이동
+	MemberDTO GrandChangeForm(String memId);
 
 
 

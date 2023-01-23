@@ -31,6 +31,9 @@ public class MemberLoginService {
 			
 			 HttpSession session =req.getSession();
 			 session.setAttribute("loginId",dto);
+			 int hope =dto.getPos_level();
+			 session.setAttribute("hope", hope);
+			 
 			 MemberDTO MDTO=(MemberDTO) session.getAttribute("loginId");
 				
 			 	logger.info(MDTO.getMem_id()); 

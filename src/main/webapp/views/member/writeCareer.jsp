@@ -75,10 +75,10 @@
 						</div>
 						<div class="writeRight">
 							<p class="writeArea"><span id="WriteName">입사일 : </span> 
-								<input type="text" name="careerStart" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입사일을 입력해 주세요">
+								<input type="date" name="careerStart" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입사일을 입력해 주세요">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">퇴사일 : </span> 
-								<input type="text" name="careerEnd" style="width:200px;height:30px;font-size:12px;" value="" placeholder="퇴사일을 입력해 주세요">
+								<input type="date" name="careerEnd" style="width:200px;height:30px;font-size:12px;" value="" placeholder="퇴사일을 입력해 주세요">
 							</p> <br>																												
 						</div>
 						<div>

@@ -27,14 +27,29 @@
 </style>
 </head>
 <body>
-	<div id="app">
+<%
+int hope = (int)session.getAttribute("hope");
+System.out.println(hope);
+%>
+    <div id="app">
+	<c:set var = "power" scope = "session" value = "${hope}"/>
+		<c:choose>
+		<c:when test="${power == 1}">
+			<jsp:include page="../adminsidebar.jsp"></jsp:include>
+		</c:when>
+		<c:when test="${power == 2}">
+			<jsp:include page="../adminsidebar.jsp"></jsp:include>
+		</c:when>
+		<c:otherwise>
 		<jsp:include page="../sidebar.jsp"></jsp:include>
+		</c:otherwise>
+		</c:choose>
         <div id="main">
        	 <jsp:include page="../upbar.jsp"></jsp:include>
        	 	<div class="page-heading">
                 <section class="section">
-                    <div class="card" style="width:38%; font-size:8pt; float: left;" >
-		                    <div class="card-header" id="filterHead" style="background-color: white; font-size: 3pt;">
+                    <div class="card" style="width:38%; font-size:9pt; float: left;" >
+		                    <div class="card-header" id="filterHead" style="background-color: white; font-size: 8pt;">
 		                    <p>직원 목록</p>
 		                     <span>사번:</span> <input type="text" name="mem_id" class="filter"> &nbsp;&nbsp;
 		                     <span>이름:</span> <input type="text" name="mem_name" class="filter"> &nbsp;&nbsp;
@@ -72,7 +87,7 @@
                             </table>
 		                        <div id="pagint">
 			                        <div class="container" style="margin-left: auto; margin-right: auto;">
-										<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">
+										<nav aria-label="Page navigation" style="margin-left:10%; text-align: center; width:150px; height:50px;">
 											<ul class="pagination" id="pagination"></ul>
 										</nav>
 									</div>
@@ -84,7 +99,7 @@
                         </div>                       
                     </div>
                     
-                    <div class="card" style="width:60%; font-size:3pt; float: right; display:flex;" >
+                    <div class="card" style="width:60%; font-size:10pt; float: right; display:flex;" >
                         <div class="card-body">
 							<div id="table2">
 							

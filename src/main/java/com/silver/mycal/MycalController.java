@@ -54,7 +54,7 @@ public class MycalController {
 	// 캘린더 일정 등록
 	@ResponseBody
 	@PostMapping(value="SaveMycalList.do")
-	public String SaveMycalList(@RequestParam HashMap<String, Object> list) throws JsonMappingException, JsonProcessingException {
+	public HashMap<String, Object> SaveMycalList(@RequestParam HashMap<String, Object> list) throws JsonMappingException, JsonProcessingException {
 		
 		logger.info("스케줄 리스트 등록");
 		logger.info("list:{}",list);

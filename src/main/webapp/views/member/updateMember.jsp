@@ -80,7 +80,7 @@
 								</select> 
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">입사일 : </span> 
-								<input type="text" name="memIndate" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입사일을 입력해 주세요">
+								<input type="date" name="memIndate" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입사일을 입력해 주세요">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">생년월일 : </span> 
 								<input type="text" name="memBirth" style="width:200px;height:30px;font-size:12px;" value="" placeholder="생년월일을 입력해 주세요">

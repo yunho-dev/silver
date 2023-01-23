@@ -83,10 +83,10 @@
 						</div>
 						<div class="writeRight">
 							<p class="writeArea"><span id="WriteName">입학일 : </span> 
-								<input type="text" name="eduStart" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입학일 입력해 주세요">
+								<input type="date" name="eduStart" style="width:200px;height:30px;font-size:12px;" value="" placeholder="입학일 입력해 주세요">
 							</p> <br>
 							<p class="writeArea"><span id="WriteName">졸업일 : </span> 
-								<input type="text" name="eduEnd" style="width:200px;height:30px;font-size:12px;" value="" placeholder="졸업일 입력해 주세요">
+								<input type="date" name="eduEnd" style="width:200px;height:30px;font-size:12px;" value="" placeholder="졸업일 입력해 주세요">
 							</p> <br>																												
 						</div>
 						<div>

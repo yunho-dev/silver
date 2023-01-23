@@ -45,12 +45,11 @@
 	
 	<!-- 상세보기 정보 가져오기 -->
 	<select id="memberdetailCall" resultType="member" parameterType="String">
-		SELECT mem_id,mem_state,mem_name,p2.part_name,p.pos_name,mem_pnum,mem_indate,mem_gender  from member m
-			,position p 
-			,part p2 
-			where 
-			m.part_num = p2.part_num 
-			and m.pos_num =p.pos_num 
+	SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
+		from `member` m,`position`p,part p2 ,depart d 
+		where m.part_num = p2.part_num 
+		and m.pos_num =p.pos_num 
+		and m.dept_num =d.dept_num 
 			and mem_name =#{param1}
 	</select>
 		
@@ -119,11 +118,22 @@
 	SELECT fp_idx, fp_oriFileName, fp_newFileName, fp_date, fpc_idx FROM filephoto WHERE mem_id=#{memId} and fpc_idx=9
 	</select>		
 
+	<!-- 직원 직책 변경 -->	
+	<update id="GradeUpdateDay" useGeneratedKeys="true" keyColumn="mem_id" keyProperty="mem_id" parameterType="member">
+		UPDATE member SET pos_num=#{pos_num} 
+			WHERE mem_id=#{mem_id}
+	</update>	
 
 
-
-
-
+	<!-- 직원 직책 변경 폼 이동 -->
+	<select id="GrandChangeForm" resultType="member" parameterType="String">
+		SELECT mem_name,mem_state,mem_gender,mem_id,mem_email,mem_birth,mem_pnum,mem_addr,mem_daddr,pos_name,part_name,mem_indate,dept_name,mem_outdate
+			from `member` m,`position`p,part p2 ,depart d 
+			where m.part_num = p2.part_num 
+			and m.pos_num =p.pos_num 
+			and m.dept_num =d.dept_num  
+			and m.mem_id =#{memId}
+	</select>
 		
 </mapper>
 

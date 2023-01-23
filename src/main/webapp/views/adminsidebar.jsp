@@ -58,6 +58,9 @@ String val = request.getParameter("page");
                                     <a href="programList?page=resident">• 입소자 프로그램</a>
                                 </li>
                                 <li class="submenu-item ">
+                                    <a href="residentProgramGategory?page=resident">• 입소자 프로그램 카테고리</a>
+                                </li>
+                                <li class="submenu-item ">
                                     <a href="infestList?page=resident">• 감염병</a>
                                 </li>
                             </ul>
@@ -69,11 +72,14 @@ String val = request.getParameter("page");
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="memberList?page=member">• 직원</a>
+                                    <a href="adminmemberList?page=member">• 직원</a>
                                 </li>                                
                                 <li class="submenu-item ">
                                     <a href="memberOrgChart?page=member">• 조직도</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="memberGradeChange?page=member">• 직원 직책 변경</a>
+                                </li>                                                                                                    
                             </ul>
                         </li>
 

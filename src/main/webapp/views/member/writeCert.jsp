@@ -72,7 +72,7 @@
 						</div>
 						<div class="writeRight">
 							<p class="writeArea"><span id="WriteName">취득일 : </span> 
-								<input type="text" name="certDate" style="width:200px;height:30px;font-size:12px;" value="" placeholder="취득일을 입력해 주세요">
+								<input type="date" name="certDate" style="width:200px;height:30px;font-size:12px;" value="" placeholder="취득일을 입력해 주세요">
 							</p> <br>
 																											
 						</div>

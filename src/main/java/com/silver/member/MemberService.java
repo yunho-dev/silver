@@ -242,6 +242,39 @@ public class MemberService {
 		return result;
 
 	}
+	
+	
+	// 직원 직책 변경 서비스 
+	public HashMap<String, Object> GradeUpdateDay(HashMap<String, String> params) {
+		MemberDTO dto = new MemberDTO();
+
+		dto.setMem_id(params.get("memId"));
+		dto.setPos_name(params.get("posName"));
+		dto.setPos_num(dao.findpos(dto));
+		logger.info("추출된 번호1:"+dao.findpos(dto));
+
+
+		int row = dao.GradeUpdateDay(dto);
+		String memId = dto.getMem_id();
+		logger.info("db table 영향받은 행의 개수 : "+row);
+		logger.info("Update한 memId : "+memId);
+		
+		
+		
+		
+		HashMap<String, Object> result=new HashMap<String, Object>();
+		result.put("memId", memId);
+		return result;
+	}
+	
+	// 직원 직책 변경 폼 이동 서비스 
+	public HashMap<String, Object> GrandChangeForm(String memId) {
+		MemberDTO  dto = dao.GrandChangeForm(memId);
+		logger.info("가져온 데이터 : {}", dto);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("detail", dto);
+		return result;
+	}
 
 
 

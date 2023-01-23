@@ -45,45 +45,50 @@
 </style>
 <body>
 	<!--large size Modal -->
-	<div class="modal fade text-left" id="CertUpdate" tabindex="-1" role="dialog"
+	<div class="modal fade text-left" id="GrandChangeForm" tabindex="-1" role="dialog"
 	    aria-labelledby="myModalLabel17" aria-hidden="true">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
 	        role="document">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <h4 class="modal-title" id="myModalLabel17">자격증 수정</h4>
+	                <h4 class="modal-title" id="myModalLabel17">직원 수정</h4>
 	                <button type="button" class="close" data-bs-dismiss="modal"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
 	            </div>
-	            <form id="memberCertUpdateForm">
+	            <form id="memberGrandChangeForm">
 		            <div class="modal-body">
 						<div class="writeLeft">
-						<input type="hidden" name='memId' value="${info.mem_id}">
-						<input type="hidden" name='certIdx'>
 						<p id="memId" style="display: none;"></p> 
-							<p class="writeArea"><span id="WriteName">자격증 명 : </span> 
-								<input type="text" name="certName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="자격증명을 입력해 주세요">
+							<p class="writeArea"><span id="WriteName">이름 : </span> 
+								<input type="text" name="memName" style="width:200px;height:30px;font-size:12px;" value="" placeholder="이름을 입력해 주세요" readonly>
 							</p> <br>
-							<p class="writeArea"><span id="WriteName">시행처 : </span> 
-								<input type="text" name="certPlace" style="width:200px;height:30px;font-size:12px;" value="" placeholder="시행처를 입력해 주세요">
-							</p> <br>
-																									
-						</div>
-						<div class="writeRight">
-							<p class="writeArea"><span id="WriteName">취득일 : </span> 
-								<input type="date" name="certDate" style="width:200px;height:30px;font-size:12px;" value="" placeholder="취득일을 입력해 주세요">
+							<p class="writeArea"><span id="WriteName">사번 : </span> 
+								<input type="text" name="memId" style="width:200px;height:30px;font-size:12px;" value="" placeholder="사번을 입력해 주세요" readonly>
 							</p> <br>
 																											
 						</div>
-						<div>
+						<div class="writeRight">
+							<p class="writeArea">
+							<span id="WriteName">직급 : </span> 
+							<select name="posName" onchange="changePart($(this))" style="width:200px;height:30px;font-size:12px;">
+									<option value="" selected="selected" style="display: none;" >선택</option>
+									<option value="원장">원장</option>
+									<option value="사무국장">사무국장</option>
+									<option value="팀장">팀장</option>
+									<option value="주임">주임</option>
+									<option value="사원">사원</option>
+							</select> 
+							</p> <br>
+																										
 						</div>
+
 		            </div>
 		            <div class="modal-footer" >
 		            	<div style="margin: auto;">
-		            		<button type="button" class="btn btn-primary ml-1" id="mypageCertUpdate">
-			                    <span class="d-none d-sm-block">수정하기</span>
+		            		<button type="button" class="btn btn-primary ml-1" id="GrandChange">
+			                    <span class="d-none d-sm-block">변경하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
 			                    data-bs-dismiss="modal">
@@ -98,46 +103,42 @@
 </body>
 <script>
 
-//자격증 업데이트 유효성 검사
-$("#mypageCertUpdate").click(function(){
-	var $memId = $('#memberCertUpdateForm input[name=memId]');
-	var $certIdx = $('#memberCertUpdateForm input[name=certIdx]');
+// 직책 변경 유효성 검사
+$("#GrandChange").click(function(){
+	
 	/* Left */
-	var $certName = $('#memberCertUpdateForm input[name=certName]');
-	var $certPlace = $('#memberCertUpdateForm input[name=certPlace]');
+	var $memName = $('#memberGrandChangeForm input[name=memName]');
+	var $memId = $('#memberGrandChangeForm input[name=memId]');
 
 	/* Right */
-	var $certDate = $('#memberCertUpdateForm input[name=certDate]');
+	var $posName = $('#memberGrandChangeForm select[name=posName]');
 
-	/* 날짜 정규식 */
-	var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+
 	
 	var formData = new FormData(); // 파일 + 텍스트 전송을 위한 FormData 객체
 	
 	
-		if($certName.val()==''){
-			alert("자격증명을 입력해 주세요");
-			$certName.focus();
-		}else if($certPlace.val()==''){
-			alert("시행처를 입력해 주세요");
-			$certPlace.focus();
-		}else if($certDate.val()==''){
-			alert("취득일을 입력해 주세요");
-			$certDate.focus();
-		}else if($certDate.val().match(regex) == null){
-			alert("취득일을 형식에 맞게 입력해 주세요 \n형식 : yyyy-mm-dd\n예)2023-01-08");
-			$certDate.focus();			
+		if($memName.val()==''){
+			alert("이름을 입력해 주세요");
+			$memName.focus();
+		}else if($memId.val()==''){
+			alert("사번을 입력해 주세요");
+			$memId.focus();
+		}else if($posName.val()==''){
+			alert("직급을 선택해 주세요");
+			$posName.focus();
 		}else{
-			$('#memberCertUpdateForm input').each(function(){
+			$('#memberGrandChangeForm input').each(function(){
 				var key = $(this).attr('name');
+				var key3 = $posName.attr('name');
 				
-				formData.append(key, $(this).val());				
-				
+					formData.append(key, $(this).val());
+					formData.append(key3, $posName.val());				
 			})
 			
 			$.ajax({
 				type:'POST',
-				url:'CertUpdate.do',
+				url:'GradeUpdateDay.do',
 				processData:false, // 객체를 문자열로 바꾸지 않음
 				contentType:false, // 컨텐트 타입을 객체로 함
 				data: formData,
@@ -156,7 +157,5 @@ $("#mypageCertUpdate").click(function(){
 
 	
 });
-
-
 </script>
 </html>

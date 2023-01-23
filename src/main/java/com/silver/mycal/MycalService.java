@@ -49,7 +49,7 @@ public class MycalService {
 		return result;
 	}
 
-	public String SaveMycalList(HashMap<String, Object> list) throws JsonMappingException, JsonProcessingException {
+	public  HashMap<String, Object> SaveMycalList(HashMap<String, Object> list) throws JsonMappingException, JsonProcessingException {
 		logger.info("스케줄 리스트 서비스");
 		logger.info("list:{}",list);
 
@@ -75,14 +75,14 @@ public class MycalService {
 	    	  String allDay=jsondata.get(i).get("allDay").toString();
 	    	  String start=jsondata.get(i).get("start").toString();
 	    	  String end=jsondata.get(i).get("end").toString();
-	    	  
+
 	
 	    	  
 	    	  logger.info("title:"+title);
 	    	  logger.info("allDay:"+allDay);
 	    	  logger.info("start:"+start);
 	    	  logger.info("end:"+end);
-
+	    	  	
 	    	  
 	    	  
 	    	  dto.setCal_cate(title);
@@ -94,10 +94,12 @@ public class MycalService {
 	    	logger.info("영향을 받은 행의 갯수:"+row);
 	    	  
 	      }	
-	      HashMap<String, Object> result=new HashMap<String, Object>();
-	      result.put("memId", mem_id);
 	      
-		return null;
+	      HashMap<String, Object> result = new HashMap<String, Object>();
+	      result.put("memId",mem_id);
+	      
+	      
+		return result;
 	}
 
 
