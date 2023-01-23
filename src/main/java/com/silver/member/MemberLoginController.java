@@ -31,9 +31,15 @@ public class MemberLoginController {
 				HttpServletRequest req,
 				Model model
 				) {
+			if(id.equals("")) {
+				String msg = "로그인이 필요한 서비스입니다.";
+				String page = "redirect:/";
+				rAttr.addFlashAttribute("msg",msg);
+				return page;
+			}
 			boolean success = service.memberlogin(id,pw,req);
 			String page = "redirect:/";
-			String msg = "아이디 비번밀번호를 확인해 주세요";
+			String msg = "아이디 비번밀번호를 확인해 주세요.";
 			
 			logger.info("success 값 : "+success);
 			if (success) {
