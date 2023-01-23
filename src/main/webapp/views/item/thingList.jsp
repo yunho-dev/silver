@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <script src="assets/js/jquery.twbsPagination.js"></script>
+    <!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <style>
@@ -101,6 +104,90 @@
 	var cateId; //category id
 	
 	ListCall(showPage);
+	
+	$(function() {
+		//input을 datepicker로 선언
+		$("#getDate").datepicker({
+		    dateFormat: 'yy-mm-dd' //달력 날짜 형태
+		    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		    ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		    ,changeYear: true //option값 년 선택 가능
+		    ,changeMonth: true //option값  월 선택 가능                
+		    ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		    ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+		});
+		//초기값을 오늘 날짜
+		$('#getDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+		
+		$("#modiDate").datepicker({
+		    dateFormat: 'yy-mm-dd' //달력 날짜 형태
+		    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		    ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		    ,changeYear: true //option값 년 선택 가능
+		    ,changeMonth: true //option값  월 선택 가능                
+		    ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		    ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+		});
+		
+	});
+	
+	/* input 콤마 */
+	function inputNumberFormat(obj) {
+		obj.value = comma(uncomma(obj.value));
+	}
+	function comma(str) {
+		str = String(str);
+		return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
+	function uncomma(str) {
+		str = String(str);
+		return str.replace(/[^\d]+/g, '');
+	}
+	
+	/** 
+	 * 모달을 닫아주는 함수
+	 * num 설명
+	 * 1 : 비품 등록 모달
+	 * 2 : 비품 수정 모달
+	 */
+	function closeModal(num){
+		 switch (num) {
+		case 1: // 비품 등록 모달
+			$('#writeThing').modal('hide');
+			$('#writeForm')[0].reset();
+			break;
+		case 2: // 비품 수정 모달
+			$('#modifyThing').modal('hide');
+			$('#updateForm')[0].reset();
+			break;
+		default:
+			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
+		}
+	}
+	
+	/* 파일 체크 */
+	function fileCheck(obj) {
+		var pathpoint = obj.val().lastIndexOf('.');
+		var filepoint = obj.val().substring(pathpoint+1, obj.val().length);
+		var filetype = filepoint.toLowerCase();
+		var maxSize = 1024 * 1024;
+		var fileSize = obj[0].files[0].size;
+	    if((filetype!='jpg' && filetype!='gif' && filetype!='png' && filetype!='jpeg' && filetype!='jfif') || fileSize > maxSize) {
+	        alert('1MB 이하의 이미지 파일만 선택할 수 있습니다. \n지원하는 형식 : jpg, jpeg, png, gif');
+	        obj.val(null);
+	        return false;
+	    }
+	}
 	
 	/* 카테고리 팝업 오픈 */
 	function clickCate(clickCateId){
@@ -225,29 +312,29 @@
 			data:{thIdx:thIdx},
 			dataType:'JSON',
 			success:function(data){
-				$(".modal-body .left .th_name").text(data.detail.th_name);
-				$(".modal-body .left .th_model").text(data.detail.th_model);
-				$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
-				$(".modal-body .left .th_write").text(data.detail.th_write);
-				$(".modal-body .right .th_part").text(data.detail.th_part);
-				$(".modal-body .right .th_date").text(data.detail.th_date);
-				$(".modal-body .right .th_state").text(data.detail.th_state);
+				$("#detailThing .th_name").text(data.detail.th_name);
+				$("#detailThing .th_model").text(data.detail.th_model);
+				$("#detailThing .th_money").text(data.detail.th_money.toLocaleString('ko-KR'));
+				$("#detailThing .th_write").text(data.detail.th_write);
+				$("#detailThing .th_part").text(data.detail.th_part);
+				$("#detailThing .th_date").text(data.detail.th_date);
+				$("#detailThing .th_state").text(data.detail.th_state);
 				//후원자 체크
 				if((data.detail.th_part!=null || data.detail.th_part!='') && data.detail.th_spon != '직접구매'){
-					$(".modal-body .right .th_spon").text(data.detail.th_spon);
-					$(".modal-body .right .hiddenSpon").css('display', 'block');
+					$("#detailThing .th_spon").text(data.detail.th_spon);
+					$("#detailThing .hiddenSpon").css('display', 'block');
 				}else{
-					$(".modal-body .right .hiddenSpon").css('display', 'none');
+					$("#detailThing .hiddenSpon").css('display', 'none');
 				}
 				var newFileName = data.detailPhoto;
 				//사진 체크
 				if(newFileName != null || newFileName == ''){
-					$('.modal-body #nonPhoto').css('display', 'none');
-					$('.modal-body .th_photo').css('display', 'block');
-					$(".modal-body .th_photo").attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
+					$('#detailThing #nonPhoto').css('display', 'none');
+					$('#detailThing .th_photo').css('display', 'block');
+					$("#detailThing .th_photo").attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
 				}else{
-					$('.modal-body #nonPhoto').css('display', 'block');
-					$('.modal-body .th_photo').css('display', 'none');
+					$('#detailThing #nonPhoto').css('display', 'block');
+					$('#detailThing .th_photo').css('display', 'none');
 				}
 			},
 			error:function(e){

@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.left {
@@ -87,6 +90,7 @@
 </body>
 <script>
 	$('#bookCancel').click(function(){
+		console.log('#thingBookDetail #b_cancel'))
 		var cbIdx = $('#thingBookDetail #cbIdx').val();
 		$('#thingBookCancel #cancleForm .canceIdx').val(cbIdx);
 	})

@@ -15,6 +15,12 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- dateTimePicker -->
+<link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css" />
+<script src="assets/js/jquery.datetimepicker.full.min.js"></script>
 </head>
 <style>
 	table{
@@ -112,13 +118,13 @@
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNum"></span>운행 등록</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea" ><span id="WriteName">운행일 </span> 
-														&nbsp;&nbsp;&nbsp;&nbsp;<input type="date" name="chisDate">
+														&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="chisDate" id="chisDate" autocomplete="off">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행지역 </span> 
 														<input type="text" name="chisPlace">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행거리 </span> 
-														<input type="text" name="chisKm"><span id="WriteName">&nbsp;km</span>
+														<input type="text" name="chisKm" style="width: 150px;"><span id="WriteName">&nbsp;km</span>
 													</p><br>
 													<p class="writeArea"><span id="WriteName">운행목적 </span> 
 														<input type="text" name="chisReason">
@@ -176,17 +182,22 @@
 	                                			<h5 style="margin-bottom: 15px;"><span class="plsCarNumBook"></span>차량 사용 예약</h5>
 	                                			<div class="left">
 	                                				<p class="writeArea"><span id="WriteName">이용 시작 시간 : </span> 
-														<input type="text" name="bStart" onchange="dateCheck()">
+														<input type="text" name="bStart" id="bDateStart" onchange="dateCheck()" autocomplete="off">
 													</p><br>
-													<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="bEnd" onchange="dateCheck()">
-													</p>
-	                                			</div>
-	                                			<div class="right">
-	                                				<p class="writeArea"><span id="WriteName">사용자 : </span> 
+													<p class="writeArea"><span id="WriteName">사용자 : </span> <br>
 														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
 														<input type="hidden" name="bMemId" readonly="readonly">
-													</p>
+													</p><br>
+	                                			</div>
+	                                			<div class="right">
+	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
+														<input type="text" name="bEnd" id="bDateEnd" onchange="dateCheck()" autocomplete="off">
+													</p><br>
+	                                			</div>
+	                                			<div style="width: 100%; float: left; text-align: center;">
+	                                				<p class="writeArea">
+	                                					<span id="dateCheck" style="color: #B1B1B1; font-size: large;"></span> 
+													</p><br>
 	                                			</div>
                                 			</div>
                                 			<div class="regiBottom">
@@ -241,10 +252,63 @@
 	const dateTimeRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/; // 날짜+시간+분
 	const numRegex = /^[0-9]+$/; //숫자만
 	const yearCheck =  /^[0-9]{4,4}$/; //숫자 4자리만
+	jQuery.datetimepicker.setLocale('kr');
+	$(function() {
+	       //input을 datepicker로 선언
+	       $("#chisDate").datepicker({
+	           dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+	           ,changeYear: true //option값 년 선택 가능
+	           ,changeMonth: true //option값  월 선택 가능                
+	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+	           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+	           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+	           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+	           ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+	           ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	       });                    
+	       $('#chisDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+	       
+	       $("#chisDateModify").datepicker({
+	           dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+	           ,changeYear: true //option값 년 선택 가능
+	           ,changeMonth: true //option값  월 선택 가능                
+	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+	           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+	           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+	           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+	           ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+	           ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+	       });                    
+	       
+	       $("#bDateStart").datetimepicker({
+				timepicker: true,
+				lang: 'ko',
+				format: 'Y-m-d H:i',
+				scrollMonth: false,
+				scrollInput: false,
+				minDate : "today"
+	       });
+	       
+	       $("#bDateEnd").datetimepicker({
+				timepicker: true,
+				lang: 'ko',
+				format: 'Y-m-d H:i',
+				scrollMonth: false,
+				scrollInput: false,
+				minDate : "today"
+	       });
+	   });
 	
 	function dateCheck() {
-		$bStart = $('#driveBook input[name=bStart]');
-		$bEnd = $('#driveBook input[name=bEnd]');
+		var $bStart = $('#driveBook input[name=bStart]');
+		var $bEnd = $('#driveBook input[name=bEnd]');
+		var $dateCheck = $('#driveBook #dateCheck')
 		if($bStart.val().match(dateTimeRegex) != null && $bEnd.val().match(dateTimeRegex) != null){
 			$.ajax({
 				type:'GET',
@@ -252,7 +316,13 @@
 				data:{carIdx:carIdx, bStart:$bStart.val(), bEnd:$bEnd.val()},
 				dataType:'JSON',
 				success:function(data){
-					console.log(data)
+					if(data.check === 0){
+						$dateCheck.text('중복된 예약 날짜가 없습니다.')
+						$dateCheck.css('color', 'green')
+					}else{
+						$dateCheck.text('중복된 예약 날짜가 '+data.check+'개 있습니다.')
+						$dateCheck.css('color', 'red')
+					}
 				},
 				error:function(e){
 					console.log(data)
@@ -262,7 +332,7 @@
 	}
 	
 	/** 
-	 * 모달을 닫아주는 함수 (나중에 스위치-케이스문으로 바꿀 예정)
+	 * 모달을 닫아주는 함수
 	 * num 설명
 	 * 1 : 차량 정보 등록 모달
 	 * 2 : 차량 정보 수정 모달
@@ -271,19 +341,19 @@
 	 */
 	function closeModal(num){
 		 switch (num) {
-		case 1:
+		case 1: // 차량 정보 등록 모달
 			$('#carResist').modal('hide');
 			$('#carResistForm')[0].reset();
 			break;
-		case 2:
+		case 2: // 차량 정보 수정 모달
 			$('#carModify').modal('hide');
 			$('#carModfyForm')[0].reset();
 			break;
-		case 3:
+		case 3: // 차량 운행 기록 수정 모달
 			$('#carHisotryModifyModal').modal('hide');
 			$('#carHistoryModfyForm')[0].reset();
 			break;
-		case 4:
+		case 4: // 차량 예약 취소 모달
 			$('#carBookCancel').modal('hide');
 			$('#cancleForm')[0].reset();
 			break;
@@ -540,6 +610,7 @@
 					if(data.finish == 1){
 						alert('등록 완료')
 						$("#historyWrite")[0].reset();
+						$('#chisDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 						getHistoryList(showPage);
 					}else{
 						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
@@ -688,10 +759,14 @@
 				if(data.detail.b_cancel == 1){
 					$("#carBookDetail #hideComent").css('display', 'none');
 					$("#carBookDetail .b_cancel").text('취소 안 함').css('color', 'blue');
+					$('#bookCancel').css('display', 'inline-block')
+					$('#bookCancel').remove('onclick')
 				}else{
 					$("#carBookDetail .b_cancel").text('취소').css('color', 'red');
 					$("#carBookDetail #hideComent").css('display', 'block');
 					$("#carBookDetail .b_coment").text(data.detail.b_content);
+					$('#bookCancel').css('display', 'none')
+					$('#bookCancel').attr('onclick', "alert('취소된 예약은 예약 취소를 할 수 없습니다.'); location.reload();")
 				}
 			},
 			error:function(e){
