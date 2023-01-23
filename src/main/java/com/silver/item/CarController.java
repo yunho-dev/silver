@@ -26,8 +26,8 @@ public class CarController {
 	
 	/* 차량으로 이동 */
 	@GetMapping(value = "/car")
-	public ModelAndView car() {
-		return service.carList();
+	public ModelAndView car(@RequestParam HashMap<String, String> params) {
+		return service.carList(params);
 	}
 	
 	/* 차량 운행 기록 조회 */

@@ -26,8 +26,10 @@ public class ThingController {
 	
 	/* 비품 목록 이동 */
 	@GetMapping(value = "/thingList")
-	public ModelAndView thingList() {
+	public ModelAndView thingList(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/thingList");
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		return mav;
 	}
 	
@@ -80,8 +82,10 @@ public class ThingController {
 	
 	/* 카테고리 리스트 이동 */
 	@GetMapping(value = "/itemCateList.go")
-	public ModelAndView itemCate() {
+	public ModelAndView itemCate(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/itemCateList");
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		return mav;
 	}
 	
@@ -100,8 +104,10 @@ public class ThingController {
 	
 	/* 카테고리 리스트 등록 이동 */
 	@GetMapping(value = "/itemCateWrite.go")
-	public ModelAndView itemCateWrite() {
+	public ModelAndView itemCateWrite(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/itemCateWrite");
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		return mav;
 	}
 	
@@ -130,8 +136,10 @@ public class ThingController {
 	
 	/* 비품 관리 대장으로 이동 */
 	@GetMapping(value = "/thingManage")
-	public ModelAndView thingManage() {
+	public ModelAndView thingManage(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/thingManage");
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		return mav;
 	}
 	
@@ -151,8 +159,10 @@ public class ThingController {
 	
 	/* 비품 사용내역으로 이동 */
 	@GetMapping(value = "/thingHistory")
-	public ModelAndView thingHistory() {
+	public ModelAndView thingHistory(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/thingHistory");
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		return mav;
 	}
 	
@@ -176,7 +186,7 @@ public class ThingController {
 	
 	/* 비품 사용내역 조회 - 등록 - 비품목록 */
 	@GetMapping(value = "/popThingHistoryList.go")
-	public ModelAndView popThingHistoryList() {
+	public ModelAndView popThingHistoryList(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/popThingHistoryList");
 		return mav;
 	}
@@ -206,9 +216,11 @@ public class ThingController {
 	
 	/* 비품 사용예약으로 이동 */
 	@GetMapping(value = "/thingBook.go")
-	public ModelAndView thingBook() {
+	public ModelAndView thingBook(@RequestParam HashMap<String, String> params) {
 		logger.info("비품 사용 예약으로 이동 요청");
 		ModelAndView mav = new ModelAndView("item/thingBook");
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		return mav;
 	}
 	
@@ -228,7 +240,7 @@ public class ThingController {
 	
 	/* 비품 예약 -> 사용자 -> 입소자 리스트 */
 	@GetMapping(value = "/thingResidentList.go")
-	public ModelAndView thingResidentList() {
+	public ModelAndView thingResidentList(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/thingResidentList");
 		return mav;
 	}
@@ -247,7 +259,7 @@ public class ThingController {
 	
 	/* 비품 예약 -> 사용자 -> 직원 리스트 */
 	@GetMapping(value = "/thingMemberList.go")
-	public ModelAndView thingMemberList() {
+	public ModelAndView thingMemberList(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/thingMemberList");
 		return mav;
 	}
@@ -265,7 +277,7 @@ public class ThingController {
 	}
 	/* 비품 예약 -> 품명 */
 	@GetMapping(value = "/popThList.go")
-	public ModelAndView popThList() {
+	public ModelAndView popThList(@RequestParam HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/popThList");
 		return mav;
 	}

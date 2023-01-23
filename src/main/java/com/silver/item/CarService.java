@@ -25,13 +25,13 @@ public class CarService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public ModelAndView carList() {
+	public ModelAndView carList(HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("item/car");
 		ArrayList<CarDTO> list = dao.carList();
 		logger.info("가져온 차량 수 : "+list.size());
-		
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", params);
 		mav.addObject("list", list);
-		
 		return mav;
 	}
 
