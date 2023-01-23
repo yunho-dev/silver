@@ -196,7 +196,14 @@
 					$('#detailThing .right .th_state').text(data.detail.th_state)
 					$('#detailThing .right .th_spon').text(data.detail.th_spon)
 					//photo
-					$('#detailThing .th_photo').attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
+					if(data.detailPhoto != null){
+						$('#detailThing #nonPhoto').css('display', 'none');
+						$('#detailThing .th_photo').css('display', 'block');
+						$('#detailThing .th_photo').attr('src', '/filephoto/'+data.detailPhoto.fp_newFileName)
+					}else{
+						$('#detailThing #nonPhoto').css('display', 'block');
+						$('#detailThing .th_photo').css('display', 'none');
+					}
 				},
 				error:function(e){
 					console.log(e)

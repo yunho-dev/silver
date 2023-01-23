@@ -1,5 +1,6 @@
 package com.silver.item;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,7 +57,7 @@ public class ThingService {
 	 * @param ext 확장자명
 	 * @return 저장한 파일명
 	 */
-	private String fileSave(MultipartFile photo, String ext) {
+	public String fileSave(MultipartFile photo, String ext) {
 		logger.info("파일 저장 기능 접근");
 		// 1. 새 파일명 생성
 		String newFileName = System.currentTimeMillis()+ext;
@@ -77,6 +78,30 @@ public class ThingService {
 		
 		// 3. 새 파일 명 반환
 		return newFileName;
+	}
+	
+	/**
+	 * ---------파일 삭제 메서드---------<br>
+	 * @param newFileName : db에 저장되어 있던(실제 서버에 저장되어있는) newFileName(사진 이름)
+	 * @return result : 삭제 여부 (0 : 삭제 실패, 1: 삭제 성공)
+	 */
+	public int fileDelete(String newFileName) {
+		logger.info("파일 삭제 기능 접근");
+		logger.info("받아온 사진 이름 : {}", newFileName);
+		String path = "C:/filephoto/"+newFileName;
+		logger.info("삭제할 파일 경로 : "+path);
+		int result = 0;
+		
+		File deleteFile = new File(path);
+		if(deleteFile.exists()) {
+			logger.info("삭제할 파일이 존재합니다. 삭제를 시도합니다");
+			deleteFile.delete();
+			result = 1;
+		}else {
+			logger.info("삭제할 파일이 존재하지 않습니다.");
+		}
+		
+		return result;
 	}
 
 	public HashMap<String, Object> getThingList(int page) {
@@ -208,14 +233,37 @@ public class ThingService {
 		if(thPhoto != null){
 			String oriFileName = thPhoto.getOriginalFilename();
 			logger.info("첨부된 사진이 있습니다. 사진 명 : "+oriFileName);
-			if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
-				String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
-				String newFileName = fileSave(thPhoto,ext);
-				logger.info("서버에 저장될 파일 이름 : "+newFileName);
-				if(!newFileName.equals("")) {
-					dao.photoUpdate(oriFileName, newFileName, params.get("thIdx"));
+			
+			logger.info("사진을 수정하기 전 기존에 등록한 사진이 있는지 검사합니다");
+			ThingDTO photoDto = dao.photoView(params.get("thIdx"));
+			if(photoDto != null) { // db에 저장된 사진이 있다면
+				logger.info("DB에 등록된 기존 사진이 있습니다");
+				String dbPhoto = photoDto.getFp_newFileName();
+				logger.info("삭제 요청할 파일 이름 : "+dbPhoto);
+				int resultDelete = fileDelete(dbPhoto);
+				logger.info("삭제 성공 여부(1이라면 성공, 0이면 실패) : "+resultDelete);
+				
+				if((resultDelete == 1) && oriFileName != null && !oriFileName.equals("")) { //사진 있음
+					logger.info("파일 삭제를 완료했고, 첨부할 사진이 있으므로 파일 첨부를 시도합니다");
+					String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+					String newFileName = fileSave(thPhoto,ext);
+					logger.info("서버에 저장될 파일 이름 : "+newFileName);
+					if(!newFileName.equals("")) {
+						dao.photoUpdate(oriFileName, newFileName, params.get("thIdx"));
+					}
 				}
-			}
+				
+			}else { // db에 저장된 사진이 없다면
+				if(oriFileName != null && !oriFileName.equals("")) { //사진 있음
+					logger.info("DB에 등록된 기존 사진이 없습니다 사진 등록을 시도합니다");
+					String ext = oriFileName.substring(oriFileName.lastIndexOf("."));// 확장자 추출
+					String newFileName = fileSave(thPhoto,ext);
+					logger.info("서버에 저장될 파일 이름 : "+newFileName);
+					if(!newFileName.equals("")) {
+						dao.photoInsert(oriFileName, newFileName, Integer.parseInt(params.get("thIdx")));
+					}
+				}
+			}//end of if
 		}
 		
 		return getThingDetail(params.get("thIdx"));

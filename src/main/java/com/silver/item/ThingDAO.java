@@ -99,5 +99,5 @@ public interface ThingDAO {
 	int thingBookCancel(int cbIdx, String bContent, String bookWriter);
 
 	String thNameChcek(String thName);
-	
+
 }
