@@ -33,8 +33,8 @@
 		        <div class="care" id="table">
 				<button onclick="location.href='donationWriteForm'" class="btn btn-primary" >글작성</button>
 		            <div class="card-body py-4 px-5">
-		                <div class="d-flex align-items-center">
-		          			<table class="table table-bordered table-hover" style="text-align: center;">
+		                <div class="card" style="margin-top:40px; padding-top:50px; margin-bottom: 0px;">
+		          			<table class="table">
 		                           <thead>
 		                               <tr>
 		                                   <th>순번</th>
@@ -50,7 +50,7 @@
 		                       </table>
 		                       </div>
 		                       </div>
-		                       <div class="card-body py-4 px-5" style="margin:0 auto;">
+		                       <div class="card-body py-4 px-5" style="margin:0 auto; padding-top:10px;">
 								<div>
 								<select id="select">
 									<option value="title">후원자</option>
@@ -59,15 +59,15 @@
 								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="donationSearch(page2)">검색</button>
 								</div>
 		                   </div>
-							<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<div id="pagint">
-								<div class="container">
-									<nav aria-label="Page navigation" style="text-align: center;" style="margin" >
-										<ul class="pagination" id="pagination"></ul>
+							
+							<div id="paging">
+								<div >
+									<nav>
+										<ul class="pagination" id="pagination" style="padding-left:35%; margin-top: 10px; margin-bottom: 30px; text-align: center;"></ul>
 									</nav>
 							 </div>
 						 </div>
-					  </div>
+					  
 		            </div>	
 		    </section>
 		   </div>
