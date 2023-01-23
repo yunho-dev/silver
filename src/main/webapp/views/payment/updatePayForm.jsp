@@ -78,7 +78,7 @@
 											<td colspan="2">
 												<div id="div_editor"></div>
 												<div id="content" style="display: none;">${payformUpdate.pf_content}</div>
-											<input type="hidden" style="display: none;" name="pf_content" value="${payformUpdate.pf_content}"/>
+											<input type="hidden" style="display: none;" name="pf_content" value='${payformUpdate.pf_content}'/>
 											</td>
 										</tr>
 								</tbody>

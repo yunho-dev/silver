@@ -28,7 +28,7 @@
    <div class="page-heading">
        <h3>감염병 리스트</h3>
    </div>     
-  <div class="card" style="margin-top:50px; ">
+  <div class="card" style="margin-top:70px; padding-top:50px; ">
   <table class="table">
   <thead>
     <tr>
