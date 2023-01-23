@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	.filter{
@@ -102,6 +105,78 @@
 	
 	ListCall(showPage);
 	
+	/** 
+	 * 모달을 닫아주는 함수
+	 * num 설명
+	 * 1 : 비품 사용 내역 등록 모달
+	 * 2 : 비품 사용 내역 수정 모달
+	 */
+	function closeModal(num){
+		 switch (num) {
+		case 1: // 비품 사용 내역 등록 모달
+			$('#thingHistoryWrite').modal('hide');
+			$('#writeForm')[0].reset();
+			$('#writeRentDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+			break;
+		case 2: // 비품 사용 내역 수정 모달
+			$('#thingHistoryModify').modal('hide');
+			$('#updateForm')[0].reset();
+			break;
+		default:
+			alert('모달을 닫는 중 알 수 없는 오류가 발생했습니다. \n다시 시도해 주세요');
+		}
+	}
+	
+	$(function() {
+		$("#writeRentDate").datepicker({
+		    dateFormat: 'yy-mm-dd' //달력 날짜 형태
+		    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		    ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		    ,changeYear: true //option값 년 선택 가능
+		    ,changeMonth: true //option값  월 선택 가능                
+		    ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		    ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+		});
+		//초기값을 오늘 날짜
+		$('#writeRentDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+		
+		$("#modiRentDate").datepicker({
+		    dateFormat: 'yy-mm-dd' //달력 날짜 형태
+		    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		    ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		    ,changeYear: true //option값 년 선택 가능
+		    ,changeMonth: true //option값  월 선택 가능                
+		    ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		    ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+		});
+		
+		$("#modiReturnDate").datepicker({
+		    dateFormat: 'yy-mm-dd' //달력 날짜 형태
+		    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		    ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+		    ,changeYear: true //option값 년 선택 가능
+		    ,changeMonth: true //option값  월 선택 가능
+		    ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+		    ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+		    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+		    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+		    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+		    ,minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,maxDate: "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+		});
+		
+	});
+	
 	function ListCall(page){
 		$.ajax({
 			type:'GET',
@@ -152,7 +227,7 @@
 			}else{
 				content +='<td>'+rentDate.toLocaleDateString('ko-KR')+'</td>';
 			}
-			if(historyList[i].his_return == null){
+			if(historyList[i].his_return == null || historyList[i].his_return == '1900-01-01'){
 				content +='<td>없음</td>';
 			}else{
 				content +='<td>'+returnDate.toLocaleDateString('ko-KR')+'</td>';
@@ -224,37 +299,41 @@
 			success:function(data){
 				var noData = '';
 				if(data.detail==null){
-					$('.modal-body .noData').css('display', 'block')
-					$(".modal-body .left #hisIdx").val(noData);
-					$(".modal-body .left .th_name").text(noData);
-					$(".modal-body .left .th_model").text(noData);
-					$(".modal-body .left .th_money").text(noData);
-					$(".modal-body .left .th_spon").text(noData);
-					$(".modal-body .left .his_name").text(noData);
-					$(".modal-body .left .his_goal").text(noData);
-					$(".modal-body .right .th_part").text(noData);
-					$(".modal-body .right .th_state").text(noData);
-					$(".modal-body .right .th_date").text(noData);
-					$(".modal-body .right .his_rent").text(noData);
-					$(".modal-body .right .his_return").text(noData);
-					$(".modal-body .right .his_write").text(noData);
-					$(".modal-body .his_bigo").text(noData);
+					$('#thingHistoryDetail .noData').css('display', 'block')
+					$("#thingHistoryDetail #hisIdx").val(noData);
+					$("#thingHistoryDetail .th_name").text(noData);
+					$("#thingHistoryDetail .th_model").text(noData);
+					$("#thingHistoryDetail .th_money").text(noData);
+					$("#thingHistoryDetail .th_spon").text(noData);
+					$("#thingHistoryDetail .his_name").text(noData);
+					$("#thingHistoryDetail .his_goal").text(noData);
+					$("#thingHistoryDetail .th_part").text(noData);
+					$("#thingHistoryDetail .th_state").text(noData);
+					$("#thingHistoryDetail .th_date").text(noData);
+					$("#thingHistoryDetail .his_rent").text(noData);
+					$("#thingHistoryDetail .his_return").text(noData);
+					$("#thingHistoryDetail .his_write").text(noData);
+					$("#thingHistoryDetail .his_bigo").text(noData);
 				}else{
-					$('.modal-body .noData').css('display', 'none')
-					$(".modal-body .left #hisIdx").val(data.detail.his_idx);
-					$(".modal-body .left .th_name").text(data.detail.th_name);
-					$(".modal-body .left .th_model").text(data.detail.th_model);
-					$(".modal-body .left .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
-					$(".modal-body .left .th_spon").text(data.detail.th_spon);
-					$(".modal-body .left .his_name").text(data.detail.his_name);
-					$(".modal-body .left .his_goal").text(data.detail.his_goal);
-					$(".modal-body .right .th_part").text(data.detail.th_part);
-					$(".modal-body .right .th_state").text(data.detail.th_state);
-					$(".modal-body .right .th_date").text(data.detail.th_date);
-					$(".modal-body .right .his_rent").text(data.detail.his_rent);
-					$(".modal-body .right .his_return").text(data.detail.his_return);
-					$(".modal-body .right .his_write").text(data.detail.his_write);
-					$(".modal-body .his_bigo").text(data.detail.his_bigo);
+					$('#thingHistoryDetail .noData').css('display', 'none')
+					$("#thingHistoryDetail #hisIdx").val(data.detail.his_idx);
+					$("#thingHistoryDetail .th_name").text(data.detail.th_name);
+					$("#thingHistoryDetail .th_model").text(data.detail.th_model);
+					$("#thingHistoryDetail .th_money").text(data.detail.th_money.toLocaleString('ko-KR')+'￦');
+					$("#thingHistoryDetail .th_spon").text(data.detail.th_spon);
+					$("#thingHistoryDetail .his_name").text(data.detail.his_name);
+					$("#thingHistoryDetail .his_goal").text(data.detail.his_goal);
+					$("#thingHistoryDetail .th_part").text(data.detail.th_part);
+					$("#thingHistoryDetail .th_state").text(data.detail.th_state);
+					$("#thingHistoryDetail .th_date").text(data.detail.th_date);
+					$("#thingHistoryDetail .his_rent").text(data.detail.his_rent);
+					if(data.detail.his_return == '1900-01-01'){
+						$("#thingHistoryDetail .his_return").text('없음');
+					}else{
+						$("#thingHistoryDetail .his_return").text(data.detail.his_return);
+					}
+					$("#thingHistoryDetail .his_write").text(data.detail.his_write);
+					$("#thingHistoryDetail .his_bigo").text(data.detail.his_bigo);
 				}
 			},
 			error:function(e){

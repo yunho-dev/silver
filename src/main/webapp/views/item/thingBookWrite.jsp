@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <style>
 	div.writeLeft {
@@ -53,7 +56,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h4 class="modal-title" id="myModalLabel17">비품 사용 예약 등록</h4>
-	                <button type="button" class="close" onclick="closeWriteModal()"
+	                <button type="button" class="close" onclick="closeModal(1)"
 	                    aria-label="Close" style="font-size: 22pt;">
 	                    &times;
 	                </button>
@@ -82,11 +85,11 @@
 						<div class="writeRight">
 							<p class="writeArea">
 								<span id="WriteName">예약 시작 날짜 : </span> 
-								<input type="date" name="bStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bStart" id="bookStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p><br>
 							<p class="writeArea">
 								<span id="WriteName">예약 끝날 날짜 : </span> 
-								<input type="date" name="bEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bEnd" id="bookEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
 							</p>
 							<p class="writeArea">
 								<span id="dateCheck" style="color: #B1B1B1; font-size: medium;">예약 시작 날짜와 끝날 날짜를 선택해 주세요</span>
@@ -99,7 +102,7 @@
 			                    <span class="d-none d-sm-block">등록하기</span>
 			                </button>
 			                <button type="button" class="btn btn-light-secondary"
-			                    onclick="closeWriteModal()">
+			                    onclick="closeModal(1)">
 			                    <span class="d-none d-sm-block">닫기</span>
 			                </button>
 		                </div>
@@ -112,12 +115,6 @@
 <script>
 	/* 날짜 정규식 */
 	const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-
-	function closeWriteModal(){
-		$('#thingBookWrite').modal('hide');
-		$('#writeForm')[0].reset();
-		$('#writeForm input[name=user]').attr('onclick','alert("사용자 구분을 먼저 선택해 주세요")')
-	}
 	
 	function changeUser(selected){
 		selVal = selected.val();
@@ -145,19 +142,25 @@
 	}
 	
 	function choiceRow(idx, name, judge){
+		var $bStart = $('#writeForm input[name=bStart]');
+		var $bEnd = $('#writeForm input[name=bEnd]');
+		
 		if(judge == 0){
 			$('.writeLeft input[name=user]').val(name)
 			$('.writeLeft input[name=userid]').val(idx)
 		}else{
 			$('.writeLeft input[name=thName]').val(name)
 			$('.writeLeft input[name=thIdx]').val(idx)
+			
+			$bStart.attr('readonly', false)
+			$bEnd.attr('readonly', false)
+			$('#bookStart').datepicker('option','disabled',false); //datepicker 켬
+			$('#bookEnd').datepicker('option','disabled',false); //datepicker 켬
+			$('#bookStart').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+			$bStart.removeAttr("placeholder")
+			$bEnd.removeAttr("placeholder")
 		}
-		var $bStart = $('#writeForm input[name=bStart]');
-		var $bEnd = $('#writeForm input[name=bEnd]');
-		$bStart.removeAttr("readonly")
-		$bEnd.removeAttr("readonly")
-		$bStart.removeAttr("placeholder")
-		$bEnd.removeAttr("placeholder")
+		
 	}
 	
 	function popThing(){

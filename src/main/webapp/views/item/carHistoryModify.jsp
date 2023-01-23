@@ -15,6 +15,12 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script src="assets/js/jquery.twbsPagination.js"></script>
+<!-- datePicker -->
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- dateTimePicker -->
+<link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css" />
+<script src="assets/js/jquery.datetimepicker.full.min.js"></script>	
 </head>
 <body>
 	<!--large size Modal -->
@@ -35,7 +41,7 @@
 						<div class="left">
 							<input type="hidden" name="chisIdx">
 							<p class="writeArea"><span id="WriteName">운행일 : </span> 
-								<input type="text" name="chisDate">
+								<input type="text" name="chisDate" id="chisDateModify" autocomplete="off">
 							</p><br>
 							<p class="writeArea"><span id="WriteName">운행지역 : </span> 
 								<input type="text" name="chisPlace">
