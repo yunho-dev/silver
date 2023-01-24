@@ -106,7 +106,7 @@ System.out.println(hope);
                                 	  <c:forEach items="${noticeList}" var="list">
                                 	  	<tr>
                                 	  		<td>${list.bd_idx}</td>
-                                	  		<td>${list.bd_title}</td>
+                                	  		<td><a href="noticeDetail.do?page=board2&bd_idx=${list.bd_idx}">${list.bd_title}</a></td>
                                 	  		<td>${list.mem_name}</td>
                                 	  		<td class="timeSub">${list.bd_date}</td>
                                 	 	</tr>
