@@ -112,7 +112,7 @@ System.out.println(hope);
 <!-- 									</tbody> -->
 <!-- 								</table> -->
 							
-							<button type="button" class="btn btn-secondary" onclick="location.href='nextList'">뒤로가기</button>
+							<button type="button" class="btn btn-secondary" onclick="location.href='nextList?page=board1'">뒤로가기</button>
 							</form>
 						</div>
 					</div>

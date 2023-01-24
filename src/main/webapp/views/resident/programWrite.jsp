@@ -130,7 +130,7 @@ System.out.println(hope);
 <!-- 							<button type="submit" class="btn btn-primary" onclick="location.href='programList'">등록하기</button> -->
 							<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 							<button type="button" class="btn btn-secondary"
-								onclick="location.href='programList'">뒤로가기</button>
+								onclick="location.href='programList?page=resident'">뒤로가기</button>
 							</form>
 						</div>
 					</div>

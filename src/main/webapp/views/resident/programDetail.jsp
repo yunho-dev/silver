@@ -160,7 +160,7 @@ System.out.println(hope);
 							<!-- 바텀 버튼 -->	
 							<button type="submit" class="btn btn-primary">수정완료</button>
 							<button type="button" class="btn btn-secondary"
-								onclick="location.href='programList'">뒤로가기</button>
+								onclick="location.href='programList?page=resident'">뒤로가기</button>
 							</form>
 						</div>
 					</div>

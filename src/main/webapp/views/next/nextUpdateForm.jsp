@@ -94,7 +94,7 @@ System.out.println(hope);
 <!-- 							<button type="submit" class="btn btn-primary">등록하기</button> -->
 							<button type="button" class="btn btn-primary" onclick="save()">등록하기</button>
 							<button type="button" class="btn btn-secondary"
-								onclick="location.href='nextList'">뒤로가기</button>
+								onclick="location.href='nextList?page=board1'">뒤로가기</button>
 							</form>
 						</div>
 					</div>

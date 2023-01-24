@@ -178,9 +178,9 @@ function drawList(list){
 		
 		content +='<td>'+list[i].pc_cate+'</td>';
 		content += '<td>'
-			+ "<button class='btn btn-primary btn-sm' onclick=location.href='programDetail?pr_idx="+list[i].pr_idx+"'>상세보기/수정</button>"
+			+ "<button class='btn btn-primary btn-sm' onclick=location.href='programDetail?page=resident&pr_idx="+list[i].pr_idx+"'>상세보기/수정</button>"
 			+ "</td>";
-		
+			//&는 연결해주는 거임
 		content +='</tr>';
 	}
 	$("#list").empty();
@@ -238,7 +238,7 @@ function drawList(list){
 
 function programWrite(){
 	console.log("프로그램 등록 버튼 누르셧죠?");
-	location.href='programWrite';
+	location.href='programWrite?page=resident';
 }
 
 </script>
