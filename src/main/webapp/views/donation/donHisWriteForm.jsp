@@ -39,7 +39,7 @@ System.out.println(hope);
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
-       <h3>후원금 히스토리 작성</h3>
+       <h3>후원금 사용내역 작성</h3>
    </div>
   <section class="row">
   	<div class="card">
