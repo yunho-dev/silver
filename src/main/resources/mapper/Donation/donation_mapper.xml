@@ -8,7 +8,7 @@
 	<select id="donationListCall" resultType="hashmap">
 		SELECT do_idx, do_date, do_name, do_write, do_money 
 		FROM donation
-		limit 10 offset #{param1}	
+		order by do_idx desc limit 10 offset #{param1}	
 	</select>
 	
 	<select id="totalCount" resultType="int">

@@ -8,7 +8,7 @@
 	<select id="donHistoryCall" resultType="hashmap">
 		SELECT dh_idx, dh_date, dh_write,dh_cate, dh_money 
 		FROM donhistory
-		limit 10 offset #{param1}	
+		order by dh_idx desc limit 10 offset #{param1}	
 	</select>
 	
 	<select id="searchdonationHisTotal" resultType="int">
