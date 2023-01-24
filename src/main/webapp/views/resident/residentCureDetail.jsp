@@ -87,48 +87,58 @@ System.out.println(hope);
          
          
 		
-  <div class="card-body">
+  <div class="page-heading">
+            <h3>치료</h3>
+      </div>
+         
+         
+         
+         
+         
+         <div class="page-content">
+            <section class="row">
+               <div class="card">
+                  <div class="card-body py-4 px-5">
                <form action="residentUpdatedetail.do" method="POST" class="form form-horizontal" id="residentUpdatedetailForm">
-                  <div class="form-body">
-                     <div class="row">                                              
-                        <div class="col-md-8 form-group">
-                           <h5>치료</h5>
+                  <div class="d-flex align-items-center">
+               <div class="input-group mb-3">
+                           
                            <input type="hidden" name="re_idx" value="${rd.re_idx}">
                            <input type="hidden" name="cc_idx" value="${rd.cc_idx}">
                            <input type="hidden" name="cu_num" value="${rd.cu_num}">
                         </div>
-                        <table  class="table mb-0" >
-                           <tr>
-                              <td>담당자</td>
-                              <td>
-                                 <input type="text" name="co_write" placeholder="담당자" value="${rd.co_write}" id="co_write">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>시작시간</td>
-                                 <td>
-                                    <input type="datetime" name="co_start" placeholder="2022-12-20 19:00:00.000" value="${rd.co_start}" id="co_start">
-                                 </td>
-                              </tr>
-                           <tr>
-                              <td>종료시간</td>
-                              <td>
-                                 <input type="datetime" name="co_end" placeholder="2022-12-20 19:00:00.000" value="${rd.co_start}" id="co_end">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>내용</td>
-                              <td>
-                                 <input type="text" name="cu_content" placeholder="내용" value="${rd.cu_content}" id="cu_content">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>특이사항</td>
-                              <td>
-                                 <input type="text" name="co_event" placeholder="특이사항" value="${rd.co_event}" id="co_event">
-                              </td>
-                           </tr>
-                        </table>
+               </div>
+               <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">담당자</span> 
+                                 <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="co_write" placeholder="담당자" value="${rd.co_write}" id="co_write" autofocus>
+                              </div>
+                    
+                    <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">시작시간</span> 
+                            <input type="text"  class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="co_start" placeholder="시작시간" value="${rd.co_start}" id="co_start" autofocus>
+                    </div>
+                   <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">종료시간</span> 
+                            <input type="text"  class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="co_end" placeholder="종료시간" value="${rd.co_end}" id="co_end" autofocus>
+                    </div> 
+                     <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">담당자</span> 
+                                 <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="co_write" placeholder="담당자" value="${rd.co_write}" id="co_write" autofocus>
+                     </div>
+               <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">내용</span> 
+                                 <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="cu_content" placeholder="내용" value="${rd.cu_content}" id="cu_content" autofocus>
+                    </div>
+                    <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">특이사항</span> 
+                                 <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="co_event" placeholder="특이사항" value="${rd.co_event}" id="co_event" autofocus>
+                    </div>
                         <div class="col-sm-12 d-flex justify-content-end">
                             <button type="button" id="cancleBtn" class="btn btn-primary">취소</button>
                          <button type="button" id="residentUpdatedetailBtn" class="btn btn-primary">등록</button>
@@ -176,6 +186,7 @@ System.out.println(hope);
  <script src="assets/js/main.js"></script>
                        
 </body>
+
 <script>
 
 

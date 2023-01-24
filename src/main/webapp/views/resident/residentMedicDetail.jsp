@@ -92,64 +92,65 @@ System.out.println(hope);
    <!-- 여기 안에서 개발  -->
    
    
-  <div class="card-body">
-         <form action="residentUpdatedetail.do" method="POST" class="form form-horizontal">
-            <div class="form-body">
-                <div class="row">                                              
-                    <div class="col-md-8 form-group">
-                        <h5>약품</h5>
+ <div class="page-heading">
+            <h3>약품</h3>
+      </div>
+   
+   
+  <div class="page-content">
+            <section class="row">
+               <div class="card">
+                  <div class="card-body py-4 px-5">
+         <form action="residentUpdatedetail.do" method="POST" class="form form-horizontal" iclass="form form-horizontal" id="residentUpdatedetailForm">
+            <div class="d-flex align-items-center">
+               <div class="input-group mb-3">
                            <input type="hidden" name="re_idx" value="${rd.re_idx}"/>
+                           <input type="hidden" name="cc_idx" value="${rd.cc_idx}"/>
+                           <input type="hidden" name="me_num" value="${rd.me_num}"/>
                     </div>
-                  <table>
-                     <tr>
-                        <td>담당자</td>
-                        <td>
-                           <input type="text" name="me_write" placeholder="담당자" value="${rd.me_write}">
-                                                             <input type="hidden" name="cc_idx" value="${rd.cc_idx}"/>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>시작시간</td>
-                        <td>
-                           <input type="datetime" name="me_start" value="${rd.me_start}">
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>끝난시간</td>
-                        <td>
-                           <input type="datetime" name="me_end" value="${rd.me_end}">
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>약품명</td>
-                        <td>
-                            <input type="datetime" name="me_name" placeholder="약품명" value="${rd.me_name}">
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>투여량</td>
-                        <td>
-                           <input type="datetime" name="me_volume" placeholder="투여량" value="${rd.me_volume}">
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>투여방법</td>
-                        <td>
-                             <input type="text" name="me_way" placeholder="투여방법" value="${rd.me_way}">
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>특이사항</td>
-                        <td>
-                             <input type="text" name="me_event" placeholder="특이사항" value="${rd.me_event}">
-                        </td>
-                     </tr>
-                  </table>
+               </div>
+               <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">담당자</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_write" placeholder="담당자" value="${rd.me_write}" id="me_write" autofocus>
+              </div>
+               <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">시작시간</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_start" placeholder="시작시간" value="${rd.me_start}" id="me_start" autofocus>
+              </div>
+               <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">끝난시간</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_end" placeholder="끝난시간" value="${rd.me_end}" id="me_end" autofocus>
+              </div>
+                <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">약품명</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_name" placeholder="약품명" value="${rd.me_name}" id="me_name" autofocus>
+              </div>
+               <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">투여량</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_volume" placeholder="투여량" value="${rd.me_volume}" id="me_volume" autofocus>
+              </div>
+              <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">투여방법</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_way" placeholder="투여방법" value="${rd.me_way}" id="me_way" autofocus>
+              </div>
+                <div class="input-group mb-3">
+                     <span class="input-group-text" id="basic-addon1">특이사항</span> 
+                            <input type="text"   class="form-control" aria-label="Username" 
+                                 aria-describedby="basic-addon1" name="me_event" placeholder="특이사항" value="${rd.me_event}" id="me_event" autofocus>
+              </div>
+               
+               
          
                                                                                               
                            <div class="col-sm-12 d-flex justify-content-end">
-                         <a href="residentCategory" class="btn btn-primary">취소</a>         
-                                <button >등록</button>
+                                 <button type="button" id="cancleBtn" class="btn btn-primary">취소</button>
+                               <button type="button" id="residentUpdatedetailBtn" class="btn btn-primary">등록</button>
                              </div>
                          </div>
                      </div>
@@ -157,6 +158,7 @@ System.out.println(hope);
              </div>
        </div>
 </div>
+
 
 <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
  <script src="assets/js/bootstrap.bundle.min.js"></script>
