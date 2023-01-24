@@ -224,7 +224,7 @@
 				</if>
 			</otherwise>
 		</choose>
-		ORDER BY th.his_rent DESC limit 10 offset #{offset}
+		ORDER BY th.his_idx DESC limit 10 offset #{offset}
 	</select>
 	
 	<!-- 비품 사용 내역 등록 -->
