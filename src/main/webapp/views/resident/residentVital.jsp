@@ -105,85 +105,79 @@ System.out.println(hope);
          <div id="main">
             <jsp:include page="../upbar.jsp"></jsp:include>
             <!-- 여기 안에서 개발  -->
+            <div class="page-heading">
+				<h5>바이탈</h5>
+			</div>
             
-            
-            <div class="card-body">
+            		
+            <div class="page-content">
+            	<section class="row">
+            		<div class="card">
+            			<div class="card-body py-4 px-5">
                <form action="residentwriteVital.do" method="POST" class="form form-horizontal" id="residentwriteVitalForm">
-                  <div class="form-body">
-                     <div class="row">                                              
-                        <div class="col-md-8 form-group">
-                           <h5>바이탈</h5>
-                           <input type="hidden" name="re_idx" value="${rd.re_idx}"/>
+                  <div class="d-flex align-items-center">
+                     <div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">담당자</span>
+                        <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_write"  id="vi_write" autofocus>
+                         <input type="hidden" name="re_idx" value="${rd.re_idx}"/>
+                      </div>
+                   </div>
+                 
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">시작시간</span>
+                         <input type="time"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_start"  id="vi_start" autofocus>
                         </div>
-                        <table  class="table mb-0" >
-                           <tr>
-                              <td>담당자</td>
-                                 <td>
-                                     <input type="text" name="vi_write" placeholder="담당자" value="${rd.vi_write}" id="vi_write">
-                                 </td>
-                              </tr>
-                           <tr>
-                              <td>시작시간</td>
-                              <td>
-                                   <input type="time" name="vi_start" placeholder="2022-12-20 19:00:00.000" value="${rd.vi_start}" id="vi_start">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>끝난시간</td>
-                              <td>
-                                 <input type="time" name="vi_end" placeholder="2022-12-20 19:00:00.000" value="${rd.vi_end}" id="vi_end">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>혈압(mm/Hg)</td>
-                              <td>
-                                 <input type="number" name="vi_blood" placeholder="혈압" id="vi_blood" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>맥박(회/분)</td>
-                              <td>
-                                  <input type="number" name="vi_heart" placeholder="맥박" id="vi_heart" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>체온(°C)</td>
-                              <td>
-                                 <input type="number" name="vi_temp" placeholder="체온" id="vi_temp" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>호흡(회/분)</td>
-                              <td>
-                                  <input type="number" name="vi_breath" placeholder="호흡" id="vi_breath" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>혈당(mg/dL)</td>
-                              <td>
-                                   <input type="number" name="vi_sugar" placeholder="혈당" id="vi_sugar" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>몸무게(kg)</td>
-                              <td>
-                                   <input type="number" name="vi_weight" placeholder="몸무게" id="vi_weight" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>특이사항</td>
-                              <td>
-                                   <input type="text" name="vi_event" placeholder="특이사항" id="vi_event">
-                              </td>
-                           </tr>
-                        </table>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">끝난시간</span>
+                         <input type="time"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_end"  id="vi_end" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">혈압(mm/Hg)</span>
+                         <input type="number"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_blood"  id="vi_blood" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">맥박(회/분)</span>
+                         <input type="number"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_heart"  id="vi_heart" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">체온(°C)</span>
+                         <input type="number"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_temp"  id="vi_temp" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">호흡(회/분)</span>
+                         <input type="number"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_breath"  id="vi_breath" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">혈당(mg/dL)</span>
+                         <input type="number"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_sugar"  id="vi_sugar" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">몸무게(kg)</span>
+                         <input type="number"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_weight" id="vi_weight" autofocus>
+                        </div>
+                   		<div class="input-group mb-3">                                              
+                        <span class="input-group-text" id="basic-addon1">특이사항</span>
+                         <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="vi_event" id="vi_event" autofocus>
+                        </div>
+                        
                         <div class="col-sm-12 d-flex justify-content-end">
                             <button type="button" id="cancleBtn" class="btn btn-primary">취소</button>
                          <button type="button" id="residentwriteVitalFormBtn" class="btn btn-primary">등록</button>
                         </div>
+               			</form>
                      </div>
                   </div>
-               </form>
+                  </section>
             </div>
          </div>
       </div>
