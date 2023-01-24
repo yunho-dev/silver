@@ -78,7 +78,6 @@
 					data:{cbIdx:cbIdx, bContent:bContent},
 					dataType:'JSON',
 					success:function(data){
-						console.log(data);
 						if(data.update==1){
 							alert('예약이 취소되었습니다.')
 							location.reload();

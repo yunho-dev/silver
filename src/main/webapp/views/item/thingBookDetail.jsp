@@ -90,7 +90,6 @@
 </body>
 <script>
 	$('#bookCancel').click(function(){
-		console.log('#thingBookDetail #b_cancel'))
 		var cbIdx = $('#thingBookDetail #cbIdx').val();
 		$('#thingBookCancel #cancleForm .canceIdx').val(cbIdx);
 	})
