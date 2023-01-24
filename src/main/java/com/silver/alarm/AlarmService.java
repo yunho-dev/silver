@@ -59,13 +59,13 @@ public class AlarmService {
 		if(alarmCate.equals("공지사항")) {
 			page="noticeDetail.do?page=board2&bd_idx="+idx;
 		}else if(alarmCate.equals("결재 문서")) {
-			page="detailPayment.do?pm_idx="+idx;
+			page="detailPayment.do?page=payment&pm_idx="+idx;
 		}else if(alarmCate.equals("결재 진행")) {
-			page="detailPayment.do?pm_idx="+idx;
+			page="detailPayment.do?page=payment&pm_idx="+idx;
 		}else if(alarmCate.equals("결재 완료")) {
-			page="detailPayment.do?pm_idx="+idx;
+			page="detailPayment.do?page=payment&pm_idx="+idx;
 		}else if(alarmCate.equals("결재 반려")) {
-			page="detailPayment.do?pm_idx="+idx;
+			page="detailPayment.do?page=payment&pm_idx="+idx;
 		}
 		return page;
 	}
