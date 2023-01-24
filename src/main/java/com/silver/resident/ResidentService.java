@@ -26,18 +26,30 @@ public class ResidentService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 		
-	public ModelAndView resident() {
+	public ModelAndView resident(HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("resident/resident");
 		ArrayList<ResidentDTO> resident = dao.resident();
-		logger.info("resident size: "+resident.size());
+		logger.info("resident size: "+resident.size());		
 		mav.addObject("resident", resident);
+		
+		HashMap<String, String> map = new HashMap<String, String>();		
+		map.put("page", "resident");		
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", map);
+		
+		
 		return mav;
 	}
-	public ModelAndView residentCategory() {
+	public ModelAndView residentCategory(HashMap<String, String> params) {
 		ModelAndView mav = new ModelAndView("resident/residentCategory");
 		ArrayList<ResidentDTO> resident = dao.resident();
 		logger.info("resident size: "+resident.size());
 		mav.addObject("resident", resident);
+		
+		HashMap<String, String> map = new HashMap<String, String>();		
+		map.put("page", "resident");		
+		logger.info("이동 params:{}",params);
+		mav.addObject("page", map);
 		return mav;
 	}
 	

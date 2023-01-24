@@ -30,14 +30,14 @@ public class ResidentController {
 	
 	
 	@GetMapping(value="/resident")
-	public ModelAndView resident() {
+	public ModelAndView resident(@RequestParam HashMap<String, String> params) {
 		logger.info("resident");
-		return service.resident();
+		return service.resident(params);
 	}
 	@GetMapping(value="/residentCategory")
-	public ModelAndView residentCategory() {
+	public ModelAndView residentCategory(@RequestParam HashMap<String, String> params) {
 		logger.info("residentCategory");
-		return service.residentCategory();
+		return service.residentCategory(params);
 	}
 	
 	
@@ -148,7 +148,14 @@ public class ResidentController {
 	
 	
 	@RequestMapping(value="/residentwriteForm.go")
-	public String residentwriteForm() {
+	public String residentwriteForm(Model model) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
+		
 		return "resident/residentwriteForm";		
 	}
 	
@@ -184,23 +191,43 @@ public class ResidentController {
 	@RequestMapping(value="/residentupdateForm.go")
 	public String updateForm(@RequestParam String re_idx, Model model) {
 		logger.info("residentupdateForm idx : "+re_idx);
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		service.residentdetail(re_idx, model,"resident/residentupdateForm");		
 		return "resident/residentupdateForm";
 	}
 	@RequestMapping(value="/residentCure.go")
 	public String residentCure(@RequestParam String re_idx, Model model) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		logger.info("residentCure idx : "+re_idx);
 		service.residentdetail(re_idx, model,"resident/residentCure");	
 		return "resident/residentCure";		
 	}	
 	@RequestMapping(value="/residentMedic.go")
 	public String residentMedic(@RequestParam String re_idx, Model model) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		logger.info("residentMedic idx : "+re_idx);
 		service.residentdetail(re_idx, model,"resident/residentMedic");
 		return "resident/residentMedic";		
 	}
 	@RequestMapping(value="/residentVital.go")
 	public String residentVital(@RequestParam String re_idx, Model model) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "resident");
+		
+		model.addAttribute("page", map);
 		logger.info("residentVital idx : "+re_idx);
 		service.residentdetail(re_idx, model,"resident/residentVital");
 		return "resident/residentVital";		
