@@ -39,13 +39,13 @@ System.out.println(hope);
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
-       <h3>후원금 히스토리 작성</h3>
+       <h3>후원금 사용내역 작성</h3>
    </div>
   <section class="row">
   	<div class="card">
   		<div class="card-body py-4 px-5">
   <form action="donWrite" method="post" enctype="multipart/form-data">
-  <button  class="btn btn-primary" style="float: right;">등록</button>     
+  <button  class="btn btn-primary">등록</button>     
   <table class="table">
   <thead>
     <tr>  
@@ -75,7 +75,7 @@ System.out.println(hope);
     <tr>  
       <th scope="col" style="width:20%;">사용날짜</th>
       <td>
-      	<input type="text" name="dh_date" style="width: 100%;"/>	
+      	<input type="date" name="dh_date" style="width: 100%;"/>	
       </td>
     </tr> 
     <tr>  

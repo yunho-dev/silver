@@ -51,7 +51,7 @@ System.out.println(hope);
     <tr>  
       <th scope="col" style="width:20%;">날짜</th>
       <td>
-      	<input type="text" name="do_date" style="width: 100%;" value="${donation.do_date}"/>	
+      	<input type="date" name="do_date" style="width: 100%;" value="${donation.do_date}"/>	
       </td>
     </tr> 
     <tr>  

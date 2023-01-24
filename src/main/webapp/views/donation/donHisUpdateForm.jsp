@@ -39,7 +39,7 @@ System.out.println(hope);
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
-       <h3>후원금 히스토리 수정</h3>
+       <h3>후원금 사용내역 수정</h3>
    </div>
   <section class="row">
   	<div class="card">
@@ -105,7 +105,7 @@ System.out.println(hope);
     <tr>  
       <th scope="col" style="width:20%;">사용날짜</th>
       <td>
-      	<input type="text" name="dh_date" style="width: 100%;" value="${donhistory.dh_date}"/>	
+      	<input type="date" name="dh_date" style="width: 100%;" value="${donhistory.dh_date}"/>	
       </td>
     </tr> 
     <tr>  

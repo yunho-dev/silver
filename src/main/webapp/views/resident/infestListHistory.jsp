@@ -42,10 +42,10 @@ System.out.println(hope);
 		   </div>
    				<div class="page-content">
    					<section class="row">
-   							<button onclick="goWirte()" class="btn btn-primary" style="margin:15px; float: left; width: 80px;">글작성</button>
    						<div class="card" id="table">
+   							<button onclick="goWirte()" class="btn btn-primary" style="margin:15px; float: left; width: 80px;">글작성</button>
    								<div class="card-body py-4 px-5">
-  									<div class="card" style="margin-top:40px; padding-top:50px; margin-bottom: 0px;">
+  									<div class="card" >
 									  <table class="table">
 										  <thead>
 										    <tr>
@@ -68,9 +68,9 @@ System.out.println(hope);
 														</nav>
 												 	</div>
 											</div>
-</div>
-</div>
-</div>
+										</div>
+									</div>
+								</div>
 </section>
 </div>
 </div>
@@ -100,7 +100,7 @@ function infestListHistoryCall(page){
 		data:{'page':page,'re_idx':url,'if_idx':uri},
 		dataType:'json',
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			drawList(data.list);
 			
 			$('#pagination').twbsPagination({
@@ -108,15 +108,14 @@ function infestListHistoryCall(page){
 				totalPages:data.total,
 				visiblePages: 5,
 				onPageClick:function(e, page){
-					console.log(e);
-					console.log(page);
+					
 					infestListHistoryCall(page);	
 				}
 				
 			});
 		},
 		error:function(e){
-			console.log(e);
+			//console.log(e);
 		}
 	});
 	
