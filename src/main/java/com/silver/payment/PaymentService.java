@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,8 +69,9 @@ public class PaymentService {
 		return paymentdao.PayOrgCall(selfMem_Pos);
 	}
 
-	public ModelAndView PayMentInsert_do(MultipartFile[] payMentFile, MultipartFile[] payMentFile2, HttpServletRequest request) {
+	public ModelAndView PayMentInsert_do(MultipartFile[] payMentFile, HttpServletRequest request, HashMap<String, String> params) {
 		ModelAndView mav=new ModelAndView("payment/selfPayment");
+		mav.addObject("page", params);
 		HttpSession session=request.getSession();
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		PaymentDTO PayDto=new PaymentDTO();
@@ -209,7 +211,7 @@ public class PaymentService {
 		
 	}
 
-	public ModelAndView detailPayment_do(int pm_idx, HttpServletRequest request) {
+	public ModelAndView detailPayment_do(int pm_idx, HttpServletRequest request, HashMap<String, String> params) {
 		ModelAndView mav=new ModelAndView("payment/detailPayment");
 		PaymentDTO PayDto=paymentdao.detailPayment_do(pm_idx);
 		ArrayList<PaymentDTO> ReferDto=paymentdao.ReferDto(pm_idx);
@@ -225,6 +227,7 @@ public class PaymentService {
 		mav.addObject("PmlineDto",PmlineDto);
 		mav.addObject("SessionID",mem_id);
 		mav.addObject("SignImg",SignImg);
+		mav.addObject("page",params);
 		return mav;
 	}
 

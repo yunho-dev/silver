@@ -41,8 +41,8 @@ public class PaymentController {
 	
 	
 	@GetMapping(value="/selfPayment")
-	public String selfPayment_go(){
-		
+	public String selfPayment_go(Model model,@RequestParam HashMap<String, String> params){
+		model.addAttribute("page",params);
 		return "payment/selfPayment";
 	}
 	
@@ -60,12 +60,14 @@ public class PaymentController {
 	}
 	
 	@GetMapping(value="/paymentwrite.go")
-	public String paymentwrite_go(HttpServletRequest request,Model model) {
+	public String paymentwrite_go(HttpServletRequest request,Model model,
+			@RequestParam HashMap<String, String> params) {
 		HttpSession session=request.getSession();
 		MemberDTO memberDTO=(MemberDTO) session.getAttribute("loginId");
 		String mem_name=memberDTO.getMem_name();
 		int mem_posLevel=memberDTO.getPos_level();
 		logger.info("pos 레벨 : "+mem_posLevel);
+		model.addAttribute("page",params);
 		model.addAttribute("SelfMem_name",mem_name);
 		model.addAttribute("mem_posLevel",mem_posLevel);
 		return "payment/writePayment";
@@ -104,7 +106,8 @@ public class PaymentController {
 	}
 	
 	@PostMapping(value="/PayMentInsert.do")
-	public ModelAndView PayMentInsert_do(MultipartFile[] PayMentFile,HttpServletRequest request) {
+	public ModelAndView PayMentInsert_do(MultipartFile[] PayMentFile,HttpServletRequest request
+			,@RequestParam HashMap<String,String > params) {
 		logger.info("결재 양식"+request.getParameter("payFormDropDown"));
 		logger.info("결재 양식 순번"+request.getParameter("chk_info"));
 		logger.info("휴가 종류"+request.getParameter("vacationDrop"));
@@ -117,13 +120,14 @@ public class PaymentController {
 		logger.info("의견 란"+request.getParameter("bigoContent"));
 		logger.info("결재 라인 버전2 : "+request.getParameter("OrgRadio"));
 		
-		return paymentservice.PayMentInsert_do(PayMentFile,PayMentFile,request);
+		return paymentservice.PayMentInsert_do(PayMentFile,request,params);
 	}
 	
 	@GetMapping(value="/detailPayment.do")
-	public ModelAndView detailPayment_do(@RequestParam int pm_idx,HttpServletRequest request) {
+	public ModelAndView detailPayment_do(@RequestParam int pm_idx,HttpServletRequest request
+			,@RequestParam HashMap<String, String> params) {
 		
-		return paymentservice.detailPayment_do(pm_idx,request);
+		return paymentservice.detailPayment_do(pm_idx,request,params);
 	}
 	
 	@GetMapping(value="/download.do")
@@ -174,7 +178,8 @@ public class PaymentController {
 	
 	
 	@GetMapping(value="/openPayment")
-	public String referPayment_go(HttpServletRequest request) {
+	public String referPayment_go(HttpServletRequest request,Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page",params);
 		return "payment/openPayment";
 	}
 	
@@ -208,7 +213,8 @@ public class PaymentController {
 	
 	
 	@GetMapping(value="/waitPayment")
-	public String waitPayment_go() {
+	public String waitPayment_go(Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page",params);
 		return "/payment/waitPayment";
 	}
 	
@@ -271,8 +277,8 @@ public class PaymentController {
 	}
 	
 	@GetMapping(value="/goingPayment")
-	public String goingPayment_go(){
-		
+	public String goingPayment_go(Model model,@RequestParam HashMap<String, String> params){
+		model.addAttribute("page", params);
 		return "payment/goingPayment";
 	}
 	
@@ -291,8 +297,8 @@ public class PaymentController {
 	}
 	
 	@GetMapping(value="/finishPayment")
-	public String finishPayment_go(){
-		
+	public String finishPayment_go(Model model,@RequestParam HashMap<String, String> params){
+		model.addAttribute("page", params);
 		return "payment/finishPayment";
 	}
 	

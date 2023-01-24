@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,14 +28,14 @@ public class PayFormController {
 	}
 	
 	@GetMapping(value="/myPayForm")
-	public String myPayForm() {
-		
+	public String myPayForm(Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page",params);
 		return "payment/myPayForm";
 	}
 	
 	@GetMapping(value="/allPayForm")
-	public String allPayForm() {
-		
+	public String allPayForm(Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page",params);
 		return "payment/allPayForm";
 	}
 	
@@ -67,10 +68,10 @@ public class PayFormController {
 	}
 	
 	@GetMapping(value="/payfromdetail")
-	public ModelAndView payfromdetail(@RequestParam int pf_idx) {
+	public ModelAndView payfromdetail(@RequestParam int pf_idx,@RequestParam HashMap<String, String> params) {
 		logger.info("pf_idx 값은 : "+pf_idx);
 		
-		return payformservice.payfromdetail(pf_idx);
+		return payformservice.payfromdetail(pf_idx,params);
 	}
 	
 	@ResponseBody
@@ -83,9 +84,9 @@ public class PayFormController {
 	}
 
 	@GetMapping(value="/payformupdate.go")
-	public ModelAndView payformupdate_go(@RequestParam int pf_idx) {
+	public ModelAndView payformupdate_go(@RequestParam int pf_idx,@RequestParam HashMap<String, String> params) {
 		
-		return payformservice.payformupdate_go(pf_idx);
+		return payformservice.payformupdate_go(pf_idx,params);
 	}
 	
 	@PostMapping(value="/payformupdate.do")
@@ -97,8 +98,8 @@ public class PayFormController {
 	}
 	
 	@GetMapping(value="/writepayform.go")
-	public String writepayform_go() {
-		
+	public String writepayform_go(Model model,@RequestParam HashMap<String, String> params) {
+		model.addAttribute("page",params);
 		return "payment/writePayForm";
 	}
 	

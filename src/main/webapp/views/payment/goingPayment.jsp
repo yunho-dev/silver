@@ -83,9 +83,6 @@ System.out.println(hope);
 								</div>
 							</div>
 						</div>
-						<div class="card-body py-4 px-5" style="margin:0 auto;">
-							<input id="paymentwrite" type="button" class="btn btn-primary" value="결재 문서 등록">
-						</div>
 					</div>
 				</section>
 			</div>
@@ -225,7 +222,7 @@ function goingpaymentListCall(list){
 	for(var i=0;i<list.length;i++){
 		content +="<tr>";
 		content +="<td>"+list[i].pm_idx+"</td>";
-		content +="<td><a href='detailPayment.do?pm_idx="+list[i].pm_idx+"'>"+list[i].pm_subject+"</a></td>";
+		content +="<td><a href='detailPayment.do?page=payment&pm_idx="+list[i].pm_idx+"'>"+list[i].pm_subject+"</a></td>";
 		content +="<td>"+list[i].pf_cate+"</td>";
 		content +="<td>"+list[i].mem_name+"</td>";
 		content +="<td>"+list[i].pm_state+"</td>";

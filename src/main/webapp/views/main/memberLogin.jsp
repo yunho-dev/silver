@@ -21,7 +21,7 @@
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
                     <div class="auth-logo">
-                        <a href="index.html"><img src="assets/images/logo/silver.png" alt="Logo"></a>
+                        <a href=""><img src="assets/images/logo/silver.png" style="width:350px;height:130px;" alt="Logo"></a>
                     </div>
                     <h1 class="auth-title">Log in.</h1>
 

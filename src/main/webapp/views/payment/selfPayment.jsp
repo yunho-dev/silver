@@ -143,7 +143,7 @@ System.out.println(hope);
 </body>
 <script>
 $(document).on('click','#paymentwrite',function(){
-	location.href="paymentwrite.go";
+	location.href="paymentwrite.go?page=payment";
 });
 
 var flag=true;
@@ -233,7 +233,7 @@ function paymentListCall(list){
 	for(var i=0;i<list.length;i++){
 		content +="<tr>";
 		content +="<td>"+list[i].pm_idx+"</td>";
-		content +="<td><a href='detailPayment.do?pm_idx="+list[i].pm_idx+"'>"+list[i].pm_subject+"</a></td>";
+		content +="<td><a href='detailPayment.do?page=payment&pm_idx="+list[i].pm_idx+"'>"+list[i].pm_subject+"</a></td>";
 		content +="<td>"+list[i].pf_cate+"</td>";
 		content +="<td>"+list[i].mem_name+"</td>";
 		content +="<td>"+list[i].pm_state+"</td>";
