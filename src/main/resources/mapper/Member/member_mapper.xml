@@ -37,8 +37,8 @@
  	<select id="totalCountMemFilterList" resultType="int" parameterType="hashmap">
 		SELECT COUNT(mem_id) 
 			from member m,position p,part p2 ,depart d where m.part_num = p2.part_num and m.pos_num =p.pos_num and m.dept_num =d.dept_num
-			and mem_name LIKE CONCAT('%',#{memId},'%')
-			and mem_id LIKE CONCAT('%',#{memName},'%')
+			and mem_id LIKE CONCAT('%',#{memId},'%')
+			and mem_name LIKE CONCAT('%',#{memName},'%')
 			and part_name LIKE CONCAT('%',#{memPart},'%')
 			and mem_state LIKE CONCAT('%',#{memState},'%')
 	</select> 
