@@ -105,7 +105,7 @@ System.out.println(hope);
     <tr>  
       <th scope="col" style="width:20%;">사용날짜</th>
       <td>
-      	<input type="text" name="dh_date" style="width: 100%;" value="${donhistory.dh_date}"/>	
+      	<input type="date" name="dh_date" style="width: 100%;" value="${donhistory.dh_date}"/>	
       </td>
     </tr> 
     <tr>  

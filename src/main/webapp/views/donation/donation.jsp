@@ -42,13 +42,11 @@ System.out.println(hope);
 			<div class="page-heading">
 				<h3>후원금 리스트</h3>
 			</div>
-		    <div class="page-content">
-		    <!-- Hoverable rows start -->
 		    <section class="row">
-		        <div class="care" id="table">
-				<button onclick="location.href='donationWriteForm'" class="btn btn-primary" >글작성</button>
+		        <div class="card" >
 		            <div class="card-body py-4 px-5">
-		                <div class="card" style="margin-top:40px; padding-top:50px; margin-bottom: 0px;">
+		                <div class="card" >
+				<button onclick="location.href='donationWriteForm'" class="btn btn-primary" style="width: 80px; margin-bottom: 20px;" >글작성</button>
 		          			<table class="table">
 		                           <thead>
 		                               <tr>
@@ -63,27 +61,27 @@ System.out.println(hope);
 		                           	<!-- 리스트가 들어가는 공간 -->
 		                           </tbody>
 		                       </table>
-		                       </div>
-		                       </div>
 		                       <div class="card-body py-4 px-5" style="margin:0 auto; padding-top:10px;">
-								<div>
-								<select id="select">
-									<option value="title">후원자</option>
-									<option value="write">등록자</option>
-								</select> <input type="text" name="seacontent" id="seacontent">
-								<button id="search" type="button" class="btn btn-primary btn-sm" onclick="donationSearch(page2)">검색</button>
-								</div>
+									<div>
+										<select id="select">
+											<option value="title">후원자</option>
+											<option value="write">등록자</option>
+										</select> <input type="text" name="seacontent" id="seacontent">
+										<button id="search" type="button" class="btn btn-primary btn-sm" style="" onclick="donationSearch(page2)">검색</button>
+									</div>
+									</div>
+									<div class="card-body py-4 px-5" style="margin:0 auto; padding-top:10px;">
+									<div id="paging">
+										<div >
+											<nav>
+												<ul class="pagination" id="pagination"></ul>
+											</nav>
+									 	</div>
+								 	</div>
+		                       </div>
+		                       </div>
 		                   </div>
-							
-							<div id="paging">
-								<div >
-									<nav>
-										<ul class="pagination" id="pagination" style="padding-left:35%; margin-top: 10px; margin-bottom: 30px; text-align: center;"></ul>
-									</nav>
-							 </div>
-						 </div>
-					  
-		            </div>	
+		                   </div>
 		    </section>
 		   </div>
 		  <footer>

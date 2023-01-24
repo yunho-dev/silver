@@ -18,7 +18,7 @@
 	
 	<select id="infestListHistoryCall" resultType="hashmap">
 		SELECT * FROM infest i where re_idx =#{param2}
-		limit 10 offset #{param1}
+		order by if_date desc limit 10 offset #{param1}
 	</select>
 	
 	<select id="totalCount1" resultType="int">

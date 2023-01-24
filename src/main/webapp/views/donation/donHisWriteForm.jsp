@@ -45,7 +45,7 @@ System.out.println(hope);
   	<div class="card">
   		<div class="card-body py-4 px-5">
   <form action="donWrite" method="post" enctype="multipart/form-data">
-  <button  class="btn btn-primary" style="float: right;">등록</button>     
+  <button  class="btn btn-primary">등록</button>     
   <table class="table">
   <thead>
     <tr>  

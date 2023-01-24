@@ -42,8 +42,10 @@ System.out.println(hope);
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
        <h3>감염병 리스트</h3>
-   </div>     
-  <div class="card" style="margin-top:70px; padding-top:50px; ">
+   </div> 
+   <div class="page-content">
+   <section class="row">    
+  <div class="card">
   <table class="table">
   <thead>
     <tr>
@@ -62,10 +64,14 @@ System.out.println(hope);
 		<div>
 			<ul class="pagination" id="pagination" style="padding-left:35%; margin-top: 10px; margin-bottom: 30px; text-align: center;"></ul>
 		</div>
+
 	</div>
+	</div>
+	</section>
 </div>
 </div>
 </div>
+
 	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	 <script src="assets/js/bootstrap.bundle.min.js"></script>
 	 <script src="assets/js/pages/dashboard.js"></script>
@@ -92,64 +98,20 @@ function infestListCall(page){
 				totalPages:data.total,
 				visiblePages:5,
 				onPageClick:function(e, page){
-					//console.log(e);
-					//console.log(page);
+					
 				infestListCall(page);	
 				}
 				
 			});
 		},
 		error:function(e){
-			console.log(e);
+			//console.log(e);
 		}
 	});
 	
 }
 
-/* var flag=true;
-var pageflag=true;
-var page2=1;
-var select_change=new Array();
-function infestSearch(page2){
-	select_change.push($("#select").val());
-	if(flag){
-    var select=$("#select").val();
-    var seacontent=$("#seacontent").val();
-	flag=false;
-	if(seacontent == ""){
-		window.location.reload();
-	}
-	
-	$.ajax({
-		type:'get'
-		,url:'searchNotice'
-		,dataType:'json'
-		,data:{'select':select,'seacontent':seacontent,'page':page2}
-		,success:function(data){
-			console.log(data);
-			listCall(data.list);
-			if(pageflag == true && $('.pagination').data("twbs-pagination")
-					|| select_change.at(-2) != $("#select").val()){
-                $('.pagination').twbsPagination('destroy');
-                pageflag=false;
-            }
-			$("#pagination").twbsPagination({
-				startPage : 1 // 시작 페이지
-				,totalPages : data.page_idx // 총 페이지 수
-				,visiblePages : 4 // 기본으로 보여줄 페이지 수
-				,onPageClick : function(e, page) { // 클릭했을때 실행 내용
-					infestSearch(page);
-				}
-			});
-		}
-		,error:function(e){
-			console.log(e);
-		},complete:function(){
-			flag=true;
-		}
-	});
-	}
-} */
+
 
 function drawList(list){
 	var content = '';
@@ -158,7 +120,8 @@ function drawList(list){
 		content +='<tr onclick=location.href="infestListHistory?re_idx='+list[i].re_idx+'">';
 		content +='<td>'+list[i].re_name+'</td>';
 		content +='<td>'+list[i].if_state+'</td>';
-		content +='<td>'+list[i].re_jumin+'</td>';
+		var jumin =list[i].re_jumin;
+		content +='<td>'+jumin.substr(0,6)+'</td>';
 		content +='<td>'+list[i].ro_name+'</td>';
 	
 		content +='</tr>';
