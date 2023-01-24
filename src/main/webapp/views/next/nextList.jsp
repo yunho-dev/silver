@@ -165,7 +165,7 @@ function drawList(list){
 	for(var i=0;i<list.length;i++){
 		content +='<tr>';
 		content +='<td>'+list[i].bd_idx+'</td>';
-		content +="<td><a href='nextDetail?bd_idx="+list[i].bd_idx+"'>"+list[i].bd_title+'</td>';
+		content +="<td><a href='nextDetail?page=board1&bd_idx="+list[i].bd_idx+"'>"+list[i].bd_title+'</td>';
 		content +='<td>'+list[i].mem_name+'</td>';
 		
 		var date = new Date(list[i].bd_date);
@@ -174,7 +174,7 @@ function drawList(list){
 		date.toLocaleTimeString("en-US", {hour12 : false}) + "</td>";
 		
 		content += '<td>'
-			+ "<button class='btn btn-primary btn-sm' onclick=location.href='nextUpdateForm?bd_idx="+list[i].bd_idx+"'>수정하기</button>"
+			+ "<button class='btn btn-primary btn-sm' onclick=location.href='nextUpdateForm?page=board1&bd_idx="+list[i].bd_idx+"'>수정하기</button>"
 			+ "</td>";
 		
 		content +='</tr>';
@@ -186,7 +186,7 @@ function drawList(list){
 //인수인계 등록버튼시 페이지 이동
 function nextWrite(){
 	console.log("인수인계 등록 버튼 누르셧죠?");
-	location.href='nextWrite';
+	location.href='nextWrite?page=board1';
 }
 
 

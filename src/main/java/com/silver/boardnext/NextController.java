@@ -36,6 +36,7 @@ public class NextController {
 		logger.info("세션 값 조회");
 		logger.info("params:{}",params);
 		model.addAttribute("page", params);
+		//@RequestParam,mav.addObject("page",params); 이녀석은 카테고리 색깔 때문임
 		
 		return "next/nextList";
 	}
@@ -55,9 +56,12 @@ public class NextController {
 	
 	//인수인계 글 작성페이지 이동
 	@GetMapping(value="/nextWrite")
-	public String nextWrite() {
+	public String nextWrite(Model model, @RequestParam HashMap<String, String> params) {
+		//@RequestParam,mav.addObject("page",params); 이녀석은 카테고리 색깔 때문임
 		
-		 return "next/nextWrite";
+		model.addAttribute("page",params);
+		
+		return "next/nextWrite";
 	}
 	
 	//인수인계 글 작성완료시 실행
@@ -70,18 +74,21 @@ public class NextController {
 	
 	//인수인계 상세보기
 	@GetMapping(value="/nextDetail")
-	public ModelAndView nextDetail(@RequestParam String bd_idx){
+	public ModelAndView nextDetail(@RequestParam String bd_idx,@RequestParam HashMap<String, String> params){
+		//@RequestParam,mav.addObject("page",params); 이녀석은 카테고리 색깔 때문임
+		
 		logger.info("idx 값은:"+bd_idx);
 		
-		return nextservice.nextDetail(bd_idx);		
+		return nextservice.nextDetail(bd_idx,params);		
 	}
 	
 	//인수인계 업데이트 이동
 	@GetMapping(value="/nextUpdateForm")
-	public ModelAndView nextUpdateForm(@RequestParam String bd_idx) {
+	public ModelAndView nextUpdateForm(@RequestParam String bd_idx,@RequestParam HashMap<String, String> params) {
+		//@RequestParam,mav.addObject("page",params); 이녀석은 카테고리 색깔 때문임
 		
 		logger.info("인수인계 컨트롤러:"+bd_idx);
-		return nextservice.nextUpdateForm(bd_idx);
+		return nextservice.nextUpdateForm(bd_idx,params);
 	}
 
 	//인수인계 업데이트 완료

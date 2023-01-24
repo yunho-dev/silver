@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,11 +31,12 @@ public class ResidentProgramService {
 //	}
 
 	//프로그램 작성페이지 이동
-	public ModelAndView programWrite() {
+	public ModelAndView programWrite(HashMap<String, String> params) {
 		
 		ModelAndView mav = new ModelAndView("resident/programWrite");
 		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();
 		mav.addObject("procategory",procategoryList);
+		mav.addObject("page",params);//카테고리 색때문에
 		return mav;
 	}
 	
@@ -62,15 +64,16 @@ public class ResidentProgramService {
 //		int row = residentprogramdao.ProgramWriteComplete(dto);
 		residentprogramdao.ProgramWriteComplete(dto);
 		
-		ModelAndView mav = new ModelAndView("resident/programList");
+		ModelAndView mav = new ModelAndView("redirect:/programList?page=resident");
 //		ArrayList<ResidentProgramDTO> procategoryList = residentprogramdao.procategoryList();
 //		mav.addObject("procategory",procategoryList);
+		
 		
 		return mav;
 	}
 
 	//프로그램 상세보기 이동
-	public ModelAndView programDetail(String pr_idx) {
+	public ModelAndView programDetail(String pr_idx,HashMap<String, String> params) {
 		
 		logger.info("프로그램디테일서비스");
 		ModelAndView mav = new ModelAndView("resident/programDetail");
@@ -82,6 +85,7 @@ public class ResidentProgramService {
 		logger.info("프로그램idx확인:"+pr_idx);
 		mav.addObject("list",dto);
 		
+		mav.addObject("page",params);//카테고리 색들어오게하려고
 
 		
 		return mav;
@@ -106,8 +110,10 @@ public class ResidentProgramService {
 		
 		residentprogramdao.programDetailUpdate(pr_idx,pr_name,pr_teacher,
 				pr_start,pr_end,pr_goal,pr_content,pr_place,pr_state,pc_idx);
-		ModelAndView mav = new ModelAndView("resident/programList");
-
+		
+		ModelAndView mav = new ModelAndView("redirect:/programList?page=resident");
+		
+		
 		return mav;
 	}
 	//프로그램 리스트 총갯수

@@ -56,9 +56,10 @@ public class ResdientProgramController {
 //	}
 	//프로그램 작성페이지 이동
 	@GetMapping(value="/programWrite")
-	public ModelAndView programWrite() {
+	public ModelAndView programWrite(@RequestParam HashMap<String, String> params) {
+		//여기서 @RequestParam HashMap<String, String> params해준것은 카테고리 색때문에
 		
-		return residientprogramservice.programWrite();
+		return residientprogramservice.programWrite(params);
 		//return "resident/programWrite"; 
 	}
 	
@@ -83,10 +84,11 @@ public class ResdientProgramController {
 	
 	//프로그램 상세보기
 	@GetMapping(value="/programDetail")
-	public ModelAndView programDetai(@RequestParam String pr_idx) {
+	public ModelAndView programDetai(@RequestParam String pr_idx,@RequestParam HashMap<String, String>params) {
 		
 		logger.info("프로그램디테일컨트롤러:"+pr_idx);
-		return residientprogramservice.programDetail(pr_idx);
+		
+		return residientprogramservice.programDetail(pr_idx,params);
 	}
 	
 	//프로그램 수정
