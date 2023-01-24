@@ -23,7 +23,7 @@ public class DonationHisController {
 	
 	@GetMapping(value ="/donHistory")
 	public ModelAndView donationHistory(Model model,@RequestParam HashMap<String, String> params) {
-		logger.info("직원 리스트 조회");
+		logger.info("후원금 사용내역 리스트 조회");
 		logger.info("세션 값 조회");
 		logger.info("params:{}",params);
 		model.addAttribute("page", params);
@@ -58,15 +58,17 @@ public class DonationHisController {
 	}
 	
 	
-	@RequestMapping(value = "/donHisWriteForm")
-	public ModelAndView donHisWriteForm(Model model,@RequestParam HashMap<String, String> params) {
-		logger.info("직원 리스트 조회");
-		
-		logger.info("세션 값 조회");
-		logger.info("params:{}",params);
-		model.addAttribute("page", params);
-		ModelAndView mav = new ModelAndView("donation/donHisWriteForm");
+	@GetMapping(value = "/donHisWriteForm")
+	public ModelAndView donHisWriteForm(Model model) {
 		logger.info("글쓰기폼 이동");
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "donation");
+		
+		model.addAttribute("page", map);
+		
+		
+		ModelAndView mav = new ModelAndView("donation/donHisWriteForm");
 		return mav;
 	}
 	
@@ -83,11 +85,15 @@ public class DonationHisController {
 	
 	@RequestMapping(value = "/donHisUpdateForm")
 	public ModelAndView donHisUpdateForm(int dh_idx,Model model,@RequestParam HashMap<String, String> params) {
-		logger.info("직원 리스트 조회");
+		HashMap<String, String> map = new HashMap<String, String>();
 		
-		logger.info("세션 값 조회");
+		map.put("page", "donation");
+		
+		model.addAttribute("page", map);
+		
+		
 		logger.info("params:{}",params);
-		model.addAttribute("page", params);
+		
 		logger.info("수정/상세보기폼 이동");
 		return service.donHisUpdateForm(dh_idx,params);
 	}

@@ -22,7 +22,7 @@ public class DonationController {
 	
 	@GetMapping(value = "/donation")
 	public ModelAndView donation(Model model,@RequestParam HashMap<String, String> params) {
-		logger.info("직원 리스트 조회");
+		logger.info("후원금 리스트 조회");
 		
 		logger.info("세션 값 조회");
 		logger.info("params:{}",params);
@@ -57,7 +57,12 @@ public class DonationController {
 	}
 	
 	@GetMapping(value = "/donationWriteForm")
-	public ModelAndView donationWriteForm() {
+	public ModelAndView donationWriteForm(Model model) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "donation");
+		
+		model.addAttribute("page", map);
 		ModelAndView mav = new ModelAndView("donation/donationWriteForm");
 		return mav;
 	}
@@ -73,8 +78,13 @@ public class DonationController {
 	}
 	
 	@RequestMapping(value = "/donationUpdateForm")
-	public ModelAndView donationUpdateForm(int do_idx) {
+	public ModelAndView donationUpdateForm(Model model,int do_idx) {
 		logger.info("수정폼 이동");
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("page", "donation");
+		
+		model.addAttribute("page", map);
 		logger.info("do_idx",do_idx);
 		return service.donationUpdateForm(do_idx);
 	}

@@ -168,31 +168,15 @@ function paymentListCall(wait,mem_id){
 			a=i-1;
 		}
 		if (wait[i].pl_hp == mem_id) {
-// 			if(wait[i].pm_idx == wait[a].pm_idx){
-// 				if(wait[a].pl_ch == 1){
-// 					console.log("adsd55");
 					content +="<tr>";
 					content +="<td>"+wait[i].pm_idx+"</td>";
-					content +="<td><a href='detailPayment.do?pm_idx="+wait[i].pm_idx+"'>"+wait[i].pm_subject+"</a></td>";
+					content +="<td><a href='detailPayment.do?page=payment&pm_idx="+wait[i].pm_idx+"'>"+wait[i].pm_subject+"</a></td>";
 					content +="<td>"+wait[i].pf_cate+"</td>";
 					content +="<td>"+wait[i].mem_name+"</td>";
 					content +="<td>"+wait[i].pm_state+"</td>";
 					content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'";
 					content +="data-bs-toggle='modal' data-bs-target='#PayHistory' onclick='PayHistoryCall("+wait[i].pm_idx+")'></td>";
 					content +="</tr>";
-// 				}else{
-// 				console.log("adsd66");
-// 				content +="<tr>";
-// 				content +="<td>"+wait[i].pm_idx+"</td>";
-// 				content +="<td><a href='detailPayment.do?pm_idx="+wait[i].pm_idx+"'>"+wait[i].pm_subject+"</a></td>";
-// 				content +="<td>"+wait[i].pf_cate+"</td>";
-// 				content +="<td>"+wait[i].mem_name+"</td>";
-// 				content +="<td>"+wait[i].pm_state+"</td>";
-// 				content +="<td><input type='button' class='btn btn-sm btn-primary' value='기록'";
-// 				content +="data-bs-toggle='modal' data-bs-target='#PayHistory' onclick='PayHistoryCall("+wait[i].pm_idx+")'></td>";
-// 				content +="</tr>";
-// 				}
-// 		}
 	}
 	$("#myPayMentList").empty();
 	$("#myPayMentList").append(content);

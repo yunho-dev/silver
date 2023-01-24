@@ -37,40 +37,37 @@ System.out.println(hope);
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
  
-   <div class="page-heading">
-       <h3>감염병 관리 히스토리</h3>
-   </div>
-   <div class="page-content">
-   	<section class="row">
-   		<div class="card">
-   			<div class="card-body py-4 px-5">
-   
-   <button onclick="goWirte()" class="btn btn-primary" >글작성</button>
-  	<div class="d-flex align-items-center">
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">작성일</th>
-      <th scope="col">현재감염상태</th>
-      <th scope="col">예방접종내역</th>
-      <th scope="col">감염병 명</th>
-      <th scope="col">조치</th>
-      <th scope="col">작성자</th>
-    </tr>
-  </thead>
-  <tbody id="infestHistoryList">
-  
-  </tbody>
-  	<tr>
-		<td colspan="5" id="paging">
-			<div>
-				<nav aria-label="Page navigation" style="text-align:center">
-					<ul class="pagination" id="pagination"></ul>
-				</nav>
-			</div>
-		</td>
-		</tr>
-</table>
+		   <div class="page-heading">
+		       <h3>감염병 관리 히스토리</h3>
+		   </div>
+   				<div class="page-content">
+   					<section class="row">
+   							<button onclick="goWirte()" class="btn btn-primary" style="margin:15px; float: left; width: 80px;">글작성</button>
+   						<div class="card" id="table">
+   								<div class="card-body py-4 px-5">
+  									<div class="card" style="margin-top:40px; padding-top:50px; margin-bottom: 0px;">
+									  <table class="table">
+										  <thead>
+										    <tr>
+										      <th>작성일</th>
+										      <th>현재감염상태</th>
+										      <th>예방접종내역</th>
+										      <th>감염병 명</th>
+										      <th>조치</th>
+										      <th>작성자</th>
+										    </tr>
+										  </thead>
+	  										<tbody id="infestHistoryList">
+	  
+	  										</tbody> 	
+											</table>
+											<div id="paging">
+													<div >
+														<nav>
+															<ul class="pagination" id="pagination" style="padding-left:35%; margin-top: 10px; margin-bottom: 30px; text-align: center;"></ul>
+														</nav>
+												 	</div>
+											</div>
 </div>
 </div>
 </div>

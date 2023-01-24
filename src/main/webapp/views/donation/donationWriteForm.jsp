@@ -39,48 +39,48 @@ System.out.println(hope);
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
    <div class="page-heading">
-       <h3>후원금 리스트 수정</h3>
+       <h3>후원금 리스트 작성</h3>
    </div>
   <section class="row">
   	<div class="card">
   		<div class="card-body py-4 px-5">
-  <form action="donationUpdate" method="post">
-  <button  class="btn btn-primary">수정</button>     
+  <form action="donationWrite" method="post">
+  <button  class="btn btn-primary">등록</button>     
   <table class="table">
   <thead>
     <tr>  
       <th scope="col" style="width:20%;">날짜</th>
       <td>
-      	<input type="text" name="do_date" style="width: 100%;" value="${donation.do_date}"/>	
+      	<input type="text" name="do_date" style="width: 100%;"/>	
       </td>
     </tr> 
     <tr>  
       <th scope="col" style="width:20%;">후원자</th>
       <td>
-      	<input type="text" name="do_name" style="width: 100%;" value="${donation.do_name}" />	
+      	<input type="text" name="do_name" style="width: 100%;"/>	
       </td>
     <tr>  
       <th scope="col" style="width:20%;">후원목적</th>
       <td>
-      	<input type="text" name="do_goal" style="width: 100%;" value="${donation.do_goal}"/>	
+      	<input type="text" name="do_goal" style="width: 100%;"/>	
       </td>
     </tr> 
     <tr>  
       <th scope="col" style="width:20%;">등록자</th>
       <td>
-      	<input type="text" name="do_write" style="width: 100%;" value="${donation.do_write}"/>	
+      	<input type="text" name="do_write" style="width: 100%;"/>	
       </td>
     </tr>
     <tr>  
       <th scope="col" style="width:20%;">금액</th>
       <td>
-      	<input type="text" name="do_money" style="width: 100%;" value="${donation.do_money}"/>	
+      	<input type="text" name="do_money" style="width: 100%;"/>	
       </td>
     </tr>
     
   </thead>
 </table>
-<input type="hidden" name="do_idx" value="${donation.do_idx}">
+<input type="hidden" name="do_idx" value="${do_idx}">
 </form>
 </div>
 </div>
@@ -100,10 +100,10 @@ System.out.println(hope);
 </footer>
 </div>
 </div>
-	<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	 <script src="assets/js/bootstrap.bundle.min.js"></script>
-	 <script src="assets/js/pages/dashboard.js"></script>
-	 <script src="assets/js/main.js"></script>
+<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/pages/dashboard.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 <script>
 

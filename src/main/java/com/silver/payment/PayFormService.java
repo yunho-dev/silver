@@ -1,6 +1,7 @@
 package com.silver.payment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,10 +48,12 @@ public class PayFormService {
 		return payformdao.alllistCall(page);
 	}
 
-	public ModelAndView payfromdetail(int pf_idx) {
-		ModelAndView mav=new ModelAndView("payment/detailPayForm");
+	public ModelAndView payfromdetail(int pf_idx, HashMap<String, String> params) {
+		ModelAndView mav=new ModelAndView();
 		PayFormDTO detailDTO=payformdao.payfromdetail(pf_idx);
 		mav.addObject("payformDetail",detailDTO);
+		mav.addObject("page",params);
+		mav.setViewName("payment/detailPayForm");
 		return mav;
 	}
 
@@ -58,10 +61,11 @@ public class PayFormService {
 		return payformdao.payformdelete(idx);
 	}
 
-	public ModelAndView payformupdate_go(int pf_idx) {
+	public ModelAndView payformupdate_go(int pf_idx, HashMap<String, String> params) {
 		ModelAndView mav=new ModelAndView("payment/updatePayForm");
 		PayFormDTO detailDTO=payformdao.payfromdetail(pf_idx);
 		mav.addObject("payformUpdate",detailDTO);
+		mav.addObject("page",params);
 		return mav;
 	}
 
@@ -70,8 +74,9 @@ public class PayFormService {
 		String selected=request.getParameter("selected");
 		String pf_title=request.getParameter("pf_title");
 		String pf_content=request.getParameter("pf_content");
-		ModelAndView mav=new ModelAndView("redirect:/payfromdetail?pf_idx="+pf_idx);
+		ModelAndView mav=new ModelAndView();
 		payformdao.payformupdate_do(pf_idx,selected,pf_title,pf_content);
+		mav.setViewName("redirect:/payfromdetail?page=payment&pf_idx="+pf_idx);
 		return mav;
 	}
 
@@ -91,7 +96,7 @@ public class PayFormService {
 		payformdao.writepayForm_do(payformDTO);
 		int pf_idx=payformDTO.getPf_idx();
 		logger.info("pf_idx 값 체크 : "+pf_idx);
-		mav.setViewName("redirect:/payfromdetail?pf_idx="+pf_idx);
+		mav.setViewName("redirect:/payfromdetail?page=payment&pf_idx="+pf_idx);
 		
 		return mav;
 	}
