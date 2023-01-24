@@ -383,7 +383,7 @@ function edudrawList(eduList){
 	}		
         content+='</tbody>';
         content+='</table>';    
-    	content+='<div id="pagint">';
+    	content+='<div id="pagint" style="margin-left:35%;">';
         content+='<div class="container" style="margin-left: auto; margin-right: auto;">';
         content+='<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">';
         content+='<ul class="pagination" id="pagination"></ul>';
@@ -491,7 +491,7 @@ function certdrawList(certList){
 	}		
         content+='</tbody>';
         content+='</table>';    
-    	content+='<div id="pagint">';
+    	content+='<div id="pagint" style="margin-left:35%;">';
         content+='<div class="container" style="margin-left: auto; margin-right: auto;">';
         content+='<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">';
         content+='<ul class="pagination" id="pagination"></ul>';
@@ -601,7 +601,7 @@ function careerdrawList(careerList){
 	}		
         content+='</tbody>';
         content+='</table>';    
-    	content+='<div id="pagint">';
+    	content+='<div id="pagint" style="margin-left:35%;">';
         content+='<div class="container" style="margin-left: auto; margin-right: auto;">';
         content+='<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">';
         content+='<ul class="pagination" id="pagination"></ul>';
@@ -708,7 +708,7 @@ function paperdrawList(paperList){
 	}		
         content+='</tbody>';
         content+='</table>';    
-    	content+='<div id="pagint">';
+    	content+='<div id="pagint" style="margin-left:35%;">';
         content+='<div class="container" style="margin-left: auto; margin-right: auto;">';
         content+='<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">';
         content+='<ul class="pagination" id="pagination"></ul>';
@@ -819,7 +819,7 @@ function mypaymentdrawList(mypaymentList){
 	}		
         content+='</tbody>';
         content+='</table>';    
-    	content+='<div id="pagint">';
+    	content+='<div id="pagint" style="margin-left:35%;">';
         content+='<div class="container" style="margin-left: auto; margin-right: auto;">';
         content+='<nav aria-label="Page navigation" style="text-align: center; width:150px; height:50px;">';
         content+='<ul class="pagination" id="pagination"></ul>';

@@ -354,6 +354,7 @@ System.out.println(hope);
 				data:{carIdx:carIdx, bStart:$bStart.val(), bEnd:$bEnd.val()},
 				dataType:'JSON',
 				success:function(data){
+					$('#dateCheck').css('display', 'inline-block');
 					if(data.check === 0){
 						$dateCheck.text('중복된 예약 날짜가 없습니다.')
 						$dateCheck.css('color', 'green')
@@ -764,6 +765,8 @@ System.out.println(hope);
 						alert('예약이 등록되었습니다.')
 						$("#bookWrite")[0].reset();
 						getCarBookList(page2);
+						$('#dateCheck').text('');
+						$('#dateCheck').css('display', 'none');
 					}
 					if(data.finish > 1){
 						alert('서버와 통신은 했으나 데이터 전송중 문제가 발생했습니다. \n다시 시도해 주세요. \n현상이 지속되면 새로고침 후 진행해 주세요')
@@ -798,13 +801,11 @@ System.out.println(hope);
 					$("#carBookDetail #hideComent").css('display', 'none');
 					$("#carBookDetail .b_cancel").text('취소 안 함').css('color', 'blue');
 					$('#bookCancel').css('display', 'inline-block')
-					$('#bookCancel').remove('onclick')
 				}else{
 					$("#carBookDetail .b_cancel").text('취소').css('color', 'red');
 					$("#carBookDetail #hideComent").css('display', 'block');
 					$("#carBookDetail .b_coment").text(data.detail.b_content);
 					$('#bookCancel').css('display', 'none')
-					$('#bookCancel').attr('onclick', "alert('취소된 예약은 예약 취소를 할 수 없습니다.'); location.reload();")
 				}
 			},
 			error:function(e){
