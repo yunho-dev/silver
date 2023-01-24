@@ -189,13 +189,13 @@ System.out.println(hope);
 														<input type="text" name="bStart" id="bDateStart" onchange="dateCheck()" autocomplete="off">
 													</p><br>
 													<p class="writeArea"><span id="WriteName">사용자 : </span> <br>
-														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;">
+														<input type="text" name="bMem" id="selectMember" readonly="readonly" style="cursor: pointer;" placeholder="클릭해 주세요">
 														<input type="hidden" name="bMemId" readonly="readonly">
 													</p><br>
 	                                			</div>
 	                                			<div class="right">
 	                                				<p class="writeArea"><span id="WriteName">이용 끝날 시간 : </span> 
-														<input type="text" name="bEnd" id="bDateEnd" onchange="dateCheck()" autocomplete="off">
+														<input type="text" name="bEnd" id="bDateEnd" onchange="dateCheck()" autocomplete="off" >
 													</p><br>
 	                                			</div>
 	                                			<div style="width: 100%; float: left; text-align: center;">

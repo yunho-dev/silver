@@ -85,11 +85,11 @@
 						<div class="writeRight">
 							<p class="writeArea">
 								<span id="WriteName">예약 시작 날짜 : </span> 
-								<input type="text" name="bStart" id="bookStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bStart" id="bookStart" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요" autocomplete="off"><br>
 							</p><br>
 							<p class="writeArea">
 								<span id="WriteName">예약 끝날 날짜 : </span> 
-								<input type="text" name="bEnd" id="bookEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요"><br>
+								<input type="text" name="bEnd" id="bookEnd" onchange="dateCheck()" readonly="readonly" placeholder="품명을 먼저 선택해 주세요" autocomplete="off"><br>
 							</p>
 							<p class="writeArea">
 								<span id="dateCheck" style="color: #B1B1B1; font-size: medium;">예약 시작 날짜와 끝날 날짜를 선택해 주세요</span>

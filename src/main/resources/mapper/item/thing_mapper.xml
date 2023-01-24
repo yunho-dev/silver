@@ -154,16 +154,16 @@
 	
 	<!-- 비품 사용 기록 -->
 	<select id="totalCntThHistory" resultType="int">
-		SELECT COUNT(t.th_name) FROM thing t 
-			left outer join thinghistory th  on th.th_idx = t.th_idx
-		WHERE t.th_state = '비사용중'
+		SELECT COUNT(cnt.th_name) FROM (SELECT th.his_idx, t.th_name, t.th_part, th.his_name, th.his_rent, th.his_return, t.th_state FROM thing t 
+			left outer join thinghistory th  on th.th_idx = t.th_idx 
+		WHERE t.th_state = '비사용중' GROUP BY t.th_name HAVING COUNT(t.th_name)) as cnt
 	</select>
 	
 	<select id="getThingHistoryList" resultType="thing" parameterType="int">
-			SELECT th.his_idx, t.th_name, t.th_part, th.his_name, th.his_rent, th.his_return, t.th_state FROM thing t 
-				left outer join thinghistory th  on th.th_idx = t.th_idx
-			WHERE t.th_state = '비사용중' 
-				order by th.his_idx DESC limit 10 offset #{params}
+		SELECT th.his_idx, t.th_name, t.th_part, th.his_name, th.his_rent, th.his_return, t.th_state FROM thing t 
+			left outer join thinghistory th  on th.th_idx = t.th_idx 
+		WHERE t.th_state = '비사용중' GROUP BY t.th_name HAVING COUNT(t.th_name)
+			order by th.his_idx DESC limit 10 offset #{params}
 	</select>
 	
 	<!-- 비품 사용 내역 필터검색 페이징 -->
