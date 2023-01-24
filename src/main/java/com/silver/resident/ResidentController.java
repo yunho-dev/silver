@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -54,21 +55,65 @@ public class ResidentController {
 		logger.info("params:{} ",params);
 		return service.residentCateSearch(params);
 	}
+	/*
+	@RequestMapping(value="/residentDateSearch.do")
+	public ModelAndView residentDateSearch(@RequestParam HashMap<String, String> params, @RequestParam String re_idx) throws Exception {
+		logger.info("residentDateSearch date: "+params.get("date"));	
+		logger.info("params:{} ",params);
+		logger.info("re_idx "+re_idx);
+				
+		return service.residentDateSearch(params, re_idx);
+	}
+	*/
 	
+	
+	
+	@GetMapping(value="/roomListCall.go")
+	@ResponseBody
+	public HashMap<String, Object> roomListCall() {	
+		return service.roomListCall();
+	}
 	
 	//상세보기
 	@GetMapping(value="/residentdetail.go")
-	public String residentdetail(@RequestParam String re_idx, Model model) {	
-		logger.info("residentdetail re_idx: ",re_idx);
-		service.residentdetail(re_idx, model,"residentdetail");		
-		return "resident/residentdetail";
+	@ResponseBody
+	public HashMap<String, Object> residentdetail(@RequestParam String re_idx) {	
+		return service.residentDetail(re_idx);
 	}
-	@GetMapping(value="/residentCateDetail.go")
-	public String residentCateDetail(@RequestParam String re_idx, Model model) {	
-		logger.info("residentCateDetail re_idx: ",re_idx);
-		service.residentCateDetail(re_idx, model,"residentCateDetail");		
-		return "resident/residentCateDetail";
+	@GetMapping(value="/cateDetailDetail.go")
+	public String cateDetailDetail(@RequestParam int re_idx, @RequestParam int cc_idx, @RequestParam int cu_num,  Model model) {	
+		logger.info("re_idx: "+re_idx);	
+		logger.info("cc_idx: "+cc_idx);	
+		logger.info("cu_num: "+cu_num);
+		String page="";
+		if (cc_idx==1 ) {
+			service.cateDetailCure(re_idx, cu_num, model, "cateDetailDetailCure");		
+			page ="resident/residentCureDetail";
+		}
+		else if (cc_idx==2 ) {
+			service.cateDetaiMedic(re_idx, cu_num, model, "cateDetailDetailMedic");		
+			page ="resident/residentMedicDetail";
+		}
+		else if (cc_idx==3 ) {
+			service.cateDetailVital(re_idx, cu_num, model, "cateDetailDetailMedic");		
+			page ="resident/residentVitalDetail";
+		}
+		return page;	
+	}
+
+	@GetMapping(value = "/residentCateDetail.do")
+	@ResponseBody
+	public HashMap<String, Object> residentCateDetail(@RequestParam String re_idx){
+		logger.info("관리 이력 리스트 뽑아오기");
+		return service.residentCateDetail(re_idx);
 	}	
+	@GetMapping(value = "/residentDateSearch.do")
+	@ResponseBody
+	public HashMap<String, Object> residentDateSearch(@RequestParam HashMap<String, String> params) {
+		logger.info("관리 이력 리스트 뽑아오기");
+		logger.info("params:{} ",params);
+		return service.residentDateSearch(params);
+	}
 	// 첨부파일 다운로드
 	@GetMapping(value="/resifileDownload.do")
 	public ResponseEntity<Resource> download(String path){
@@ -106,6 +151,8 @@ public class ResidentController {
 	public String residentwriteForm() {
 		return "resident/residentwriteForm";		
 	}
+	
+	
 
 	
 	@RequestMapping(value="/residentwrite.do")
@@ -116,14 +163,49 @@ public class ResidentController {
 		
 		return service.residentwrite(photo_fp_oriFileName, fp_oriFileName, params);
 	}
+	@RequestMapping(value="/residentwriteCure.do")
+	public String residentwriteCure(@RequestParam HashMap<String, String> params) {
+		logger.info("params:{} ",params);	
+		return service.residentwriteCure(params);
+	}
+	@RequestMapping(value="/residentwriteMedic.do")
+	public String residentwriteMedic(@RequestParam HashMap<String, String> params) {
+		logger.info("params:{} ",params);	
+		return service.residentwriteMedic(params);
+	}
+	@RequestMapping(value="/residentwriteVital.do")
+	public String residentwriteVital(@RequestParam HashMap<String, String> params) {
+		logger.info("params:{} ",params);	
+		return service.residentwriteVital(params);
+	}
+	
 
-
+	
 	@RequestMapping(value="/residentupdateForm.go")
 	public String updateForm(@RequestParam String re_idx, Model model) {
 		logger.info("residentupdateForm idx : "+re_idx);
 		service.residentdetail(re_idx, model,"resident/residentupdateForm");		
 		return "resident/residentupdateForm";
 	}
+	@RequestMapping(value="/residentCure.go")
+	public String residentCure(@RequestParam String re_idx, Model model) {
+		logger.info("residentCure idx : "+re_idx);
+		service.residentdetail(re_idx, model,"resident/residentCure");	
+		return "resident/residentCure";		
+	}	
+	@RequestMapping(value="/residentMedic.go")
+	public String residentMedic(@RequestParam String re_idx, Model model) {
+		logger.info("residentMedic idx : "+re_idx);
+		service.residentdetail(re_idx, model,"resident/residentMedic");
+		return "resident/residentMedic";		
+	}
+	@RequestMapping(value="/residentVital.go")
+	public String residentVital(@RequestParam String re_idx, Model model) {
+		logger.info("residentVital idx : "+re_idx);
+		service.residentdetail(re_idx, model,"resident/residentVital");
+		return "resident/residentVital";		
+	}
+		
 	
 	
 	@RequestMapping(value="/residentupdate.do")
@@ -133,5 +215,34 @@ public class ResidentController {
 		logger.info("photo_fp_oriFileName: "+fp_oriFileName);
 		return service.residentupdate(photo_fp_oriFileName, fp_oriFileName, params);
 	}
+	@RequestMapping(value="/residentUpdatedetail.do")
+	public String residentUpdatedetail(@RequestParam HashMap<String, String> params) {
+		logger.info("residentUpdateCure params:{} ",params);	
+		String page="";
+		try {
+			
+			int cc_idx =  Integer.parseInt(params.get("cc_idx"));
+			logger.info("cc_idx "+cc_idx);	
+			if (cc_idx==1 ) {
+				logger.info("cateUpdateCure");
+				page =service.cateUpdateCure(params);	
+			}
+			else if (cc_idx==2 ) {
+				logger.info("cateUpdateMedic");
+				page =service.cateUpdateMedic(params);		
+			}
+			else if (cc_idx==3 ) {
+				logger.info("cateUpdatelVital");
+				page =service.cateUpdateVital(params);	
+			}
+		} catch (Exception e) {
+			
+		}
+		
+		return page;	
+	}
+
+		
+		
 	
 }

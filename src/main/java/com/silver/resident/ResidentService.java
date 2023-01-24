@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -64,10 +67,64 @@ public class ResidentService {
 		model.addAttribute("rdfile", rdfile);
 	}
 	@Transactional
-	public void residentCateDetail(String re_idx, Model model, String string) {
-		logger.info("residentCateDetail");
-		ResidentDTO rd = dao.residentCateDetail(re_idx);
+	public HashMap<String, Object> residentDetail(String re_idx) {
+		logger.info("residentdetail");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ResidentDTO rd=dao.residentDetail(re_idx);
+		ArrayList<ResidentFileDTO> rdfile = dao.residentFiledetail(re_idx);
+		result.put("rd", rd);
+		result.put("rdfile", rdfile);
+		return result;
+	}
+	@Transactional
+	public HashMap<String, Object> roomListCall() {
+		logger.info("roomListCall");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ArrayList<ResidentFileDTO> roomListCall = dao.roomListCall();
+		result.put("rd", roomListCall);
+		return result;
+	}
+	/*
+	@Transactional
+	public void cateDetailDetail(String re_idx, Model model, String string) {
+		logger.info("cateDetailDetail");
+		ResidentDTO rd = dao.cateDetailDetail(re_idx);
 		model.addAttribute("rd", rd);
+	}
+	*/
+//	@Transactional
+//	public void residentCateDetail(String re_idx, Model model, String string) {
+//		logger.info("residentCateDetail");
+//		ResidentDTO rd = dao.residentCateDetail(re_idx);
+//		model.addAttribute("rd", rd);
+//	}
+	/*
+	@Transactional
+	public ModelAndView residentCateDetail(String re_idx) {
+		ModelAndView mav = new ModelAndView("resident/residentCateDetail");
+		ArrayList<ResidentDTO> residentCateDetail = dao.residentCateDetail(re_idx);
+		logger.info("residentCateDetail size: "+residentCateDetail.size());
+		mav.addObject("residentCateDetail", residentCateDetail);
+		return mav;
+	}
+	*/
+	public HashMap<String, Object> residentCateDetail(String re_idx) {
+		
+		logger.info("입소자 관리 목록을 가져오는 서비스");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ArrayList<ResidentDTO> CateDetailList=dao.residentCateDetail(re_idx);
+		logger.info("입소자 관리 리스트:{}",CateDetailList);
+		result.put("list", CateDetailList);
+		return result;
+	}
+public HashMap<String, Object> residentDateSearch(HashMap<String, String> params) {
+		
+	logger.info("입소자 관리 목록을 가져오는 서비스");
+	HashMap<String, Object> result = new HashMap<String, Object>();
+	ArrayList<ResidentDTO> residentDateSearch=dao.residentDateSearch(params);
+	logger.info("입소자 관리 리스트:{}"+residentDateSearch);
+	result.put("list", residentDateSearch);
+	return result;
 	}
 	
 	
@@ -79,10 +136,8 @@ public class ResidentService {
 		
 		int success=dao.residentwrite(params);
 		String re_idx = params.get("re_idx");
-		logger.info("re_idx: "+re_idx);	
-		
+		logger.info("re_idx: "+re_idx);			
 		logger.info("success: "+success);
-		logger.info("re_idx: "+re_idx);
 
 		// 성공하고, 업로드 할 photo이 있다면... 	
 		try {
@@ -106,7 +161,155 @@ public class ResidentService {
 		logger.info("residentwrite 끝");
 		return "redirect:/resident";				
 		}
-
+	
+	public String residentwriteCure(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);	
+		
+		// 현재 날짜 구하기
+        LocalDate now =  LocalDate.now();
+        // 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd ");
+        // 포맷 적용        
+        String date = now.format(formatter);
+         logger.info("date: "+date);
+                  
+		String starttime = params.get("co_start"); 
+		String starttime2 = starttime+":00.000";
+		String starttime3= date+starttime2;
+		java.sql.Timestamp startdatetime = java.sql.Timestamp.valueOf(starttime3);
+		logger.info("startdatetime: "+startdatetime);
+		
+		String endtime = params.get("co_end"); 
+		String endtime2 = endtime+":00.000";
+		String endtime3= date+endtime2;
+		java.sql.Timestamp enddatetime = java.sql.Timestamp.valueOf(endtime3);
+		logger.info("enddatetime: "+enddatetime);
+		
+		ResidentDTO dto = new ResidentDTO();		
+		int re_idx =  Integer.parseInt(params.get("re_idx"));
+		dto.setRe_idx(re_idx);
+		dto.setCc_idx(1);
+		dto.setCo_write(params.get("co_write"));
+		dto.setCo_start(startdatetime);
+		dto.setCo_end(enddatetime);
+		dto.setCu_content(params.get("cu_content"));
+		dto.setCo_event(params.get("co_event"));
+		
+		int success=dao.residentwriteCure(dto);
+				
+		logger.info("success: "+success);
+		return "redirect:/residentCategory";			
+	}
+	public String residentwriteMedic(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);	
+		
+		// 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        // 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd ");
+        // 포맷 적용        
+        String date = now.format(formatter);
+         logger.info("date: "+date);
+                  
+		String starttime = params.get("me_start"); 
+		String starttime2 = starttime+":00.000";
+		String starttime3= date+starttime2;
+		java.sql.Timestamp startdatetime = java.sql.Timestamp.valueOf(starttime3);
+		logger.info("startdatetime: "+startdatetime);
+		
+		String endtime = params.get("me_end"); 
+		String endtime2 = endtime+":00.000";
+		String endtime3= date+endtime2;
+		java.sql.Timestamp enddatetime = java.sql.Timestamp.valueOf(endtime3);
+		logger.info("enddatetime: "+enddatetime);
+		
+		ResidentDTO dto = new ResidentDTO();		
+		int re_idx =  Integer.parseInt(params.get("re_idx"));
+		dto.setRe_idx(re_idx);
+		dto.setCc_idx(2);
+		dto.setMe_write(params.get("me_write"));
+		dto.setMe_start(startdatetime);
+		dto.setMe_end(enddatetime);
+		dto.setMe_name(params.get("me_name"));
+		dto.setMe_volume(params.get("me_volume"));
+		dto.setMe_way(params.get("me_way"));
+		dto.setMe_event(params.get("me_event"));
+		
+		int success=dao.residentwriteMedic(dto);
+				
+		logger.info("success: "+success);
+		return "redirect:/residentCategory";				
+	}
+	public String residentwriteVital(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);	
+		
+		// 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        // 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd ");
+        // 포맷 적용        
+        String date = now.format(formatter);
+         logger.info("date: "+date);
+                  
+		String starttime = params.get("vi_start"); 
+		String starttime2 = starttime+":00.000";
+		String starttime3= date+starttime2;
+		java.sql.Timestamp startdatetime = java.sql.Timestamp.valueOf(starttime3);
+		logger.info("startdatetime: "+startdatetime);
+		
+		String endtime = params.get("vi_end"); 
+		String endtime2 = endtime+":00.000";
+		String endtime3= date+endtime2;
+		java.sql.Timestamp enddatetime = java.sql.Timestamp.valueOf(endtime3);
+		logger.info("enddatetime: "+enddatetime);
+		
+		ResidentDTO dto = new ResidentDTO();		
+		int re_idx =  Integer.parseInt(params.get("re_idx"));
+		int vi_blood =  Integer.parseInt(params.get("vi_blood"));
+		int vi_heart =  Integer.parseInt(params.get("vi_heart"));
+		double vi_temp =  Integer.parseInt(params.get("vi_temp"));
+		int vi_breath =  Integer.parseInt(params.get("vi_breath"));
+		int vi_sugar =  Integer.parseInt(params.get("vi_sugar"));
+		double vi_weight =  Integer.parseInt(params.get("vi_weight"));
+		dto.setRe_idx(re_idx);
+		dto.setVi_blood(vi_blood);
+		dto.setVi_heart(vi_heart);
+		dto.setVi_temp(vi_temp);
+		dto.setVi_breath(vi_breath);
+		dto.setVi_sugar(vi_sugar);
+		dto.setVi_weight(vi_weight);
+		dto.setCc_idx(3);
+		dto.setVi_write(params.get("vi_write"));
+		dto.setVi_start(startdatetime);
+		dto.setVi_end(enddatetime);
+		dto.setVi_event(params.get("vi_event"));
+		
+		int success=dao.residentwriteVital(dto);
+				
+		logger.info("success: "+success);
+		return "redirect:/residentCategory";				
+	}
+	public void cateDetailCure(int re_idx,int cu_num, Model model, String string) {
+		logger.info("re_idx: "+re_idx);	
+		logger.info("cu_num: "+cu_num);
+		ResidentDTO rd = dao.cateDetailCure(re_idx,cu_num);
+		model.addAttribute("rd", rd);		
+	}
+	public void cateDetaiMedic(int re_idx, int me_num, Model model, String string) {
+		logger.info("re_idx: "+re_idx);	
+		logger.info("me_num: "+me_num);
+		ResidentDTO rd = dao.cateDetailMedic(re_idx,me_num);
+		model.addAttribute("rd", rd);			
+	}
+	public void cateDetailVital(int re_idx, int vi_num, Model model, String string) {
+		logger.info("re_idx: "+re_idx);	
+		logger.info("vi_num: "+vi_num);
+		ResidentDTO rd = dao.cateDetailVital(re_idx,vi_num);
+		model.addAttribute("rd", rd);		
+	}
+	
+	
+	
 	// 입소자 사진 업로드
 	public void residentphotoInsert(MultipartFile photo_fp_oriFileName, String re_idx) {
 		// 1. 파일명 추출
@@ -156,25 +359,8 @@ public class ResidentService {
 		} catch (IOException e) {
 		} 
 	}	
-	/*
-	public String residentupdate(HashMap<String, String> params) {
-		
-		logger.info("residentupdate re_idx: "+params.get("re_idx"));
-		logger.info("params:{} ",params);	
-		
-		dao.residentupdate(params);
-		logger.info("params:{} ",params);	
-		String re_idx = params.get("re_idx");
-		logger.info("params:{} ",params);	
-		logger.info("re_idx: "+re_idx);	
-		
-//		if(success>0 && !photo.getOriginalFilename().equals("")) {
-//			fileUpload(photo, idx);
-//		}
-			
-		return "redirect:/residentdetail.go?re_idx="+re_idx;				
-		}
-	*/	
+
+	
 	public String residentupdate(MultipartFile photo_fp_oriFileName, MultipartFile[] fp_oriFileName, HashMap<String, String> params) {
 		logger.info("photo_fp_oriFileName 이름 : "+photo_fp_oriFileName.getOriginalFilename());
 		logger.info("photo_fp_oriFileName: "+fp_oriFileName);
@@ -186,7 +372,6 @@ public class ResidentService {
 		logger.info("re_idx: "+re_idx);	
 		
 		logger.info("success: "+success);
-		logger.info("re_idx: "+re_idx);
 		
 		// 성공하고, 업로드 할 파일이 있다면... 	
 		try {
@@ -210,6 +395,38 @@ public class ResidentService {
 				
 		logger.info("residentwrite 끝");
 		return "redirect:/resident";				
+	}
+	public String cateUpdateCure(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		logger.info("residentupdate re_idx: "+params.get("re_idx"));
+		logger.info("residentupdate cu_num: "+params.get("cu_num"));
+		
+		
+		int success=dao.cateUpdateCure(params);		
+		logger.info("success: "+success);
+		return "redirect:/residentCategory";
+		
+	}
+	public String cateUpdateMedic(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		logger.info("residentupdate re_idx: "+params.get("re_idx"));
+		logger.info("residentupdate me_num: "+params.get("me_num"));
+		
+		int success=dao.cateUpdateMedic(params);
+		logger.info("success: "+success);
+		return "redirect:/residentCategory";
+		
+	}
+	public String cateUpdateVital(HashMap<String, String> params) {
+		logger.info("받아온 요소 : {}", params);
+		logger.info("residentupdate re_idx: "+params.get("re_idx"));
+		logger.info("residentupdate vi_num: "+params.get("vi_num"));
+
+			int success=dao.cateUpdateVital(params);			
+			logger.info("success: "+success);
+		
+		return "redirect:/residentCategory";
+		
 	}
 	// 입소자 사진 업로드
 	public void residentphotoUpload(MultipartFile photo_fp_oriFileName, String re_idx) {
@@ -260,6 +477,11 @@ public class ResidentService {
 		} catch (IOException e) {
 		} 
 	}
+	
+	
+
+
+
 
 
 

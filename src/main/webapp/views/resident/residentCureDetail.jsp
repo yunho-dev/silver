@@ -14,13 +14,15 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
 
+
+
  
 
 	<script>
 		$(document).ready(function() {
 		   
 			//문의사항 답변 수정 유효성 검사
-			$('#residentwriteCureFormBtn').click(function()
+			$('#residentUpdatedetailBtn').click(function()
 			{
 				if($('#co_write').val() == '')
 				{
@@ -32,16 +34,12 @@
 					alert('시작시간을 입력하세요');
 					$('#co_start').focus();
 					return;
-				}else if($('#co_end').val() == '')
-				{
-					alert('종료시간을 입력하세요');
-					$('#co_end').focus();
-					return;
 				}else if($('#cu_content').val() == '')
 				{
 					alert('내용을 입력하세요');
 					$('#cu_content').focus();
 					return;
+					
 				}else if($('#co_event').val() == '')
 				{
 					alert('특이사항를 입력하세요');
@@ -49,7 +47,7 @@
 					return;
 				}
 
-				$('#residentwriteCureForm').submit();
+				$('#residentUpdatedetailForm').submit();
 			});
 				//취소 버튼 클릭시 이전페이지로			
 				$('#cancleBtn').click(function(){
@@ -63,23 +61,28 @@
 </head>
 <body>
 
-   <div id="app">
+
+<div id="app">
       <jsp:include page="../sidebar.jsp"></jsp:include>
-         <div id="main">
-            <jsp:include page="../upbar.jsp"></jsp:include>
-            <!-- 여기 안에서 개발  -->
-            
-            
-            
-            
-            
-            <div class="card-body">
-               <form action="residentwriteCure.do" method="POST" class="form form-horizontal" id="residentwriteCureForm">
+        <div id="main">
+        <jsp:include page="../upbar.jsp"></jsp:include>
+         <!-- 여기 안에서 개발  -->
+         
+         
+         
+         
+         
+         
+		
+  <div class="card-body">
+               <form action="residentUpdatedetail.do" method="POST" class="form form-horizontal" id="residentUpdatedetailForm">
                   <div class="form-body">
                      <div class="row">                                              
                         <div class="col-md-8 form-group">
                            <h5>치료</h5>
                            <input type="hidden" name="re_idx" value="${rd.re_idx}">
+                           <input type="hidden" name="cc_idx" value="${rd.cc_idx}">
+                           <input type="hidden" name="cu_num" value="${rd.cu_num}">
                         </div>
                         <table  class="table mb-0" >
                            <tr>
@@ -91,13 +94,13 @@
                            <tr>
                               <td>시작시간</td>
                                  <td>
-                                    <input type="time" name="co_start" placeholder="2022-12-20 19:00:00.000" value="${rd.co_start}" id="co_start">
+                                    <input type="datetime" name="co_start" placeholder="2022-12-20 19:00:00.000" value="${rd.co_start}" id="co_start">
                                  </td>
                               </tr>
                            <tr>
                               <td>종료시간</td>
                               <td>
-                                 <input type="time" name="co_end" placeholder="2022-12-20 19:00:00.000" value="${rd.co_start}" id="co_end">
+                                 <input type="datetime" name="co_end" placeholder="2022-12-20 19:00:00.000" value="${rd.co_start}" id="co_end">
                               </td>
                            </tr>
                            <tr>
@@ -115,7 +118,7 @@
                         </table>
                         <div class="col-sm-12 d-flex justify-content-end">
                             <button type="button" id="cancleBtn" class="btn btn-primary">취소</button>
-                         <button type="button" id="residentwriteCureFormBtn" class="btn btn-primary">등록</button>
+                         <button type="button" id="residentUpdatedetailBtn" class="btn btn-primary">등록</button>
 
 
                         </div>
@@ -153,11 +156,12 @@
                            <input type="text" name="co_event" placeholder="특이사항" value="${rd.co_event}">
                        </div> --%>
                        
+                       
                        <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
  <script src="assets/js/bootstrap.bundle.min.js"></script>
  <script src="assets/js/pages/dashboard.js"></script>
  <script src="assets/js/main.js"></script>
- 
+                       
 </body>
 <script>
 

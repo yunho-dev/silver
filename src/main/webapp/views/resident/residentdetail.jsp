@@ -24,10 +24,7 @@
 
 
 </head>
- <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
- <script src="assets/js/bootstrap.bundle.min.js"></script>
- <script src="assets/js/pages/dashboard.js"></script>
- <script src="assets/js/main.js"></script>
+ 
 <body>
 
 
@@ -37,7 +34,7 @@
         <jsp:include page="../upbar.jsp"></jsp:include>
          <!-- 여기 안에서 개발  -->
          
- <form action="residentdetail" method="get"> 
+ 	<form action="residentdetail" method="get"> 
    <section class="section">   
       <div id="firstdata" class="table-responsive">
          <table class="table table-borderless mb-0">
@@ -63,7 +60,7 @@
             </tr>
             <tr>
                 <th>입소일</th>                                                   
-                <td>${rd.re_date}</td>                                                   
+                <td>${rd.date}</td>                                                   
             </tr>
             <tr>
                 <th>주소</th>                                                   
@@ -129,7 +126,7 @@
                 </section>
                <a href="resident" class="btn btn-primary">리스트</a>			
                <a href="./residentupdateForm.go?re_idx=${rd.re_idx}" class="btn btn-primary">수정</a>
-		</form>
+		</form>	
   		
   		
   		
@@ -149,6 +146,11 @@
          
        </div>
 </div>
+
+<script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+ <script src="assets/js/bootstrap.bundle.min.js"></script>
+ <script src="assets/js/pages/dashboard.js"></script>
+ <script src="assets/js/main.js"></script>
 </body>
 <script>
 

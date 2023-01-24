@@ -16,11 +16,64 @@
 
 
 
+	<script>
+		$(document).ready(function() {
+		   
+			//문의사항 답변 수정 유효성 검사
+			$('#residentupdateFormBtn').click(function()
+			{
+				if($('#re_name').val() == '')
+				{
+					alert('이름을 입력하세요');
+					$('#re_name').focus();
+					return;
+				}else if($('#re_jumin').val() == '')
+				{
+					alert('주빈번호를 입력하세요');
+					$('#re_jumin').focus();
+					return;
+				}else if($('#re_pnum').val() == '')
+				{
+					alert('연락처를 입력하세요');
+					$('#re_pnum').focus();
+					return;
+				}else if($('#re_addr').val() == '')
+				{
+					alert('주소를 입력하세요');
+					$('#re_addr').focus();
+					return;
+				}else if($('#re_daddr').val() == '')
+				{
+					alert('상세주소를 입력하세요');
+					$('#re_daddr').focus();
+					return;
+				}else if($('#ro_name').val() == '')
+				{
+					alert('생활실을 입력하세요');
+					$('#ro_name').focus();
+					return;
+				}else if($('#re_sick').val() == '')
+				{
+					alert('주요질환을 입력하세요');
+					$('#re_sick').focus();
+					return;
+				}else if($('#re_text').val() == '')
+				{
+					alert('비고를 입력하세요');
+					$('#re_text').focus();
+					return;
+				}
+
+				$('#residentupdateForm').submit();
+			});
+				//취소 버튼 클릭시 이전페이지로			
+				$('#cancleBtn').click(function(){
+					location.href = window.history.back();
+				});
+		});
+      </script>
+
 </head>
- <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
- <script src="assets/js/bootstrap.bundle.min.js"></script>
- <script src="assets/js/pages/dashboard.js"></script>
- <script src="assets/js/main.js"></script>
 <body>
 	
 <div id="app">
@@ -28,120 +81,99 @@
         <div id="main">
         <jsp:include page="../upbar.jsp"></jsp:include>
          <!-- 여기 안에서 개발  -->			
-		
+		<div class="page-heading">
+				<h3>입소자 수정</h3>
+		</div>
 
 		
 		
 		
-		  <div class="card-body">
-                                        <form action="residentupdate.do" method="POST" enctype="multipart/form-data" class="form form-horizontal">
-                                            <div class="form-body">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label>입소자</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_name" placeholder="입소자" value="${rd.re_name}">
-                                                   		 <input type="hidden" name="re_idx" value="${rd.re_idx}"/>
-                                                    </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>주민번호</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_jumin" placeholder="주민번호" value="${rd.re_jumin}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                       <label>성별</label>
-                                                    </div>
-                                                    <div>
-                                                    	<select id="re_gender" name="re_gender">					
-															<option value="남">남</option>
-															<option value="여">여</option>
-														</select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                       <label>휴대폰</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_pnum" placeholder="휴대폰" value="${rd.re_pnum}">
-                                                    </div>
-                                                     <div class="col-md-4">
-                                                        <label>주소</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_addr" placeholder="주소" value="${rd.re_addr}">
-                                                    </div>
-                                                     <div class="col-md-4">
-                                                        <label>상세주소</label>                                                  
-                                                    </div>
-                                                     <div class="col-md-4">
-                                                     <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_daddr" placeholder="상세주소" value="${rd.re_daddr}">
-                                                    </div>
-                                                     <div class="col-md-4">
-                                                         <label>생활실</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="ro_name" placeholder="생활실" value="${rd.ro_name}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                         <label>등급</label>
-                                                    </div>                                                    
-                                                    <div>
-                                                    	<select id="re_grade" name="re_grade">					
-															<option value="1">1</option>
-															<option value="2">2</option>
-															<option value="3">3</option>
-															<option value="4">4</option>
-														</select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                         <label>현황</label>
-                                                    </div>
-                                                    <div>
-                                                    	<select id="re_state" name="re_state">					
-															<option value="입소중">입소중</option>
-															<option value="외출">외출</option>
-															<option value="외박">외박</option>
-															<option value="입원중">입원중</option>
-															<option value="퇴소">퇴소</option>
-														</select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                         <label>주요질환</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_sick" placeholder="주요질환" value="${rd.re_sick}">
-                                                    </div>
-                                                     <div class="col-md-4">
-                                                         <label>비고</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" name="re_text" placeholder="비고" value="${rd.re_text}">
-                                                    </div>
-                                                     <div class="col-md-4">
-                                                         <label>사진</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="file" name="photo_fp_oriFileName" accept="image/gif, image/jpeg, image/png" placeholder="사진" value="${rd.fp_oriFileName}">
-                                                    </div>
-                                                    
-                                                    
-                                                    <div class="col-md-4">
-                                                         <label>파일</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="file" name="fp_oriFileName" multiple="multiple" placeholder="파일" value="">
-                                                    </div>
+<div class="page-content">
+				<section class="row">
+					<div class="card">
+						<div class="card-body py-4 px-5">
+         <form action="residentupdate.do" method="POST" enctype="multipart/form-data" class="form form-horizontal" id="residentupdateForm">
+               <div class="d-flex align-items-center">
+					<div class="input-group mb-3">
+                           <span class="input-group-text" id="basic-addon1">입소자</span> 
+                           <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="re_name" placeholder="입소자" value="${rd.re_name}" id="re_name" autofocus>
+                      	   <input type="hidden" name="re_idx" value="${rd.re_idx}"/>
+                     </div>
+               </div>
+					<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">주민번호</span> 
+                         	<input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1" name="re_jumin" placeholder="주민번호" value="${rd.re_jumin}" id="re_jumin" autofocus>
+                    </div>
+                    <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">성별</span> 
+                       	<select id="re_gender" name="re_gender">					
+							<option value="남">남</option>
+							<option value="여">여</option>
+						</select>
+                    </div>
+                       <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">휴대폰</span> 
+                            <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="re_pnum" placeholder="휴대폰" value="${rd.re_pnum}" id="re_pnum" autofocus>
+		               </div>
+		                <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">주소</span> 
+		                   <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="re_addr" placeholder="주소" value="${rd.re_addr}" id="re_addr" autofocus>
+		               </div>
+		               <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">상세주소</span> 
+		                   <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="re_daddr" placeholder="상세주소" value="${rd.re_daddr}" id="re_daddr" autofocus>
+		               </div>
+		               <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">생활실</span> 
+		                   <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="ro_name" placeholder="생활실" value="${rd.ro_name}" id="ro_name" autofocus>
+		               </div>
+		                <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">등급</span> 
+		                   <select id="re_grade" name="re_grade">					
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+							</select>
+		               </div>
+		               <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">현황</span> 
+		                   <select id="re_state" name="re_state">					
+								<option value="입소중">입소중</option>
+								<option value="외출">외출</option>
+								<option value="외박">외박</option>
+								<option value="퇴소">퇴소</option>
+							</select>
+		               </div>
+		               <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">주요질환</span> 
+		                   <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="re_sick" placeholder="주요질환" value="${rd.re_sick}" id="re_sick" autofocus>
+		               </div>
+		                <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">비고</span> 
+		                   <input type="text"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="re_text" placeholder="비고" value="${rd.re_sick}" id="re_text" autofocus>
+		               </div>
+		                <div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1">사진</span> 
+		                   <input type="file"  class="form-control" aria-label="Username" 
+											aria-describedby="basic-addon1"  name="photo_fp_oriFileName" accept="image/gif, image/jpeg, image/png" placeholder="사진" value="${rd.fp_oriFileName}" id="photo_fp_oriFileName" autofocus>
+		               </div>
                                                     
                                                     
 
                      
                                                                        
                    <div class="col-sm-12 d-flex justify-content-end">
-						 <a href="resident" class="btn btn-primary">취소</a>			
-                         <button >등록</button>
+                       	 <button type="button" id="cancleBtn" class="btn btn-primary">취소</button>
+                         <button type="button" id="residentupdateFormBtn" class="btn btn-primary">등록</button>
                    
                                                         
                                                     </div>
@@ -154,6 +186,11 @@
 		
        </div>
 </div>
+
+ <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+ <script src="assets/js/bootstrap.bundle.min.js"></script>
+ <script src="assets/js/pages/dashboard.js"></script>
+ <script src="assets/js/main.js"></script>
 </body>
 <script>
 

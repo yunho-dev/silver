@@ -12,7 +12,7 @@
 	</select>
 	
 	<select id="residentsearch" resultType="rd" parameterType="hashmap">
-			select * from resident where
+			select *,RIGHT(YEAR(now()),2)-left(re_jumin,2)+100 as re_age from resident where
 			<if test="re_state != null and re_state != ''">
 				<![CDATA[re_state=#{re_state} ]]>
 			</if>
@@ -25,26 +25,52 @@
 			order by re_idx desc
 	</select>
 	<select id="residentCateSearch" resultType="rd" parameterType="hashmap">
-			select * from resident where
+			select *,RIGHT(YEAR(now()),2)-left(re_jumin,2)+100 as re_age from resident 
 			<if test="re_name != null and re_name != ''">
-				<![CDATA[re_name=#{re_name} ]]>
+				<![CDATA[where re_name=#{re_name} ]]>
 			</if>
 			order by re_idx desc
 	</select>
+	<select id="residentDateSearch" resultType="rd" parameterType="hashmap">
+		select r.*, c.cu_num,c.co_start,c.co_end,cl.* from resident r, cure c, cliniccate cl where r.re_idx = #{re_idx} and r.re_idx = c.re_idx and c.cc_idx=1 and c.cc_idx= cl.cc_idx and LEFT(c.co_start,10) = #{date}
+			union
+		select r.*, m.me_num,m.me_start,m.me_end, cl.* from resident r, medic m, cliniccate cl where r.re_idx = #{re_idx} and r.re_idx = m.re_idx and m.cc_idx=2 and m.cc_idx= cl.cc_idx and LEFT(m.me_start,10) = #{date}
+			union
+		select r.*, v.vi_num,v.vi_start,v.vi_end, cl.* from resident r, vital v, cliniccate cl where r.re_idx = #{re_idx} and r.re_idx = v.re_idx and v.cc_idx=3 and v.cc_idx= cl.cc_idx and LEFT(v.vi_start,10) = #{date}
+	</select>
 
 	<select id="residentdetail" resultType="rd" parameterType="String">	
-		select *,f.fp_newFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=4;
+		select *,f.fp_newFileName,left(r.re_date,10) as date from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=4
 	</select>
-	<!-- 
-	<select id="residentFiledetail" resultType="rd" parameterType="String">	
-		select r.re_idx, f.fp_newFileName as file_fp_newFileName, f.fp_oriFileName as file_fp_oriFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=5;
+	<select id="residentDetail" resultType="rd" parameterType="String">	
+		select *,f.fp_newFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=4
 	</select>
-	 -->
+	<select id="cateDetailCure" resultType="rd" parameterType="hashmap">	
+		select * from cure where re_idx = #{re_idx} and cu_num=#{cu_num};
+	</select>
+	<select id="cateDetailMedic" resultType="rd" parameterType="hashmap">	
+		select * from medic where re_idx = #{re_idx} and me_num=#{me_num};
+	</select>
+	<select id="cateDetailVital" resultType="rd" parameterType="hashmap">	
+		select * from vital where re_idx = #{re_idx} and vi_num=#{vi_num};
+	</select>
 	
-	<select id="residentFiledetail" resultType="rdfile" parameterType="String">	
-		select r.re_idx, f.fp_newFileName, f.fp_oriFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=5;
+
+	<select id="residentCateDetail" resultType="rd" parameterType="String">	
+		select r.*, c.cu_num,c.co_start,c.co_end,c.co_write,cl.*,"#2457BD" as bgcolor from resident r, cure c, cliniccate cl where r.re_idx = #{re_idx} and r.re_idx = c.re_idx and c.cc_idx=1 and c.cc_idx= cl.cc_idx
+			union
+		select r.*, m.me_num,m.me_start,m.me_end,m.me_write, cl.*,"#670000" as bgcolor from resident r, medic m, cliniccate cl where r.re_idx = #{re_idx} and r.re_idx = m.re_idx and m.cc_idx=2 and m.cc_idx= cl.cc_idx
+			union
+		select r.*, v.vi_num,v.vi_start,v.vi_end,v.vi_write, cl.*,"#005000" as bgcolor from resident r, vital v, cliniccate cl where r.re_idx = #{re_idx} and r.re_idx = v.re_idx and v.cc_idx=3 and v.cc_idx= cl.cc_idx;
 	</select>
 
+	
+	<select id="residentFiledetail" resultType="rdfile" parameterType="String">	
+		select r.re_idx, f.fp_newFileName, f.fp_oriFileName from resident r, filephoto f where r.re_idx = #{re_idx} and r.re_idx = f.re_idx and f.fpc_idx=5
+	</select>
+	<select id="roomListCall" resultType="rd" parameterType="hashmap">	
+		select * from room
+	</select>
 
 	<insert id="residentwrite"
 		useGeneratedKeys="true"
@@ -78,6 +104,87 @@
 			,#{ro_name}
 			,#{re_daddr}) 
 	</insert>
+	<insert id="residentwriteCure"
+		useGeneratedKeys="true"
+		keyColumn="re_idx"
+		keyProperty="re_idx"
+		parameterType="rd">
+		INSERT INTO cure(
+		cu_content
+		,cc_idx
+		,co_write
+		,co_start
+		,co_end
+		,co_event
+		,re_idx)
+			VALUES(
+			#{cu_content}
+			,#{cc_idx}
+			,#{co_write}
+			,#{co_start}
+			,#{co_end}
+			,#{co_event}
+			,#{re_idx}) 
+	</insert>
+	<insert id="residentwriteMedic"
+		useGeneratedKeys="true"
+		keyColumn="re_idx"
+		keyProperty="re_idx"
+		parameterType="rd">
+		INSERT INTO medic(
+		re_idx
+		,cc_idx
+		,me_write
+		,me_start
+		,me_end
+		,me_name
+		,me_volume
+		,me_way
+		,me_event)
+			VALUES(
+			#{re_idx}
+			,#{cc_idx}
+			,#{me_write}
+			,#{me_start}
+			,#{me_end}
+			,#{me_name}
+			,#{me_volume}
+			,#{me_way}
+			,#{me_event}) 
+	</insert>
+	<insert id="residentwriteVital"
+		useGeneratedKeys="true"
+		keyColumn="re_idx"
+		keyProperty="re_idx"
+		parameterType="rd">
+		INSERT INTO vital(
+		re_idx
+		,cc_idx
+		,vi_write
+		,vi_start
+		,vi_end
+		,vi_blood
+		,vi_heart
+		,vi_temp
+		,vi_breath
+		,vi_sugar
+		,vi_weight
+		,vi_event)
+			VALUES(
+			#{re_idx}
+			,#{cc_idx}
+			,#{vi_write}
+			,#{vi_start}
+			,#{vi_end}
+			,#{vi_blood}
+			,#{vi_heart}
+			,#{vi_temp}
+			,#{vi_breath}
+			,#{vi_sugar}
+			,#{vi_weight}
+			,#{vi_event}) 
+	</insert>
+	
 	
 	
 	<insert id="residentphotoInsert" >
@@ -129,8 +236,43 @@
 			re_daddr = #{re_daddr}
 		WHERE re_idx = #{re_idx}
 	</update>	
+	<update id="cateUpdateCure" parameterType="hashmap">
+		UPDATE cure SET
+			cu_content = #{cu_content},
+			co_write = #{co_write},
+			co_start = #{co_start},
+			co_end = #{co_end},
+			co_event = #{co_event}
+		WHERE re_idx = #{re_idx} and cu_num = #{cu_num} and cc_idx=1
+	</update>	
+	<update id="cateUpdateMedic" parameterType="hashmap">
+		UPDATE medic SET
+			me_write = #{me_write},
+			me_start = #{me_start},
+			me_end = #{me_end},
+			me_name = #{me_name},
+			me_volume = #{me_volume},
+			me_way = #{me_way},
+			me_event = #{me_event}
+		WHERE re_idx = #{re_idx} and me_num = #{me_num} and cc_idx=2
+	</update>	
+	<update id="cateUpdateVital" parameterType="hashmap">
+		UPDATE vital SET
+			vi_write = #{vi_write},
+			vi_start = #{vi_start},
+			vi_end = #{vi_end},
+			vi_blood = #{vi_blood},
+			vi_heart = #{vi_heart},
+			vi_temp = #{vi_temp},
+			vi_breath = #{vi_breath},
+			vi_sugar = #{vi_sugar},
+			vi_weight = #{vi_weight},
+			vi_event = #{vi_event}
+		WHERE re_idx = #{re_idx} and vi_num = #{vi_num} and cc_idx=3
+	</update>	
 	
 	
+
 	
 </mapper>
 
