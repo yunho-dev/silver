@@ -145,7 +145,7 @@ public class PaymentService {
 		try {
 			byte[] arr = mfile.getBytes();
 			// 저장할 파일 위치 지정
-			Path path=Paths.get("C:/pfile/"+newFileName);
+			Path path=Paths.get("/usr/local/tomcat/webapps/silver/pfile/"+newFileName);
 			// 파일 쓰기
 			Files.write(path, arr);
 			paymentdao.FileUpload(pm_idx,oriFileName,newFileName);
