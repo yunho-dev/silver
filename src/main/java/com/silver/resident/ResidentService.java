@@ -306,7 +306,6 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		logger.info("cu_num: "+cu_num);
 		ResidentDTO rd = dao.cateDetailCure(re_idx,cu_num);
 		model.addAttribute("rd", rd);		
-		
 	}
 	public void cateDetaiMedic(int re_idx, int me_num, Model model, String string) {
 		logger.info("re_idx: "+re_idx);	
@@ -335,7 +334,7 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		try {
 			byte[] bytes = photo_fp_oriFileName.getBytes(); //2-1. 파일 바이너리 얻어내기
 			//2-2. 특정경로에 파일 쓰기
-			Path path = Paths.get("C:/filephoto/"+photonewFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/filephoto/"+photonewFileName);
 			Files.write(path, bytes);
 			logger.info(photonewFileName+" UPLOAD OK!");
 			//dao 를 이용해서 photo 테이블에 데이터 넣기
@@ -345,9 +344,11 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 	}
 	// 다중 첨부파일 업로드
 	private void residentmultiInsert(MultipartFile[] fp_oriFileName, String re_idx) {
+		logger.info("residentmultiInsert1");
 		for(MultipartFile file: fp_oriFileName) {
 			try {
 				residentfileInsert(file, re_idx);
+				logger.info("residentmultiInsert2");
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 			}
@@ -355,6 +356,7 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 	}
 	public void residentfileInsert(MultipartFile fp_oriFileName, String re_idx) {
 		// 1. 파일명 추출
+		logger.info("residentmultiInsert3");
 		String oriFileName = fp_oriFileName.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf(".")); // 1-1. 확장자 잘라내기
 		String newFileName = System.currentTimeMillis()+ext; // 1-2. 신규 파일명 생성
@@ -364,7 +366,7 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		try {
 			byte[] bytes = fp_oriFileName.getBytes(); //2-1. 파일 바이너리 얻어내기
 			//2-2. 특정경로에 파일 쓰기
-			Path path = Paths.get("C:/filephoto/"+newFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/filephoto/"+newFileName);
 			Files.write(path, bytes);
 			logger.info(newFileName+" UPLOAD OK!");
 			//dao 를 이용해서 photo 테이블에 데이터 넣기
@@ -453,7 +455,7 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		try {
 			byte[] bytes = photo_fp_oriFileName.getBytes(); //2-1. 파일 바이너리 얻어내기
 			//2-2. 특정경로에 파일 쓰기
-			Path path = Paths.get("C:/filephoto/"+photonewFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/filephoto/"+photonewFileName);
 			Files.write(path, bytes);
 			logger.info(photonewFileName+" UPLOAD OK!");
 			//dao 를 이용해서 photo 테이블에 데이터 넣기
@@ -482,7 +484,7 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		try {
 			byte[] bytes = fp_oriFileName.getBytes(); //2-1. 파일 바이너리 얻어내기
 			//2-2. 특정경로에 파일 쓰기
-			Path path = Paths.get("C:/filephoto/"+newFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/filephoto/"+newFileName);
 			Files.write(path, bytes);
 			logger.info(newFileName+" UPLOAD OK!");
 			//dao 를 이용해서 photo 테이블에 데이터 넣기

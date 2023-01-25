@@ -104,10 +104,11 @@
 
 							<div class="d-flex align-items-center">
 								<div class="input-group mb-3">
-									<span class="input-group-text" id="basic-addon1">담당자</span> <input
+									<span class="input-group-text" id="basic-addon1">담당자</span> 
+									<input
 										type="text" class="form-control" aria-label="Username"
 										aria-describedby="basic-addon1" name="me_write"
-										value="${rd.me_write}" autofocus>
+										value="${rd.me_write}" id="me_write" autofocus>
 								</div>
 							</div>
 
@@ -115,52 +116,50 @@
 								<span class="input-group-text" id="basic-addon1">시작시간</span> <input
 									type="time" class="form-control" aria-label="Username"
 									aria-describedby="basic-addon1" name="me_start"
-									value="${rd.me_start}" autofocus>
+									value="${rd.me_start}" id="me_start" autofocus>
 							</div>
 
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">끝난시간</span> <input
 									type="time" class="form-control" aria-label="Username"
 									aria-describedby="basic-addon1" name="me_end"
-									value="${rd.me_end}" autofocus>
+									value="${rd.me_end}" id="me_end" autofocus>
 							</div>
 
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">약품명</span> <input
 									type="text" class="form-control" aria-label="Username"
 									aria-describedby="basic-addon1" name="me_name"
-									value="${rd.me_name}" autofocus>
+									value="${rd.me_name}" id="me_name" autofocus>
 							</div>
 
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">투여량</span> <input
 									type="text" class="form-control" aria-label="Username"
 									aria-describedby="basic-addon1" name="me_volume"
-									value="${rd.me_volume}" autofocus>
+									value="${rd.me_volume}" id="me_volume" autofocus>
 							</div>
 
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">투여방법</span> <input
 									type="text" class="form-control" aria-label="Username"
 									aria-describedby="basic-addon1" name="me_way"
-									value="${rd.me_way}" autofocus>
+									value="${rd.me_way}" id="me_way" autofocus>
 							</div>
 
 							<div class="input-group mb-3">
 								<span class="input-group-text" id="basic-addon1">특이사항</span> <input
 									type="text" class="form-control" aria-label="Username"
 									aria-describedby="basic-addon1" name="me_event"
-									value="${rd.me_event}" autofocus>
+									value="${rd.me_event}" id="me_event" autofocus>
 							</div>
 
-						</div>
 
 						<div class="col-sm-12 d-flex justify-content-end">
 							<button type="button" id="cancleBtn" class="btn btn-primary">취소</button>
-							<button type="button" id="residentwriteMedicFormBtn"
-								class="btn btn-primary">등록</button>
+							<button type="button" id="residentwriteMedicFormBtn" class="btn btn-primary">등록</button>
 						</div>
-
+						</div>
 					</div>
 				</form>
 			</div>

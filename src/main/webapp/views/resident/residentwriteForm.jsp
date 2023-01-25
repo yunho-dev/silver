@@ -33,7 +33,7 @@
 					return;
 				}else if($('#re_jumin').val() == '')
 				{
-					alert('주빈번호를 입력하세요');
+					alert('주민번호를 입력하세요');
 					$('#re_jumin').focus();
 					return;
 				}else if($('#re_pnum').val() == '')
@@ -86,7 +86,11 @@
 				});
 		});
       </script>
-
+<style>
+#ro_name{
+	height=37.6px;
+}
+</style>
 </head>
 <body>
 <%
@@ -155,8 +159,8 @@ System.out.println(hope);
 		               </div>
 		               <div class="input-group mb-3">
 							<span class="input-group-text" id="basic-addon1">생활실</span> 
-		                   <input type="text"  class="form-control" aria-label="Username" 
-											aria-describedby="basic-addon1"  name="ro_name" placeholder="생활실" value="${rd.ro_name}" id="ro_name" autofocus>
+							<span id="room">
+							</span> 
 		               </div>
 		                <div class="input-group mb-3">
 							<span class="input-group-text" id="basic-addon1">등급</span> 
@@ -194,7 +198,7 @@ System.out.println(hope);
 						<div class="input-group mb-3">
 							<span class="input-group-text" id="basic-addon1">파일</span> 
 		                   <input type="file"  class="form-control" aria-label="Username" 
-											aria-describedby="basic-addon1"  name="photo_fp_oriFileName" placeholder="파일" value="${rd.fp_oriFileName}" id="fp_oriFileName" autofocus>
+											aria-describedby="basic-addon1"  name="fp_oriFileName" multiple="multiple" placeholder="파일" value="${rd.fp_oriFileName}" id="fp_oriFileName" autofocus>
 		               </div>            	
 
                      
@@ -217,6 +221,39 @@ System.out.println(hope);
 </div>
 </body>
 <script>
+
+roomListCall();
+function roomListCall() { 
+    	$.ajax({
+    		type : 'get',
+    		url : 'roomListCall.go',
+    		data : {
+    		},
+    		dataType : 'json',
+    		success : function(data) {
+    			console.log("roomListCall ajax");
+    			console.log(data);
+    			roomList(data);
+    		},
+    		error : function(e) {
+    			console.log(e);
+    		}
+    	});
+    }
+
+
+function roomList(room) {
+	var content = '';
+		content+='<select id="ro_name" name="ro_name">';
+	for (var i = 0; i < room.rd.length; i++) {
+		console.log("dddd");
+		content+='<option value="'+room.rd[i].ro_name+'">'+room.rd[i].ro_name+'</option>';
+	}
+	content+='</select>';
+	$("#room").empty();
+	$("#room").append(content);
+
+}
 
 
 </script>

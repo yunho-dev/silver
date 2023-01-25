@@ -93,7 +93,7 @@ System.out.println(hope);
                      <div class="row">                                              
                         <div class="col-md-8 form-group">
                            <h5>치료</h5>
-                           <input type="hidden" name="re_idx" value="${rd.re_idx}">
+                           <input type="text" name="re_idx" value="${rd.re_idx}">
                         </div>
                         <table  class="table mb-0" >
                            <tr>
