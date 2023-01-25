@@ -20,6 +20,14 @@
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
 </head>
+<style>
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+</style>
 <body>
 <%
 String var = (String)session.getAttribute("page");
@@ -38,13 +46,14 @@ String val = request.getParameter("page");
                         </div>
                     </div>
                 </div>
-                <div class="sidebar-menu">
+                <div class="sidebar-menu" style="font-family: NanumSquareNeo-Variable;">
                     <ul class="menu">
                         <li class="sidebar-title">MENU</li>
 
 
                         <li id="resident" class="sidebar-item  has-sub">
                             <a href="" class='sidebar-link'>
+                            	<i class="bi bi-person-badge-fill"></i>
                                 <span>입소자</span>
                             </a>
                             <ul class="submenu ">
@@ -64,7 +73,8 @@ String val = request.getParameter("page");
                         </li>
 
                         <li id="member"class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>             
+                            <a href="#" class='sidebar-link'>
+                            	<i class="bi bi-person-badge-fill"></i>
                                 <span>직원</span>
                             </a>
                             <ul class="submenu ">
@@ -78,7 +88,8 @@ String val = request.getParameter("page");
                         </li>
 
                         <li id="payment" class="sidebar-item has-sub">
-                            <a href="#" class='sidebar-link'>                               
+                            <a href="#" class='sidebar-link'>
+                            	<i class="bi bi-file-earmark-medical-fill"></i>                          
                                 <span>결재</span>
                             </a>
                              <ul class="submenu ">
@@ -105,24 +116,28 @@ String val = request.getParameter("page");
 
                         <li id="mycal" class="sidebar-item ">
                             <a href="mycalList?page=mycal" class='sidebar-link'>
+                            	<i class="bi bi-grid-fill"></i>
                                 <span>개인 캘린더</span>
                             </a>                         
                         </li>
 
                         <li id="board1" class="sidebar-item  ">
                             <a href="nextList?page=board1" class='sidebar-link'>
+                            	<i class="bi bi-grid-1x2-fill"></i>
                                 <span>인수 인계</span>
                             </a>
                         </li>
 
                         <li id="board2" class="sidebar-item ">
                             <a href="noticeList?page=board2" class='sidebar-link'>
+                            	<i class="bi bi-grid-1x2-fill"></i>
                                 <span>공지사항</span>
                             </a>                            
                         </li>
 
                         <li id="item" class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>                                
+                            <a href="#" class='sidebar-link'>
+                            	<i class="bi bi-basket-fill"></i>                  
                                 <span>비품</span>
                             </a>
                             <ul class="submenu ">
@@ -142,7 +157,8 @@ String val = request.getParameter("page");
                         </li>
 
                         <li id="donation" class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>                                
+                            <a href="#" class='sidebar-link'>
+                            	<i class="bi bi-cash"></i>
                                 <span>후원금</span>
                             </a>
                             <ul class="submenu ">

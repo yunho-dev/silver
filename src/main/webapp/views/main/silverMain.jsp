@@ -27,9 +27,18 @@ overflow: auto;
 .table-wrapper-scroll-y {
 display: block;
 }
+
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+
+.jejugothic * { 
+ font-family: 'Jeju Gothic', sans-serif;
+}
+
+div.card{
+	font-family: Jeju Gothic;
+}
 	</style>
 </head>
-
 <body>
 <%
 int hope = (int)session.getAttribute("hope");
@@ -70,9 +79,9 @@ System.out.println(hope);
                                     </c:if>  
                                     </div>
                                     <div class="ms-3 name">
-                                        <h5 class="font-bold">${memberList.mem_name}</h5>
+                                        <h5 class="font-bold" style="margin-bottom: -4px;">${memberList.mem_name}</h5>
                                         <h6 class="text-muted mb-0">${memberList.mem_email}</h6>
-                                        <h5 class="font-bold">직책:${memberList.pos_name}</h5>
+                                        <h5 class="font-bold" style="margin-top: 10px; margin-bottom: 7px;">직책:${memberList.pos_name}</h5>
                                         <h5 class="font-bold">부서:${memberList.dept_name}</h5>
 
                                         <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
