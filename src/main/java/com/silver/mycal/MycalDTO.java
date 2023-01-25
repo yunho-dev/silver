@@ -1,7 +1,5 @@
 package com.silver.mycal;
 
-import java.sql.Timestamp;
-
 import org.apache.ibatis.type.Alias;
 
 @Alias("mycal")
