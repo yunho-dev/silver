@@ -133,7 +133,7 @@ public class PaymentController {
 	@GetMapping(value="/download.do")
 	public ResponseEntity<Resource> download(@RequestParam String path){
 		logger.info("photo name : "+path);
-		String filePath="C:/pfile/"+path;
+		String filePath="/usr/local/tomcat/webapps/silver/pfile/"+path;
 		String oriFileName=paymentservice.getDownloadOrlName(path);
 		
 		Resource resource=new FileSystemResource(filePath);
