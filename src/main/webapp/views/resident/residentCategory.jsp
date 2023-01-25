@@ -403,7 +403,7 @@ System.out.println(hope);
      			var calendarEl = document.getElementById('calendar');
     			
     			var events = list.map(function(item) {
-    				console.log('item: '+JSON.stringify(item) );
+    				console.log(item.co_start,item.co_end);
     				
     				return {
     					backgroundColor : item.bgcolor,

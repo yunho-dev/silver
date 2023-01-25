@@ -181,7 +181,7 @@ System.out.println(hope);
                       <div class="input-group mb-3">
                      <span class="input-group-text" id="basic-addon1">비고</span> 
                          <input type="text"  class="form-control" aria-label="Username" 
-                                 aria-describedby="basic-addon1"  name="re_text" placeholder="비고" value="${rd.re_sick}" id="re_text" autofocus>
+                                 aria-describedby="basic-addon1"  name="re_text" placeholder="비고" value="${rd.re_text}" id="re_text" autofocus>
                      </div>
                       <div class="input-group mb-3">
                      <span class="input-group-text" id="basic-addon1">사진</span> 

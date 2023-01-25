@@ -1,7 +1,6 @@
 package com.silver.item;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
 
@@ -29,8 +28,8 @@ public class CarDTO {
 	//운행 예약
 	private int cb_idx;
 	private String b_write;
-	private Timestamp b_start;
-	private Timestamp b_end;
+	private String b_start;
+	private String b_end;
 	private String b_content;
 	private String mem_id;
 	private String mem_name;
@@ -144,16 +143,16 @@ public class CarDTO {
 	public void setB_write(String b_write) {
 		this.b_write = b_write;
 	}
-	public Timestamp getB_start() {
+	public String getB_start() {
 		return b_start;
 	}
-	public void setB_start(Timestamp b_start) {
+	public void setB_start(String b_start) {
 		this.b_start = b_start;
 	}
-	public Timestamp getB_end() {
+	public String getB_end() {
 		return b_end;
 	}
-	public void setB_end(Timestamp b_end) {
+	public void setB_end(String b_end) {
 		this.b_end = b_end;
 	}
 	public String getB_content() {

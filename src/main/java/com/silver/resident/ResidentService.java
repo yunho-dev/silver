@@ -124,9 +124,25 @@ public class ResidentService {
 		
 		logger.info("입소자 관리 목록을 가져오는 서비스");
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ResidentDTO> CateDetailList=dao.residentCateDetail(re_idx);
-		logger.info("입소자 관리 리스트:{}",CateDetailList);
-		result.put("list", CateDetailList);
+		ArrayList<ResidentDTO> cateDetailList=dao.residentCateDetail(re_idx);
+		//logger.info("입소자 관리 리스트:{}",cateDetailList);
+		/*
+		for (int i = 0; i < cateDetailList.size(); i++) {
+			ResidentDTO dto = cateDetailList.get(i);			
+		}
+		*/
+		
+		for(ResidentDTO dto : cateDetailList) {
+			logger.info(dto.getCo_start()+"~"+dto.getCo_end());
+			
+			
+			
+		}
+		
+		
+		
+		
+		result.put("list", cateDetailList);
 		return result;
 	}
 public HashMap<String, Object> residentDateSearch(HashMap<String, String> params) {
@@ -188,22 +204,25 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		String starttime = params.get("co_start"); 
 		String starttime2 = starttime+":00.000";
 		String starttime3= date+starttime2;
-		java.sql.Timestamp startdatetime = java.sql.Timestamp.valueOf(starttime3);
-		logger.info("startdatetime: "+startdatetime);
-		
+		/*
+		 * java.sql.Timestamp startdatetime = java.sql.Timestamp.valueOf(starttime3);
+		 * logger.info("startdatetime: "+startdatetime);
+		 */		
 		String endtime = params.get("co_end"); 
 		String endtime2 = endtime+":00.000";
 		String endtime3= date+endtime2;
-		java.sql.Timestamp enddatetime = java.sql.Timestamp.valueOf(endtime3);
-		logger.info("enddatetime: "+enddatetime);
+		/*
+		 * java.sql.Timestamp enddatetime = java.sql.Timestamp.valueOf(endtime3);
+		 * logger.info("enddatetime: "+enddatetime);
+		 */
 		
 		ResidentDTO dto = new ResidentDTO();		
 		int re_idx =  Integer.parseInt(params.get("re_idx"));
 		dto.setRe_idx(re_idx);
 		dto.setCc_idx(1);
 		dto.setCo_write(params.get("co_write"));
-		dto.setCo_start(startdatetime);
-		dto.setCo_end(enddatetime);
+		dto.setCo_start(starttime3);
+		dto.setCo_end(endtime3);
 		dto.setCu_content(params.get("cu_content"));
 		dto.setCo_event(params.get("co_event"));
 		
