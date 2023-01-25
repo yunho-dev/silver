@@ -306,6 +306,7 @@ public HashMap<String, Object> residentDateSearch(HashMap<String, String> params
 		logger.info("cu_num: "+cu_num);
 		ResidentDTO rd = dao.cateDetailCure(re_idx,cu_num);
 		model.addAttribute("rd", rd);		
+		
 	}
 	public void cateDetaiMedic(int re_idx, int me_num, Model model, String string) {
 		logger.info("re_idx: "+re_idx);	

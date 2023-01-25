@@ -33,7 +33,8 @@ public class MypageService {
 		// 2. 저장
 		try {
 			byte[] bytes = photo.getBytes();
-			Path path = Paths.get("C:/filephoto/"+newFileName);
+			//Path path = Paths.get("C:/filephoto/"+newFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/filephoto/"+newFileName);
 			logger.info("저장될 파일 경로 : {}", path);
 			Files.write(path, bytes);
 			logger.info("파일 저장 완료");
@@ -118,7 +119,8 @@ public class MypageService {
 		// 2. 저장
 		try {
 			byte[] bytes = photo.getBytes();
-			Path path = Paths.get("C:/sign/"+newFileName);
+			//Path path = Paths.get("C:/sign/"+newFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/sign/"+newFileName);
 			logger.info("저장될 파일 경로 : {}", path);
 			Files.write(path, bytes);
 			logger.info("파일 저장 완료");
