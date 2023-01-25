@@ -66,7 +66,8 @@ public class ThingService {
 		// 2. 저장
 		try {
 			byte[] bytes = photo.getBytes();
-			Path path = Paths.get("C:/filephoto/"+newFileName);
+//			Path path = Paths.get("C:/filephoto/"+newFileName);
+			Path path = Paths.get("/usr/local/tomcat/webapps/silver/filephoto/"+newFileName);
 			logger.info("저장될 파일 경로 : {}", path);
 			Files.write(path, bytes);
 			logger.info("파일 저장 완료");
@@ -88,7 +89,8 @@ public class ThingService {
 	public int fileDelete(String newFileName) {
 		logger.info("파일 삭제 기능 접근");
 		logger.info("받아온 사진 이름 : {}", newFileName);
-		String path = "C:/filephoto/"+newFileName;
+//		String path = "C:/filephoto/"+newFileName;
+		String path = "/usr/local/tomcat/webapps/silver/filephoto/"+newFileName;
 		logger.info("삭제할 파일 경로 : "+path);
 		int result = 0;
 		
