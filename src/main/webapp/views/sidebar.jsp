@@ -31,7 +31,7 @@ String val = request.getParameter("page");
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <a href="silverMain"><img src="assets/images/logo/logo.svg" style="width:100px;height:80px;" alt="Logo" srcset=""></a>
+                            <a href="silverMain"><img src="assets/images/logo/logo.svg" style="width:180px;height:100px;" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
