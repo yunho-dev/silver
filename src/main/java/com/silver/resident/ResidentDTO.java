@@ -51,9 +51,23 @@ public class ResidentDTO {
 	private String  cu_content;
 	private int  cc_idx;
 	private String  co_write;
-	private Timestamp  co_start;
-	private Timestamp  co_end;
+	private String co_start;
+	private String co_end;	
 	private String  co_event;
+	
+	public String getCo_start() {
+		return co_start;
+	}
+	public void setCo_start(String co_start) {
+		this.co_start = co_start;
+	}
+	public String getCo_end() {
+		return co_end;
+	}
+	public void setCo_end(String co_end) {
+		this.co_end = co_end;
+	}
+	
 	//medic
 	private int  me_num;
 	private String me_name;
@@ -231,6 +245,7 @@ public class ResidentDTO {
 	public void setCo_write(String co_write) {
 		this.co_write = co_write;
 	}
+	/*
 	public Timestamp getCo_start() {
 		return co_start;
 	}
@@ -243,6 +258,7 @@ public class ResidentDTO {
 	public void setCo_end(Timestamp co_end) {
 		this.co_end = co_end;
 	}
+	*/
 	public String getCo_event() {
 		return co_event;
 	}
