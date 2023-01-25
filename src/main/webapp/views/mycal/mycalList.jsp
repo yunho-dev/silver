@@ -66,7 +66,7 @@ System.out.println(hope);
 				      <div class='fc-event-main' style="background-color:green;">A조</div>
 				    </div>
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-				      <div class='fc-event-main' style="background-color:pink;">B조</div>
+				      <div class='fc-event-main' style="background-color:deeppink;">B조</div>
 				    </div>
 				    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
 				      <div class='fc-event-main' style="background-color:purple;">출장</div>
@@ -161,24 +161,6 @@ loadingEvents();
      dayMaxEvents: true,
      droppable: true, // this allows things to be dropped onto the calendar
      events:all_events,
-/*       events:[
-    	 {
-    		 if(title='휴가'){
-    			 backgroundColor:blue;
-    				 
-    		 },if(title='반차'){
-    			 backgroundColor:orange;
-    		 },if(title='A조'){
-    			 backgroundColor:green;
-    		 },if(title='B조'){
-    			 backgroundColor:pink;
-    		 },if(title='출장'){
-    			 backgroundColor:purple;
-    		 }
-    		 
-    	 }
-    	 
-     ],  */
      drop: function(info) {
        // is the "remove after drop" checkbox checked?
        if (checkbox.checked) {
@@ -209,9 +191,6 @@ loadingEvents();
 		
 		obj.title=allEvent[i]._def.title // 이벤트 명칭
 		obj.allDay=allEvent[i]._def.allDay; // 하루 종일의 이벤트인지 알려주는 boolean 값(ture/false)
-		//obj.start=new Date(allEvent[i]._instance.range.start); // 시작 날짜 및 시간
-		//obj.end=new Date(allEvent[i]._instance.range.end); // 마감 날짜 및 시간
-		
 
 		var date = new Date(allEvent[i]._instance.range.start -9 * 3600 * 1000);
  		console.log(date.getHours());		
@@ -294,7 +273,7 @@ loadingEvents();
 			
 	    		 }else if(title=='B조'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
-	    			 data.list[i].backgroundColor="pink";
+	    			 data.list[i].backgroundColor="deeppink";
 	    			 console.log(data.list[i].backgroundColor);
 	    		 }else if(title=='출장'&& allDay=='true'){
 	    			 delete data.list[i].backgroundColor;
@@ -305,18 +284,7 @@ loadingEvents();
 	    		 } 
 
 		}	
-/* 			console.log(adtitle);
-				console.log(adstart);
-				console.log(adend);
-				console.log(adallDay); */ 
 				return_value=data.list;
-				console.log(return_value);
-			/* 	add.push({
-					title:adtitle,
-					start:adstart,
-					end:adend,
-					allDay:adallDay
-				}); */
 
 			},
 			error:function(e){
