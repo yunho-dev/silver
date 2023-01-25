@@ -43,7 +43,11 @@ System.out.println(hope);
    				<div class="page-content">
    					<section class="row">
    						<div class="card" id="table">
-   							<button onclick="goWirte()" class="btn btn-primary" style="margin:15px; float: left; width: 80px;">글작성</button>
+   							<div style="float: left;">
+   							<button onclick="goWirte()" class="btn btn-primary" style="margin:4px; float: left; width: 90px;">글작성</button>
+   							<button type="button" class="btn btn-secondary" style="margin:4px; float: left; width: 100px;"
+								onclick="location.href='infestList?page=resident'">뒤로가기</button>
+   							</div>	
    								<div class="card-body py-4 px-5">
   									<div class="card" >
 									  <table class="table">

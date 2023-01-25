@@ -45,41 +45,42 @@ System.out.println(hope);
   	<div class="card">
   		<div class="card-body py-4 px-5">
   <form action="donationUpdate" method="post">
-  <button  class="btn btn-primary">수정</button>     
-  <table class="table">
-  <thead>
-    <tr>  
-      <th scope="col" style="width:20%;">날짜</th>
-      <td>
-      	<input type="date" name="do_date" style="width: 100%;" value="${donation.do_date}"/>	
-      </td>
-    </tr> 
-    <tr>  
-      <th scope="col" style="width:20%;">후원자</th>
-      <td>
-      	<input type="text" name="do_name" style="width: 100%;" value="${donation.do_name}" />	
-      </td>
-    <tr>  
-      <th scope="col" style="width:20%;">후원목적</th>
-      <td>
-      	<input type="text" name="do_goal" style="width: 100%;" value="${donation.do_goal}"/>	
-      </td>
-    </tr> 
-    <tr>  
-      <th scope="col" style="width:20%;">등록자</th>
-      <td>
-      	<input type="text" name="do_write" style="width: 100%;" value="${donation.do_write}"/>	
-      </td>
-    </tr>
-    <tr>  
-      <th scope="col" style="width:20%;">금액</th>
-      <td>
-      	<input type="text" name="do_money" style="width: 100%;" value="${donation.do_money}"/>	
-      </td>
-    </tr>
-    
-  </thead>
-</table>
+  <div>
+  <button  class="btn btn-primary" style="margin:4px; margin-bottom:20px; float: left; width: 70px;">수정</button>
+  <button type="button" class="btn btn-secondary" style="margin:4px; margin-bottom:20px; float: left; width: 100px;"
+							onclick="location.href='donation?page=donation'">뒤로가기</button> 
+	</div>					    
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">날짜</span>
+       <input type="date"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="do_date"  id="do_date" autofocus value="${donation.do_date}">
+                         
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">후원자</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="do_name"  id="do_name" autofocus value="${donation.do_name}">
+                         
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">후원목적</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="do_goal"  id="do_goal" autofocus value="${donation.do_goal}">
+                         
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">등록자</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="do_write"  id="do_write" autofocus value="${donation.do_write}">
+                         
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">금액</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="do_money"  id="do_money" autofocus value="${donation.do_money}">
+                         
+  </div>     
+  
 <input type="hidden" name="do_idx" value="${donation.do_idx}">
 </form>
 </div>

@@ -45,19 +45,17 @@ System.out.println(hope);
   	<div class="card">
   		<div class="card-body py-4 px-5">
   <form action="donHisUpdate" method="post" enctype="multipart/form-data">
-  <button  class="btn btn-primary">수정</button>     
-  <table class="table">
-  <thead>
-    <tr>  
-      <th scope="col" style="width:20%;">금액</th>
-      <td>
-      	<input type="text" name="dh_money" style="width: 100%;" value="${donhistory.dh_money}"/>	
-      </td>
-    </tr> 
-    <tr>  
-      <th scope="col" style="width:20%;">카테고리</th>
-      <td>
-      	<select name="dh_cate" style="width:200px;height:30px;font-size:12px;">
+  <button  class="btn btn-primary" style="margin:4px; margin-bottom:20px; float: left; width: 70px;">수정</button>
+  <button type="button" class="btn btn-secondary" style="margin:4px; margin-bottom:20px; float: left; width: 100px;"
+							onclick="location.href='donHistory?dh_idx=${donhistory.dh_idx}'">뒤로가기</button>     
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">금액</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="dh_money"  id="dh_money" autofocus value="${donhistory.dh_money}">                 
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">카테고리</span>
+       <select name="dh_cate" style="width:200px;height:30px;font-size:12px;">
       		<c:if test="${donhistory.dh_cate eq '물품구매'}">
       			<option value="물품구매" selected=selected>물품구매</option>
       			<option value="회식">회식</option>
@@ -94,35 +92,29 @@ System.out.println(hope);
       			<option value="물품구매">물품구매</option>
       		</c:if>
 
-		</select> 	
-      </td>
-    <tr>  
-      <th scope="col" style="width:20%;">사용목적</th>
-      <td>
-      	<input type="text" name="dh_goal" style="width: 100%;" value="${donhistory.dh_goal}"/>	
-      </td>
-    </tr> 
-    <tr>  
-      <th scope="col" style="width:20%;">사용날짜</th>
-      <td>
-      	<input type="date" name="dh_date" style="width: 100%;" value="${donhistory.dh_date}"/>	
-      </td>
-    </tr> 
-    <tr>  
-      <th scope="col" style="width:20%;">등록자</th>
-      <td>
-      	<input type="text" name="dh_write" style="width: 100%;" value="${donhistory.dh_write}"/>	
-      </td>
-    </tr>
-    <tr>  
-      <th scope="col" style="width:20%;">첨부파일</th>
-      <td>
-      	<input name="dh_Photo" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)">	
-      	<span>기존 사진 : </span><img src="/filephoto/${photoinfo}" alt="사진" style="width:110px;height:140px"><br/><br/>
-      </td>
-    </tr>
-  </thead>
-</table>
+		</select>                 
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">사용목적</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="dh_goal"  id="dh_goal" autofocus value="${donhistory.dh_goal}">                 
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">사용날짜</span>
+       <input type="date"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="dh_date"  id="dh_date" autofocus value="${donhistory.dh_date}">                 
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">등록자</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="dh_write"  id="dh_write" autofocus value="${donhistory.dh_write}">                 
+  </div>
+  <div class="input-group mb-3">                                              
+       <input name="dh_Photo" class="form-control" type="file" id="formFile" accept="image/gif, image/jpeg, image/png" onchange="fileCheck(this)" multiple="multiple">
+  </div>
+  <div class="input-group mb-3" >
+       <span class="input-group-text" id="basic-addon1">기존 사진 : </span><img src="/filephoto/${photoinfo}" alt="사진" style="width:100px;height:130px"><br/><br/>                 
+	</div>
 <input type="hidden" name="dh_idx" value="${donhistory.dh_idx}">
 </form>
 </div>

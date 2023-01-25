@@ -46,40 +46,37 @@ System.out.println(hope);
   	<div class="card">
   		<div class="card-body py-4 px-5">
   <form action="infestHistoryWrite" method="post">
-  <button  class="btn btn-primary">등록</button>     
-  <table class="table">
-  <thead>
-    <tr>  
-      <th scope="col" style="width:20%;">작성자</th>
-      <td>
-      	<input type="text" name="if_write" style="width: 100%;"/>	
-      </td>
-    </tr> 
-    <tr>  
-      <th scope="col" style="width:20%;">예방접종내역</th>
-      <td>
-      	<input type="text" name="if_jusa" style="width: 100%;"/>	
-      </td>
-    <tr>  
-      <th scope="col" style="width:20%;">감염병 명</th>
-      <td>
-      	<input type="text" name="if_name" style="width: 100%;"/>	
-      </td>
-    </tr>
-    <tr>  
-      <th scope="col" style="width:20%;">현재 감염 상태</th>
-      <td>
-      	<input type="text" name="if_state" style="width: 100%;"/>	
-      </td>
-    </tr>
-    <tr>  
-      <th scope="col" style="width:20%;">조치</th>
-      <td>
-      	<input type="text" name="if_comment" style="width: 100%;"/>	
-      </td>
-    </tr>
-  </thead>
-</table>
+  <div>
+  <button  class="btn btn-primary" style="margin:4px; margin-bottom:20px; float: left; width: 90px;">등록</button>   
+  <button type="button" class="btn btn-secondary" style="margin:4px; margin-bottom:20px; float: left; width: 100px;"
+							onclick="location.href='infestListHistory?re_idx=${re_idx}'">뒤로가기</button>  
+  </div>
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">작성자</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="if_write"  id="if_write" autofocus>                  
+  </div>						
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">예방접종내역</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="if_jusa"  id="if_jusa" autofocus>                  
+  </div>						
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">감염병 명</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="if_name"  id="if_name" autofocus>                  
+  </div>						
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">현재 감염 상태</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="if_state"  id="if_state" autofocus>                  
+  </div>						
+  <div class="input-group mb-3">                                              
+       <span class="input-group-text" id="basic-addon1">조치</span>
+       <input type="text"  class="form-control" aria-label="Username" 
+		aria-describedby="basic-addon1" name="if_comment"  id="if_comment" autofocus>                  
+  </div>						
+  
 <input type="hidden" name="re_idx" value="${re_idx}">
 </form>
 </div>
