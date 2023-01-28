@@ -4,7 +4,7 @@ goodee final project <br>
 (부트스트랩 링크 : https://zuramai.github.io/mazer/ ) <br>
 팀원 6명 <br>
 
-<h2> 맡은 기능 비품 </h2>
+<h2> 맡은 기능 </h2>
 <ul>
 <li>비품 → 비품관리대장</li>
 <li>비품 → 비품 목록 CRUD</li>
