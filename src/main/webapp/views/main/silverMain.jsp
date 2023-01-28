@@ -170,8 +170,7 @@ System.out.println(hope);
                         <p>2023 Final Project</p>
                     </div>
                     <div class="float-end">
-                        <p>Create With <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                                href="http://ahmadsaugi.com">Gudi</a></p>
+                        <p>Made by 석영한, 이동훈, 최윤호, 성승제, 오상민, 이정은</p>
                     </div>
                 </div>
             </footer>
