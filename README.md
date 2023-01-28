@@ -3,6 +3,7 @@ goodee final project <br>
 업로드 용량 제한으로 인해 부트스트랩은 제외하고 업로드했습니다. <br>
 (부트스트랩 링크 : https://zuramai.github.io/mazer/ ) <br>
 팀원 6명 <br>
+사용 기술 : JAVA, JS, Spring Boot Framework, MariaDB, Mybatis, HTML5, CSS3
 
 <h2> 맡은 기능 </h2>
 <ul>
@@ -13,3 +14,4 @@ goodee final project <br>
 <li>비품 → 비품 사용내역 → 비품 사용 예약 CRUD </li>
 <li>비품 → 차량(차량 운행 기록, 차량 운행 예약) CRUD</li>
 </ul>
+ 
