@@ -40,7 +40,7 @@ public class CarService {
 		logger.info("총 페이지 수 : "+totalPages);
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.getDriveHistory(carIdx, offset);
+		ArrayList<CarDTO> list = dao.getDriveHistory(carIdx, offset);
 		if(totalPages==0) {
 			totalPages = 1;
 		}
@@ -59,7 +59,7 @@ public class CarService {
 		logger.info("총 페이지 수 : "+totalPages);
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ThingDTO> list = dao.getCarBookList(carIdx, offset);
+		ArrayList<CarDTO> list = dao.getCarBookList(carIdx, offset);
 		if(totalPages==0) {
 			totalPages = 1;
 		}
