@@ -3,7 +3,7 @@ goodee final project <br>
 업로드 용량 제한으로 인해 부트스트랩은 제외하고 업로드했습니다. <br>
 (부트스트랩 링크 : https://zuramai.github.io/mazer/ ) <br>
 팀원 6명 <br>
-사용 기술 : JAVA, JS, Spring Boot Framework, MariaDB, Mybatis, HTML5, CSS3 <br>
+사용 기술 : JAVA, JS, Ajax, Spring Boot Framework, MariaDB, Mybatis, HTML5, CSS3 <br>
 
 <h2> 맡은 기능 </h2>
 <ul>
